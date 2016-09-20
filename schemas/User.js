@@ -15,7 +15,7 @@ exports = module.exports = function(app, mongoose) {
 	    	type: String,
 	    	required: true
 	    },
-	    
+
 		fullname: String,
 		position: String,
 		email:    String,
@@ -31,4 +31,7 @@ exports = module.exports = function(app, mongoose) {
 	    aboutme:  String,
 	    cv:       String
 	})
+
+	app.db.model('User' userSchema);
 }
+
