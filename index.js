@@ -7,15 +7,15 @@ var app = express();
 var bodyParser = require('body-parser');
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test');
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
+
+
+// mongoose
+app.db = mongoose.createConnection(config.mongodb.uri);
+app.db.on('error', console.error.bind(console, 'connection error:'));
+app.db.once('open', function() {
   console.log('App is now connected to MongoDB server');
 });
 
-var userSchema = mongoose.Schema( require('./mongo_model') );
-var User = mongoose.model('User', userSchema);
 
 app.use( bodyParser.urlencoded({ extended: true }) );
 
