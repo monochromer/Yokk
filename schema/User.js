@@ -21,8 +21,7 @@ exports = module.exports = function(app, mongoose) {
 		email:    String,
 		phone:    String,
 		skype:    String,
-		workours: String
-	    team:     String,
+		workours: String,
 	    birthday: String,
 	    vk:       String,
 	    twitter:  String,
@@ -32,6 +31,6 @@ exports = module.exports = function(app, mongoose) {
 	    cv:       String
 	})
 
-	app.db.model('User' userSchema);
+	app.db.model('User', userSchema);
 }
 
