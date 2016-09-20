@@ -7,7 +7,7 @@ var app = express();
 var bodyParser = require('body-parser');
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test');
+mongoose.connect(process.env.DB);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
@@ -18,6 +18,8 @@ var userSchema = mongoose.Schema(require('./mongo_model'));
 var User = mongoose.model('User', userSchema);
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static('bower_components'));
+app.use(express.static('public'));
 
 app.get('/', function(req, res) {
     res.sendFile(__dirname+'/views/index.html');
