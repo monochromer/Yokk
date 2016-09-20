@@ -1,0 +1,20 @@
+#----------------------------------------------------------------------------
+# Ignore these files when commiting to a git repository
+#----------------------------------------------------------------------------
+
+# Mac finder artifacts
+.DS_Store
+
+/node_modules/
+/bower_components/
+
+# Ignore all log_files and temp_files.
+/log/*
+tmp/*
+/log/*.log
+/tmp/sessions/*
+/tmp/cache/*
+/tmp/
+
+# environment
+.env
