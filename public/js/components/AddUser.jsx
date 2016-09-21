@@ -2,6 +2,15 @@ import React from 'react'
 import { FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap'
 
 var AddUser = React.createClass({
+    addUser: function(e) {
+        e.preventDefault();
+        var userToAdd = {
+            login: 'some_login',
+            password: 'some_password'
+        };
+        createUser(userToAdd);
+
+    },
 	getInitialState() {
 		return {
 				value: ''
@@ -19,7 +28,7 @@ var AddUser = React.createClass({
 		this.setState({ value: e.target.value });
 	},
 
-	render: function() { 
+	render: function() {
 		return (
 			<div>
 				<div className="row">
@@ -46,7 +55,7 @@ var AddUser = React.createClass({
 						</form>
 					</div>
 				</div>
-			</div>	
+			</div>
 		);
 	}
 
