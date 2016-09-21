@@ -16,5 +16,9 @@ tmp/*
 /tmp/cache/*
 /tmp/
 
+# Ignore webpack bundles
+public/js/bundle.js.map
+public/js/bundle.js
+
 # environment
 .env
