@@ -1,31 +1,47 @@
 import React from 'react'
+import store from '../store.js'
+import { addUser } from '../actions/crudUser.js'
 import { FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap'
 
 var AddUser = React.createClass({
-    addUser: function(e) {
-        e.preventDefault();
-        var userToAdd = {
-            login: 'some_login',
-            password: 'some_password'
-        };
-        createUser(userToAdd);
 
-    },
 	getInitialState() {
 		return {
-				value: ''
+			login: '',
+			password: '',
+			repeatPassword: ''
 		};
 	},
 
 	getValidationState() {
-		const length = this.state.value.length;
-		if (length > 10) return 'success';
-		else if (length > 5) return 'warning';
+		const length = this.state.password.length;
+		if (length > 8) return 'success';
+		else if (length > 4) return 'warning';
 		else if (length > 0) return 'error';
 	},
 
-	handleChange(e) {
-		this.setState({ value: e.target.value });
+	handleLoginChange(e) {
+		this.setState({ login: e.target.value });
+	},
+
+	handlePasswordChange(e) {
+		this.setState({ password: e.target.value });
+	},
+
+	handleRepeatPasswordChange(e) {
+		this.setState({ repeatPassword: e.target.value });
+	},
+
+	handleSubmit(e) {
+		console.log("submiting...");
+		e.preventDefault();
+
+		var userToAdd = {
+            login: this.state.login,
+            password: this.state.password
+        };
+
+        store.dispatch(addUser(userToAdd));
 	},
 
 	render: function() {
@@ -38,20 +54,20 @@ var AddUser = React.createClass({
 				</div>
 				<div className="row">
 					<div className="col-md-4">
-						<form>
-							<FormGroup controlId="formLogin" validationState={ this.getValidationState() }>
+						<form onSubmit={ this.handleSubmit }>
+							<FormGroup controlId="formLogin" >
 								<ControlLabel>Login:</ControlLabel>
-								<FormControl type="text" placeholder="Enter text" onChange={this.handleChange} />
+								<FormControl type="text" placeholder="Enter login" onChange={ this.handleLoginChange } />
 							</FormGroup>
 							<FormGroup controlId="formBPassword" validationState={ this.getValidationState() }>
 								<ControlLabel>Password:</ControlLabel>
-								<FormControl type="password" placeholder="Enter password" onChange={this.handleChange} />
+								<FormControl type="password" placeholder="Enter password" onChange={ this.handlePasswordChange } />
 							</FormGroup>
 							<FormGroup controlId="repeatPassword" validationState={ this.getValidationState() }>
 								<ControlLabel>Repeat Password:</ControlLabel>
-								<FormControl type="password" placeholder="Repeat password" onChange={this.handleChange} />
+								<FormControl type="password" placeholder="Repeat password" onChange={ this.handlePasswordChange } />
 							</FormGroup>
-							<Button bsStyle="success">Add User</Button>
+							<button type="submit" className="btn btn-default">Add User</button>
 						</form>
 					</div>
 				</div>

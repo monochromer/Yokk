@@ -28,7 +28,7 @@ var UsersTable = React.createClass({
                         <tbody>
                         {
                             store.getState().users.map( function(user) {
-                                return <UserRow fullname={ user.fullname } joinedOn={ user.joinedOn } position={ user.position } key={ user.id } />
+                                return <UserRow name={ user.login } joinedOn={ user.joinedOn } position={ user.position } key={ user._id } />
                             })
                         }
                         </tbody>
