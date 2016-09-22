@@ -1,12 +1,14 @@
 import axios from 'axios';
 
-export function createUser(user) {
-    console.log(user);
-    axios.post('/new_user', user )
-        .then(function (response) {
-        console.log(response);
-        })
-        .catch(function (error) {
-        console.log(error);
-        });
+export function addUser(user) {
+    return function (dispatch) {
+	    axios.post('/users/add', user)
+    		.then( (response) => {
+		        dispatch({
+		          type: "ADD_USER",
+		          payload: response.data
+		        })
+	      	})
+  		
+    }
 }
