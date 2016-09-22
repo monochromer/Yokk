@@ -6,16 +6,17 @@ exports = module.exports = function(app) {
 	    res.sendFile(__dirname + '/views/index.html');
 	});
 
-	app.post('/new_user', function(req, res) {
+	app.post('/users/add', function(req, res) {
 
+		console.log("new add response " + req.body);
 		var User = req.app.db.models.User;
 	    var user = new User(req.body);
 
         user.save(function (err, user) {
             if (err) return console.error(err);
-			console.log('Created new user: '+user);
-            res.send('Created new user: '+user.name+' '+user.surname+' is saved to DB');
+            res.status(200).send(user);
         });
+
 	});
 
 }
