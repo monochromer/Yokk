@@ -3,16 +3,11 @@ import store from '../store.js';
 import { connect } from "react-redux"
 
 import { Table, Button, ButtonToolbar } from 'react-bootstrap';
-import { fetchUsers } from '../actions/crudUser';
 import UserRow from './UserRow.jsx';
 
 
 
 var UsersTable = React.createClass({
-
-    componentWillMount: function() {
-        store.dispatch(fetchUsers());
-    },
 
     render: function() {
         return (
@@ -48,11 +43,11 @@ var UsersTable = React.createClass({
     }
 });
 
-var fetchUserStateToProps = function f(state) {
+var fetchUsersStateToProps = function f(state) {
     return {
         users: state.users
     }
 }
 
 
-export default connect(fetchUserStateToProps)(UsersTable);
+export default connect(fetchUsersStateToProps)(UsersTable);
