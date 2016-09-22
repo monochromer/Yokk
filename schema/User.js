@@ -58,10 +58,11 @@ exports = module.exports = function(app, mongoose) {
 	};
 
 	userSchema.statics.findByLogin = function(login, cb) {
-		return this.findOne(
-			{ login: login },
-			{login:1},
-			cb);
+		var fieldsToReturn = {
+			_id: 1,
+			 login: 1
+		 }
+		return this.findOne( { login: login }, fieldsToReturn, cb );
 	};
 
 	app.db.model('User', userSchema);

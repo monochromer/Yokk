@@ -23,7 +23,7 @@ exports = module.exports = function(app) {
 		var User = req.app.db.models.User;
 		User.allUsers(function(err, user){
 			// returned fields can be adjusted in User schema
-			res.send(users);
+			res.send(user);
 		})
 	});
 
@@ -33,7 +33,10 @@ exports = module.exports = function(app) {
 		User.findByLogin(req.params.user_login, function(err, user){
 			res.send(user)
 		})
+	});
 
+	app.put('/user/:user_login', function(req, res) {
+		console.log('put router');
 	});
 
 }
