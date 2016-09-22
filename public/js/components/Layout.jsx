@@ -12,11 +12,11 @@ var Layout = React.createClass({
 					    	<Link to="/">Eye of providence</Link>
 					  	</Navbar.Brand>
 					</Navbar.Header>
-					<Nav>
-					  	<NavItem><Link to="/">Team</Link></NavItem>
-					  	<NavItem><Link to="/addUser">Add User</Link></NavItem>
-						<NavItem><Link to="/tests">Tests</Link></NavItem>
-					</Nav>
+					<ul className="nav navbar-nav">
+					  	<li><Link to="/">Team</Link></li>
+					  	<li><Link to="/addUser">Add User</Link></li>
+					  	<li><Link to="/tests">tests</Link></li>
+					</ul>
 				</Navbar>
 				{ this.props.children }
 			</div>

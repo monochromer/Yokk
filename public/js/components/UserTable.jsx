@@ -1,7 +1,11 @@
 import React from 'react'
+import store from '../store.js'
+
 import { Table, Button, ButtonToolbar } from 'react-bootstrap'
+import UserRow from './UserRow.jsx'
 
 var UsersTable = React.createClass({
+
   render: function() {
     return (
         <div>
@@ -22,18 +26,11 @@ var UsersTable = React.createClass({
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Oleg</td>
-                                <td>Developer</td>
-                                <td>19.09.2016</td>
-                                <td>some actions...</td>
-                            </tr>
-                            <tr>
-                                <td>Max</td>
-                                <td>Developer</td>
-                                <td>19.09.2016</td>
-                                <td>some actions...</td>
-                            </tr>
+                        {
+                            store.getState().users.map( function(user) {
+                                return <UserRow fullname={ user.fullname } joinedOn={ user.joinedOn } position={ user.position } key={ user.id } />
+                            })
+                        }
                         </tbody>
                     </Table>
                 </div>    
