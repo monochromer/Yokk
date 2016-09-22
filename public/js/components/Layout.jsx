@@ -15,10 +15,11 @@ var Layout = React.createClass({
 					<Nav>
 					  	<NavItem><Link to="/">Team</Link></NavItem>
 					  	<NavItem><Link to="/addUser">Add User</Link></NavItem>
+						<NavItem><Link to="/tests">Tests</Link></NavItem>
 					</Nav>
 				</Navbar>
 				{ this.props.children }
-			</div>		
+			</div>
 		)
 	}
 });
