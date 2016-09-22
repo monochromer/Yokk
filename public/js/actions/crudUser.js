@@ -8,7 +8,19 @@ export function addUser(user) {
 		          type: "ADD_USER",
 		          payload: response.data
 		        })
-	      	})
+	      	});
   		
     }
+}
+
+export function fetchUsers() {
+	return function(dispatch) {
+		axios.get('/user')
+			.then( (response) => {
+				dispatch({
+					type: "FETCH_USERS",
+					payload: response.data
+		        })
+			}); 
+	}
 }

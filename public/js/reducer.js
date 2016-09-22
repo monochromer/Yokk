@@ -1,21 +1,7 @@
-import _ from 'loDash'
+import _ from 'loDash';
 
 var initialState = {
-	users: [
-		{
-			_id: _.uniqueId("id"),
-			login: "Max",
-			position: "Developer",
-			joinedOn: "19.09.2016"
-		},
-		{	
-			_id: _.uniqueId("id"),
-			login: "Oleg",
-			position: "Developer",
-			joinedOn: "19.09.2016"
-		}
-	],
-	newUser: {}
+	users: []
 }
 
 var Reducer = function(state = initialState, action) {
@@ -24,7 +10,11 @@ var Reducer = function(state = initialState, action) {
 			var newState = Object.assign({}, state);
 			newState.users.push(action.payload);
 			return newState;
-		break;	
+			break;
+
+		case "FETCH_USERS":
+			return Object.assign({}, state, { users: action.payload });
+			break;	
 	}
 	
     return state;

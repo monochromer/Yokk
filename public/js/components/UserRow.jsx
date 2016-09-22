@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 var UserRow = React.createClass({
 	render: function() {
