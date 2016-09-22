@@ -27,8 +27,7 @@ exports = module.exports = function(app) {
 		User.aggregate(	{$project: fieldsToReturn } )
 			.exec(function (err, users) {
 			// return users as an array of user objects
-				console.log(users);
-				res.send(users);;
+				res.send(users);
 		});
 	});
 
