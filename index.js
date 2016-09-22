@@ -10,7 +10,7 @@ var mongoose = require('mongoose');
 
 
 // mongoose
-app.db = mongoose.createConnection('mongodb://localhost/test');
+app.db = mongoose.createConnection('mongodb://localhost/eop');
 app.db.on('error', console.error.bind(console, 'connection error:'));
 app.db.once('open', function() {
   console.log('App is now connected to MongoDB server');
