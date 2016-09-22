@@ -1,8 +1,15 @@
-import React from 'react'
-import { Link } from 'react-router'
-import { Navbar, Nav, NavItem } from 'react-bootstrap'
+import React from 'react';
+import { Link } from 'react-router';
+import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import store from '../store.js';
+import { fetchUsers } from '../actions/crudUser';
 
 var Layout = React.createClass({
+
+    componentWillMount: function() {
+        store.dispatch(fetchUsers());
+    },
+
 	render: function() {
 		return (
 			<div className="container" style={{ "width": "1000px"}}>
