@@ -1,20 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, IndexRoute, hashHistory } from 'react-router';
+import { Router, Route, IndexRoute, hashHistory, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
+import store from './store.js';
 
 import Layout from './components/Layout.jsx';
 import UserTable from './components/UserTable.jsx';
-import addUser from './components/AddUser.jsx';
+import AddUser from './components/AddUser.jsx';
+import UserPage from './components/UserPage.jsx';
 import RequestTest from './components/RequestTest.jsx';
-import store from './store.js';
+
 
 const router = (
 	<Provider store={ store }>
 		<Router history={ hashHistory }>
 			<Route path="/" component={ Layout }>
-				<IndexRoute component={ UserTable } users={store.getState().users}></IndexRoute>
-				<Route path="addUser" component={ addUser }></Route>
+				<IndexRoute component={ UserTable }></IndexRoute>
+				<Route path="addUser" component={ AddUser }></Route>
+				<Route path="user/:login" component={ UserPage }></Route>
 				<Route path="tests" component={ RequestTest }></Route>
 			</Route>
 		</Router>
@@ -22,4 +25,8 @@ const router = (
 )
 
 
-ReactDOM.render(router, content);
+var render = function() { ReactDOM.render(router, content); }
+
+render();
+
+store.subscribe(render);
