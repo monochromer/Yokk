@@ -35,8 +35,24 @@ exports = module.exports = function(app) {
 		})
 	});
 
+	app.post('/foo', function(req, res) {
+	console.log(req.body);
+	});
+
 	app.put('/user/:user_login', function(req, res) {
-		console.log('put router');
+		var User = req.app.db.models.User;
+		var login = req.params.user_login;
+		var update = req.body;
+
+		User.editUser(login, update, function(err, user){
+			if (err)
+				res.send(err);
+
+			console.log('User '+login+' updated:');
+			console.log(update);
+			res.json({ message: 'User updated!' });
+		});
+
 	});
 
 }

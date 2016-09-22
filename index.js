@@ -10,7 +10,8 @@ var mongoose = require('mongoose');
 
 
 // mongoose
-app.db = mongoose.createConnection('mongodb://localhost/eop');
+const mongoUrl = process.env.DB ? process.env.DB : 'mongodb://localhost/eop';
+app.db = mongoose.createConnection(mongoUrl);
 app.db.on('error', console.error.bind(console, 'connection error:'));
 app.db.once('open', function() {
   console.log('App is now connected to MongoDB server');

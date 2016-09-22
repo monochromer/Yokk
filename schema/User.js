@@ -65,5 +65,9 @@ exports = module.exports = function(app, mongoose) {
 		return this.findOne( { login: login }, fieldsToReturn, cb );
 	};
 
+	userSchema.statics.editUser = function(login, updateObject, cb) {
+		return this.findOneAndUpdate({login: login}, updateObject, cb);
+	};
+
 	app.db.model('User', userSchema);
 }
