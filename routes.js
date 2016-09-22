@@ -19,10 +19,10 @@ exports = module.exports = function(app) {
 
 	});
 
-	app.get('/all_users', function(req, res) {
+	app.get('/user', function(req, res) {
 		var User = req.app.db.models.User;
 		var fieldsToReturn = {
-			_id: 0,
+			_id: 1,
 			 login: 1
 		 }
 		User.aggregate(	{$project: fieldsToReturn } )
@@ -30,6 +30,10 @@ exports = module.exports = function(app) {
 			// return users as an array of user objects
 				res.send(users);
 		});
+	});
+
+	app.get('/user/name-surname', function(req, res) {
+
 	});
 
 }

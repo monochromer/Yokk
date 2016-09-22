@@ -1,7 +1,7 @@
-import React from 'react'
-import store from '../store.js'
-import { addUser } from '../actions/crudUser.js'
-import { FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap'
+import React from 'react';
+import store from '../store.js';
+import { addUser } from '../actions/crudUser.js';
+import { FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap';
 
 var AddUser = React.createClass({
 
