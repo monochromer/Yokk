@@ -49,5 +49,20 @@ exports = module.exports = function(app, mongoose) {
 		return this.encryptPassword(password) === this.hashedPassword;
 	};
 
+	userSchema.statics.allUsers = function(cb) {
+		var fieldsToReturn = {
+			_id: 1,
+			 login: 1
+		 }
+		return this.find({}, fieldsToReturn, cb);
+	};
+
+	userSchema.statics.findByLogin = function(login, cb) {
+		return this.findOne(
+			{ login: login },
+			{login:1},
+			cb);
+	};
+
 	app.db.model('User', userSchema);
 }

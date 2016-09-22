@@ -13,9 +13,9 @@ var RequestTest = React.createClass({
 
     },
 	requestGet() {
-        axios.get('/all_users', {
+        axios.get('/user/olegzhermal', {
         params: {
-        some: 'param'
+            some: 'param'
         }
         })
         .then(function (response) {

@@ -21,18 +21,18 @@ exports = module.exports = function(app) {
 
 	app.get('/user', function(req, res) {
 		var User = req.app.db.models.User;
-		var fieldsToReturn = {
-			_id: 1,
-			 login: 1
-		 }
-		User.aggregate(	{$project: fieldsToReturn } )
-			.exec(function (err, users) {
-			// return users as an array of user objects
-				res.send(users);
-		});
+		User.allUsers(function(err, user){
+			// returned fields can be adjusted in User schema
+			res.send(users);
+		})
 	});
 
-	app.get('/user/name-surname', function(req, res) {
+	app.get('/user/:user_login', function(req, res) {
+		var User = req.app.db.models.User;
+		// returned fields can be adjusted in User schema
+		User.findByLogin(req.params.user_login, function(err, user){
+			res.send(user)
+		})
 
 	});
 
