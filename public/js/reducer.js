@@ -3,14 +3,14 @@ import _ from 'loDash'
 var initialState = {
 	users: [
 		{
-			id: _.uniqueId("id"),
-			fullname: "Max",
+			_id: _.uniqueId("id"),
+			login: "Max",
 			position: "Developer",
 			joinedOn: "19.09.2016"
 		},
 		{	
-			id: _.uniqueId("id"),
-			fullname: "Oleg",
+			_id: _.uniqueId("id"),
+			login: "Oleg",
 			position: "Developer",
 			joinedOn: "19.09.2016"
 		}
@@ -19,6 +19,14 @@ var initialState = {
 }
 
 var Reducer = function(state = initialState, action) {
+	switch (action.type) {
+		case "ADD_USER": 
+			var newState = Object.assign({}, state);
+			newState.users.push(action.payload);
+			return newState;
+		break;	
+	}
+	
     return state;
 }
 
