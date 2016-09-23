@@ -24,3 +24,17 @@ export function fetchUsers() {
 			}); 
 	}
 }
+
+export function changeUser(login, fields) {
+	console.log("CRUD is working...")
+	console.log(fields);
+	return function(dispatch) {
+		axios.put('/user/' + login, fields)
+			.then( (response) => {
+				dispatch({
+					type: "CHANGE_USER",
+					payload: response.data
+		        })
+			}); 
+	}
+}
