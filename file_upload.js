@@ -1,12 +1,31 @@
 var multer  = require('multer');
 
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/');
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname);
-    }
-});
+var uploadPicture = function( req, res ) {
 
-module.exports = multer({ storage: storage });
+    var storage = multer.diskStorage({
+        destination: './uploads/',
+        filename: function (req, file, cb) {
+            cb(null, req.params.user_login+'.jpg')
+        }
+    });
+
+    var upload = multer({ storage : storage}).any();
+
+    upload( req, res, function(err) {
+        if(err) {
+            console.log(err);
+            return res.end("Error uploading file.");
+        } else {
+            console.log('File uploaded:');
+            req.files.forEach( function(f) {
+            console.log(f);
+            // and move file to final destination...
+        });
+            res.end("File has been uploaded");
+        }
+    });
+
+    return true;
+}
+
+module.exports = uploadPicture;
