@@ -5,16 +5,19 @@ import { connect } from 'react-redux';
 
 var UserPage = React.createClass({
 	
+	findParticularUser: function(users) {
+		return _.find(users, (o) => o.login == this.props.routeParams.login);
+	},
+
 	getInitialState: function() {
 		return {
-			user: _.find(this.props.users, (o) => o.login == this.props.routeParams.login)
+			user: this.findParticularUser(this.props.users)
 		}	
 	},
 
 	componentWillReceiveProps: function(nextProps) {
-		var user = _.find(nextProps.users, (o) => o.login == this.props.routeParams.login);
 		this.setState({
-			user: user
+			user: this.findParticularUser(nextProps.users)
 		})
 	},
 
@@ -24,29 +27,121 @@ var UserPage = React.createClass({
 		} else {
 			return (
 			    <div className="container">
-			        <div className="large-3.columns">
-			            <div id="photo">Photo</div>
-			            <div id="efficiency">Efficiency</div>
-			        </div>
-			        <div className="large-9.columns">
-			            <div id="general">
-			                <div id="full_name" className="general">{this.state.user.login}</div>
-			                <div id="phone_num" className="general"></div>
-			                <div id="work_hours" className="general"></div>
-			                <div id="email" className="general"></div>
-			                <div id="skype" className="general"></div>
-			            </div>
-			            <div id="personal">
-			                <div id="birthday" className="personal"></div>
-			                <div id="twitter" className="personal"></div>
-			                <div id="linkedin" className="personal"></div>
-			                <div id="vk" className="personal"></div>
-			                <div id="facebook" className="personal"></div>
-			            </div>
-			            <div id="about_container">
-			                <div id="about" className="about"></div>
-			                <div id="cv" className="about"></div>
-			            </div>
+			        <div className="row">
+			        	<div className="col-md-2">
+			        		<span> Efficiency 4.0 </span>
+			        	</div>
+			        	<div className="col-md-10 profile">
+							<h2>{ this.state.user.login }</h2>
+							<div className="row">
+								<div className="col-md-10">
+									<h5>General</h5>
+								</div>	
+							</div>
+							<div className="row">
+								<div className="col-md-5">
+									<div className="profile__field-name">
+										<span>Fullname</span>
+									</div>
+									<div className="profile__field-value">
+										<span>{ this.state.user.fullname }</span>
+									</div>	
+								</div>
+								<div className="col-md-5">
+									<div className="profile__field-name">
+										<span>Email</span>
+									</div>
+									<div className="profile__field-value">
+										<span>{ this.state.user.email }</span>
+									</div>	
+								</div>
+							</div>
+							<div className="row">
+								<div className="col-md-5">
+									<div className="profile__field-name">
+										<span>Phone Number</span>
+									</div>
+									<div className="profile__field-value">
+										<span>{ this.state.user.phone }</span>
+									</div>	
+								</div>
+								<div className="col-md-5">
+									<div className="profile__field-name">
+										<span>Skype</span>
+									</div>
+									<div className="profile__field-value">
+										<span>{ this.state.user.skype }</span>
+									</div>	
+								</div>
+							</div>
+							<div className="row">
+								<div className="col-md-5">
+									<div className="profile__field-name">
+										<span>Work Hourse GMT+3</span>
+									</div>
+									<div className="profile__field-value">
+										<span>{ this.state.user.workhours }</span>
+									</div>	
+								</div>
+							</div>
+							<div className="row">
+								<div className="col-md-10">
+									<h5>General</h5>
+								</div>
+							</div>	
+							<div className="row">
+								<div className="col-md-5">
+									<div className="profile__field-name">
+										<span>Day of birth</span>
+									</div>
+									<div className="profile__field-value">
+										<span>{ this.state.user.birthday }</span>
+									</div>	
+								</div>
+								<div className="col-md-5">
+									<div className="profile__field-name">
+										<span>VK</span>
+									</div>
+									<div className="profile__field-value">
+										<span>{ this.state.user.vk }</span>
+									</div>	
+								</div>
+							</div>
+							<div className="row">
+								<div className="col-md-5">
+									<div className="profile__field-name">
+										<span>Twitter</span>
+									</div>
+									<div className="profile__field-value">
+										<span>{ this.state.user.twitter }</span>
+									</div>	
+								</div>
+								<div className="col-md-5">
+									<div className="profile__field-name">
+										<span>Facebook</span>
+									</div>
+									<div className="profile__field-value">
+										<span>{ this.state.user.facebook }</span>
+									</div>	
+								</div>
+							</div>
+							<div className="row">
+								<div className="col-md-5">
+									<div className="profile__field-name">
+										<span>Linked In</span>
+									</div>
+									<div className="profile__field-value">
+										<span>{ this.state.user.linkedin }</span>
+									</div>	
+								</div>
+							</div>
+							<div className="row">
+								<div className="col-md-10">
+									<h5>About me</h5>
+									<p>{ this.state.user.aboutme }</p>
+								</div>
+							</div>		
+						</div>
 			        </div>
 			    </div>
 			);
