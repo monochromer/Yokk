@@ -21,7 +21,7 @@ const router = (
 				<Route path="tests" component={ RequestTest }></Route>
 			</Route>
 		</Router>
-	</Provider>	
+	</Provider>
 )
 
 

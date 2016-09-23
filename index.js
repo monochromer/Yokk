@@ -25,9 +25,6 @@ require('./models')(app, mongoose);
 //middleware
 app.use( bodyParser.json( {strict: true} ) );
 
-
-app.use( bodyParser.json( {strict: true} ) );
-
 // setting static folder
 app.use(express.static(path.join(__dirname, 'bower_components')));
 app.use(express.static(path.join(__dirname, 'public')));
