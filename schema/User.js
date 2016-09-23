@@ -69,5 +69,9 @@ exports = module.exports = function(app, mongoose) {
 		return this.findOneAndUpdate({login: login}, updateObject, cb);
 	};
 
+	userSchema.statics.deleteUser = function(login, cb) {
+		return this.remove({login: login}, cb);
+	};
+
 	app.db.model('User', userSchema);
 }
