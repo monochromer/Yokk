@@ -2,22 +2,19 @@ import React from 'react';
 import _ from 'loDash';
 import store from '../store.js';
 import { connect } from 'react-redux';
+import { findUserByLogin } from '../helpers.js'
 
 var UserPage = React.createClass({
 	
-	findParticularUser: function(users) {
-		return _.find(users, (o) => o.login == this.props.routeParams.login);
-	},
-
 	getInitialState: function() {
 		return {
-			user: this.findParticularUser(this.props.users)
+			user: findUserByLogin(this.props.users, this.props.routeParams.login)
 		}	
 	},
 
 	componentWillReceiveProps: function(nextProps) {
 		this.setState({
-			user: this.findParticularUser(nextProps.users)
+			user: findUserByLogin(nextProps.users, this.props.routeParams.login)
 		})
 	},
 
