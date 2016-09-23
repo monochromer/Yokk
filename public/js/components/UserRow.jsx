@@ -1,7 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router'
+import { Link } from 'react-router';
+import { deleteUser } from '../actions/crudUser.js';
+import store from '../store.js';
 
 var UserRow = React.createClass({
+	handleRemove: function() {
+		store.dispatch(deleteUser(this.props.name));
+	},
+
 	render: function() {
 		return (
 			<tr>
@@ -11,7 +17,7 @@ var UserRow = React.createClass({
 				<td>
 					<div className="btn-group" role="group">
 						<Link  to={ '/user/edit/' + this.props.name } className="btn btn-warning">Edit</Link>
-						<button className="btn btn-danger">Remove</button>
+						<button className="btn btn-danger" onClick={ this.handleRemove }>Remove</button>
 					</div>	
 				</td>
 			</tr>	
