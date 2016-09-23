@@ -3,12 +3,16 @@ import React from 'react';
 var UserEdit = React.createClass({
 	render: function() {
 		return (
-			<div className="container">
+			<div className="container" style={{ "width": "1000px" }}>
 		        <div className="row">
-		        	<div className="col-md-2">
-		        		<span> Efficiency 4.0 </span>
+		        	<div className="col-md-3 text-center center-block">
+		        			<img src="https://randomuser.me/api/portraits/men/85.jpg" className="img-circle text-center center-block photo__img" />
+		        			  <div className="form-group">
+							    <label htmlFor="upload-photo">Change Photo</label>
+							    <input type="file" id="upload-photo" style={{ "display": "inline", "width": "100%" }}/>
+							  </div>
 		        	</div>
-		        	<div className="col-md-10 profile">
+		        	<div className="col-md-9 profile">
 						<h2>{ this.props.routeParams.login }</h2>
 						<div className="row">
 							<div className="col-md-10">
@@ -86,9 +90,14 @@ var UserEdit = React.createClass({
 						<div className="row">
 							<div className="col-md-10">
 								<h3>About me</h3>
-								<textarea className="form-control" rows="3"></textarea>
+								<textarea className="form-control" rows="5"></textarea>
 							</div>
-						</div>		
+						</div>	
+						<div className="row">
+							<div className="col-md-10">
+								<button type="button" className="btn btn-lg btn-success" style={{ "margin": "20px 0", "float": "right" }}>Save</button>
+							</div>
+						</div>	
 					</div>
 		        </div>
 			</div>
