@@ -52,7 +52,20 @@ exports = module.exports = function(app, mongoose) {
 	userSchema.statics.allUsers = function(cb) {
 		var fieldsToReturn = {
 			_id: 1,
-			 login: 1
+			login: 1,
+			fullname: 1,
+			position: 1,
+			email: 1,
+			phone: 1,
+			skype: 1,
+			workhours: 1,
+			birthday: 1,
+			vk: 1,
+			twitter: 1,
+			facebook: 1,
+			linkedin: 1,
+			aboutme: 1,
+			cv: 1
 		 }
 		return this.find({}, fieldsToReturn, cb);
 	};
