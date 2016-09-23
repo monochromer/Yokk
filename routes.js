@@ -1,5 +1,7 @@
 'use strict'
 
+var upload = require('./file_upload');
+
 exports = module.exports = function(app) {
 
 	app.get('/', function(req, res) {
@@ -52,7 +54,7 @@ exports = module.exports = function(app) {
 		});
 	});
 
-	app.del('/user/:user_login', function(req, res) {
+	app.delete('/user/:user_login', function(req, res) {
 		var User = req.app.db.models.User;
 		var login = req.params.user_login;
 		console.log(login);
@@ -64,5 +66,9 @@ exports = module.exports = function(app) {
 	});
 
 	/************** ending CRUD for user block **************/
+
+	app.post('/upload_profile_picture/users/:user_login', upload.single('pic'), function(req, res) {
+		res.send('Got the file');
+	});
 
 }
