@@ -24,7 +24,7 @@ var RequestTest = React.createClass({
 
     },
 	requestGet() {
-        axios.get(this.state.reqUrl, JSON.parse(this.state.reqBody) )
+        axios.get(this.state.reqUrl)
             .then(function (response) {
                 console.log(response);
             })
@@ -42,6 +42,15 @@ var RequestTest = React.createClass({
             });
     },
 
+    requestDelete() {
+        axios.delete(this.state.reqUrl)
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    },
 	render: function() {
 		return (
 			<div>
@@ -50,6 +59,7 @@ var RequestTest = React.createClass({
 				<button onClick={this.requestGet}>make GET request</button>
                 <button onClick={this.requestPost}>make POST request</button>
                 <button onClick={this.requestPut}>make PUT request</button>
+                <button onClick={this.requestDelete}>make DELETE request</button>
 			</div>
 		);
 	}
