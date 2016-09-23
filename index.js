@@ -8,6 +8,8 @@ var bodyParser = require('body-parser');
 var path = require('path');
 var mongoose = require('mongoose');
 
+var multer  = require('multer');
+
 
 // mongoose
 const mongoUrl = process.env.DB ? process.env.DB : 'mongodb://localhost/eop';
@@ -22,7 +24,7 @@ app.db.once('open', function() {
 require('./models')(app, mongoose);
 
 
-//middleware
+//body parsing middleware
 app.use( bodyParser.json( {strict: true} ) );
 
 // setting static folder
