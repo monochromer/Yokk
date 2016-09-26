@@ -56,13 +56,13 @@ var UserEdit = React.createClass({
 								<div className="col-md-6">
 									<div className="form-group">
 										<label htmlFor="fullname">Full Name</label>
-										<input type="text" className="form-control" ref="fullname" id="fullname" placeholder="Jack Shephard"/>
+										<input type="text" className="form-control" ref="fullname" id="fullname" placeholder="Jack Shephard" defaultValue={ this.state.user.fullname }/>
 									</div>	
 								</div>
 								<div className="col-md-6">
 									<div className="form-group">
 										<label htmlFor="position">Position</label>
-										<input  type="text" className="form-control" ref="position" id="position" placeholder="Jack Shephard"/>
+										<input  type="text" className="form-control" ref="position" id="position" placeholder="Developer" defaultValue={ this.state.user.position }/>
 									</div>	
 								</div>
 							</div>
@@ -70,13 +70,13 @@ var UserEdit = React.createClass({
 								<div className="col-md-6">
 									<div className="form-group">
 										<label htmlFor="phone-number">Phone Number</label>
-										<input  type="text" className="form-control" ref="phone" id="phone-number" placeholder="+4 815 16 23 42"/>
+										<input  type="text" className="form-control" ref="phone" id="phone-number" placeholder="+4 815 16 23 42" defaultValue={ this.state.user.phone }/>
 									</div>	
 								</div>
 								<div className="col-md-6">
 									<div className="form-group">
 										<label htmlFor="skype">Skype</label>
-										<input  type="text" className="form-control" ref="skype" id="skype" placeholder="jackshephard"/>
+										<input  type="text" className="form-control" ref="skype" id="skype" placeholder="jackshephard" defaultValue={ this.state.user.skype }/>
 									</div>	
 								</div>
 							</div>
@@ -84,13 +84,13 @@ var UserEdit = React.createClass({
 								<div className="col-md-6">
 									<div className="form-group">
 										<label htmlFor="workhours">Work Hours</label>
-										<input  type="text" className="form-control" ref="workhours" id="workhours" placeholder="07:00 - 17:00"/>
+										<input  type="text" className="form-control" ref="workhours" id="workhours" placeholder="07:00 - 17:00" defaultValue={ this.state.user.workhours }/>
 									</div>	
 								</div>
 								<div className="col-md-6">
 									<div className="form-group">
 										<label htmlFor="email">Email</label>
-										<input  type="email" className="form-control" ref="email" id="email" placeholder="dr.shepard@gmail.com"/>
+										<input  type="email" className="form-control" ref="email" id="email" placeholder="dr.shepard@gmail.com" defaultValue={ this.state.user.email }/>
 									</div>	
 								</div>
 							</div>
@@ -103,13 +103,13 @@ var UserEdit = React.createClass({
 								<div className="col-md-6">
 									<div className="form-group">
 										<label htmlFor="birthday">Birthday</label>
-										<input  type="text" className="form-control" ref="birthday" id="birthday" placeholder="01.11.1990"/>
+										<input  type="text" className="form-control" ref="birthday" id="birthday" placeholder="01.11.1990" defaultValue={ this.state.user.birthday } />
 									</div>	
 								</div>
 								<div className="col-md-6">
 									<div className="form-group">
 										<label htmlFor="vk">VK</label>
-										<input  type="text" className="form-control" ref="vk" id="vk" placeholder="vk.com/jackshephard"/>
+										<input  type="text" className="form-control" ref="vk" id="vk" placeholder="vk.com/jackshephard" defaultValue={ this.state.user.vk }/>
 									</div>	
 								</div>
 							</div>
@@ -117,14 +117,14 @@ var UserEdit = React.createClass({
 								<div className="col-md-6">
 									<div className="form-group">
 										<label htmlFor="twitter">Twitter</label>
-										<input  type="text" className="form-control" ref="twitter" id="twitter" placeholder="@jackshephard"/>
+										<input  type="text" className="form-control" ref="twitter" id="twitter" placeholder="@jackshephard" defaultValue={ this.state.user.twitter }/>
 									</div>	
 								</div>
 							</div>
 							<div className="row">
 								<div className="col-md-12">
 									<h3>About me</h3>
-									<textarea  className="form-control" ref="aboutme" rows="5"></textarea>
+									<textarea  className="form-control" ref="aboutme" rows="5" defaultValue={ this.state.user.aboutme }></textarea>
 								</div>
 							</div>	
 							<div className="row">
