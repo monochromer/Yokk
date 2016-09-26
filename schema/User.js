@@ -23,7 +23,7 @@ exports = module.exports = function(app, mongoose) {
 		email:    String,
 		phone:    String,
 		skype:    String,
-		workours: String,
+		workhours: String,
 	    birthday: String,
 	    vk:       String,
 	    twitter:  String,
