@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import DropPicture from './DropPicture.jsx';
+import Logout from './Logout.jsx';
+import LoginForm from './LoginForm.jsx';
 
 var RequestTest = React.createClass({
     getInitialState: function() {
@@ -62,6 +64,7 @@ var RequestTest = React.createClass({
                 <button onClick={this.requestPut}>make PUT request</button>
                 <button onClick={this.requestDelete}>make DELETE request</button>
                 <DropPicture />
+                <Logout />
 			</div>
 		);
 	}
