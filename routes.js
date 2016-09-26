@@ -70,7 +70,21 @@ exports = module.exports = function(app) {
 	/************** ending CRUD for user block **************/
 
 	app.post('/upload_profile_picture/users/:user_login', function(req, res) {
-		upload( req, res );
+		var User = req.app.db.models.User;
+		var login = req.params.user_login;
+		var update = {profileImg: 'uploads/'+login+'.jpg'};
+		User.editUser(login, update, function(err, user){
+			if (err)
+				res.send(err);
+			if (user) {
+				console.log('User '+login+' updated:');
+				console.log(update);
+				upload( req, res );
+				res.json({ message: 'User updated!' });
+			} else {
+				res.json({ message: 'User '+ login + ' is not found in DB' });
+			}
+		});
 	});
 
 
