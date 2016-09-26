@@ -26,12 +26,8 @@ var UserPage = React.createClass({
 			return (
 			    <div className="container-fluid">
 			        <div className="row">
-			        	<div className="col-md-3 text-center center-block">
+			        	<div className="col-md-3 text-center center-block profile__photo">
 		        			<img src="https://randomuser.me/api/portraits/men/85.jpg" className="img-circle text-center center-block photo__img" />
-		        			  <div className="form-group">
-							    <label htmlFor="upload-photo">Change Photo</label>
-							    <input type="file" id="upload-photo" style={{ "display": "inline", "width": "100%" }}/>
-							  </div>
 		        		</div>
 			        	<div className="col-md-9 profile">
 							<h2>{ this.state.user.login } <Link  to={ '/user/edit/' + this.state.user.login } className="btn btn-sm btn-warning">Edit</Link></h2>
