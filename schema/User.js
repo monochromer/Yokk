@@ -30,7 +30,8 @@ exports = module.exports = function(app, mongoose) {
 	    facebook: String,
 	    linkedin: String,
 	    aboutme:  String,
-	    cv:       String
+	    cv:       String,
+	    avatar: String
 	});
 
 	userSchema.methods.encryptPassword = function(password) {
