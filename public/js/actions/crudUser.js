@@ -7,6 +7,11 @@ export function addUser(user) {
 		        dispatch({
 		          type: "ADD_USER",
 		          payload: response.data
+		        });
+		        dispatch({
+		          type: "ALERT_SHOW",
+		          text: "User " + user.login + " has been added!",
+		          class: "success" 
 		        })
 	      	});
   		

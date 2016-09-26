@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import store from '../store.js';
 import { fetchUsers } from '../actions/crudUser';
+import Alert from './Alert.jsx'
 
 var Layout = React.createClass({
 
@@ -26,6 +27,7 @@ var Layout = React.createClass({
 					</div>
 				</nav>
 				<div className="container-fluid">
+					<Alert />
 					{ this.props.children }
 				</div>
 			</div>    
