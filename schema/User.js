@@ -18,20 +18,20 @@ exports = module.exports = function(app, mongoose) {
 	    	required: true
 	    },
 
-		fullname: String,
-		position: String,
-		email:    String,
-		phone:    String,
-		skype:    String,
-		workhours: String,
-	    birthday: String,
-	    vk:       String,
-	    twitter:  String,
-	    facebook: String,
-	    linkedin: String,
-	    aboutme:  String,
-	    cv:       String,
-	    avatar: String
+		fullname:   String,
+		position:   String,
+		email:      String,
+		phone:      String,
+		skype:      String,
+		workours:   String,
+	    birthday:   String,
+	    vk:         String,
+	    twitter:    String,
+	    facebook:   String,
+	    linkedin:   String,
+	    aboutme:    String,
+	    cv:         String,
+		profileImg: String
 	});
 
 	userSchema.methods.encryptPassword = function(password) {
