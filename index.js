@@ -28,8 +28,8 @@ require('./models')(app, mongoose);
 app.use( bodyParser.json( {strict: true} ) );
 
 // setting static folder
-app.use(express.static(path.join(__dirname, 'bower_components')));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'uploads')));
 
 
 require('./routes')(app);
