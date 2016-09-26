@@ -23,11 +23,15 @@ var UserPage = React.createClass({
 			return ( <p> Wait a moment please...</p> );
 		} else {
 			return (
-			    <div className="container">
+			    <div className="container-fluid">
 			        <div className="row">
-			        	<div className="col-md-2">
-			        		<span> Efficiency 4.0 </span>
-			        	</div>
+			        	<div className="col-md-3 text-center center-block">
+		        			<img src="https://randomuser.me/api/portraits/men/85.jpg" className="img-circle text-center center-block photo__img" />
+		        			  <div className="form-group">
+							    <label htmlFor="upload-photo">Change Photo</label>
+							    <input type="file" id="upload-photo" style={{ "display": "inline", "width": "100%" }}/>
+							  </div>
+		        		</div>
 			        	<div className="col-md-10 profile">
 							<h2>{ this.state.user.login }</h2>
 							<div className="row">
