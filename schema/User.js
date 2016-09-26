@@ -18,19 +18,19 @@ exports = module.exports = function(app, mongoose) {
 	    	required: true
 	    },
 
-		fullname:   String,
-		position:   String,
-		email:      String,
-		phone:      String,
-		skype:      String,
-		workours:   String,
-	    birthday:   String,
-	    vk:         String,
-	    twitter:    String,
-	    facebook:   String,
-	    linkedin:   String,
-	    aboutme:    String,
-	    cv:         String,
+		fullname: String,
+		position: String,
+		email:    String,
+		phone:    String,
+		skype:    String,
+		workours: String,
+	    birthday: String,
+	    vk:       String,
+	    twitter:  String,
+	    facebook: String,
+	    linkedin: String,
+	    aboutme:  String,
+	    cv:       String,
 		profileImg: String
 	});
 
@@ -78,6 +78,21 @@ exports = module.exports = function(app, mongoose) {
 			 login: 1
 		 }
 		return this.findOne( { login: login }, fieldsToReturn, cb );
+	};
+
+	userSchema.statics.userAuthorize = function(login, cb) {
+		var fieldsToReturn = {
+			_id: 1,
+			 login: 1,
+			 hashedPassword: 1,
+			 salt: 1
+		 };
+		return this.findOne( { login: login }, fieldsToReturn, cb );
+
+	};
+
+	userSchema.statics.checkPassword = function(password) {
+		return this.encryptPassword(password) === this.hashedPassword;
 	};
 
 	userSchema.statics.editUser = function(login, updateObject, cb) {

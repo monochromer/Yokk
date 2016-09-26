@@ -1,7 +1,7 @@
 {
   "name": "Eye-of-Providence",
   "version": "1.0.0",
-  "description": "",
+  "description": "Team Management Tool",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -31,9 +31,13 @@
     "bower": "^1.7.9",
     "dotenv": "^2.0.0",
     "express": "^4.14.0",
+    "express-session": "^1.14.1",
     "lodash": "^4.16.1",
     "mongoose": "^4.6.0",
+    "morgan": "^1.7.0",
     "multer": "^1.2.0",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
     "react": "^15.3.1",
     "react-bootstrap": "^0.30.3",
     "react-dom": "^15.3.1",
