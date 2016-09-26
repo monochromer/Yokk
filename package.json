@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
-    "postinstall": "./node_modules/bower/bin/bower install"
+    "start": "webpack & node index.js"
   },
   "repository": {
     "type": "git",
@@ -33,9 +32,11 @@
     "express": "^4.14.0",
     "lodash": "^4.16.1",
     "mongoose": "^4.6.0",
+    "multer": "^1.2.0",
     "react": "^15.3.1",
     "react-bootstrap": "^0.30.3",
     "react-dom": "^15.3.1",
+    "react-dropzone": "^3.6.0",
     "react-redux": "^4.4.5",
     "react-router": "^2.7.0",
     "reactify": "^1.1.1",
@@ -45,6 +46,7 @@
     "redux-router": "^2.1.2",
     "redux-thunk": "^2.1.0",
     "request": "^2.74.0",
+    "superagent": "^2.3.0",
     "webpack": "^1.13.2"
   },
   "devDependencies": {

@@ -6,8 +6,10 @@ import store from './store.js';
 
 import Layout from './components/Layout.jsx';
 import UserTable from './components/UserTable.jsx';
-import AddUser from './components/AddUser.jsx';
+import UserAdd from './components/UserAdd.jsx';
 import UserPage from './components/UserPage.jsx';
+import UserEdit from './components/UserEdit.jsx';
+
 import RequestTest from './components/RequestTest.jsx';
 
 
@@ -16,12 +18,13 @@ const router = (
 		<Router history={ hashHistory }>
 			<Route path="/" component={ Layout }>
 				<IndexRoute component={ UserTable }></IndexRoute>
-				<Route path="addUser" component={ AddUser }></Route>
+				<Route path="addUser" component={ UserAdd }></Route>
 				<Route path="user/:login" component={ UserPage }></Route>
+				<Route path="user/edit/:login" component={ UserEdit }></Route>
 				<Route path="tests" component={ RequestTest }></Route>
 			</Route>
 		</Router>
-	</Provider>	
+	</Provider>
 )
 
 

@@ -12,21 +12,23 @@ var Layout = React.createClass({
 
 	render: function() {
 		return (
-			<div className="container" style={{ "width": "1000px"}}>
-				<Navbar>
-					<Navbar.Header>
-					 	<Navbar.Brand>
-					    	<Link to="/">Eye of providence</Link>
-					  	</Navbar.Brand>
-					</Navbar.Header>
-					<ul className="nav navbar-nav">
-					  	<li><Link to="/">Team</Link></li>
-					  	<li><Link to="/addUser">Add User</Link></li>
-					  	<li><Link to="/tests">tests</Link></li>
-					</ul>
-				</Navbar>
-				{ this.props.children }
-			</div>
+			<div>
+				<nav className="navbar navbar-default">
+					<div className="container-fluid">
+						<div className="navbar-header">
+							<Link className="navbar-brand" to="/">Eye of providence</Link>
+						</div>
+						<ul className="nav navbar-nav">
+						  	<li><Link to="/">Team</Link></li>
+						  	<li><Link to="/addUser">Add User</Link></li>
+						  	<li><Link to="/tests">tests</Link></li>
+						</ul>
+					</div>
+				</nav>
+				<div className="container-fluid">
+					{ this.props.children }
+				</div>
+			</div>    
 		)
 	}
 });

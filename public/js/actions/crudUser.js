@@ -24,3 +24,27 @@ export function fetchUsers() {
 			}); 
 	}
 }
+
+export function changeUser(login, fields) {
+	return function(dispatch) {
+		axios.put('/user/' + login, fields)
+			.then( (response) => {
+				dispatch({
+					type: "CHANGE_USER",
+					payload: response.data
+		        })
+			}); 
+	}
+}
+
+export function deleteUser(login) {
+	return function(dispatch) {
+		axios.delete('/user/' + login)
+			.then( (response) => {
+				dispatch({
+					type: "DELETE_USER",
+					payload: response.data
+		        })
+			}); 
+	}
+}

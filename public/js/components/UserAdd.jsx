@@ -3,7 +3,7 @@ import store from '../store.js';
 import { addUser } from '../actions/crudUser.js';
 import { FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap';
 
-var AddUser = React.createClass({
+var UserAdd = React.createClass({
 
 	getInitialState() {
 		return {
@@ -77,4 +77,4 @@ var AddUser = React.createClass({
 
 });
 
-export default AddUser;
+export default UserAdd;
