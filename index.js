@@ -6,12 +6,14 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var path = require('path');
-
 var mongoose = require('mongoose');
+
+var multer  = require('multer');
 
 
 // mongoose
-app.db = mongoose.createConnection('mongodb://localhost/test');
+const mongoUrl = process.env.DB ? process.env.DB : 'mongodb://localhost/eop';
+app.db = mongoose.createConnection(mongoUrl);
 app.db.on('error', console.error.bind(console, 'connection error:'));
 app.db.once('open', function() {
   console.log('App is now connected to MongoDB server');
@@ -22,13 +24,12 @@ app.db.once('open', function() {
 require('./models')(app, mongoose);
 
 
-//middleware
-app.use( bodyParser.urlencoded({ extended: true }) );
-
+//body parsing middleware
+app.use( bodyParser.json( {strict: true} ) );
 
 // setting static folder
-app.use(express.static(path.join(__dirname, 'bower_components')));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'uploads')));
 
 
 require('./routes')(app);

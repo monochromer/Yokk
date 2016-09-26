@@ -16,9 +16,12 @@ tmp/*
 /tmp/cache/*
 /tmp/
 
-# Ignore bundles
-/public/js/bundle.js
+# Ignore webpack bundles
 /public/js/bundle.js.map
+/public/js/bundle.js
+
+# Ignore uploaded files
+uploads
 
 # environment
 .env
