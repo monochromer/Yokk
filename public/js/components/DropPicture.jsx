@@ -6,7 +6,7 @@ var DropPicture = React.createClass({
     onDrop: function (files) {
         var file = files[0];
         var user_login = 'user_login'; //THIS IS FROM STATE OR STORE
-        var postUrl = '/upload_profile_picture/users/'+user_login;
+        var postUrl = '/upload_profile_picture/users/' + this.props.login;
 
         request
             .post(postUrl)

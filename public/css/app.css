@@ -16,3 +16,21 @@ footer {
 	height: 60px;
 	background-color: #f5f5f5;
 }
+
+/* --------------------------------- UserPage (profile) --------------------------------- */
+.profile__fields {
+	margin-bottom: 20px;
+}
+
+.profile__field-name {
+	color: #777;
+}
+
+.profile__field-value {
+	color: #555;
+	font-size: 18px;
+}
+
+.profile__photo {
+	padding-top: 30px;
+}
