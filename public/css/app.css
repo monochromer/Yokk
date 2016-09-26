@@ -34,3 +34,10 @@ footer {
 .profile__photo {
 	padding-top: 30px;
 }
+
+.vertical-center {
+	min-height: 200px;  
+	display: flex;
+	align-items: center;
+	text-align: center;
+}
