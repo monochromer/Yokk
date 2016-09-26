@@ -120,9 +120,25 @@ var UserPage = React.createClass({
 								</div>
 							</div>
 							<div className="row">
-								<div className="col-md-12 profile__fields">
+								<div className="col-md-12">
 									<h2>About me</h2>
-									<p>{ this.state.user.aboutme }</p>
+								</div>
+							</div>	
+							<div className="row">
+								<div className="col-md-12 profile__fields">
+									<div className="profile__field-value">
+										<span>{ this.state.user.aboutme }</span>
+									</div>	
+								</div>
+							</div>
+							<div className="row">
+								<div className="col-md-12 profile__fields">
+									<div className="profile__field-name">
+										<span>CV</span>
+									</div>
+									<div className="profile__field-value">
+										<span>{ this.state.user.cv }</span>
+									</div>	
 								</div>
 							</div>		
 						</div>
