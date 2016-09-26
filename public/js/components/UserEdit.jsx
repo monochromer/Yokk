@@ -46,7 +46,7 @@ var UserEdit = React.createClass({
 		        	</div>
 		        	<div className="col-md-9 profile">
 			        	<form onSubmit={ this.handleSubmit }>
-							<h2>{ this.state.user.login }</h2>
+							<h2>{ this.state.user.login } </h2>
 							<div className="row">
 								<div className="col-md-10">
 									<h3>General</h3>
@@ -95,7 +95,7 @@ var UserEdit = React.createClass({
 								</div>
 							</div>
 							<div className="row">
-								<div className="col-md-10">
+								<div className="col-md-12">
 									<h3>Personal</h3>
 								</div>
 							</div>	
@@ -124,9 +124,24 @@ var UserEdit = React.createClass({
 							<div className="row">
 								<div className="col-md-12">
 									<h3>About me</h3>
-									<textarea  className="form-control" ref="aboutme" rows="5" defaultValue={ this.state.user.aboutme }></textarea>
 								</div>
 							</div>	
+							<div className="row">
+								<div className="col-md-12">
+									<div className="form-group">
+										<label htmlFor="aboutme">Some text about you</label>
+										<textarea  className="form-control" ref="aboutme" id="aboutme" rows="5" defaultValue={ this.state.user.aboutme }></textarea>
+									</div>
+								</div>
+							</div>
+							<div className="row">
+								<div className="col-md-12">
+									<div className="form-group">
+										<label htmlFor="cv">Link to your CV (hh.ru or other)</label>
+										<input type="text" className="form-control" ref="cv" defaultValue={ this.state.user.cv } />
+									</div>
+								</div>
+							</div>		
 							<div className="row">
 								<div className="col-md-12">
 									<button type="submit" className="btn btn-lg btn-success" style={{ "margin": "20px 0", "float": "right" }}>Save</button>
