@@ -66,7 +66,8 @@ exports = module.exports = function(app, mongoose) {
 			facebook: 1,
 			linkedin: 1,
 			aboutme: 1,
-			cv: 1
+			cv: 1,
+			profileImg: 1
 		 }
 		return this.find({}, fieldsToReturn, cb);
 	};

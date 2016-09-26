@@ -72,12 +72,12 @@ exports = module.exports = function(app) {
 	app.post('/upload_profile_picture/users/:user_login', function(req, res) {
 		var User = req.app.db.models.User;
 		var login = req.params.user_login;
-		var update = {profileImg: 'uploads/'+login+'.jpg'};
-		User.editUser(login, update, function(err, user){
+		var update = { profileImg: '/users/' + login + '.jpg' };
+		User.editUser(login, update, function(err, user) {
 			if (err)
 				res.send(err);
 			if (user) {
-				console.log('User '+login+' updated:');
+				console.log('User ' + login + ' updated:');
 				console.log(update);
 				upload( req, res );
 				res.json({ message: 'User updated!' });

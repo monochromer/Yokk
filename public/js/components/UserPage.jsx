@@ -27,7 +27,9 @@ var UserPage = React.createClass({
 			    <div className="container-fluid">
 			        <div className="row">
 			        	<div className="col-md-3 text-center center-block profile__photo">
-		        			<img src="https://randomuser.me/api/portraits/men/85.jpg" className="img-circle text-center center-block photo__img" />
+		        			<div className="profile__dropzone vertical-center">
+                    			<img src={ this.state.user.profileImg } width="180px" className="img-thumbnail center-block"/>
+                			</div>
 		        		</div>
 			        	<div className="col-md-9 profile">
 							<h2>{ this.state.user.login } <Link  to={ '/user/edit/' + this.state.user.login } className="btn btn-sm btn-warning">Edit</Link></h2>

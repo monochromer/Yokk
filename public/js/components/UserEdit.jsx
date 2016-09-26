@@ -39,8 +39,7 @@ var UserEdit = React.createClass({
 				<div className="container-fluid">
 		        <div className="row">
 		        	<div className="col-md-3 text-center center-block profile__photo">
-	        			<img src={ this.state.user.login + ".jpg" } className="img-circle text-center center-block photo__img" width="100px;"/>
-	        			<DropPicture login={ this.state.user.login }/>
+	        			<DropPicture login={ this.state.user.login } photo={ this.state.user.profileImg }/>
 		        	</div>
 		        	<div className="col-md-9 profile">
 			        	<form onSubmit={ this.handleSubmit }>
