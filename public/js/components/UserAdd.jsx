@@ -1,11 +1,13 @@
 import React from 'react';
 import store from '../store.js';
+import _ from 'loDash';
+import { connect } from 'react-redux';
 import { addUser } from '../actions/crudUser.js';
 import { FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap';
 
 var UserAdd = React.createClass({
 
-	getInitialState() {
+	getInitialState: function() {
 		return {
 			login: '',
 			password: '',
@@ -13,16 +15,41 @@ var UserAdd = React.createClass({
 		};
 	},
 
-	handleSubmit(event) {
+	validation: function(user) {
+		
+		if(_.find(this.props.users, (o) => o.login == user.login) != undefined) {
+			var text = "Login " + user.login + " is already used! Try another login."
+			store.dispatch({ type: "ALERT_SHOW", class: "danger", text: text});
+			return false;
+		}
+
+		if(user.password <= 5) {
+			var text = "Password requires more then 5 symbols!";
+			store.dispatch({ type: "ALERT_SHOW", class: "danger", text: text});
+			return false;
+		}
+
+		if(user.password != user.repeatPassword) {
+			var text = "Password and Repeat Password don't match!";
+			store.dispatch({ type: "ALERT_SHOW", class: "danger", text: text});
+			return false;
+		}
+
+		return true;
+	},
+
+	handleSubmit: function(event) {
 		event.preventDefault();
 
-		var userToAdd = {
+		var user = {
             login: this.refs.login.value,
-            password: this.refs.password.value
+            password: this.refs.password.value,
+            repeatPassword: this.refs.repeatPassword.value
         };
 
-        console.log(userToAdd);
-        store.dispatch(addUser(userToAdd));
+        if(this.validation(user)) {
+        	store.dispatch(addUser(user));
+        }
 	},
 
 	render: function() {
@@ -58,4 +85,10 @@ var UserAdd = React.createClass({
 
 });
 
-export default UserAdd;
+var getProps = function(store) {
+	return {
+		users: store.users
+	}
+}
+
+export default connect(getProps)(UserAdd);
