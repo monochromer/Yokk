@@ -16,5 +16,9 @@ tmp/*
 /tmp/cache/*
 /tmp/
 
+# Ignore bundles
+/public/js/bundle.js
+/public/js/bundle.js.map
+
 # environment
 .env
