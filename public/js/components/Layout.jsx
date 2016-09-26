@@ -28,7 +28,7 @@ var Layout = React.createClass({
 				<div className="container-fluid">
 					{ this.props.children }
 				</div>
-			</div>    
+			</div>
 		)
 	}
 });
