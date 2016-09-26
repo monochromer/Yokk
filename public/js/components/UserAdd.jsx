@@ -13,34 +13,15 @@ var UserAdd = React.createClass({
 		};
 	},
 
-	getValidationState() {
-		const length = this.state.password.length;
-		if (length > 8) return 'success';
-		else if (length > 4) return 'warning';
-		else if (length > 0) return 'error';
-	},
-
-	handleLoginChange(e) {
-		this.setState({ login: e.target.value });
-	},
-
-	handlePasswordChange(e) {
-		this.setState({ password: e.target.value });
-	},
-
-	handleRepeatPasswordChange(e) {
-		this.setState({ repeatPassword: e.target.value });
-	},
-
-	handleSubmit(e) {
-		console.log("submiting...");
-		e.preventDefault();
+	handleSubmit(event) {
+		event.preventDefault();
 
 		var userToAdd = {
-            login: this.state.login,
-            password: this.state.password
+            login: this.refs.login.value,
+            password: this.refs.password.value
         };
 
+        console.log(userToAdd);
         store.dispatch(addUser(userToAdd));
 	},
 
@@ -55,18 +36,18 @@ var UserAdd = React.createClass({
 				<div className="row">
 					<div className="col-md-4">
 						<form onSubmit={ this.handleSubmit }>
-							<FormGroup controlId="formLogin" >
-								<ControlLabel>Login:</ControlLabel>
-								<FormControl type="text" placeholder="Enter login" onChange={ this.handleLoginChange } />
-							</FormGroup>
-							<FormGroup controlId="formBPassword" validationState={ this.getValidationState() }>
-								<ControlLabel>Password:</ControlLabel>
-								<FormControl type="password" placeholder="Enter password" onChange={ this.handlePasswordChange } />
-							</FormGroup>
-							<FormGroup controlId="repeatPassword" validationState={ this.getValidationState() }>
-								<ControlLabel>Repeat Password:</ControlLabel>
-								<FormControl type="password" placeholder="Repeat password" onChange={ this.handlePasswordChange } />
-							</FormGroup>
+							<div className="form-group">
+    							<label htmlFor="login">Login</label>
+    							<input type="text" className="form-control" id="login" ref="login" placeholder="username" />
+  							</div>
+  							<div className="form-group">
+    							<label htmlFor="password">Password</label>
+    							<input type="password" className="form-control" id="password" ref="password" />
+  							</div>
+  							<div className="form-group">
+    							<label htmlFor="repeatPassword">Repeat password</label>
+    							<input type="password" className="form-control" id="repeatPassword" ref="repeatPassword" />
+  							</div>
 							<button type="submit" className="btn btn-default">Add User</button>
 						</form>
 					</div>
