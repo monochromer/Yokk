@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import _ from 'loDash';
 import store from '../store.js';
+import DropPicture from './DropPicture.jsx'
 import { findUserByLogin } from '../helpers.js';
 import { changeUser } from '../actions/crudUser.js';
 
@@ -37,12 +38,9 @@ var UserEdit = React.createClass({
 			return (
 				<div className="container-fluid">
 		        <div className="row">
-		        	<div className="col-md-3 text-center center-block">
-	        			<img src="https://randomuser.me/api/portraits/men/85.jpg" className="img-circle text-center center-block photo__img" />
-	        			  <div className="form-group">
-						    <label htmlFor="upload-photo">Change Photo</label>
-						    <input type="file" id="upload-photo" style={{ "display": "inline", "width": "100%" }}/>
-						  </div>
+		        	<div className="col-md-3 text-center center-block profile__photo">
+	        			<img src={ this.state.user.login + ".jpg" } className="img-circle text-center center-block photo__img" width="100px;"/>
+	        			<DropPicture login={ this.state.user.login }/>
 		        	</div>
 		        	<div className="col-md-9 profile">
 			        	<form onSubmit={ this.handleSubmit }>
