@@ -1,6 +1,7 @@
 'use strict'
 
 var upload = require('./file_upload');
+var log = require('./logger');
 
 exports = module.exports = function(app, passport) {
 
@@ -13,18 +14,27 @@ exports = module.exports = function(app, passport) {
 	});
 
 	app.post('/login', passport.authenticate('local', {failureRedirect: '/login' }), function(req, res) {
+		var logMsq = 'User (login: '+req.user.login+') is authorized and redirected to /';
+		log(req, logMsq).info();
 		res.redirect('/');
 	});
 
 	app.get('/logout', function(req, res){
+		var logMsq = 'User (login: '+req.user.login+') is logged out';
+		log(req, logMsq).info();
 		req.logout();
 		res.redirect('/');
 	});
 
 	app.get('/api/user', require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
-		var User = req.app.db.models.User;
-		User.allUsers(function(err, user) {
+		var userModel = req.app.db.models.User;
+		userModel.allUsers(function(err, user) {
 			// returned fields can be adjusted in User schema
+			if (err) {
+				var logMsq = 'There was some error while saving data to db';
+				log(req, logMsq).err();
+				res.send('Error. Look server logs.');
+			}
 			res.send(user);
 		});
 	});
@@ -33,47 +43,60 @@ exports = module.exports = function(app, passport) {
 
 	app.post('/api/users/add', require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
 
-		console.log("new add response " + req.body);
-		var User = req.app.db.models.User;
-		var user = new User(req.body);
+		var userModel = req.app.db.models.User;
+		var user = new userModel(req.body);
 
 		user.save(function (err, user) {
-			if (err) return console.error(err);
+			if (err) return log(req, err).err();
+			var logMsq = 'User (login: ' + user.login + ') is saved to DB';
+			log(req, logMsq).info()
 			res.status(200).send(user);
 		});
 
 	});
 
 	app.get('/api/user/:user_login',require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
-		var User = req.app.db.models.User;
+		var userModel = req.app.db.models.User;
 		var login = req.params.user_login;
 		// returned fields can be adjusted in User schema
-		User.findByLogin(login, function(err, user){
+		userModel.findByLogin(login, function(err, user){
+			if (err) return log(req, err).err();
+			log(req).info()
 			res.send(user)
 		});
 	});
 
 	app.get('/api/check_permissions', function(req, res) {
 		// as of now, returned field adjusted in userpassport.js
-		console.log(req.user);
+		res.send(req.user);
 	});
 
 	app.put('/api/user/:user_login', require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
-		var User = req.app.db.models.User;
+		var userModel = req.app.db.models.User;
 		var login = req.params.user_login;
 		var update = req.body;
-		User.editUser(login, update, function(err, user) {
-			if (err) res.send(err);
+		userModel.editUser(login, update, function(err, user) {
+			if (err) {
+				var logMsq = 'There was some error while updating user data';
+				log(req, logMsq).err();
+				return res.send('Error. Look server logs.');
+			}
+			var logMsq = 'User (login: ' + user.login + ') is updated';
+			log(req, logMsq).info()
 			res.status(200).send(user);
 		});
 	});
 
 	app.delete('/api/user/:user_login', require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
-		var User = req.app.db.models.User;
+		var userModel = req.app.db.models.User;
 		var login = req.params.user_login;
 
-		User.deleteUser(login, function (err) {
-			if (err) return handleError(err);
+		userModel.deleteUser(login, function (err) {
+			if (err) {
+				return log(req, err).err();
+			};
+			var logMsq = 'User ' + login + ' succesfully deleted';
+			log(req, logMsq).info()
 			res.status(200).send(login);
 		});
 	});
@@ -81,10 +104,10 @@ exports = module.exports = function(app, passport) {
 	/************** ending CRUD for user *********************/
 
 	app.post('/api/upload_profile_picture/users/:user_login', function(req, res) {
-		var User = req.app.db.models.User;
+		var userModel = req.app.db.models.User;
 		var login = req.params.user_login;
 		var update = { profileImg: '/users/'+login+'.jpg' };
-		User.editUser(login, update, function(err, user){
+		userModel.editUser(login, update, function(err, user){
 			if (err)
 				res.send(err);
 			if (user) {
@@ -97,6 +120,8 @@ exports = module.exports = function(app, passport) {
 	});
 
 	app.get('*', require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
+		var logMsq = 'Not found';
+		log(req, logMsq).info()
 		res.redirect('/');
 	});
 
