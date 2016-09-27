@@ -31,7 +31,9 @@ exports = module.exports = function(app, mongoose) {
 	    linkedin:   String,
 	    aboutme:    String,
 	    cv:         String,
-		profileImg: String
+		profileImg: String,
+		joinedteam: { type: Date, default: null },
+		role: { type: String, default: 'user' }
 	});
 
 	userSchema.methods.encryptPassword = function(password) {
@@ -85,7 +87,8 @@ exports = module.exports = function(app, mongoose) {
 			_id: 1,
 			 login: 1,
 			 hashedPassword: 1,
-			 salt: 1
+			 salt: 1,
+			 admin: 1
 		 };
 		return this.findOne( { login: login }, fieldsToReturn, cb );
 

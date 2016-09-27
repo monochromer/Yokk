@@ -1,9 +1,21 @@
 import axios from 'axios';
 import request from 'superagent';
 
+export function fetchUsers() {
+	return function(dispatch) {
+		axios.get('/api/user')
+			.then( (response) => {
+				dispatch({
+					type: "FETCH_USERS",
+					payload: response.data
+		        })
+			});
+	}
+}
+
 export function addUser(user) {
     return function (dispatch) {
-	    axios.post('/users/add', user)
+	    axios.post('/api/users/add', user)
     		.then( (response) => {
 		        dispatch({
 		          type: "ADD_USER",
@@ -12,28 +24,16 @@ export function addUser(user) {
 		        dispatch({
 		          type: "ALERT_SHOW",
 		          text: "User " + user.login + " has been added!",
-		          class: "success" 
+		          class: "success"
 		        })
 	      	});
-  		
-    }
-}
 
-export function fetchUsers() {
-	return function(dispatch) {
-		axios.get('/user')
-			.then( (response) => {
-				dispatch({
-					type: "FETCH_USERS",
-					payload: response.data
-		        })
-			}); 
-	}
+    }
 }
 
 export function changeUser(login, fields) {
 	return function(dispatch) {
-		axios.put('/user/' + login, fields)
+		axios.put('/api/user/' + login, fields)
 			.then( (response) => {
 				dispatch({
 					type: "CHANGE_USER",
@@ -41,13 +41,13 @@ export function changeUser(login, fields) {
 		        });
 		        var text = "User " + login + " has been succesfully changed!";
 		        dispatch({ type: "ALERT_SHOW", class: "success", text: text });
-			}); 
+			});
 	}
 }
 
 export function deleteUser(login) {
 	return function(dispatch) {
-		axios.delete('/user/' + login)
+		axios.delete('/api/user/' + login)
 			.then( (response) => {
 				dispatch({
 					type: "DELETE_USER",
@@ -58,14 +58,14 @@ export function deleteUser(login) {
 
 		        var text = "User " + login + " has been succesfully deleted!";
 		        dispatch({ type: "ALERT_SHOW", class: "success", text: text });
-			}); 
+			});
 	}
 }
 
 export function uploadUserPhoto(files, login) {
 	return function(dispatch) {
 		var file = files[0];
-        var postUrl = '/upload_profile_picture/users/' + login;
+        var postUrl = '/api/upload_profile_picture/users/' + login;
 
         request
             .post(postUrl)

@@ -1,75 +1,30 @@
 'use strict'
 
 var upload = require('./file_upload');
-var passport = require('passport');
-var Strategy = require('passport-local').Strategy;
 
-exports = module.exports = function(app) {
-
-/****************************PASSPORT****************************/
-
-	passport.use(new Strategy(
-	    function(username, password, cb) {
-	        var User = app.db.models.User;
-			// !!! not all the fields should be returned – check and refactor
-	        User.userAuthorize(username, function(err, user){
-	          if (err) { return cb(err); }
-	          if (!user) {
-	              console.log('User ' + username + ' not found in DB');
-	              return cb(null, false);
-	          };
-				if (user.checkPassword(password)) {
-					return cb(null, user);
-				} else {
-					console.log('Wrong password');
-					return cb(null, false);
-				}
-	        });
-	    }
-	));
-
-	passport.serializeUser(function(user, cb) {
-		cb(null, user.id);
-	});
-
-	// !!! not all the fields should be returned – check and refactor
-	passport.deserializeUser(function(id, cb) {
-		var User = app.db.models.User;
-		User.findOne( { _id: id }, function(err, user) {
-			if (err) { return cb(err); }
-			cb(null, user);
-		} );
-	});
-
-	app.use(passport.initialize());
-	app.use(passport.session());
-
-/*********************************************************************/
+exports = module.exports = function(app, passport) {
 
 	app.get('/', require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
 		res.sendFile(__dirname + '/views/index.html');
 	});
 
-	app.get('/login',
-	  function(req, res){
-		  res.sendFile(__dirname + '/views/login.html');
-	  });
+	app.get('/login', function(req, res){
+		res.sendFile(__dirname + '/views/login.html');
+	});
 
-	app.post('/login',
-	  passport.authenticate('local', { failureRedirect: '/login' }),
-	  function(req, res) {
-	    res.redirect('/');
-	  });
+	app.post('/login', passport.authenticate('local', {failureRedirect: '/login' }), function(req, res) {
+		console.log(req.user);
+		res.redirect('?role='+req.user.role);
+	});
 
-	  app.get('/logout',
-  	  function(req, res){
-  	    req.logout();
-  	    res.redirect('/');
-  	  });
+	app.get('/logout', function(req, res){
+		req.logout();
+		res.redirect('/');
+	});
 
-	app.get('/user', require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
+	app.get('/api/user', require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
 		var User = req.app.db.models.User;
-		User.allUsers(function(err, user){
+		User.allUsers(function(err, user) {
 			// returned fields can be adjusted in User schema
 			res.send(user);
 		});
@@ -77,7 +32,7 @@ exports = module.exports = function(app) {
 
 	/***************** CRUD for User ************************/
 
-	app.post('/users/add', function(req, res) {
+	app.post('/api/users/add', require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
 
 		console.log("new add response " + req.body);
 		var User = req.app.db.models.User;
@@ -90,7 +45,7 @@ exports = module.exports = function(app) {
 
 	});
 
-	app.get('/user/:user_login',require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
+	app.get('/api/user/:user_login',require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
 		var User = req.app.db.models.User;
 		var login = req.params.user_login;
 		// returned fields can be adjusted in User schema
@@ -99,7 +54,16 @@ exports = module.exports = function(app) {
 		});
 	});
 
-	app.put('/user/:user_login', function(req, res) {
+	app.get('/api/check_permissions', function(req, res) {
+		var User = req.app.db.models.User;
+		var login = req.params.user_login;
+		// returned fields can be adjusted in User schema
+		User.findByLogin(login, function(err, user){
+			res.send(user)
+		});
+	});
+
+	app.put('/user/:user_login', require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
 		var User = req.app.db.models.User;
 		var login = req.params.user_login;
 		var update = req.body;
@@ -109,7 +73,7 @@ exports = module.exports = function(app) {
 		});
 	});
 
-	app.delete('/user/:user_login', function(req, res) {
+	app.delete('/api/user/:user_login', require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
 		var User = req.app.db.models.User;
 		var login = req.params.user_login;
 
@@ -121,7 +85,7 @@ exports = module.exports = function(app) {
 
 	/************** ending CRUD for user *********************/
 
-	app.post('/upload_profile_picture/users/:user_login', function(req, res) {
+	app.post('/api/upload_profile_picture/users/:user_login', function(req, res) {
 		var User = req.app.db.models.User;
 		var login = req.params.user_login;
 		var update = { profileImg: '/users/'+login+'.jpg' };
@@ -135,6 +99,10 @@ exports = module.exports = function(app) {
 				res.status(404).send({ message: 'User ' + login + ' is not found in DB' });
 			}
 		});
+	});
+
+	app.get('*', require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
+		res.redirect('/');
 	});
 
 }

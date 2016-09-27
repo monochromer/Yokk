@@ -9,6 +9,7 @@ var path = require('path');
 var mongoose = require('mongoose');
 var sessions = require('express-session');
 var cookieParser = require('cookie-parser');
+var passport = require('./userpassport')(app);
 
 // mongoose
 const mongoUrl = process.env.DB ? process.env.DB : 'mongodb://localhost/eop';
@@ -33,7 +34,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'uploads')));
 
-require('./routes')(app);
+require('./routes')(app, passport);
 
 app.set('port', (process.env.PORT || 5000));
 app.listen(app.get('port'), () => {
