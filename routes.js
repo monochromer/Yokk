@@ -14,7 +14,7 @@ exports = module.exports = function(app, passport) {
 
 	app.post('/login', passport.authenticate('local', {failureRedirect: '/login' }), function(req, res) {
 		console.log(req.user);
-		res.redirect('?role='+req.user.role);
+		res.redirect('/');
 	});
 
 	app.get('/logout', function(req, res){
@@ -55,15 +55,10 @@ exports = module.exports = function(app, passport) {
 	});
 
 	app.get('/api/check_permissions', function(req, res) {
-		var User = req.app.db.models.User;
-		var login = req.params.user_login;
-		// returned fields can be adjusted in User schema
-		User.findByLogin(login, function(err, user){
-			res.send(user)
-		});
+		console.log('Return user');
 	});
 
-	app.put('/user/:user_login', require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
+	app.put('/api/user/:user_login', require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
 		var User = req.app.db.models.User;
 		var login = req.params.user_login;
 		var update = req.body;
