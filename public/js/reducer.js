@@ -36,7 +36,7 @@ var Reducer = function(state = initialState, action) {
 				class: action.class
 			}
 			return Object.assign({}, state, { alert: alert });
-		break;
+			break;
 		
 		case "ALERT_CLOSE":
 			return Object.assign({}, state, 
