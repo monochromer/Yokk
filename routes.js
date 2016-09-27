@@ -1,9 +1,13 @@
 'use strict'
-
+var exec = require('exec');
 var upload = require('./file_upload');
 var log = require('./logger');
 
 exports = module.exports = function(app, passport) {
+
+	app.post('/api/deploy/', function(req, res) {
+		exec('sh ./build.sh', function() { res.status(200).send("Deployed!") });
+	});
 
 	app.get('/', require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
 		res.sendFile(__dirname + '/views/index.html');
@@ -124,5 +128,7 @@ exports = module.exports = function(app, passport) {
 		log(req, logMsq).info()
 		res.redirect('/');
 	});
+
+
 
 }
