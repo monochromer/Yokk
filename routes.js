@@ -103,24 +103,19 @@ exports = module.exports = function(app) {
 		var User = req.app.db.models.User;
 		var login = req.params.user_login;
 		var update = req.body;
-		User.editUser(login, update, function(err, user){
-			if (err)
-				res.send(err);
-
-			console.log('User '+login+' updated:');
-			console.log(update);
-			res.json({ message: 'User updated!' });
+		User.editUser(login, update, function(err, user) {
+			if (err) res.send(err);
+			res.status(200).send(user);
 		});
 	});
 
 	app.delete('/user/:user_login', function(req, res) {
 		var User = req.app.db.models.User;
 		var login = req.params.user_login;
-		console.log(login);
 
 		User.deleteUser(login, function (err) {
 			if (err) return handleError(err);
-			res.send('User '+login+' succesfully removed from DB');
+			res.status(200).send(login);
 		});
 	});
 
@@ -129,17 +124,15 @@ exports = module.exports = function(app) {
 	app.post('/upload_profile_picture/users/:user_login', function(req, res) {
 		var User = req.app.db.models.User;
 		var login = req.params.user_login;
-		var update = {profileImg: '/users/'+login+'.jpg'};
+		var update = { profileImg: '/users/'+login+'.jpg' };
 		User.editUser(login, update, function(err, user){
 			if (err)
 				res.send(err);
 			if (user) {
-				console.log('User '+login+' updated:');
-				console.log(update);
 				upload( req, res );
-				res.json({ message: 'User updated!' });
+				res.status(200).send(user);
 			} else {
-				res.json({ message: 'User '+ login + ' is not found in DB' });
+				res.status(404).send({ message: 'User ' + login + ' is not found in DB' });
 			}
 		});
 	});

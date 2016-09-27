@@ -26,8 +26,8 @@ var UserEdit = React.createClass({
 
 		for(var field in this.refs) {
 			fields[field] = this.refs[field].value;
-
 		}
+		
 		store.dispatch(changeUser(this.state.user.login, fields));
 	},
 

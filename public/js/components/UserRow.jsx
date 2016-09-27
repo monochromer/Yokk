@@ -5,7 +5,7 @@ import store from '../store.js';
 
 var UserRow = React.createClass({
 	handleRemove: function() {
-		store.dispatch(deleteUser(this.props.name));
+		store.dispatch({ type: "MODAL_DELETE_SHOW", login: this.props.name });
 	},
 
 	render: function() {

@@ -41,3 +41,12 @@ footer {
 	align-items: center;
 	text-align: center;
 }
+
+/* --------------------------------- /UserPage (profile) --------------------------------- */
+
+
+/* --------------------------------- helpers --------------------------------- */
+
+.visible {
+	display: block;
+}
