@@ -37,7 +37,9 @@ export function changeUser(login, fields) {
 				dispatch({
 					type: "CHANGE_USER",
 					payload: response.data
-		        })
+		        });
+		        var text = "User " + login + " has been succesfully changed!";
+		        dispatch({ type: "ALERT_SHOW", class: "success", text: text });
 			}); 
 	}
 }
@@ -49,7 +51,12 @@ export function deleteUser(login) {
 				dispatch({
 					type: "DELETE_USER",
 					payload: response.data
-		        })
+		        });
+
+		        dispatch({ type: "MODAL_DELETE_CLOSE" });
+
+		        var text = "User " + login + " has been succesfully deleted!";
+		        dispatch({ type: "ALERT_SHOW", class: "success", text: text });
 			}); 
 	}
 }
