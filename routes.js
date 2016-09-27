@@ -112,11 +112,10 @@ exports = module.exports = function(app) {
 	app.delete('/user/:user_login', function(req, res) {
 		var User = req.app.db.models.User;
 		var login = req.params.user_login;
-		console.log(login);
 
 		User.deleteUser(login, function (err) {
 			if (err) return handleError(err);
-			res.send('User '+login+' succesfully removed from DB');
+			res.status(200).send(login);
 		});
 	});
 
