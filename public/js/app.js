@@ -15,7 +15,7 @@ import RequestTest from './components/RequestTest.jsx';
 
 const router = (
 	<Provider store={ store }>
-		<Router history={ hashHistory }>
+		<Router history={ browserHistory }>
 			<Route path="/" component={ Layout }>
 				<IndexRoute component={ UserTable }></IndexRoute>
 				<Route path="addUser" component={ UserAdd }></Route>
