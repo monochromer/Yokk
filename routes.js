@@ -1,5 +1,5 @@
 'use strict'
-
+var exec = require('exec');
 var upload = require('./file_upload');
 
 exports = module.exports = function(app, passport) {
