@@ -3,7 +3,6 @@ import store from '../store.js';
 import _ from 'loDash';
 import { connect } from 'react-redux';
 import { addUser } from '../actions/crudUser.js';
-import { FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap';
 
 var UserAdd = React.createClass({
 
@@ -16,7 +15,7 @@ var UserAdd = React.createClass({
 	},
 
 	validation: function(user) {
-		
+
 		if(_.find(this.props.users, (o) => o.login == user.login) != undefined) {
 			var text = "Login " + user.login + " is already used! Try another login."
 			store.dispatch({ type: "ALERT_SHOW", class: "danger", text: text});
