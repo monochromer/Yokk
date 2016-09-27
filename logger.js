@@ -6,7 +6,7 @@ if (!fs.existsSync(dir)){
     fs.mkdirSync(dir);
 }
 var log = new Log('debug', fs.createWriteStream(dir +'/start_' + moment().format()+'.log'));
-module.exports = function(request = 'Request undefined', message = ''){
+module.exports = function(request, message){
     var logger = {
         err: function(){
             console.log(moment().format() + ' ' + request.method + ' ' + request.route.path + ' Error: ' + message);
