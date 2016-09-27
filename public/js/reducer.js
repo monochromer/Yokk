@@ -37,6 +37,13 @@ var Reducer = function(state = initialState, action) {
 			return newState;
 			break;
 
+		case "CHANGE_USER":
+			var newState = Object.assign({}, state);
+			newState.users = _.filter(state.users, (o) => o.login != action.payload.login); 
+			newState.users.push(action.payload);
+			return newState;
+			break;
+
 		case "FETCH_USERS":
 			return Object.assign({}, state, { users: action.payload });
 			break;	
