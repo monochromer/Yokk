@@ -54,7 +54,8 @@ exports = module.exports = function(app, passport) {
 	});
 
 	app.get('/api/check_permissions', function(req, res) {
-		console.log('Return user');
+		// as of now, returned field adjusted in userpassport.js
+		console.log(req.user);
 	});
 
 	app.put('/api/user/:user_login', require('connect-ensure-login').ensureLoggedIn(), function(req, res) {

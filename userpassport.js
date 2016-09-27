@@ -31,7 +31,11 @@ module.exports = function(app){
     	var User = app.db.models.User;
     	User.findOne( { _id: id }, function(err, user) {
     		if (err) { return cb(err); }
-    		cb(null, user);
+            //should be done in schemas Schema.statics.userAuthorize method
+            var stripped_user = {};
+            stripped_user.login = user.login;
+            stripped_user.role = user.role;
+    		cb(null, stripped_user);
     	} );
     });
 
