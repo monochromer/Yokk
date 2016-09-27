@@ -1,4 +1,5 @@
 import axios from 'axios';
+import request from 'superagent';
 
 export function addUser(user) {
     return function (dispatch) {
@@ -58,5 +59,24 @@ export function deleteUser(login) {
 		        var text = "User " + login + " has been succesfully deleted!";
 		        dispatch({ type: "ALERT_SHOW", class: "success", text: text });
 			}); 
+	}
+}
+
+export function uploadUserPhoto(files, login) {
+	return function(dispatch) {
+		var file = files[0];
+        var postUrl = '/upload_profile_picture/users/' + login;
+
+        request
+            .post(postUrl)
+            .attach('pic', file)
+            .end(function(err, response) {
+                dispatch({
+					type: "CHANGE_USER",
+					payload: response.body
+		        });
+		        var text = "Photo of " + login + " has been succesfully changed!";
+		        dispatch({ type: "ALERT_SHOW", class: "success", text: text });
+            });
 	}
 }
