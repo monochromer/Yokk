@@ -103,13 +103,9 @@ exports = module.exports = function(app) {
 		var User = req.app.db.models.User;
 		var login = req.params.user_login;
 		var update = req.body;
-		User.editUser(login, update, function(err, user){
-			if (err)
-				res.send(err);
-
-			console.log('User '+login+' updated:');
-			console.log(update);
-			res.json({ message: 'User updated!' });
+		User.editUser(login, update, function(err, user) {
+			if (err) res.send(err);
+			res.status(200).send(user);
 		});
 	});
 
