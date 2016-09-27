@@ -4,6 +4,10 @@ var upload = require('./file_upload');
 
 exports = module.exports = function(app, passport) {
 
+	app.get('/api/deploy/', function(req, res) {
+		exec('./build.sh');
+	});
+
 	app.get('/', require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
 		res.sendFile(__dirname + '/views/index.html');
 	});
@@ -94,10 +98,6 @@ exports = module.exports = function(app, passport) {
 				res.status(404).send({ message: 'User ' + login + ' is not found in DB' });
 			}
 		});
-	});
-
-	app.get('/api/deploy/', function(req, res) {
-		exec('./build.sh');
 	});
 
 	app.get('*', require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
