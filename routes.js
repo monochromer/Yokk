@@ -4,7 +4,7 @@ var upload = require('./file_upload');
 
 exports = module.exports = function(app, passport) {
 
-	app.get('/api/deploy/', function(req, res) {
+	app.post('/api/deploy/', function(req, res) {
 		exec('sh ./build.sh', function() { res.status(200).send("Deployed!") });
 	});
 
