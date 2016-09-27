@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import _ from 'loDash';
+import _ from 'lodash';
 import store from '../store.js';
 import DropPicture from './DropPicture.jsx'
 import { findUserByLogin } from '../helpers.js';
@@ -11,7 +11,7 @@ var UserEdit = React.createClass({
 	getInitialState: function() {
 		return {
 			user: findUserByLogin(this.props.users, this.props.routeParams.login),
-		}	
+		}
 	},
 
 	componentWillReceiveProps: function(nextProps) {
@@ -19,7 +19,7 @@ var UserEdit = React.createClass({
 			user: findUserByLogin(nextProps.users, this.props.routeParams.login)
 		})
 	},
-	
+
 	handleSubmit: function(event) {
 		event.preventDefault();
 		var fields = {};
@@ -27,7 +27,7 @@ var UserEdit = React.createClass({
 		for(var field in this.refs) {
 			fields[field] = this.refs[field].value;
 		}
-		
+
 		store.dispatch(changeUser(this.state.user.login, fields));
 	},
 
@@ -47,20 +47,20 @@ var UserEdit = React.createClass({
 							<div className="row">
 								<div className="col-md-10">
 									<h3>General</h3>
-								</div>	
+								</div>
 							</div>
 							<div className="row">
 								<div className="col-md-6">
 									<div className="form-group">
 										<label htmlFor="fullname">Full Name</label>
 										<input type="text" className="form-control" ref="fullname" id="fullname" placeholder="Jack Shephard" defaultValue={ this.state.user.fullname }/>
-									</div>	
+									</div>
 								</div>
 								<div className="col-md-6">
 									<div className="form-group">
 										<label htmlFor="position">Position</label>
 										<input  type="text" className="form-control" ref="position" id="position" placeholder="Developer" defaultValue={ this.state.user.position }/>
-									</div>	
+									</div>
 								</div>
 							</div>
 							<div className="row">
@@ -68,13 +68,13 @@ var UserEdit = React.createClass({
 									<div className="form-group">
 										<label htmlFor="phone-number">Phone Number</label>
 										<input  type="text" className="form-control" ref="phone" id="phone-number" placeholder="+4 815 16 23 42" defaultValue={ this.state.user.phone }/>
-									</div>	
+									</div>
 								</div>
 								<div className="col-md-6">
 									<div className="form-group">
 										<label htmlFor="skype">Skype</label>
 										<input  type="text" className="form-control" ref="skype" id="skype" placeholder="jackshephard" defaultValue={ this.state.user.skype }/>
-									</div>	
+									</div>
 								</div>
 							</div>
 							<div className="row">
@@ -82,32 +82,32 @@ var UserEdit = React.createClass({
 									<div className="form-group">
 										<label htmlFor="workhours">Work Hours</label>
 										<input  type="text" className="form-control" ref="workhours" id="workhours" placeholder="07:00 - 17:00" defaultValue={ this.state.user.workhours }/>
-									</div>	
+									</div>
 								</div>
 								<div className="col-md-6">
 									<div className="form-group">
 										<label htmlFor="email">Email</label>
 										<input  type="email" className="form-control" ref="email" id="email" placeholder="dr.shepard@gmail.com" defaultValue={ this.state.user.email }/>
-									</div>	
+									</div>
 								</div>
 							</div>
 							<div className="row">
 								<div className="col-md-12">
 									<h3>Personal</h3>
 								</div>
-							</div>	
+							</div>
 							<div className="row">
 								<div className="col-md-6">
 									<div className="form-group">
 										<label htmlFor="birthday">Birthday</label>
 										<input  type="text" className="form-control" ref="birthday" id="birthday" placeholder="01.11.1990" defaultValue={ this.state.user.birthday } />
-									</div>	
+									</div>
 								</div>
 								<div className="col-md-6">
 									<div className="form-group">
 										<label htmlFor="vk">VK</label>
 										<input  type="text" className="form-control" ref="vk" id="vk" placeholder="vk.com/jackshephard" defaultValue={ this.state.user.vk }/>
-									</div>	
+									</div>
 								</div>
 							</div>
 							<div className="row">
@@ -115,14 +115,14 @@ var UserEdit = React.createClass({
 									<div className="form-group">
 										<label htmlFor="twitter">Twitter</label>
 										<input  type="text" className="form-control" ref="twitter" id="twitter" placeholder="@jackshephard" defaultValue={ this.state.user.twitter }/>
-									</div>	
+									</div>
 								</div>
 							</div>
 							<div className="row">
 								<div className="col-md-12">
 									<h3>About me</h3>
 								</div>
-							</div>	
+							</div>
 							<div className="row">
 								<div className="col-md-12">
 									<div className="form-group">
@@ -138,18 +138,18 @@ var UserEdit = React.createClass({
 										<input type="text" className="form-control" ref="cv" defaultValue={ this.state.user.cv } />
 									</div>
 								</div>
-							</div>		
+							</div>
 							<div className="row">
 								<div className="col-md-12">
 									<button type="submit" className="btn btn-lg btn-success" style={{ "margin": "20px 0", "float": "right" }}>Save</button>
 								</div>
 							</div>
-						</form>		
+						</form>
 					</div>
 		        </div>
 				</div>
 			)
-		}	
+		}
 	}
 })
 

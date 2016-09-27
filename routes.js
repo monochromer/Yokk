@@ -13,7 +13,6 @@ exports = module.exports = function(app, passport) {
 	});
 
 	app.post('/login', passport.authenticate('local', {failureRedirect: '/login' }), function(req, res) {
-		console.log(req.user);
 		res.redirect('/');
 	});
 

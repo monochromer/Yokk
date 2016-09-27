@@ -1,4 +1,4 @@
-import _ from 'loDash';
+import _ from 'lodash';
 
 var initialState = {
 	users: [],
@@ -15,21 +15,21 @@ var initialState = {
 
 var Reducer = function(state = initialState, action) {
 	switch (action.type) {
-		
-		case "MODAL_DELETE_SHOW": 
+
+		case "MODAL_DELETE_SHOW":
 			var modalDelete = {
 				visible: true,
 				login: action.login
 			}
-			return Object.assign({}, state, { modalDelete: modalDelete }); 
+			return Object.assign({}, state, { modalDelete: modalDelete });
 			break;
 
 		case "MODAL_DELETE_CLOSE":
 			var modalDelete = { visible: false };
 			return Object.assign({}, state, { modalDelete: modalDelete });
-			break; 	
+			break;
 
-		case "ALERT_SHOW": 
+		case "ALERT_SHOW":
 			var alert = {
 				visible: true,
 				text: action.text,
@@ -37,18 +37,18 @@ var Reducer = function(state = initialState, action) {
 			}
 			return Object.assign({}, state, { alert: alert });
 			break;
-		
-		case "ALERT_CLOSE":
-			return Object.assign({}, state, 
-				{ 
-					alert: { 
-						visible: false 
-					} 
-				} 
-			);
-			break;	
 
-		case "ADD_USER": 
+		case "ALERT_CLOSE":
+			return Object.assign({}, state,
+				{
+					alert: {
+						visible: false
+					}
+				}
+			);
+			break;
+
+		case "ADD_USER":
 			var newState = Object.assign({}, state);
 			newState.users.push(action.payload);
 			return newState;
@@ -57,20 +57,20 @@ var Reducer = function(state = initialState, action) {
 		case "DELETE_USER":
 			var newState = Object.assign({}, state);
 			newState.users = _.filter(state.users, (o) => o.login != action.payload);
-			return newState; 	
+			return newState;
 
 		case "CHANGE_USER":
 			var newState = Object.assign({}, state);
-			newState.users = _.filter(state.users, (o) => o.login != action.payload.login); 
+			newState.users = _.filter(state.users, (o) => o.login != action.payload.login);
 			newState.users.push(action.payload);
 			return newState;
 			break;
 
 		case "FETCH_USERS":
 			return Object.assign({}, state, { users: action.payload });
-			break;	
+			break;
 	}
-	
+
     return state;
 }
 

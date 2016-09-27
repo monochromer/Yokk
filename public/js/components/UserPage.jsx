@@ -1,16 +1,16 @@
 import React from 'react';
-import _ from 'loDash';
+import _ from 'lodash';
 import store from '../store.js';
 import { connect } from 'react-redux';
 import { findUserByLogin } from '../helpers.js'
 import { Link } from 'react-router'
 
 var UserPage = React.createClass({
-	
+
 	getInitialState: function() {
 		return {
 			user: findUserByLogin(this.props.users, this.props.routeParams.login)
-		}	
+		}
 	},
 
 	componentWillReceiveProps: function(nextProps) {
@@ -36,7 +36,7 @@ var UserPage = React.createClass({
 							<div className="row">
 								<div className="col-md-12">
 									<h2>General</h2>
-								</div>	
+								</div>
 							</div>
 							<div className="row">
 								<div className="col-md-6 profile__fields">
@@ -45,7 +45,7 @@ var UserPage = React.createClass({
 									</div>
 									<div className="profile__field-value">
 										<span>{ this.state.user.fullname }</span>
-									</div>	
+									</div>
 								</div>
 								<div className="col-md-6 profile__fields">
 									<div className="profile__field-name">
@@ -53,7 +53,7 @@ var UserPage = React.createClass({
 									</div>
 									<div className="profile__field-value">
 										<span>{ this.state.user.email }</span>
-									</div>	
+									</div>
 								</div>
 							</div>
 							<div className="row">
@@ -63,7 +63,7 @@ var UserPage = React.createClass({
 									</div>
 									<div className="profile__field-value">
 										<span>{ this.state.user.phone }</span>
-									</div>	
+									</div>
 								</div>
 								<div className="col-md-6 profile__fields">
 									<div className="profile__field-name">
@@ -71,7 +71,7 @@ var UserPage = React.createClass({
 									</div>
 									<div className="profile__field-value">
 										<span>{ this.state.user.skype }</span>
-									</div>	
+									</div>
 								</div>
 							</div>
 							<div className="row">
@@ -81,14 +81,14 @@ var UserPage = React.createClass({
 									</div>
 									<div className="profile__field-value">
 										<span>{ this.state.user.workhours }</span>
-									</div>	
+									</div>
 								</div>
 							</div>
 							<div className="row">
 								<div className="col-md-12">
 									<h2>Personal</h2>
 								</div>
-							</div>	
+							</div>
 							<div className="row">
 								<div className="col-md-6 profile__fields">
 									<div className="profile__field-name">
@@ -96,7 +96,7 @@ var UserPage = React.createClass({
 									</div>
 									<div className="profile__field-value">
 										<span>{ this.state.user.birthday }</span>
-									</div>	
+									</div>
 								</div>
 								<div className="col-md-6 profile__fields">
 									<div className="profile__field-name">
@@ -104,7 +104,7 @@ var UserPage = React.createClass({
 									</div>
 									<div className="profile__field-value">
 										<span>{ this.state.user.vk }</span>
-									</div>	
+									</div>
 								</div>
 							</div>
 							<div className="row">
@@ -114,19 +114,19 @@ var UserPage = React.createClass({
 									</div>
 									<div className="profile__field-value">
 										<span>{ this.state.user.twitter }</span>
-									</div>	
+									</div>
 								</div>
 							</div>
 							<div className="row">
 								<div className="col-md-12">
 									<h2>About me</h2>
 								</div>
-							</div>	
+							</div>
 							<div className="row">
 								<div className="col-md-12 profile__fields">
 									<div className="profile__field-value">
 										<span>{ this.state.user.aboutme }</span>
-									</div>	
+									</div>
 								</div>
 							</div>
 							<div className="row">
@@ -136,9 +136,9 @@ var UserPage = React.createClass({
 									</div>
 									<div className="profile__field-value">
 										<span>{ this.state.user.cv }</span>
-									</div>	
+									</div>
 								</div>
-							</div>		
+							</div>
 						</div>
 			        </div>
 			    </div>
