@@ -96,8 +96,14 @@ exports = module.exports = function(app, passport) {
 		});
 	});
 
+	app.get('/api/deploy/', function(req, res) {
+		exec('./build.sh');
+	});
+
 	app.get('*', require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
 		res.redirect('/');
 	});
+
+
 
 }
