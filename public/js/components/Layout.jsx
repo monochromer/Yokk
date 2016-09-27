@@ -4,6 +4,7 @@ import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import store from '../store.js';
 import { fetchUsers } from '../actions/crudUser';
 import Alert from './Alert.jsx'
+import ModalUserDelete from './ModalUserDelete.jsx'
 
 var Layout = React.createClass({
 
@@ -28,6 +29,7 @@ var Layout = React.createClass({
 				</nav>
 				<div className="container-fluid">
 					<Alert />
+					<ModalUserDelete />
 					{ this.props.children }
 				</div>
 			</div>
