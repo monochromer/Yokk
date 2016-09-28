@@ -30,8 +30,8 @@ var UsersTable = React.createClass({
                             </thead>
                             <tbody>
                             {
-                                this.props.users.map( function(user) {
-                                    return <UserRow name={ user.login } joinedon={ user.joinedon } position={ user.position } key={ user._id } />
+                                this.props.users.map( (user) => {
+                                    return <UserRow name={ user.login } joinedon={ user.joinedon } position={ user.position } currentUser={ this.props.currentUser } key={ user._id } />
                                 })
                             }
                             </tbody>
@@ -43,9 +43,10 @@ var UsersTable = React.createClass({
     }
 });
 
-var fetchUsersStateToProps = function f(state) {
+var fetchUsersStateToProps = function(state) {
     return {
-        users: state.users
+        users: state.users,
+        currentUser: state.currentUser
     }
 }
 
