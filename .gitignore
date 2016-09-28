@@ -27,3 +27,9 @@ uploads
 .env
 
 *.log
+
+*.map
+
+public/js/index.bundle.js
+
+public/js/login.bundle.js
