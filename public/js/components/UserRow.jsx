@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { deleteUser } from '../actions/crudUser.js';
 import store from '../store.js';
+import moment from 'moment';
 
 var UserRow = React.createClass({
 	handleRemove: function() {
@@ -13,7 +14,7 @@ var UserRow = React.createClass({
 			<tr>
 				<td><Link  to={ '/user/' + this.props.name }>{ this.props.name }</Link></td>
 				<td>{ this.props.position }</td>
-				<td>{ this.props.joinedOn }</td>
+				<td>{ moment(this.props.joinedon).format("DD.MM.YYYY") }</td>
 				<td>
 					<div className="btn-group" role="group">
 						<Link  to={ '/user/edit/' + this.props.name } className="btn btn-warning">Edit</Link>

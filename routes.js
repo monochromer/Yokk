@@ -18,13 +18,13 @@ exports = module.exports = function(app, passport) {
 	});
 
 	app.post('/login', passport.authenticate('local', {failureRedirect: '/login' }), function(req, res) {
-		var logMsq = 'User (login: '+req.user.login+') is authorized and redirected to /';
+		var logMsq = 'User (login: ' + req.user.login + ') is authorized and redirected to /';
 		log(req, logMsq).info();
 		res.redirect('/');
 	});
 
 	app.get('/logout', function(req, res){
-		var logMsq = 'User (login: '+req.user.login+') is logged out';
+		var logMsq = 'User (login: ' + req.user.login + ') is logged out';
 		log(req, logMsq).info();
 		req.logout();
 		res.redirect('/');
@@ -49,7 +49,7 @@ exports = module.exports = function(app, passport) {
 
 		var userModel = req.app.db.models.User;
 		var user = new userModel(req.body);
-
+		user.joinedon = Date.now();
 		user.save(function (err, user) {
 			if (err) return log(req, err).err();
 			var logMsq = 'User (login: ' + user.login + ') is saved to DB';

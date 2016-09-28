@@ -32,7 +32,7 @@ exports = module.exports = function(app, mongoose) {
 	    aboutme:    String,
 	    cv:         String,
 		profileImg: String,
-		joinedteam: { type: Date, default: null },
+		joinedon: { type: Date, default: null },
 		role: { type: String, default: 'user' }
 	});
 
@@ -69,7 +69,8 @@ exports = module.exports = function(app, mongoose) {
 			linkedin: 1,
 			aboutme: 1,
 			cv: 1,
-			profileImg: 1
+			profileImg: 1,
+			joinedon: 1
 		 }
 		return this.find({}, fieldsToReturn, cb);
 	};

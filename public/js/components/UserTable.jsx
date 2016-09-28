@@ -31,7 +31,7 @@ var UsersTable = React.createClass({
                             <tbody>
                             {
                                 this.props.users.map( function(user) {
-                                    return <UserRow name={ user.login } joinedOn={ user.joinedOn } position={ user.position } key={ user._id } />
+                                    return <UserRow name={ user.login } joinedon={ user.joinedon } position={ user.position } key={ user._id } />
                                 })
                             }
                             </tbody>
