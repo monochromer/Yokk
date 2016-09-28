@@ -25,3 +25,5 @@ uploads
 
 # environment
 .env
+
+*.log
