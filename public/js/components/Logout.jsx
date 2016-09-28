@@ -10,7 +10,8 @@ var Logout = React.createClass({
 
 var getProps = function(store) {
 	return {
-		login: store.currentUser.login
+		login: store.currentUser.login,
+		role: store.currentUser.role
 	}
 }
 

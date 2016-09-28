@@ -70,7 +70,8 @@ exports = module.exports = function(app, mongoose) {
 			aboutme: 1,
 			cv: 1,
 			profileImg: 1,
-			joinedon: 1
+			joinedon: 1,
+			role: 1
 		 }
 		return this.find({}, fieldsToReturn, cb);
 	};

@@ -1,6 +1,7 @@
 import React from 'react'
 import Logout from './Logout.jsx'
 import { Link } from 'react-router'
+import { connect } from 'react-redux'
 
 var TopPanel = React.createClass({
 	render: function() {
@@ -12,8 +13,10 @@ var TopPanel = React.createClass({
 					</div>
 					<ul className="nav navbar-nav">
 					  	<li><Link to="/">Team</Link></li>
-					  	<li><Link to="/addUser">Add User</Link></li>
-					  	<li><Link to="/tests">tests</Link></li>
+					  	{ 
+					  		this.props.role == "admin" ? <li><Link to="/addUser">Add User</Link></li> : "" 
+					  	}
+					  	<li><Link to="/tests">Tests</Link></li>
 					</ul>
 					<ul className="nav navbar-nav navbar-right">
 						<li><Logout /></li>
@@ -24,4 +27,11 @@ var TopPanel = React.createClass({
 	}
 });
 
-export default TopPanel;
+var getProps = function(store) {
+	return {
+		login: store.currentUser.login,
+		role: store.currentUser.role
+	}
+}
+
+export default connect(getProps)(TopPanel);
