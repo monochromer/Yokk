@@ -13,6 +13,18 @@ export function fetchUsers() {
 	}
 }
 
+export function checkPermissions() {
+	return function(dispatch) {
+		axios.get('/api/check_permissions')
+			.then( (response) => {
+				dispatch({
+					type: "SET_USER_PERMISSIONS",
+					payload: response.data
+				})
+			})
+	}
+}
+
 export function addUser(user) {
     return function (dispatch) {
 	    axios.post('/api/users/add', user)
@@ -80,3 +92,5 @@ export function uploadUserPhoto(files, login) {
             });
 	}
 }
+
+
