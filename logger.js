@@ -1,3 +1,7 @@
+'use strict'
+
+// in order to get logs in server console process.env.NODE_ENV = development
+
 var moment = require('moment');
 var fs = require('fs');
 var Log = require('log');
@@ -9,11 +13,13 @@ var log = new Log('debug', fs.createWriteStream(dir +'/start_' + moment().format
 module.exports = function(request, message){
     var logger = {
         err: function(){
-            console.log(moment().format() + ' ' + request.method + ' ' + request.route.path + ' Error: ' + message);
+            if(process.env.NODE_ENV == 'development')
+                console.log(moment().format() + ' ' + request.method + ' ' + request.route.path + ' Error: ' + message);
             log.error(request.method + ' ' + message);
         },
         info: function(){
-            console.log(moment().format() + ' ' + request.method + ' ' + request.route.path + ' Info: ' + message);
+            if(process.env.NODE_ENV == 'development')
+                console.log(moment().format() + ' ' + request.method + ' ' + request.route.path + ' Info: ' + message);
             log.info(request.method + ' ' + message);
         }
     }

@@ -26,7 +26,7 @@ require('./models')(app, mongoose);
 app.use( bodyParser.json( {strict: true} ));
 app.use( bodyParser.urlencoded( { extended: true } ));
 
-app.use(sessions({ secret: 'Stay hungry. Stay foolish.', resave: false, saveUninitialized: false }));
+app.use(sessions({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
 app.use(cookieParser());
 
 // setting static folder
