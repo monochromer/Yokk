@@ -10,6 +10,10 @@ var initialState = {
 	modalDelete: {
 		visible: false,
 		login: ""
+	},
+	currentUser: {
+		role: "",
+		login: ""
 	}
 }
 
@@ -53,6 +57,9 @@ var Reducer = function(state = initialState, action) {
 			newState.users.push(action.payload);
 			return newState;
 			break;
+
+		case "SET_USER_PERMISSIONS":
+			return Object.assign({}, state, { currentUser: action.payload });
 
 		case "DELETE_USER":
 			var newState = Object.assign({}, state);
