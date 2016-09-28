@@ -33,7 +33,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'uploads')));
 
-var passport = require('./userpassport')(app);
+var passport = require('./helpers/userpassport')(app);
 require('./routes')(app, passport);
 
 app.set('port', (process.env.PORT || 5000));

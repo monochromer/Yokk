@@ -1,7 +1,7 @@
 'use strict'
 var exec = require('exec');
-var upload = require('./file_upload');
-var log = require('./logger');
+var upload = require('./helpers/file_upload');
+var log = require('./helpers/logger');
 
 exports = module.exports = function(app, passport) {
 
