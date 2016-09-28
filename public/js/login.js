@@ -32,4 +32,4 @@ var LoginForm = React.createClass({
 });
 
 
-ReactDOM.render(<LoginForm />, content);
+ReactDOM.render(<LoginForm />, document.getElementById("content"));

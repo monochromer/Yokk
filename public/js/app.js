@@ -28,7 +28,7 @@ const router = (
 )
 
 
-var render = function() { ReactDOM.render(router, content); }
+var render = function() { ReactDOM.render(router, document.getElementById("content")); }
 
 render();
 
