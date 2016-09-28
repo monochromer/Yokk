@@ -6,7 +6,7 @@ import moment from 'moment';
 
 var ActionButtons = React.createClass({
 	handleRemove: function() {
-		store.dispatch({ type: "MODAL_DELETE_SHOW", login: this.props.name });
+		store.dispatch({ type: "MODAL_DELETE_SHOW", login: this.props.login });
 	},
 
 	render: function() {
