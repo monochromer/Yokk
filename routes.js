@@ -72,13 +72,15 @@ exports = module.exports = function(app, passport) {
 						return log(req, err).err();
 					};
 					var logMsq = 'User (login: ' + user.login + ') is saved to DB';
-					// res.send({ message: logMsq }); //cannot set headers??
+					res.status(200).send(user);
 					return log(req, logMsq).info();
 				});
+			} else {
+				var logMsq = 'User (login: ' + user.login + ') is already in DB';
+				res.status(500).send( { message: logMsq } );
+				return log(req, logMsq).info()
 			}
-			var logMsq = 'User (login: ' + user.login + ') is already in DB';
-			res.send( { message: logMsq } );
-			return log(req, logMsq).info()
+
 		});
 
 	});

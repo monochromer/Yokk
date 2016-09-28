@@ -24,7 +24,7 @@ var UserRow = React.createClass({
 	render: function() {
 		var buttons = ""; 
 
-		if(this.props.currentUser.role == "admin" || this.props.currentUser.login == this.props.name) {
+		if(this.props.currentUser.role == "admin" || this.props.currentUser.login == this.props.user.login) {
 			buttons = <ActionButtons login={ this.props.user.login } />	
 		}
 
