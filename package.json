@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "start-forever": "webpack & forever -w index.js",
+    "start-forever": "webpack & forever index.js --watchIgnore /Users/maximburanbaev/Desktop/life/EOP-2/logs",
     "start-production": "webpack & pm2 start index.js",
     "restart": "pm2 restart index.js"
   },
@@ -38,6 +38,7 @@
     "express": "^4.14.0",
     "express-session": "^1.14.1",
     "lodash": "^4.16.2",
+    "log": "^1.4.0",
     "moment": "^2.15.1",
     "mongoose": "^4.6.0",
     "morgan": "^1.7.0",
