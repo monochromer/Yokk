@@ -3,15 +3,8 @@ import store from '../store.js';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { addUser } from '../actions/crudUser.js';
-import Mousetrap from 'Mousetrap';
 
 var UserAdd = React.createClass({
-	componentDidMount: function() {
-        var self = this;
-        Mousetrap.bind('ctrl+s', function() {
-            self.handleSubmit();
-        });
-    },
 
 	getInitialState: function() {
 		return {

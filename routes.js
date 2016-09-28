@@ -1,11 +1,12 @@
 'use strict'
+
 var exec = require('exec');
 var upload = require('./helpers/file_upload');
 var log = require('./helpers/logger');
 
 exports = module.exports = function(app, passport) {
 
-	app.post('/api/deploy/', function(req, res) {
+  app.post('/api/deploy/', function(req, res) {
 		exec('sh ./build.sh', function() { res.status(200).send("Deployed!") });
 	});
 
@@ -13,17 +14,17 @@ exports = module.exports = function(app, passport) {
 		res.sendFile(__dirname + '/views/index.html');
 	});
 
-	app.get('/login', function(req, res){
+	app.get('/login', function(req, res) {
 		res.sendFile(__dirname + '/views/login.html');
 	});
 
-	app.post('/login', passport.authenticate('local', {failureRedirect: '/login' }), function(req, res) {
+	app.post('/login', passport.authenticate('local', {failureRedirect: '/login' } ), function(req, res) {
 		var logMsq = 'User (login: ' + req.user.login + ') is authorized and redirected to /';
 		log(req, logMsq).info();
 		res.redirect('/');
 	});
 
-	app.get('/logout', function(req, res){
+	app.get('/logout', function(req, res) {
 		var logMsq = 'User (login: ' + req.user.login + ') is logged out';
 		log(req, logMsq).info();
 		req.logout();
@@ -32,7 +33,7 @@ exports = module.exports = function(app, passport) {
 
 	app.get('/api/user', require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
 		var userModel = req.app.db.models.User;
-		userModel.allUsers(function(err, user) {
+		userModel.allUsers( function(err, user) {
 			// returned fields can be adjusted in User schema
 			if (err) {
 				var logMsq = 'There was some error while saving data to db';
@@ -53,27 +54,30 @@ exports = module.exports = function(app, passport) {
 
 		if (!user.login) {
 			var logmsg = 'User login not specified';
-			res.send({ message: logmsg });
+			res.send( { message: logmsg } );
 			return log(req, logmsg).err();
-		};
-		userModel.findByLogin(user.login, function(err, dbUser){
+		}
+
+		userModel.findByLogin(user.login, function(err, dbUser) {
 			if (err) {
-				res.send({ message: 'Some error occured while checking if user (login: ' + user.login + ') in DB. Look server logs.' });
+				res.send( { message: 'Some error occured while checking if user (login: ' +
+                  user.login + ') in DB. Look server logs.' } );
 				return log(req, err).err();
-			};
+			}
 			if (!dbUser) {
 				user.save(function (err, user) {
 					if (err) {
-						res.send({ message: 'Some error occured while saving user (login: ' + user.login + ') in DB. Look server logs.' });
+						res.send( { message: 'Some error occured while saving user (login: ' +
+                      user.login + ') in DB. Look server logs.' } );
 						return log(req, err).err();
 					};
 					var logMsq = 'User (login: ' + user.login + ') is saved to DB';
 					// res.send({ message: logMsq }); //cannot set headers??
 					return log(req, logMsq).info();
 				});
-			};
+			}
 			var logMsq = 'User (login: ' + user.login + ') is already in DB';
-			res.send({ message: logMsq });
+			res.send( { message: logMsq } );
 			return log(req, logMsq).info()
 		});
 
@@ -83,10 +87,10 @@ exports = module.exports = function(app, passport) {
 		var userModel = req.app.db.models.User;
 		var login = req.params.user_login;
 		// returned fields can be adjusted in User schema
-		userModel.findByLogin(login, function(err, user){
+		userModel.findByLogin(login, function(err, user) {
 			if (err) return log(req, err).err();
-			log(req).info()
-			res.send(user)
+			log(req).info();
+			res.send(user);
 		});
 	});
 
@@ -131,11 +135,11 @@ exports = module.exports = function(app, passport) {
 		var userModel = req.app.db.models.User;
 		var login = req.params.user_login;
 		var update = { profileImg: '/users/'+login+'.jpg' };
-		userModel.editUser(login, update, function(err, user){
+		userModel.editUser(login, update, function(err, user) {
 			if (err)
 				res.send(err);
 			if (user) {
-				upload( req, res );
+				upload(req, res);
 				res.status(200).send(user);
 			} else {
 				res.status(404).send({ message: 'User ' + login + ' is not found in DB' });
@@ -145,10 +149,8 @@ exports = module.exports = function(app, passport) {
 
 	app.get('*', require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
 		var logMsq = 'Not found';
-		log(req, logMsq).info()
+		log(req, logMsq).info();
 		res.redirect('/');
 	});
-
-
 
 }
