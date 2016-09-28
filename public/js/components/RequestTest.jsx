@@ -5,7 +5,7 @@ import Logout from './Logout.jsx';
 
 var RequestTest = React.createClass({
     getInitialState: function() {
-        return {reqUrl: '/api/check_permissions', reqBody: '{"json":"string"}'};
+        return {reqUrl: '/api/users/add', reqBody: '{"json":"string"}'};
     },
     onChange: function(e){
         if (e.target.name == 'submitUrl') {

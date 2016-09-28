@@ -49,12 +49,30 @@ exports = module.exports = function(app, passport) {
 
 		var userModel = req.app.db.models.User;
 		var user = new userModel(req.body);
-
-		user.save(function (err, user) {
-			if (err) return log(req, err).err();
-			var logMsq = 'User (login: ' + user.login + ') is saved to DB';
-			log(req, logMsq).info()
-			res.status(200).send(user);
+		if (!user.login) {
+			var logmsg = 'User login not specified';
+			res.send({ message: logmsg });
+			return log(req, logmsg).err();
+		};
+		userModel.findByLogin(user.login, function(err, dbUser){
+			if (err) {
+				res.send({ message: 'Some error occured while checking if user (login: ' + user.login + ') in DB. Look server logs.' });
+				return log(req, err).err();
+			};
+			if (!dbUser) {
+				user.save(function (err, user) {
+					if (err) {
+						res.send({ message: 'Some error occured while saving user (login: ' + user.login + ') in DB. Look server logs.' });
+						return log(req, err).err();
+					};
+					var logMsq = 'User (login: ' + user.login + ') is saved to DB';
+					// res.send({ message: logMsq }); //cannot set headers??
+					return log(req, logMsq).info();
+				});
+			};
+			var logMsq = 'User (login: ' + user.login + ') is already in DB';
+			res.send({ message: logMsq });
+			return log(req, logMsq).info()
 		});
 
 	});
