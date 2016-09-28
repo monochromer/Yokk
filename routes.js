@@ -120,15 +120,29 @@ exports = module.exports = function(app, passport) {
 	app.delete('/api/user/:user_login', require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
 		var userModel = req.app.db.models.User;
 		var login = req.params.user_login;
+    console.log(login);
+    console.log(req.user.login);
+    if (login === req.user.login) {
+      userModel.deleteUser(login, function (err) {
+  			if (err) {
+  				return log(req, err).err();
+  			};
+  			var logMsq = 'User ' + login + ' succesfully deleted';
+  			log(req, logMsq).info();
+        req.logout();
+    		res.status(200).send( {action: 'Logout'} ); //client side action logout
+  		});
 
-		userModel.deleteUser(login, function (err) {
-			if (err) {
-				return log(req, err).err();
-			};
-			var logMsq = 'User ' + login + ' succesfully deleted';
-			log(req, logMsq).info()
-			res.status(200).send(login);
-		});
+    } else {
+      userModel.deleteUser(login, function (err) {
+        if (err) {
+          return log(req, err).err();
+        };
+        var logMsq = 'User ' + login + ' succesfully deleted';
+        log(req, logMsq).info()
+        res.status(200).send(login);
+      });
+    }
 	});
 
 	/************** ending CRUD for user *********************/
