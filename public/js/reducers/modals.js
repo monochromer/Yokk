@@ -3,25 +3,14 @@ const defaultState = {
     login: ""
 }
 
-export default function(state = defaultState, action) {
-    switch (action.type) {
+export default function( state = defaultState, action ) {
+    switch ( action.type ) {
         case "MODAL_DELETE_SHOW":
-            var modalDelete = {
-                visible: true,
-                login: action.login
-            }
-            return Object.assign({}, state, {
-                modalDelete: modalDelete
-            });
+            return { visible: true, login: action.login };
             break;
 
         case "MODAL_DELETE_CLOSE":
-            var modalDelete = {
-                visible: false
-            };
-            return Object.assign({}, state, {
-                modalDelete: modalDelete
-            });
+            return { visible: false };
             break;
 
         default:
