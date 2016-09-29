@@ -8,7 +8,7 @@ module.exports = {
     login: './public/js/login.js'
     },
   output: {
-    path: path.join(__dirname, 'public/js'),
+    path: path.join(__dirname, 'public/build/'),
     filename: "[name].bundle.js"
   },
   module: {
