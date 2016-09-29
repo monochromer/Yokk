@@ -6,20 +6,9 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var path = require('path');
-var mongoose = require('mongoose');
 var sessions = require('express-session');
 
-// mongoose
-const mongoUrl = process.env.DB ? process.env.DB : 'mongodb://localhost/eop';
-app.db = mongoose.createConnection(mongoUrl);
-app.db.on('error', console.error.bind(console, 'connection error:'));
-app.db.once('open', function() {
-    console.log('App is now connected to MongoDB server');
-});
-
-// setting of models
-require('./models')(app, mongoose);
-
+require('./mongoose')(app);
 
 //middleware
 app.use(bodyParser.json({

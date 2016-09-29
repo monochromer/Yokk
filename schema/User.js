@@ -56,10 +56,6 @@ exports = module.exports = function(app, mongoose) {
             return this._plainPassword;
         });
 
-    userSchema.methods.checkPassword = function(password) {
-        return this.encryptPassword(password) === this.hashedPassword;
-    };
-
     userSchema.statics.allUsers = function(cb) {
         var fieldsToReturn = {
             _id: 1,
