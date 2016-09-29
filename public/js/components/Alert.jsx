@@ -21,9 +21,9 @@ var Alert = React.createClass({
 
 var getProps = function(store) {
 	return {
-		visible: store.alert.visible,
-		text: store.alert.text,
-		class: store.alert.class
+		visible: store.alerts.visible,
+		text: store.alerts.text,
+		class: store.alerts.class
 	}
 }
 
