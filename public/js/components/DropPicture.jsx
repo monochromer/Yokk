@@ -5,15 +5,15 @@ import { uploadUserPhoto } from '../actions/crudUser.js';
 
 var DropPicture = React.createClass({
 
-    onDrop: function (files) {
-        store.dispatch(uploadUserPhoto(files, this.props.login));
+    onDrop: function( files ) {
+        store.dispatch(uploadUserPhoto( files, this.props.login ));
     },
 
-    render: function () {
+    render: function( ) {
         return (
-            <Dropzone onDrop={ this.onDrop }>
+            <Dropzone onDrop={this.onDrop}>
                 <div className="profile__dropzone vertical-center">
-                    <img src={ this.props.photo } width="180px" className="center-block"/>
+                    <img src={this.props.photo} width="180px" className="center-block"/>
                 </div>
             </Dropzone>
         );

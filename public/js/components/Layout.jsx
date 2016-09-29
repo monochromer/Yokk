@@ -14,18 +14,17 @@ var Layout = React.createClass({
         store.dispatch(checkPermissions());
     },
 
-	render: function() {
-		return (
-			<div>
-				<TopPanel />
-				<div className="container-fluid">
-					<Alert />
-					<ModalUserDelete />
-					{ this.props.children }
-				</div>
-			</div>
-		)
-	}
+    render: function() {
+        return (
+            <div>
+                <TopPanel/>
+                <div className="container-fluid">
+                    <Alert/>
+                    <ModalUserDelete/> {this.props.children}
+                </div>
+            </div>
+        )
+    }
 });
 
 export default Layout
