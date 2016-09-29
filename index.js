@@ -8,7 +8,6 @@ var bodyParser = require('body-parser');
 var path = require('path');
 var mongoose = require('mongoose');
 var sessions = require('express-session');
-var cookieParser = require('cookie-parser');
 
 // mongoose
 const mongoUrl = process.env.DB ? process.env.DB : 'mongodb://localhost/eop';
@@ -30,13 +29,14 @@ app.use( sessions({
   resave: false,
   saveUninitialized: false
 }) );
-app.use( cookieParser() );
 
 // setting static folder
 app.use( express.static( path.join(__dirname, 'public') ) );
 app.use( express.static( path.join(__dirname, 'uploads') ) );
 
 var passport = require('./helpers/userpassport')(app);
+
+// router
 require('./routes')(app, passport);
 
 app.set('port', (process.env.PORT || 5000) );

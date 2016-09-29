@@ -36,9 +36,9 @@ exports = module.exports = function(app, passport) {
 		userModel.allUsers( function(err, user) {
 			// returned fields can be adjusted in User schema
 			if (err) {
-				var logMsq = 'There was some error while saving data to db';
+				var logMsq = 'There was some error while gettin data on users from DB';
 				log(req, logMsq).err();
-				res.send('Error. Look server logs.');
+				return res.send('Error. Look server logs.');
 			}
 			res.send(user);
 		});
@@ -67,9 +67,9 @@ exports = module.exports = function(app, passport) {
 			if (!dbUser) {
 				user.save(function (err, user) {
 					if (err) {
-						res.send( { message: 'Some error occured while saving user (login: ' +
+            log(req, err).err();
+						return res.send( { message: 'Some error occured while saving user (login: ' +
                       user.login + ') in DB. Look server logs.' } );
-						return log(req, err).err();
 					};
 					var logMsq = 'User (login: ' + user.login + ') is saved to DB';
 					res.status(200).send(user);
@@ -97,7 +97,7 @@ exports = module.exports = function(app, passport) {
 	});
 
 	app.get('/api/check_permissions', function(req, res) {
-		// as of now, returned field adjusted in userpassport.js
+		// as of now, returned fields can be adjusted in userpassport.js
 		res.send(req.user);
 	});
 
@@ -120,12 +120,13 @@ exports = module.exports = function(app, passport) {
 	app.delete('/api/user/:user_login', require('connect-ensure-login').ensureLoggedIn(), function(req, res) {
 		var userModel = req.app.db.models.User;
 		var login = req.params.user_login;
-    console.log(login);
-    console.log(req.user.login);
+
     if (login === req.user.login) {
       userModel.deleteUser(login, function (err) {
   			if (err) {
-  				return log(req, err).err();
+  				log(req, err).err();
+          return res.send( { message: 'Some error occured while deleting user (login: ' +
+                             login + ') in DB. Look server logs.' } );
   			};
   			var logMsq = 'User ' + login + ' succesfully deleted';
   			log(req, logMsq).info();
