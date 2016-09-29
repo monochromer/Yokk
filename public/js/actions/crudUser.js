@@ -77,7 +77,7 @@ export function deleteUser(login) {
 export function uploadUserPhoto(files, login) {
 	return function(dispatch) {
 		var file = files[0];
-        var postUrl = '/api/upload_profile_picture/users/' + login;
+        var postUrl = '/api/user/' + login + '/upload_profile_picture';
 
         request
             .post(postUrl)
@@ -92,5 +92,3 @@ export function uploadUserPhoto(files, login) {
             });
 	}
 }
-
-

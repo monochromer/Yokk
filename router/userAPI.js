@@ -126,7 +126,7 @@ module.exports = function(app, passport) {
         }
     });
 
-    app.post('/api/upload_profile_picture/users/:user_login', function(req, res) {
+    app.post('/api/user/:user_login/upload_profile_picture', function(req, res) {
         var userModel = req.app.db.models.User;
         var login = req.params.user_login;
         var update = {
