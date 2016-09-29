@@ -129,8 +129,10 @@ module.exports = function(app, passport) {
     app.post('/api/user/:user_login/upload_profile_picture', upload.single('pic'), function(req, res) {
         var userModel = req.app.db.models.User;
         var login = req.params.user_login;
+        var path = require('path');
+        var momemnt = require('moment')
         var update = {
-            profileImg: '/users/' + login + Date.now() + '.jpg'
+            profileImg: req.file.path
         };
         userModel.editUser(login, update, function(err, user) {
             if (err)
