@@ -1,17 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Router, Route, IndexRoute, hashHistory, browserHistory } from 'react-router';
-import { Provider } from 'react-redux';
-import store from './store.js';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import store from './store.js'
+import Layout from './components/Layout.jsx'
+import UserTable from './components/UserTable.jsx'
+import UserAdd from './components/UserAdd.jsx'
+import UserPage from './components/UserPage.jsx'
+import UserEdit from './components/UserEdit.jsx'
+import RequestTest from './components/RequestTest.jsx'
 
-import Layout from './components/Layout.jsx';
-import UserTable from './components/UserTable.jsx';
-import UserAdd from './components/UserAdd.jsx';
-import UserPage from './components/UserPage.jsx';
-import UserEdit from './components/UserEdit.jsx';
-
-import RequestTest from './components/RequestTest.jsx';
-
+import { Router, Route, IndexRoute, browserHistory } from 'react-router'
+import { Provider } from 'react-redux'
 
 const router = (
 	<Provider store={ store }>
