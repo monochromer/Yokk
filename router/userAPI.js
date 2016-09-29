@@ -1,7 +1,7 @@
 'use strict'
 
-const upload = require('../helpers/file_upload');
 const log = require('../helpers/logger');
+const upload = require('../helpers/file_upload');
 
 module.exports = function(app, passport) {
 
@@ -126,17 +126,16 @@ module.exports = function(app, passport) {
         }
     });
 
-    app.post('/api/user/:user_login/upload_profile_picture', function(req, res) {
+    app.post('/api/user/:user_login/upload_profile_picture', upload.single('pic'), function(req, res) {
         var userModel = req.app.db.models.User;
         var login = req.params.user_login;
         var update = {
-            profileImg: '/users/' + login + '.jpg'
+            profileImg: '/users/' + login + Date.now() + '.jpg'
         };
         userModel.editUser(login, update, function(err, user) {
             if (err)
                 res.send(err);
             if (user) {
-                upload(req, res);
                 res.status(200).send(user);
             } else {
                 res.status(404).send({
