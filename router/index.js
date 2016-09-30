@@ -16,13 +16,14 @@ module.exports = function(app, passport) {
     app.get('/logout', authorization.logout);
 
     app.get('/api/user', require('connect-ensure-login').ensureLoggedIn(), userAPI.getAllUsers);
-    app.post('/api/users/add', require('connect-ensure-login').ensureLoggedIn(), userAPI.saveUserToDb);
+    app.post('/api/user/add', require('connect-ensure-login').ensureLoggedIn(), userAPI.saveUserToDb);
+    app.get('/api/user/check_permissions', userAPI.checkUserPermissions); //can cause conflicts when login is 'check_permissions'
     app.get('/api/user/:user_login', require('connect-ensure-login').ensureLoggedIn(), userAPI.showUser);
     app.put('/api/user/:user_login', require('connect-ensure-login').ensureLoggedIn(), userAPI.updateUser);
     app.delete('/api/user/:user_login', require('connect-ensure-login').ensureLoggedIn(), userAPI.deleteUser);
     app.post('/api/user/:user_login/upload_profile_picture', upload.single('pic'), userAPI.uploadUserAvatar);
 
-    app.get('/api/check_permissions', helperRoutes.checkUserPermissions);
+
     app.get('*', require('connect-ensure-login').ensureLoggedIn(), helperRoutes.redirectUndefinedRoutes);
 
 }

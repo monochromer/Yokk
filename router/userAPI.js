@@ -83,7 +83,7 @@ exports.updateUser = function(req, res) {
             log(req, logMsq).err();
             return res.send('Error. Look server logs.');
         }
-        var logMsq = 'User (login: ' + user.login + ') is updated';
+        var logMsq = 'User (login: ' + login + ') is updated';
         log(req, logMsq).info()
         res.status(200).send(user);
     });
@@ -92,8 +92,10 @@ exports.updateUser = function(req, res) {
 exports.deleteUser = function(req, res) {
     var userModel = req.app.db.models.User;
     var login = req.params.user_login;
+    const rmdir = require('../helpers/rmdir');
+    const path = require('path');
 
-    if (login === req.user.login) {
+    if (login === req.user.login) { //deleting yourself (authorized user)
         userModel.deleteUser(login, function(err) {
             if (err) {
                 log(req, err).err();
@@ -102,6 +104,7 @@ exports.deleteUser = function(req, res) {
                         login + ') in DB. Look server logs.'
                 });
             };
+            rmdir(path.join(__dirname, '../uploads/users/', login));
             var logMsq = 'User ' + login + ' succesfully deleted';
             log(req, logMsq).info();
             req.logout();
@@ -110,11 +113,12 @@ exports.deleteUser = function(req, res) {
             }); //client side action logout
         });
 
-    } else {
+    } else { //deleting any other user (admins can do)
         userModel.deleteUser(login, function(err) {
             if (err) {
                 return log(req, err).err();
             };
+            rmdir(path.join(__dirname, '../uploads/users/', login));
             var logMsq = 'User ' + login + ' succesfully deleted';
             log(req, logMsq).info()
             res.status(200).send(login);
@@ -141,4 +145,9 @@ exports.uploadUserAvatar = function(req, res) {
             });
         }
     });
+}
+
+exports.checkUserPermissions = function(req, res) {
+    // as of now, returned fields can be adjusted in userpassport.js
+    res.send(req.user);
 }
