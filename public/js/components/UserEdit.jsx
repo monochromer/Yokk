@@ -1,22 +1,22 @@
-import React from 'react';
-import {connect} from 'react-redux';
-import _ from 'lodash';
-import store from '../store.js';
+import React from 'react'
+import { connect } from 'react-redux'
+import _ from 'lodash'
+import store from '../store.js'
 import DropPicture from './DropPicture.jsx'
-import {findUserByLogin} from '../helpers.js';
-import {changeUser} from '../actions/crudUser.js';
+import { findUserByLogin } from '../helpers.js'
+import { updateUser } from '../actions/users.js'
 
 var UserEdit = React.createClass({
 
     getInitialState: function() {
         return {
-            user: findUserByLogin(this.props.users, this.props.routeParams.login)
+            user: findUserByLogin( this.props.users, this.props.routeParams.login )
         }
     },
 
     componentWillReceiveProps: function(nextProps) {
         this.setState({
-            user: findUserByLogin(nextProps.users, this.props.routeParams.login)
+            user: findUserByLogin( nextProps.users, this.props.routeParams.login )
         })
     },
 
@@ -28,7 +28,8 @@ var UserEdit = React.createClass({
             fields[field] = this.refs[field].value;
         }
 
-        store.dispatch(changeUser(this.state.user.login, fields));
+        fields.login = this.state.user.login;
+        store.dispatch(updateUser(fields));
     },
 
     render: function() {
@@ -160,8 +161,8 @@ var UserEdit = React.createClass({
     }
 })
 
-var fetchUserStateToProps = function f(state) {
-    return {users: state.users}
+var fetchUserStateToProps = function f( state ) {
+    return { users: state.users }
 }
 
-export default connect(fetchUserStateToProps)(UserEdit);
+export default connect( fetchUserStateToProps )( UserEdit );
