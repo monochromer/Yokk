@@ -4,7 +4,7 @@ const defaultState = [];
 
 export default function( state = defaultState, action ) {
     const { type, payload } = action;
-    
+
     switch ( type ) {
         case "ADD_USER":
             return [...state, payload];

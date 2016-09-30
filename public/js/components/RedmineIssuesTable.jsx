@@ -3,11 +3,9 @@ import store from '../store.js';
 import { connect } from "react-redux"
 
 import { Table, Button, ButtonToolbar } from 'react-bootstrap';
-import UserRow from './UserRow.jsx';
+import IssueRow from './IssueRow.jsx';
 
-
-
-var UsersTable = React.createClass({
+var IssuesTable = React.createClass({
 
     render: function() {
         return (
@@ -22,17 +20,14 @@ var UsersTable = React.createClass({
                         <Table striped bordered condensed hover>
                             <thead>
                                 <tr>
-                                    <th>Fullname</th>
-                                    <th>Position</th>
-                                    <th>Joined on</th>
-                                    <th>Role</th>
-                                    <th>Actions</th>
+                                    <th>Issue ID</th>
+                                    <th>Estimated hours</th>
                                 </tr>
                             </thead>
                             <tbody>
                             {
-                                this.props.users.map( (user) => {
-                                    return <UserRow user={ user } currentUser={ this.props.currentUser } key={ user._id } />
+                                this.props.issues.issues.map( (issue) => {
+                                    return <IssueRow issue={ issue } key={ issue.id }/>
                                 })
                             }
                             </tbody>
@@ -44,12 +39,11 @@ var UsersTable = React.createClass({
     }
 });
 
-var fetchUsersStateToProps = function(state) {
+var fetchIssuesStateToProps = function(state) {
     return {
-        users: state.users,
-        currentUser: state.currentUser
+        issues: state.issues
     }
 }
 
 
-export default connect(fetchUsersStateToProps)(UsersTable);
+export default connect(fetchIssuesStateToProps)(IssuesTable);

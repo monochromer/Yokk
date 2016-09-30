@@ -13,17 +13,18 @@ var TopPanel = React.createClass({
 					</div>
 					<ul className="nav navbar-nav">
 					  	<li><Link to="/">Team</Link></li>
-					  	{ 
-					  		this.props.role == "admin" ? <li><Link to="/addUser">Add User</Link></li> : "" 
+					  	{
+					  		this.props.role == "admin" ? <li><Link to="/addUser">Add User</Link></li> : ""
 					  	}
 					  	<li><Link to="/tests">Tests</Link></li>
+              <li><Link to="/issues">Redmine issues</Link></li>
 					</ul>
 					<ul className="nav navbar-nav navbar-right">
 						<li><Logout /></li>
 					</ul>
 				</div>
 			</nav>
-		)	
+		)
 	}
 });
 
