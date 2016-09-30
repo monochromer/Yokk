@@ -2,7 +2,7 @@ import React from 'react';
 import store from '../store.js';
 import _ from 'lodash';
 import {connect} from 'react-redux';
-import {addUser} from '../actions/crudUser.js';
+import {addUser} from '../actions/users.js';
 
 var UserAdd = React.createClass({
 

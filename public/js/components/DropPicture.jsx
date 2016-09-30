@@ -1,7 +1,7 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
 import store from '../store.js';
-import { uploadUserPhoto } from '../actions/crudUser.js';
+import { uploadUserPhoto } from '../actions/users.js';
 
 var DropPicture = React.createClass({
 
