@@ -4,9 +4,8 @@ const defaultState = {
 }
 
 export default function( state = defaultState, action ) {
-
     switch ( action.type ) {
-        case "SET_USER_PERMISSIONS":
+        case "FETCH_CURRENT_USER":
             return action.payload;
             break;
 
