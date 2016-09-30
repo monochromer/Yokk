@@ -20,20 +20,6 @@ export function addUser(user) {
     }
 }
 
-export function changeUser(login, fields) {
-	return function(dispatch) {
-		axios.put('/api/user/' + login, fields)
-			.then( (response) => {
-				dispatch({
-					type: "CHANGE_USER",
-					payload: response.data
-		        });
-		        var text = "User " + login + " has been succesfully changed!";
-		        dispatch({ type: "ALERT_SHOW", class: "success", text: text });
-			});
-	}
-}
-
 export function deleteUser(login) {
 	return function(dispatch) {
 		axios.delete('/api/user/' + login)
