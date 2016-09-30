@@ -1,29 +1,6 @@
 import axios from 'axios';
 import request from 'superagent';
 
-export function fetchUsers() {
-	return function(dispatch) {
-		axios.get('/api/user')
-			.then( (response) => {
-				dispatch({
-					type: "FETCH_USERS",
-					payload: response.data
-		        })
-			});
-	}
-}
-
-export function checkPermissions() {
-	return function(dispatch) {
-		axios.get('/api/check_permissions')
-			.then( (response) => {
-				dispatch({
-					type: "SET_USER_PERMISSIONS",
-					payload: response.data
-				})
-			})
-	}
-}
 
 export function addUser(user) {
     return function (dispatch) {
