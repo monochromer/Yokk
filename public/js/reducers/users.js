@@ -4,7 +4,7 @@ const defaultState = [];
 
 export default function( state = defaultState, action ) {
     const { type, payload } = action;
-
+    
     switch ( type ) {
         case "ADD_USER":
             return [...state, payload];
@@ -14,7 +14,7 @@ export default function( state = defaultState, action ) {
             return _.filter( state, ( o ) => o.login != payload );
             break;
 
-        case "CHANGE_USER":
+        case "UPDATE_USER":
             var newState = _.filter( state, ( o ) => o.login != payload.login );
             return [...newState, payload];
             break;
