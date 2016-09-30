@@ -3,6 +3,7 @@
 const authorization = require('./authorization');
 const userAPI = require('./userAPI');
 const helperRoutes = require('./helperRoutes');
+const redmine = require('./redmine');
 
 const upload = require('../helpers/file_upload');
 
@@ -22,6 +23,11 @@ module.exports = function(app, passport) {
     app.put('/api/user/:user_login', require('connect-ensure-login').ensureLoggedIn(), userAPI.updateUser);
     app.delete('/api/user/:user_login', require('connect-ensure-login').ensureLoggedIn(), userAPI.deleteUser);
     app.post('/api/user/:user_login/upload_profile_picture', upload.single('pic'), userAPI.uploadUserAvatar);
+
+    app.get('/redmine/issues', redmine.issues); // add /limit/:num
+    app.get('/redmine/projects', redmine.projects); // add /limit/:num
+    app.get('/redmine/users', redmine.users); // server Returns forbidden
+    app.get('/redmine/current_user', redmine.currentUser);
 
 
     app.get('*', require('connect-ensure-login').ensureLoggedIn(), helperRoutes.redirectUndefinedRoutes);
