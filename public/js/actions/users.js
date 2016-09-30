@@ -1,10 +1,10 @@
-import axios from 'axios';
 import request from 'superagent';
 import {
     ADD_USER_URI,
     COMBINE_USER_ADDPHOTO_URI,
     FETCH_USERS_URI,
-    UPDATE_USER_URI
+    UPDATE_USER_URI,
+    DELETE_USER_URI
 } from '../constants'
 
 import {
@@ -31,10 +31,10 @@ export function deleteUser(login) {
 
 export function updateUser(user) {
     return function(dispatch) {
-        axios.put(UPDATE_USER_URI + user.login, user).then((response) => {
+        request.put(UPDATE_USER_URI + user.login).send(user.login, user).end((err, response) => {
             dispatch({
                 type: "CHANGE_USER",
-                payload: response.data
+                payload: response.body
             });
             dispatch({
                 type: "ALERT_SHOW",
@@ -47,10 +47,10 @@ export function updateUser(user) {
 
 export function addUser(user) {
     return function(dispatch) {
-        axios.post(ADD_USER_URI, user).then((response) => {
+        request.post(ADD_USER_URI).send(user).end((err, response) => {
             dispatch({
                 type: "ADD_USER",
-                payload: response.data
+                payload: response.body
             });
             dispatch({
                 type: "ALERT_SHOW",
