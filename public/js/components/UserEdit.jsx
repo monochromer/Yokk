@@ -8,32 +8,32 @@ import { updateUser } from '../actions/users.js'
 
 var UserEdit = React.createClass({
 
-    getInitialState: function() {
+    getInitialState: function( ) {
         return {
             user: findUserByLogin( this.props.users, this.props.routeParams.login )
         }
     },
 
-    componentWillReceiveProps: function(nextProps) {
+    componentWillReceiveProps: function( nextProps ) {
         this.setState({
             user: findUserByLogin( nextProps.users, this.props.routeParams.login )
         })
     },
 
-    handleSubmit: function(event) {
-        event.preventDefault();
+    handleSubmit: function( event ) {
+        event.preventDefault( );
         var fields = {};
 
-        for (var field in this.refs) {
+        for ( var field in this.refs ) {
             fields[field] = this.refs[field].value;
         }
 
         fields.login = this.state.user.login;
-        store.dispatch(updateUser(fields));
+        store.dispatch(updateUser( fields ));
     },
 
-    render: function() {
-        if (this.state.user == undefined) {
+    render: function( ) {
+        if ( this.state.user == undefined ) {
             return (
                 <p>
                     Wait a moment please...</p>
@@ -161,7 +161,7 @@ var UserEdit = React.createClass({
     }
 })
 
-var fetchUserStateToProps = function f( state ) {
+var fetchUserStateToProps = function( state ) {
     return { users: state.users }
 }
 
