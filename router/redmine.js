@@ -10,31 +10,15 @@ var config = {
 var redmine = new redmineObject(hostname, config);
 
 exports.issues = function(req, res) {
-
-    redmine.issues({
-        limit: 10
-    }, function(err, data) {
-        if (err) throw err;
-
-        for (var i in data.issues) {
-            console.log(data.issues[i]);
-        }
-
-        console.log('total_count: ' + data.total_count);
-        res.send(res.send('foo'));
-    });
-}
-
-exports.issues = function(req, res) {
     var params = {};
     redmine.issues(params = {}, function(err, data) {
         if (err) throw err;
 
-        for (var i in data.issues) {
-            console.log(data.issues[i]);
-        }
-
-        console.log('total_count: ' + data.total_count);
+        // for (var i in data.issues) {
+        //     console.log(data.issues[i]);
+        // }
+        //
+        // console.log('total_count: ' + data.total_count);
         res.send(data);
     });
 }

@@ -131,8 +131,10 @@ exports.uploadUserAvatar = function(req, res) {
     var login = req.params.user_login;
     var path = require('path');
     var momemnt = require('moment')
+
+    const urlToSave = '/' + req.file.path.split('/').slice(1).slice(-4).join('/');
     var update = {
-        profileImg: req.file.path
+        profileImg: urlToSave
     };
     userModel.editUser(login, update, function(err, user) {
         if (err)

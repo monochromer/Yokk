@@ -3,7 +3,8 @@
 'use strict';
 
 const models = [
-    'user'
+    'user',
+    'task'
 ];
 
 // previously was in models.js in root

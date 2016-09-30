@@ -1,10 +1,11 @@
-var mongoose = require('mongoose');
-var dbURI = 'mongodb://localhost/eop';
+const mongoose = require('mongoose');
 
 module.exports = function(app) {
-    const mongoUrl = process.env.DB ? process.env.DB : dbURI;
-    app.db = mongoose.createConnection(mongoUrl);
-    app.db.on('error', console.error.bind(console, 'connection error:'));
+    app.db = mongoose.createConnection(process.env.MONGO_URL);
+    app.db.on('error', function(err){
+      console.log(err);
+      console.log('!! Make sure your environment contains correct MONGO_URL constant');
+    });
     app.db.once('open', function() {
         console.log('App is now connected to MongoDB server');
     });
