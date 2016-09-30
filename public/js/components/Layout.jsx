@@ -6,6 +6,7 @@ import store from '../store.js'
 
 import { fetchUsers } from '../actions/users.js'
 import { fetchCurrentUser } from '../actions/currentUser.js'
+import { fetchIssues } from '../actions/issues.js'
 
 
 var Layout = React.createClass({
@@ -13,6 +14,7 @@ var Layout = React.createClass({
     componentWillMount: function() {
         store.dispatch(fetchUsers());
         store.dispatch(fetchCurrentUser());
+        store.dispatch(fetchIssues());
     },
 
     render: function() {
