@@ -1,8 +1,9 @@
 import React from 'react'
 import store from '../../store.js'
 import _ from 'lodash'
-import {connect} from 'react-redux'
-import {addUser} from '../../actions/users.js'
+import { connect } from 'react-redux'
+import { addUser } from '../../actions/users.js'
+import { refsToObject } from '../../helpers'
 
 var UserAdd = React.createClass({
 
@@ -36,11 +37,7 @@ var UserAdd = React.createClass({
     handleSubmit: function(event) {
         event.preventDefault();
 
-        var user = {
-            login: this.refs.login.value,
-            password: this.refs.password.value,
-            repeatPassword: this.refs.repeatPassword.value
-        };
+        var user = refsToObject(this.refs);
 
         if (this.validation(user)) {
             store.dispatch(addUser(user));
