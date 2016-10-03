@@ -6,7 +6,7 @@ import UserTable from './components/user/UserTable.jsx'
 import UserAdd from './components/user/UserAdd.jsx'
 import UserPage from './components/user/UserPage.jsx'
 import UserEdit from './components/user/UserEdit.jsx'
-import Tracking from './components/tracking'
+import Tracking from './components/tracking/index.jsx'
 import RequestTest from './components/RequestTest.jsx'
 import RedmineIssuesTable from './components/RedmineIssuesTable.jsx'
 
