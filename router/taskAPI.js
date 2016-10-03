@@ -1,32 +1,7 @@
 'use strict'
 
 const log = require('../helpers/logger');
-
-exports.updateTask = function(req, res) {
-    const taskModel = req.app.db.models.tasks;
-    const taskNumber = req.params.taskNumber;
-
-    var update = req.body;
-
-    taskModel.findOneAndUpdate({
-        taskNumber: taskNumber
-    }, update, function(err, task) {
-        if (err) {
-            var logMsq = 'There was some error while updating user data';
-            log(req, logMsq).err();
-            return res.send('Error. Look server logs.');
-        } else {
-            console.log(task);
-            const message = {
-                operationResult: 'Task updated',
-                updatedTaskNumber: taskNumber,
-                update: update
-            };
-            log(req, message.operationResult).info()
-            res.status(200).send(message);
-        }
-    });
-}
+const moment = require('moment');
 
 exports.saveTask = function(req, res) {
     const taskModel = req.app.db.models.tasks;
@@ -118,6 +93,62 @@ exports.deleteTask = function(req, res) {
         }
 
         res.send(response);
+    });
+}
+
+exports.updateTask = function(req, res) {
+    const taskModel = req.app.db.models.tasks;
+    const taskNumber = req.params.taskNumber;
+
+    var update = req.body;
+
+    taskModel.findOneAndUpdate({
+        taskNumber: taskNumber
+    }, update, function(err, task) {
+        if (err) {
+            var logMsq = 'There was some error while updating user data';
+            log(req, logMsq).err();
+            return res.send('Error. Look server logs.');
+        } else {
+            console.log(task);
+            const message = {
+                operationResult: 'Task updated',
+                updatedTaskNumber: taskNumber,
+                update: update
+            };
+            log(req, message.operationResult).info()
+            res.status(200).send(message);
+        }
+    });
+}
+
+exports.projectTasks = function(req, res) {
+    const taskModel = req.app.db.models.tasks;
+    const query = {};
+
+    if (req.params.from) {
+        query.startDate = {
+            "$gte": moment(req.params.from, 'DDMMYYYY').toDate()
+        };
+    };
+    if (req.params.to) {
+        query.endDate = {
+            "$lte": moment(req.params.to, 'DDMMYYYY').toDate()
+        };
+    };
+    if (req.params.user) {
+        query.user = req.params.user;
+    };
+    if (req.params.source) {
+        query.source = req.params.source;
+    };
+
+
+    taskModel.find(query, function(err, data) {
+        // var debugInfo = {};
+        // debugInfo.params = query;
+        // debugInfo.data = data;
+        res.send(data);
     });
 
 }

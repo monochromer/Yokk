@@ -5,14 +5,31 @@ var statics = require('./statics');
 module.exports = function(app, mongoose) {
     var taskSchema = new mongoose.Schema({
         taskNumber: Number,
-        executor: String,
-        date: {
+        executor: {
+            type: String,
+            required: true
+        },
+        dateAdded: {
             type: Date,
             default: Date.now
         },
-        description: String,
+        startDate: {
+            type: Date,
+            default: Date.now
+        },
+        endDate: {
+            type: Date,
+            default: Date.now
+        },
+        description: {
+            type: String,
+            required: true
+        },
         minutesSpent: Number,
-        taskSource: String
+        taskSource: {
+            type: String,
+            required: true
+        }
     });
 
     statics(taskSchema);
