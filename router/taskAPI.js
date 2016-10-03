@@ -2,7 +2,7 @@
 
 const log = require('../helpers/logger');
 
-exports.saveTaskToDb = function(req, res) {
+exports.saveTask = function(req, res) {
     const taskModel = req.app.db.models.tasks;
     var task = new taskModel(req.body);
     const statistics = req.app.db.models.statistics;
@@ -60,6 +60,36 @@ exports.saveTaskToDb = function(req, res) {
             return log(req, logMsq).info();
         });
 
+    });
+
+}
+
+exports.deleteTask = function(req, res) {
+    const taskModel = req.app.db.models.tasks;
+    const taskId = req.params.taskId;
+
+    taskModel.findByIdAndRemove(taskId, function(err, task) {
+
+        if (err) {
+            var response = {
+                message: "Some error uccured while deleting the task",
+                taskId: taskId
+            };
+        } else {
+            var response = {
+                message: "Task successfully deleted",
+                taskId: task._id
+            };
+        }
+
+        if (task == undefined) {
+            var response = {
+                message: "Task with id: " + taskId + " could not be found in DB",
+                taskId: taskId
+            };
+        }
+
+        res.send(response);
     });
 
 }
