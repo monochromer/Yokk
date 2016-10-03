@@ -2,6 +2,32 @@
 
 const log = require('../helpers/logger');
 
+exports.updateTask = function(req, res) {
+    const taskModel = req.app.db.models.tasks;
+    const taskNumber = req.params.taskNumber;
+
+    var update = req.body;
+
+    taskModel.findOneAndUpdate({
+        taskNumber: taskNumber
+    }, update, function(err, task) {
+        if (err) {
+            var logMsq = 'There was some error while updating user data';
+            log(req, logMsq).err();
+            return res.send('Error. Look server logs.');
+        } else {
+            console.log(task);
+            const message = {
+                operationResult: 'Task updated',
+                updatedTaskNumber: taskNumber,
+                update: update
+            };
+            log(req, message.operationResult).info()
+            res.status(200).send(message);
+        }
+    });
+}
+
 exports.saveTask = function(req, res) {
     const taskModel = req.app.db.models.tasks;
     var task = new taskModel(req.body);
@@ -66,26 +92,28 @@ exports.saveTask = function(req, res) {
 
 exports.deleteTask = function(req, res) {
     const taskModel = req.app.db.models.tasks;
-    const taskId = req.params.taskId;
+    const taskNumber = req.params.taskNumber;
 
-    taskModel.findByIdAndRemove(taskId, function(err, task) {
+    taskModel.findOneAndRemove({
+        taskNumber: taskNumber
+    }, function(err, task) {
 
         if (err) {
             var response = {
                 message: "Some error uccured while deleting the task",
-                taskId: taskId
+                taskNumber: taskNumber
             };
         } else {
             var response = {
                 message: "Task successfully deleted",
-                taskId: task._id
+                taskNumber: taskNumber
             };
         }
 
         if (task == undefined) {
             var response = {
-                message: "Task with id: " + taskId + " could not be found in DB",
-                taskId: taskId
+                message: "Task {taskNumber: " + taskNumber + "} could not be found in DB",
+                taskNumber: taskNumber
             };
         }
 
