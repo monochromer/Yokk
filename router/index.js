@@ -2,6 +2,7 @@
 
 const authorization = require('./authorization');
 const userAPI = require('./userAPI');
+const taskAPI = require('./taskAPI');
 const helperRoutes = require('./helperRoutes');
 const redmine = require('./redmine');
 
@@ -23,6 +24,8 @@ module.exports = function(app, passport) {
     app.put('/api/user/:user_login', require('connect-ensure-login').ensureLoggedIn(), userAPI.updateUser);
     app.delete('/api/user/:user_login', require('connect-ensure-login').ensureLoggedIn(), userAPI.deleteUser);
     app.post('/api/user/:user_login/upload_profile_picture', upload.single('pic'), userAPI.uploadUserAvatar);
+
+    app.post('/api/task/add', require('connect-ensure-login').ensureLoggedIn(), taskAPI.saveTaskToDb);
 
     app.get('/redmine/issues', redmine.issues); // add /limit/:num
     app.get('/redmine/projects', redmine.projects); // add /limit/:num

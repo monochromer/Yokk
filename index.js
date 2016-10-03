@@ -2,11 +2,11 @@
 
 require('dotenv').config();
 
-var express = require('express');
-var app = express();
-var bodyParser = require('body-parser');
-var path = require('path');
-var sessions = require('express-session');
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+const path = require('path');
+const sessions = require('express-session');
 
 require('./mongoose')(app);
 

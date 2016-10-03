@@ -17,5 +17,5 @@ module.exports = function(app, mongoose) {
 
     statics(taskSchema);
 
-    app.db.model('taskSchema', taskSchema);
+    app.db.model('tasks', taskSchema);
 }

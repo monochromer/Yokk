@@ -1,5 +1,3 @@
-import _ from 'lodash'
-
 const defaultState = [];
 
 export default function(state = defaultState, action) {
