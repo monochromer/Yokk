@@ -2,10 +2,14 @@
 
 const log = require('../helpers/logger');
 const moment = require('moment');
+var stringToMinutes = require('../helpers/issues').stringToMinutes;
 
 exports.saveTask = function(req, res) {
     const taskModel = req.app.db.models.tasks;
     var task = new taskModel(req.body);
+    console.log(req.body);
+    task.minutesSpent = stringToMinutes(req.body.minutesSpent); // getting Minutes
+    task.dateAdded = moment(req.body.dateAdded, "DD.MM.YYYY");
     const statistics = req.app.db.models.statistics;
     var stat = new statistics;
     var lastTaskNumber;
@@ -38,13 +42,12 @@ exports.saveTask = function(req, res) {
         task.taskNumber = lastTaskNumber + 1;
 
         // TODO Check task.description and send warning if already exists
-
         task.save(function(err, task) {
             if (err) {
+                console.log("ERROR IS " + err);
                 log(req, err).err();
                 return res.send({
-                    message: 'Some error occured while saving task (login: ' +
-                        task.taskNumber + ') in DB. Look server logs.'
+                    message: 'Some error occured while saving task in DB. Look server logs.'
                 });
             };
 
