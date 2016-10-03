@@ -1,7 +1,7 @@
 import React from 'react'
-import Alert from './Alert.jsx'
-import ModalUserDelete from './ModalUserDelete.jsx'
-import TopPanel from './TopPanel.jsx'
+import Alert from './alert/Alert.jsx'
+import ModalUserDelete from './user/ModalUserDelete.jsx'
+import TopPanel from './navbar/TopPanel.jsx'
 import store from '../store.js'
 
 import { fetchUsers } from '../actions/users.js'
