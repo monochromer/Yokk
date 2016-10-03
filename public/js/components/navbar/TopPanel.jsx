@@ -12,7 +12,8 @@ var TopPanel = React.createClass({
 						<Link className="navbar-brand" to="/">Eye of providence</Link>
 					</div>
 					<ul className="nav navbar-nav">
-					  	<li><Link to="/">Team</Link></li>
+						<li><Link to="/">Tracking</Link></li>
+					  	<li><Link to="/users">Team</Link></li>
 					  	{
 					  		this.props.role == "admin" ? <li><Link to="/addUser">Add User</Link></li> : ""
 					  	}

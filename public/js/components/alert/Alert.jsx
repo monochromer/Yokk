@@ -1,6 +1,6 @@
-import React from 'react';
-import store from '../store.js';
-import { connect } from 'react-redux';
+import React from 'react'
+import store from '../../store.js'
+import { connect } from 'react-redux'
 
 var Alert = React.createClass({
     handleClose: function() {

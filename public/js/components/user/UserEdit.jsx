@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
-import store from '../store.js'
+import store from '../../store.js'
 import DropPicture from './DropPicture.jsx'
-import { findUserByLogin } from '../helpers.js'
-import { updateUser } from '../actions/users.js'
+import { findUserByLogin } from '../../helpers.js'
+import { updateUser } from '../../actions/users.js'
 
 var UserEdit = React.createClass({
 

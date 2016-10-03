@@ -1,8 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
-import store from '../store.js';
+import store from '../../store.js';
 import { connect } from 'react-redux';
-import { findUserByLogin } from '../helpers.js'
+import { findUserByLogin } from '../../helpers.js'
 import { Link } from 'react-router'
 
 var UserPage = React.createClass({

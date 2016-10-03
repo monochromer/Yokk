@@ -1,5 +1,5 @@
 import React from 'react';
-import store from '../store.js';
+import store from '../../store.js';
 import { connect } from "react-redux"
 
 import { Table, Button, ButtonToolbar } from 'react-bootstrap';

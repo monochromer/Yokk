@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { deleteUser } from '../actions/users.js';
-import store from '../store.js';
+import { deleteUser } from '../../actions/users.js';
+import store from '../../store.js';
 import moment from 'moment';
 
 var ActionButtons = React.createClass({
