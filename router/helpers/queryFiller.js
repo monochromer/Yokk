@@ -1,3 +1,5 @@
+'use strict'
+
 const moment = require('moment');
 
 module.exports = (query) => {
@@ -25,8 +27,6 @@ module.exports = (query) => {
                     queryToReturn.dateAdded["$lte"] = moment(query.to, 'DDMMYYYY').toDate()
             }
         }
-    } else {
-        queryToReturn.dateAdded = moment().toDate()
     }
 
     if (query.user) queryToReturn.executor = query.user;
