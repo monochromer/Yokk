@@ -25,6 +25,8 @@ module.exports = (query) => {
                     queryToReturn.dateAdded["$lte"] = moment(query.to, 'DDMMYYYY').toDate()
             }
         }
+    } else {
+        queryToReturn.dateAdded = moment().toDate()
     }
 
     if (query.user) queryToReturn.executor = query.user;
