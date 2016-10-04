@@ -8,7 +8,7 @@ body {
 	margin-bottom: 60px;
 }
 
-footer {	
+footer {
 	position: absolute;
 	bottom: 0;
 	width: 100%;
@@ -42,7 +42,7 @@ footer {
 }
 
 .vertical-center {
-	min-height: 200px;  
+	min-height: 200px;
 	display: flex;
 	align-items: center;
 	text-align: center;
@@ -55,4 +55,12 @@ footer {
 
 .visible {
 	display: block;
+}
+
+/* --------------------------------- tracking  --------------------------------- */
+
+.day__total-duration {
+	font-size: 14px;
+	color: #666;
+	font-weight: normal;
 }
