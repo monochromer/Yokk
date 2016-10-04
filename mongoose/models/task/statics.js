@@ -23,7 +23,8 @@ module.exports = function(schema) {
             duration: 1,
             dateAdded: 1,
             executor: 1,
-            taskSource: 1
+            taskSource: 1,
+            duration: 1
         }
         return this.find(query, fieldsToReturn, cb);
     };

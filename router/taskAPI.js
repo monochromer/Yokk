@@ -144,10 +144,13 @@ exports.projectTasks = function(req, res) {
             element.dateAdded = undefined;
 
             if (responseData[date]) {
-                responseData[date].push(element);
+                responseData[date].list.push(element);
+                responseData[date].totalDuration += element.duration;
             } else {
-                responseData[date] = [];
-                responseData[date].push(element);
+                responseData[date] = {};
+                responseData[date].list = [];
+                responseData[date].list.push(element);
+                responseData[date].totalDuration = element.duration;
             }
         });
 
