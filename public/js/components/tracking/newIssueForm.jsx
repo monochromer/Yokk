@@ -27,13 +27,13 @@ var NewIssueForm = React.createClass({
                     <div className="col-md-2">
                         <div className="form-group">
                             <label htmlFor="date">Date</label>
-                            <input type="text" className="form-control" ref="dateAdded" id="date" defaultValue="22.05.1014"/>
+                            <input type="text" className="form-control" ref="dateAdded" id="date" defaultValue={ moment().format("DD.MM.YYYY") } />
                         </div>
                     </div>
                     <div className="col-md-2">
                         <div className="form-group">
                             <label htmlFor="time">Time</label>
-                            <select className="form-control" id="time" ref="minutesSpent" defaultValue="22.05.1014">
+                            <select className="form-control" id="time" ref="duration" >
                                 <option value="00:30" default>0:30</option>
                                 <option value="01:00">01:00</option>
                                 <option value="01:30">01:30</option>
