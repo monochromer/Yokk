@@ -5,7 +5,7 @@ import { refsToObject } from '../../helpers'
 import store from '../../store.js'
 import moment from 'moment'
 
-var newIssueForm = React.createClass({
+var NewIssueForm = React.createClass({
     handleSubmit: function(event) {
         event.preventDefault();
         var issue = refsToObject(this.refs);
@@ -63,4 +63,4 @@ var getProps = function(store) {
     }
 }
 
-export default connect(getProps)(newIssueForm)
+export default connect(getProps)(NewIssueForm)
