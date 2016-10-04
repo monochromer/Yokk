@@ -136,25 +136,25 @@ exports.projectTasks = function(req, res) {
     const taskModel = req.app.db.models.tasks;
     const query = {};
 
-    if (req.params.from) {
+    if (req.query.from) {
         query.dateAdded = {
-            "$gte": moment(req.params.from, 'DDMMYYYY').toDate()
+            "$gte": moment(req.query.from, 'DDMMYYYY').toDate()
         };
     };
-    if (req.params.to) {
+    if (req.query.to) {
         query.dateAdded = {
-            "$lte": moment(req.params.to, 'DDMMYYYY').toDate()
+            "$lte": moment(req.query.to, 'DDMMYYYY').toDate()
         };
     };
-    if (req.params.user) {
-        query.user = req.params.user;
+    if (req.query.user) {
+        query.executor = req.query.user;
     };
-    if (req.params.source) {
-        query.source = req.params.source;
+    if (req.query.source) {
+        query.source = req.query.source;
     };
 
     taskModel.findTasks(query, function(err, data) {
-        var debugInfo = {};
+        // var debugInfo = {};
         // debugInfo.params = req.params;
         // debugInfo.query = query;
         // debugInfo.data = data;
