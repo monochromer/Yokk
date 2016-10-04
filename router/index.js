@@ -5,8 +5,10 @@ const userAPI = require('./userAPI');
 const taskAPI = require('./taskAPI');
 const helperRoutes = require('./helperRoutes');
 const redmine = require('./redmine');
-
 const upload = require('../helpers/file_upload');
+
+const getTasksRouterParameters = ['from', 'to', 'user', 'source'];
+const appGetTasks = require('./routerHelpers/permutateRoutes')(getTasksRouterParameters);
 
 module.exports = function(app, passport) {
 
@@ -25,8 +27,9 @@ module.exports = function(app, passport) {
     app.delete('/api/user/:user_login', require('connect-ensure-login').ensureLoggedIn(), userAPI.deleteUser);
     app.post('/api/user/:user_login/upload_profile_picture', upload.single('pic'), userAPI.uploadUserAvatar);
 
-    app.get('/api/task/:from?/:to?/:user?/:source?', taskAPI.projectTasks);
-    app.post('/api/task/add', require('connect-ensure-login').ensureLoggedIn(), taskAPI.saveTask);
+    appGetTasks.forEach((route) => app.get(route), taskAPI.projectTasks)
+    app.get('/api/task(/from.:from)?(/to.:to)?(/user.:user)?(/source.:source)?', taskAPI.projectTasks);
+    app.post('/api/task/add', taskAPI.saveTask); // body should contain: executor, description, taskSource
     app.delete('/api/task/:taskNumber', require('connect-ensure-login').ensureLoggedIn(), taskAPI.deleteTask);
     app.put('/api/task/:taskNumber', require('connect-ensure-login').ensureLoggedIn(), taskAPI.updateTask);
 

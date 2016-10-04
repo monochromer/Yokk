@@ -8,8 +8,16 @@ exports.saveTask = function(req, res) {
     const taskModel = req.app.db.models.tasks;
     var task = new taskModel(req.body);
     console.log(req.body);
-    task.minutesSpent = stringToMinutes(req.body.minutesSpent); // getting Minutes
-    task.dateAdded = moment(req.body.dateAdded, "DD.MM.YYYY");
+
+    if (req.body.startDate) {
+        task.startDate = moment(req.body.startDate, 'DDMMYYYY').toDate();
+    }
+    if (req.body.endDate) {
+        task.endDate = moment(req.body.endDate, 'DDMMYYYY').toDate();
+    }
+
+    task.duration = stringToMinutes(req.body.duration); // getting Minutes
+
     const statistics = req.app.db.models.statistics;
     var stat = new statistics;
     var lastTaskNumber;
@@ -18,7 +26,6 @@ exports.saveTask = function(req, res) {
     statistics.find({}, function(err, stats) {
         if (stats.length == 0 || typeof stats[0].lastTaskNumber == 'undefined') {
             stat.lastTaskNumber = 0;
-            console.log(stat.lastTaskNumber);
             stat.save();
             lastTaskNumber = 0;
         } else {
@@ -56,7 +63,7 @@ exports.saveTask = function(req, res) {
             }, {
                 new: true
             }, function(err, data) {
-                console.log(data);
+                // console.log(data);
             });
 
             var logMsq = 'Task (login: ' + task.taskNumber + ') is saved to DB';
@@ -130,12 +137,12 @@ exports.projectTasks = function(req, res) {
     const query = {};
 
     if (req.params.from) {
-        query.startDate = {
+        query.dateAdded = {
             "$gte": moment(req.params.from, 'DDMMYYYY').toDate()
         };
     };
     if (req.params.to) {
-        query.endDate = {
+        query.dateAdded = {
             "$lte": moment(req.params.to, 'DDMMYYYY').toDate()
         };
     };
@@ -146,10 +153,10 @@ exports.projectTasks = function(req, res) {
         query.source = req.params.source;
     };
 
-
-    taskModel.find(query, function(err, data) {
-        // var debugInfo = {};
-        // debugInfo.params = query;
+    taskModel.findTasks(query, function(err, data) {
+        var debugInfo = {};
+        // debugInfo.params = req.params;
+        // debugInfo.query = query;
         // debugInfo.data = data;
         res.send(data);
     });

@@ -25,7 +25,7 @@ module.exports = function(app, mongoose) {
             type: String,
             required: true
         },
-        minutesSpent: Number,
+        duration: Number,
         taskSource: {
             type: String,
             required: true
