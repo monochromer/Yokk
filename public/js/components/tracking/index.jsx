@@ -1,6 +1,6 @@
 import React from 'react'
 import NewIssueForm from './newIssueForm.jsx'
-import IssuesList from './IssuesList'
+import IssuesList from './IssuesList.jsx'
 import store from '../../store.js'
 import moment from 'moment'
 import { createIssue } from '../../actions/issues.js'
