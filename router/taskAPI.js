@@ -154,11 +154,24 @@ exports.projectTasks = function(req, res) {
     };
 
     taskModel.findTasks(query, function(err, data) {
+      var responseData = {};
+      data.forEach((element) => {
+        let date = moment(element.dateAdded).format('DDMMYYYY');
+        element.dateAdded = undefined;
+
+        if (responseData[date]) {
+          responseData[date].push(element);
+        } else {
+          responseData[date] = [];
+          responseData[date].push(element);
+        }
+      });
+      
         // var debugInfo = {};
         // debugInfo.params = req.params;
         // debugInfo.query = query;
         // debugInfo.data = data;
-        res.send(data);
+        res.send(responseData);
     });
 
 }
