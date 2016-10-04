@@ -10,11 +10,7 @@ var IssuesList = React.createClass({
     render: function() {
         return (
             <div>
-                {
-                    this.props.issues.map( (day) => {
-                        return <IssuesPerDay issues={ day.list } totalDuration={ day.totalDuration } />
-                    })
-                }
+
             </div>
         )
     }
