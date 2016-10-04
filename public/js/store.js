@@ -8,7 +8,7 @@ import updateItem from './middlewares/updateItem'
 import deleteItem from './middlewares/deleteItem'
 import createItem from './middlewares/createItem'
 
-const middleware = applyMiddleware(promise(), thunk, logger(), loadItems, updateItem, deleteItem, createItem);
+const middleware = applyMiddleware(promise(), thunk, loadItems, updateItem, deleteItem, createItem, logger());
 const store = createStore(reducer, middleware);
 
 export default store;
