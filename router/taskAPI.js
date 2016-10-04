@@ -2,7 +2,8 @@
 
 const log = require('../helpers/logger');
 const moment = require('moment');
-var stringToMinutes = require('../helpers/issues').stringToMinutes;
+const stringToMinutes = require('../helpers/issues').stringToMinutes;
+const queryFiller = require('./helpers/queryFiller');
 
 exports.saveTask = function(req, res) {
     const taskModel = req.app.db.models.tasks;
@@ -134,39 +135,22 @@ exports.updateTask = function(req, res) {
 
 exports.projectTasks = function(req, res) {
     const taskModel = req.app.db.models.tasks;
-    const query = {};
-
-    if (req.query.from) {
-        query.dateAdded = {
-            "$gte": moment(req.query.from, 'DDMMYYYY').toDate()
-        };
-    };
-    if (req.query.to) {
-        query.dateAdded = {
-            "$lte": moment(req.query.to, 'DDMMYYYY').toDate()
-        };
-    };
-    if (req.query.user) {
-        query.executor = req.query.user;
-    };
-    if (req.query.source) {
-        query.source = req.query.source;
-    };
+    const query = queryFiller(req.query);
 
     taskModel.findTasks(query, function(err, data) {
-      var responseData = {};
-      data.forEach((element) => {
-        let date = moment(element.dateAdded).format('DDMMYYYY');
-        element.dateAdded = undefined;
+        var responseData = {};
+        data.forEach((element) => {
+            let date = moment(element.dateAdded).format('DDMMYYYY');
+            element.dateAdded = undefined;
 
-        if (responseData[date]) {
-          responseData[date].push(element);
-        } else {
-          responseData[date] = [];
-          responseData[date].push(element);
-        }
-      });
-      
+            if (responseData[date]) {
+                responseData[date].push(element);
+            } else {
+                responseData[date] = [];
+                responseData[date].push(element);
+            }
+        });
+
         // var debugInfo = {};
         // debugInfo.params = req.params;
         // debugInfo.query = query;
@@ -174,4 +158,22 @@ exports.projectTasks = function(req, res) {
         res.send(responseData);
     });
 
+}
+
+exports.totalDuration = function(req, res) {
+    const taskModel = req.app.db.models.tasks;
+    const query = queryFiller(req.query);
+
+    taskModel.getDuration(query, (err, data) => {
+        // const debugInfo = {};
+        // debugInfo.query = query;
+        // debugInfo.data = data;
+        let sumMinutes = 0;
+        data.forEach((element) => {
+            sumMinutes += element.duration;
+        })
+        res.send({
+            totalDuration: sumMinutes
+        });
+    });
 }

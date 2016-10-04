@@ -57,4 +57,12 @@ module.exports = function(schema) {
         }, cb);
     };
 
+    schema.statics.getDuration = function(query, cb) {
+        let fieldsToReturn = {
+            _id: 0,
+            duration: 1
+        };
+        return this.find(query, fieldsToReturn, cb);
+    };
+
 }

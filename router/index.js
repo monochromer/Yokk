@@ -26,9 +26,10 @@ module.exports = function(app, passport) {
     app.post('/api/user/:user_login/upload_profile_picture', upload.single('pic'), userAPI.uploadUserAvatar);
 
     app.get('/api/task', checkAuthStatus, taskAPI.projectTasks);
+    app.get('/api/task/duration', checkAuthStatus, taskAPI.totalDuration);
     app.post('/api/task/add', checkAuthStatus, taskAPI.saveTask); // body should contain: executor, description, taskSource
     app.delete('/api/task/:taskNumber', checkAuthStatus, taskAPI.deleteTask);
-    app.put('/api/task/:taskNumber', checkAuthStatus, taskAPI.updateTask);
+    app.put('/api/task/:taskNumber', taskAPI.updateTask);
 
     app.get('/redmine/issues', redmine.issues); // add /limit/:num
     app.get('/redmine/projects', redmine.projects); // add /limit/:num
