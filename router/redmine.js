@@ -10,7 +10,10 @@ var config = {
 var redmine = new redmineObject(hostname, config);
 
 exports.issues = function(req, res) {
-    var params = {};
+    // res.send(req.params);
+    // params: offset, limit, sort
+    var params = req.query;
+    console.log(params);
     redmine.issues(params = {}, function(err, data) {
         if (err) throw err;
 
