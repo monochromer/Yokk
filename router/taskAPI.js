@@ -10,11 +10,15 @@ exports.saveTask = function(req, res) {
     var task = new taskModel(req.body);
     console.log(req.body);
 
+    if (req.body.dateAdded) {
+        task.dateAdded = moment(req.body.dateAdded, 'DD.MM.YYYY').toDate();
+    }
+
     if (req.body.startDate) {
-        task.startDate = moment(req.body.startDate, 'DDMMYYYY').toDate();
+        task.startDate = moment(req.body.startDate, 'DD.MM.YYYY').toDate();
     }
     if (req.body.endDate) {
-        task.endDate = moment(req.body.endDate, 'DDMMYYYY').toDate();
+        task.endDate = moment(req.body.endDate, 'DD.MM.YYYY').toDate();
     }
 
     task.duration = stringToMinutes(req.body.duration); // getting Minutes
