@@ -1,0 +1,11 @@
+'use strict'
+
+module.exports = function(checkedValue, assignedValue) {
+    if (typeof assignedValue === 'undefined') {
+        assignedValue = checkedValue;
+    };
+    if (typeof checkedValue === 'undefined') {
+        return 'not assigned';
+    };
+    return checkedValue;
+}
