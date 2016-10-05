@@ -27,7 +27,6 @@ export function durationBeatify(minutes) {
 export function groupIssuesByDay(issues) {
 	var days = {};
 	var sorted = _.orderBy(issues, ['dateAdded'], ['desc']);
-	console.log(sorted);
 	sorted.map((issue) => {
 		let day = dayBeatify(issue.dateAdded);
 		if(!days[day]) {
@@ -40,6 +39,5 @@ export function groupIssuesByDay(issues) {
 			days[day].totalDuration += issue.duration;
 		}
 	});
-	console.log(days);
 	return days;
 }
