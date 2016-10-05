@@ -115,7 +115,7 @@ exports.updateTask = function(req, res) {
 
     var update = req.body;
 
-    taskModel.findByIdAndUpdate(taskId, update, function(err, task) {
+    taskModel.findByIdAndUpdate(taskId, update, {new: true}, function(err, task) {
         if (err) {
             var logMsq = 'There was some error while updating user data';
             log(req, logMsq).err();
@@ -128,7 +128,7 @@ exports.updateTask = function(req, res) {
                 update: update
             };
             log(req, message.operationResult).info()
-            res.status(200).send(message);
+            res.status(200).send(task);
         }
     });
 }
