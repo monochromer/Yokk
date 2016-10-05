@@ -1,7 +1,6 @@
 import _ from 'lodash'
-const defaultState = {
-    list: []
-};
+import moment from 'moment'
+const defaultState = []
 
 export default function(state = defaultState, action) {
     const { type, payload } = action;
@@ -9,7 +8,7 @@ export default function(state = defaultState, action) {
     switch (type) {
 
         case "FETCH_ISSUES":
-            return Object.assign({}, state, { list: payload });
+            return payload;
             break;
 
         case "DELETE_ISSUE":
