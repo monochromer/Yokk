@@ -1,4 +1,4 @@
-import { FETCH_ISSUES_URI, CREATE_ISSUE_URI, DELETE_ISSUE_URI, FETCH_REDMINE_ISSUES_URI } from '../constants'
+import { FETCH_ISSUES_URI, CREATE_ISSUE_URI, DELETE_ISSUE_URI, FETCH_REDMINE_ISSUES_URI, UPDATE_ISSUE_URI } from '../constants'
 
 export function fetchIssues() {
     return {
@@ -29,6 +29,17 @@ export function deleteIssue(id) {
         type: "DELETE_ISSUE",
         deleteItem: {
             url: DELETE_ISSUE_URI + id
+        }
+    }
+}
+
+export function updateIssue(issue) {
+    console.log(issue);
+    return {
+        type: "UPDATE_ISSUE",
+        updateItem: {
+            url: UPDATE_ISSUE_URI + issue._id,
+            data: issue
         }
     }
 }
