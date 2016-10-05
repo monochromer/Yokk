@@ -12,7 +12,7 @@ var config = {
 var redmine = new redmineObject(hostname, config);
 
 
-exports.issues = function(req, res) {
+exports.importRedmineIssues = function(req, res) {
     const params = req.query;
     const id = parseInt(params.id);
     var dataToReturn = {};
@@ -29,7 +29,6 @@ exports.issues = function(req, res) {
 
         data.issues.forEach((element) => {
             let task = {};
-            task.taskNumber = element.id;
 
             if (typeof element.assigned_to === 'undefined') {
                 task.exectutor = 'not assigned';
@@ -53,68 +52,36 @@ exports.issues = function(req, res) {
 
             task.description = element.subject;
             task.taskSource = "redmine";
-            if (!dataToReturn.tasks) dataToReturn.tasks = [];
-            dataToReturn.tasks.push(task);
+            if (!dataToReturn.tasks) dataToReturn.tasks = {};
+            dataToReturn.tasks[element.id] = task;
         });
 
-        // dataToReturn.tasks2 = [];
-        // dataToReturn.tasks.forEach((element) => {
-        //     redmine.get_issue_by_id(element.taskNumber, params, function(err, data) {
-        //         let task = {};
-        //         task.duration = data.issue.spent_hours;
-        //         dataToReturn.tasks2.push(task)
-        //
-        //         console.log(task);
-        //     })
-        // })
+        // var debugInfo = {};
+        // debugInfo.params = params;
+        // debugInfo.data = data;
+        // dataToReturn.debugInfo = debugInfo;
 
-        redmine.time_entries((err,data)=> {
-          var arr = [];
-          data.time_entries.forEach((element)=>{
+        redmine.time_entries((err, data) => {
+            var arr = [];
+            data.time_entries.forEach((element) => {
+                console.log(element);
+                if (!dataToReturn.tasks[element.issue.id]) {
+                    dataToReturn.errMsg = {
+                        msg: 'Therewas an error. Some time_entries dont match tasks. Check limit, probably it default (to low)'
+                    }
+                    if (!dataToReturn.errMsg.issuesIdsArray) dataToReturn.errMsg.issuesIdsArray = [];
+                    dataToReturn.errMsg.issuesIdsArray.push(element.issue.id);
+                } else {
+                    if (!dataToReturn.tasks[element.issue.id].duration) {
+                        dataToReturn.tasks[element.issue.id].duration = element.hours;
+                    } else {
+                        dataToReturn.tasks[element.issue.id].duration += element.hours;
+                    }
 
-            arr.push(element.hours);
-
-          })
-          res.send(dataToReturn);
+                }
+            });
+            res.send(dataToReturn);
         });
 
-        var debugInfo = {};
-        debugInfo.params = params;
-        debugInfo.data = data;
-        dataToReturn.debugInfo = debugInfo;
-
-        // res.send(dataToReturn);
-    });
-}
-
-exports.projects = function(req, res) {
-    var params = {};
-    redmine.projects(params = {}, function(err, data) {
-        if (err) throw err;
-
-        console.log(data);
-
-        console.log('total_count: ' + data.total_count);
-        res.send(data);
-    });
-}
-
-exports.users = function(req, res) {
-    var params = {};
-    redmine.users(params = {}, function(err, data) {
-        if (err) throw err;
-
-        console.log(data);
-        res.send(data);
-    });
-}
-
-exports.currentUser = function(req, res) {
-    var params = {};
-    redmine.current_user(params = {}, function(err, data) {
-        if (err) throw err;
-
-        console.log(data);
-        res.send(data);
     });
 }
