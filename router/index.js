@@ -31,11 +31,7 @@ module.exports = function(app, passport) {
     app.delete('/api/task/:taskId', checkAuthStatus, taskAPI.deleteTask);
     app.put('/api/task/:taskId', checkAuthStatus, taskAPI.updateTask);
 
-    app.get('/redmine/issues', redmine.issues); // add /limit/:num
-    app.get('/redmine/projects', redmine.projects); // add /limit/:num
-    app.get('/redmine/users', redmine.users); // server Returns forbidden
-    app.get('/redmine/current_user', redmine.currentUser);
-
+    app.get('/redmine/sync', redmine.importRedmineIssues);
 
     app.get('*', checkAuthStatus, helperRoutes.redirectUndefinedRoutes);
 

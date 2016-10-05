@@ -6,6 +6,8 @@ export const ADD_USER_URI = '/api/user/add'
 export const FETCH_ISSUES_URI = '/api/task'
 export const CREATE_ISSUE_URI = '/api/task/add'
 export const DELETE_ISSUE_URI = '/api/task/'
+export const FETCH_REDMINE_ISSUES_URI = '/redmine/sync'
+
 
 export function COMBINE_USER_ADDPHOTO_URI(login) {
     return '/api/user/' + login + '/upload_profile_picture';

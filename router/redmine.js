@@ -11,110 +11,84 @@ var config = {
 
 var redmine = new redmineObject(hostname, config);
 
+exports.importRedmineIssues = function(req, res) {
+    const taskModel = req.app.db.models.tasks;
+    // const params = req.query;
+    const params = {};
 
-exports.issues = function(req, res) {
-    const params = req.query;
-    const id = parseInt(params.id);
-    var dataToReturn = {};
+    redmine.current_user({}, (err, userData) => {
+        if (err) console.log(err);
+        params.assigned_to_id = userData.user.id;
+        // params:
+        // limit: Num (number of issues per page)
+        // offset: Num (skip this number of issues in response)
+        // sort: ColumntName (or sort:desc)
+        // FILTERS: project_id, subproject_id, tracker_id, status_id, assigned_to_id ...
+        // created_on: date (TODO: how to give a period?)
+        redmine.issues(params, function(err, data) {
+            var issuePromisesArray = [];
+            if (err) throw err;
 
-    // params:
-    // limit: Num (number of issues per page)
-    // offset: Num (skip this number of issues in response)
-    // sort: ColumntName (or sort:desc)
-    // FILTERS: project_id, subproject_id, tracker_id, status_id, assigned_to_id ...
-    // created_on: date (TODO: how to give a period?)
+            data.issues.forEach((element) => {
+                let promiseIssue = new Promise((resolve, reject) => {
+                    redmine.get_issue_by_id(element.id, params, (err, data) => {
+                        let task = {};
+                        task.taskNumber = element.id;
 
-    redmine.issues(params, function(err, data) {
-        if (err) throw err;
+                        // executor probably should be from request
+                        if (typeof data.issue.assigned_to === 'undefined') {
+                            task.executor = 'not assigned';
+                        } else {
+                            task.executor = data.issue.assigned_to.name;
+                        };
+                        task.dateAdded = moment(data.issue.created_on, 'YYYY-MM-DD').toDate();
 
-        data.issues.forEach((element) => {
-            let task = {};
-            task.taskNumber = element.id;
+                        if (typeof data.issue.start_date === 'undefined') {
+                            task.startDate = 'not assigned';
+                        } else {
+                            task.startDate = moment(data.issue.start_date, 'YYYY-MM-DD').toDate();
+                        };
 
-            if (typeof element.assigned_to === 'undefined') {
-                task.exectutor = 'not assigned';
-            } else {
-                task.exectutor = element.assigned_to.name;
-            };
+                        if (typeof data.issue.due_date === 'undefined') {
+                            task.endDate = 'not assigned';
+                        } else {
+                            task.endDate = moment(data.issue.due_date, 'YYYY-MM-DD').toDate();
+                        };
 
-            task.dateAdded = moment(element.created_on, 'YYYY-MM-DD').toDate();
+                        task.description = data.issue.subject;
+                        task.duration = data.issue.spent_hours.toFixed(2);
+                        task.taskSource = 'redmine';
+                        resolve(task);
+                    });
+                });
+                issuePromisesArray.push(promiseIssue);
+            });
+            Promise.all(issuePromisesArray).then(tasks => {
+                let errors = [];
+                tasks.forEach(task => {
+                    taskModel.findOneAndUpdate({
+                        taskNumber: task.taskNumber
+                    }, task, {
+                        new: true,
+                        upsert: true
+                    }, (err, doc) => {
+                        if (err) {
+                            console.log('Error while saving a task');
+                            errors.push(err);
+                        } else {
+                            console.log('Task saved/updated successfully');
+                        }
+                    })
+                });
+                if (Object.keys(errors).length === 0 && errors.constructor === Object) {
+                    res.send({
+                        errors: errors
+                    });
+                } else {
+                    res.send(tasks);
+                }
 
-            if (typeof element.start_date === 'undefined') {
-                task.startDate = 'not assigned';
-            } else {
-                task.startDate = moment(element.start_date, 'YYYY-MM-DD').toDate();
-            };
-
-            if (typeof element.due_date === 'undefined') {
-                task.endDate = 'not assigned';
-            } else {
-                task.endDate = moment(element.due_date, 'YYYY-MM-DD').toDate();
-            };
-
-            task.description = element.subject;
-            task.taskSource = "redmine";
-            if (!dataToReturn.tasks) dataToReturn.tasks = [];
-            dataToReturn.tasks.push(task);
+            });
         });
-
-        // dataToReturn.tasks2 = [];
-        // dataToReturn.tasks.forEach((element) => {
-        //     redmine.get_issue_by_id(element.taskNumber, params, function(err, data) {
-        //         let task = {};
-        //         task.duration = data.issue.spent_hours;
-        //         dataToReturn.tasks2.push(task)
-        //
-        //         console.log(task);
-        //     })
-        // })
-
-        redmine.time_entries((err,data)=> {
-          var arr = [];
-          data.time_entries.forEach((element)=>{
-
-            arr.push(element.hours);
-
-          })
-          res.send(dataToReturn);
-        });
-
-        var debugInfo = {};
-        debugInfo.params = params;
-        debugInfo.data = data;
-        dataToReturn.debugInfo = debugInfo;
-
-        // res.send(dataToReturn);
-    });
-}
-
-exports.projects = function(req, res) {
-    var params = {};
-    redmine.projects(params = {}, function(err, data) {
-        if (err) throw err;
-
-        console.log(data);
-
-        console.log('total_count: ' + data.total_count);
-        res.send(data);
-    });
-}
-
-exports.users = function(req, res) {
-    var params = {};
-    redmine.users(params = {}, function(err, data) {
-        if (err) throw err;
-
-        console.log(data);
-        res.send(data);
-    });
-}
-
-exports.currentUser = function(req, res) {
-    var params = {};
-    redmine.current_user(params = {}, function(err, data) {
-        if (err) throw err;
-
-        console.log(data);
-        res.send(data);
-    });
+    })
 }

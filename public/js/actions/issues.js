@@ -1,9 +1,16 @@
-import { FETCH_ISSUES_URI, CREATE_ISSUE_URI, DELETE_ISSUE_URI } from '../constants'
+import { FETCH_ISSUES_URI, CREATE_ISSUE_URI, DELETE_ISSUE_URI, FETCH_REDMINE_ISSUES_URI } from '../constants'
 
 export function fetchIssues() {
     return {
         type: "FETCH_ISSUES",
         loadItems: FETCH_ISSUES_URI
+    }
+}
+
+export function fetchRedmineIssues() {
+    return {
+        type: "FETCH_REDMINE_ISSUES",
+        loadItems: FETCH_REDMINE_ISSUES_URI
     }
 }
 

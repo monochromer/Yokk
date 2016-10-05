@@ -2,7 +2,7 @@ import React from 'react'
 import IssuesPerDay from './IssuesPerDay.jsx'
 import store from '../../store'
 import moment from 'moment'
-import { fetchIssues } from '../../actions/issues'
+import { fetchIssues, fetchRedmineIssues } from '../../actions/issues'
 import { connect } from 'react-redux'
 import { dayBeatify, durationBeatify, groupIssuesByDay } from '../../helpers'
 
