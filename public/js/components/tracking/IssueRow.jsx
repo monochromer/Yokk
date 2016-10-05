@@ -5,7 +5,7 @@ import { deleteIssue } from '../../actions/issues'
 
 var IssueRow = React.createClass({
     handleDelete: function(e) {
-        store.dispatch(deleteIssue());
+        store.dispatch(deleteIssue(this.props.issue._id));
     },
     render: function() {
         return (
