@@ -82,8 +82,9 @@ exports.saveTask = function(req, res) {
 
 exports.deleteTask = function(req, res) {
     const taskModel = req.app.db.models.tasks;
+    const taskId = req.params.taskId;
 
-    taskModel.findByIdAndRemove(req.params.taskId, function(err, task) {
+    taskModel.findByIdAndRemove(taskId, function(err, task) {
 
         if (err) {
             var response = {
@@ -110,10 +111,11 @@ exports.deleteTask = function(req, res) {
 
 exports.updateTask = function(req, res) {
     const taskModel = req.app.db.models.tasks;
-
+    const taskId = req.params.taskId;
+    
     var update = req.body;
 
-    taskModel.findByIdAndUpdate(req.params.taskId, update, function(err, task) {
+    taskModel.findByIdAndUpdate(taskId, update, function(err, task) {
         if (err) {
             var logMsq = 'There was some error while updating user data';
             log(req, logMsq).err();
