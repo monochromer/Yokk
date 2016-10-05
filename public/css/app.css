@@ -64,3 +64,9 @@ footer {
 	color: #666;
 	font-weight: normal;
 }
+.issue__source {
+	width: 100px;
+}
+.issue__description {
+	width: 700px;
+}

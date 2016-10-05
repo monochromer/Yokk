@@ -20,11 +20,11 @@ var IssuesPerDay = React.createClass({
                     </div>
                     <div className="row">
                         <div className="col-md-12">
-                            <table className="table">
+                            <table className="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <td></td>
-                                        <td>Task</td>
+                                        <td className="issue__source"></td>
+                                        <td className="issue__description">Task</td>
                                         <td>Duration</td>
                                         <td>Actions</td>
                                     </tr>
