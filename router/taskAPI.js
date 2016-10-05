@@ -88,19 +88,19 @@ exports.deleteTask = function(req, res) {
         if (err) {
             var response = {
                 message: "Some error uccured while deleting the task",
-                taskNumber: taskNumber
+                taskId: taskId
             };
         } else {
             var response = {
                 message: "Task successfully deleted",
-                taskNumber: taskNumber
+                taskId: taskId
             };
         }
 
         if (task == undefined) {
             var response = {
-                message: "Task {taskNumber: " + taskNumber + "} could not be found in DB",
-                taskNumber: taskNumber
+                message: "Task {taskId: " + taskId + "} could not be found in DB",
+                taskId: taskId
             };
         }
 
@@ -122,7 +122,7 @@ exports.updateTask = function(req, res) {
             console.log(task);
             const message = {
                 operationResult: 'Task updated',
-                updatedTaskNumber: taskNumber,
+                updatedTaskId: taskId,
                 update: update
             };
             log(req, message.operationResult).info()
