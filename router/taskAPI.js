@@ -112,7 +112,7 @@ exports.deleteTask = function(req, res) {
 exports.updateTask = function(req, res) {
     const taskModel = req.app.db.models.tasks;
     const taskId = req.params.taskId;
-    
+
     var update = req.body;
 
     taskModel.findByIdAndUpdate(taskId, update, function(err, task) {
@@ -138,29 +138,28 @@ exports.projectTasks = function(req, res) {
     const query = queryFiller(req.query);
 
     taskModel.findTasks(query, function(err, data) {
-        var responseData = {};
-        data.forEach((element) => {
-            let date = moment(element.dateAdded).format('DDMMYYYY');
-            element.dateAdded = undefined;
-
-            if (responseData[date]) {
-                responseData[date].list.push(element);
-                responseData[date].totalDuration += element.duration;
-            } else {
-                responseData[date] = {};
-                responseData[date].list = [];
-                responseData[date].list.push(element);
-                responseData[date].totalDuration = element.duration;
-            }
-        });
+        // var responseData = {};
+        // data.forEach((element) => {
+        //     let date = moment(element.dateAdded).format('DDMMYYYY');
+        //     element.dateAdded = undefined;
+        //
+        //     if (responseData[date]) {
+        //         responseData[date].list.push(element);
+        //         responseData[date].totalDuration += element.duration;
+        //     } else {
+        //         responseData[date] = {};
+        //         responseData[date].list = [];
+        //         responseData[date].list.push(element);
+        //         responseData[date].totalDuration = element.duration;
+        //     }
+        // });
 
         // var debugInfo = {};
         // debugInfo.params = req.params;
         // debugInfo.query = query;
         // debugInfo.data = data;
-        res.send(responseData);
+        res.send(data);
     });
-
 }
 
 exports.totalDuration = function(req, res) {
