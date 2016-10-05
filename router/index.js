@@ -31,7 +31,7 @@ module.exports = function(app, passport) {
     app.delete('/api/task/:taskId', checkAuthStatus, taskAPI.deleteTask);
     app.put('/api/task/:taskId', checkAuthStatus, taskAPI.updateTask);
 
-    app.get('/redmine/issues', redmine.importRedmineIssues);
+    app.get('/redmine/sync', redmine.importRedmineIssues);
 
     app.get('*', checkAuthStatus, helperRoutes.redirectUndefinedRoutes);
 

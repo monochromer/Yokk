@@ -1,14 +1,14 @@
 import React from 'react'
 import NewIssueForm from './newIssueForm.jsx'
 import IssuesList from './IssuesList.jsx'
+import SynchRedmineButton from './SynchRedmine.jsx'
 import store from '../../store.js'
 import moment from 'moment'
-import { createIssue } from '../../actions/issues.js'
-import { connect } from 'react-redux'
-import { refsToObject } from '../../helpers'
+import {createIssue} from '../../actions/issues.js'
+import {connect} from 'react-redux'
+import {refsToObject} from '../../helpers'
 
 var Tracking = React.createClass({
-
 
     render: function() {
         return (
@@ -20,8 +20,9 @@ var Tracking = React.createClass({
                         </h1>
                     </div>
                 </div>
-                <NewIssueForm />
-                <IssuesList />
+                <NewIssueForm/>
+                <SynchRedmineButton/>
+                <IssuesList/>
             </div>
         )
     }
