@@ -22,10 +22,11 @@ export default function(state = defaultState, action) {
             break;
 
         case "DELETE_ISSUE":
-
             return _.filter(state, (el) => el._id != payload.taskId );
             break;
-
+        case "UPDATE_ISSUE":
+            var newState = _.filter( state, ( o ) => o._id != payload._id );
+            return [...newState, payload]
         default:
             return state;
     }
