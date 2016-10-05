@@ -1,4 +1,4 @@
-import { FETCH_ISSUES_URI, CREATE_ISSUE_URI } from '../constants'
+import { FETCH_ISSUES_URI, CREATE_ISSUE_URI, DELETE_ISSUE_URI } from '../constants'
 
 export function fetchIssues() {
     return {
@@ -13,6 +13,16 @@ export function createIssue(issue) {
         createItem: {
             url: CREATE_ISSUE_URI,
             data: issue
+        }
+    }
+}
+
+export function deleteIssue(id) {
+    return {
+        type: "DELETE_ISSUE",
+        deleteItem: {
+            url: DELETE_ISSUE_URI,
+            data: id
         }
     }
 }
