@@ -21,8 +21,7 @@ export function deleteIssue(id) {
     return {
         type: "DELETE_ISSUE",
         deleteItem: {
-            url: DELETE_ISSUE_URI,
-            data: id
+            url: DELETE_ISSUE_URI + id
         }
     }
 }
