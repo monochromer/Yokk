@@ -26,7 +26,7 @@ var IssuesPerDay = React.createClass({
                                         <td className="issue__source"></td>
                                         <td className="issue__description">Task</td>
                                         <td>Duration</td>
-                                        <td>Actions</td>
+                                        <td className="issue__actions">Actions</td>
                                     </tr>
                                 </thead>
                                 <tbody>
