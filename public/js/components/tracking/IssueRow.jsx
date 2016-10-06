@@ -1,9 +1,10 @@
 import React from 'react'
+import InputElement from 'react-input-mask'
+import moment from 'moment'
 import store from '../../store'
 import { deleteIssue, updateIssue } from '../../actions/issues'
 import { durationBeatify, refsToObject } from '../../helpers'
-import moment from 'moment'
-import InputElement from 'react-input-mask'
+
 
 var IssueRow = React.createClass({
     getInitialState: function() {

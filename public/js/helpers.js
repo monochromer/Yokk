@@ -42,7 +42,7 @@ export function groupIssuesByDay(issues) {
 	});
 
 	for(let day in days) {
-		days[day].list = _.orderBy(days[day].list, ['dateAdded'], ['asc']);
+		days[day].list = _.orderBy(days[day].list, ['dateCreated'], ['desc']);
 	}
 
 	return days;

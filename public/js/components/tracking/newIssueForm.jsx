@@ -1,11 +1,40 @@
 import React from 'react'
+import InputElement from 'react-input-mask'
+import store from '../../store.js'
+import moment from 'moment'
 import { createIssue } from '../../actions/issues.js'
 import { connect } from 'react-redux'
 import { refsToObject } from '../../helpers'
-import store from '../../store.js'
-import moment from 'moment'
+import { validateDuration } from '../../utils/validators'
+
 
 var NewIssueForm = React.createClass({
+    getInitialState: function() {
+        return {
+            description: true,
+            duration: true,
+            date: true
+        }
+    },
+
+    validate: function(issue) {
+        if(!issue.description) {
+            this.setState({ description: false });
+            return false;
+        }
+
+        if(!moment(issue.dateAdded).isValid()) {
+            this.setState({ date: false });
+            return false;
+        }
+
+        if(validateDuration(issue.duration)) {
+            this.setState({ duration: false });
+            return false;
+        }
+        return true;
+    },
+
     handleSubmit: function(event) {
         event.preventDefault();
         var issue = refsToObject(this.refs);
@@ -13,6 +42,7 @@ var NewIssueForm = React.createClass({
     },
 
     render: function() {
+        let { description, date, duration } = this.state
         return (
             <div className="row">
                 <form onSubmit={ this.handleSubmit }>
@@ -21,29 +51,19 @@ var NewIssueForm = React.createClass({
                     <div className="col-md-7">
                         <div className="form-group">
                             <label htmlFor="date">Task</label>
-                            <input type="text" className="form-control" ref="description" placeholder="What are you working on?"/>
+                            <input type="text" className={ description ? "form-control" : "form-control has-error" } ref="description" placeholder="What are you working on?"/>
                         </div>
                     </div>
                     <div className="col-md-2">
                         <div className="form-group">
                             <label htmlFor="date">Date</label>
-                            <input type="text" className="form-control" ref="dateAdded" id="date" defaultValue={ moment().format("DD.MM.YYYY") } />
+                            <InputElement className={ date ? "form-control" : "form-control has-error" } ref="dateAdded" mask="99.99.9999" id="date" defaultValue={ moment().format("DD.MM.YYYY") } />
                         </div>
                     </div>
                     <div className="col-md-2">
                         <div className="form-group">
-                            <label htmlFor="time">Time</label>
-                            <select className="form-control" id="time" ref="duration" >
-                                <option value="00:30" default>0:30</option>
-                                <option value="01:00">01:00</option>
-                                <option value="01:30">01:30</option>
-                                <option value="02:00">02:00</option>
-                                <option value="02:30">02:30</option>
-                                <option value="03:00">03:00</option>
-                                <option value="03:30">03:30</option>
-                                <option value="04:00">04:00</option>
-                                <option value="04:30">04:30</option>
-                            </select>
+                            <label htmlFor="duration">Time</label>
+                            <InputElement className={ duration ? "form-control" : "form-control has-error" } ref="duration" mask="9:99" id="duration" placeholder="0:00"/>
                         </div>
                     </div>
                     <div className="col-md-1">
