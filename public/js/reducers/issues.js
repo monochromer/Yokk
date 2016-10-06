@@ -9,6 +9,9 @@ export default function(state = defaultState, action) {
     } = action;
 
     switch (type) {
+        case "CREATE_ISSUE":
+            return state.concat(payload);
+            break;
 
         case "FETCH_ISSUES":
             return payload;
@@ -19,15 +22,11 @@ export default function(state = defaultState, action) {
             break;
 
         case "DELETE_ISSUE":
-            var issues = {};
-            for (let date in state.list) {
-                issues[date] = _.filter(state.list[date], (el) => el._id != payload.taskId);
-            }
-            return Object.assign({}, state, {
-                list: issues
-            });
+            return _.filter(state, (el) => el._id != payload.taskId );
             break;
-
+        case "UPDATE_ISSUE":
+            var newState = _.filter( state, ( o ) => o._id != payload._id );
+            return [...newState, payload]
         default:
             return state;
     }

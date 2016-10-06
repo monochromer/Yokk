@@ -68,5 +68,11 @@ footer {
 	width: 100px;
 }
 .issue__description {
-	width: 700px;
+	width: 660px;
+}
+.issue__actions {
+	width:80px;
+}
+.issue__leftButton {
+	margin-right: 5px;
 }

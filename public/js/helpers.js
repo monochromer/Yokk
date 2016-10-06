@@ -20,14 +20,14 @@ export function dayBeatify(date, format) {
 }
 
 export function durationBeatify(minutes) {
-	var duration = moment.duration(minutes, 'minutes');
-	return duration.get('hours') + " h " + duration.get('minutes') + " min";
+	let duration = moment.duration(minutes, 'minutes');
+	let min = duration.get('minutes') < 10 ? "0" + duration.get('minutes') : duration.get('minutes');
+	return duration.get('hours') + ":" + min;
 }
 
 export function groupIssuesByDay(issues) {
 	var days = {};
 	var sorted = _.orderBy(issues, ['dateAdded'], ['desc']);
-	console.log(sorted);
 	sorted.map((issue) => {
 		let day = dayBeatify(issue.dateAdded);
 		if(!days[day]) {
@@ -40,6 +40,10 @@ export function groupIssuesByDay(issues) {
 			days[day].totalDuration += issue.duration;
 		}
 	});
-	console.log(days);
+
+	for(let day in days) {
+		days[day].list = _.orderBy(days[day].list, ['dateAdded'], ['asc']);
+	}
+
 	return days;
 }
