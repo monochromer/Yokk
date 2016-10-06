@@ -51,18 +51,20 @@ exports.importRedmineIssues = function(req, res) {
 
                 const p = [];
                 const entries = [];
+                let offset = 0;
                 do {
-                    let timeEntriesParams = {
+                    var timeEntriesParams = {
                         limit: numOfEntriesToGet, //redmine limit for getting entries
                         user_id: userData.user.id,
-                        offset: 0
+                        offset: offset
                     };
-
+                    console.log(timeEntriesParams);
                     let promiseToGetEntries = new Promise((resolve, reject) => {
                         redmine.time_entries(timeEntriesParams, (err, data) => {
                             if (err) reject(err);
                             data.time_entries.forEach(element => {
                                 let entry = {};
+                                entry.redmineTimeEntryId = element.id;
                                 entry.taskNumber = element.issue.id;
                                 entry.executor = timeEntriesParams.user_id;
                                 entry.dateAdded = entry.dateCreated = moment(element.created_on).toDate();
@@ -78,11 +80,11 @@ exports.importRedmineIssues = function(req, res) {
                             resolve(entries);
                         });
                     });
-                    // promiseToGetEntries.then((val)=>{console.log(val);});
+                    // promiseToGetEntries.then((val)=>{res.send(val);});
                     p.push(promiseToGetEntries);
 
-                    timeEntriesParams.offset += 100; //redmine limit for getting entries 100
-                    numOfEntriesToGet -= timeEntriesParams.offset;
+                    offset += 100; //redmine limit for getting entries 100
+                    numOfEntriesToGet -= offset;
                 }
                 while (numOfEntriesToGet > 0);
 
@@ -97,34 +99,21 @@ exports.importRedmineIssues = function(req, res) {
                     const entryPromisesArray = [];
                     entries.forEach((entry) => {
                         let promiseIssueUpsert = new Promise((resolve, reject) => {
-                            let task = new taskModel(entry);
-                            task.save((err, doc) => {
+                            taskModel.findOneAndUpdate({
+                                redmineTimeEntryId: entry.redmineTimeEntryId
+                            }, entry, {
+                                upsert: true
+                            }, (err, doc) => {
                                 if (err) {
                                     console.log('Error while saving an entry!');
                                     console.log(err);
                                     errors.push(err);
                                     resolve(err);
                                 } else {
-                                    console.log('Entry saved successfully');
+                                    console.log('Entry saved/updated successfully');
                                     resolve(doc);
                                 }
                             });
-                            // taskModel.findOneAndUpdate({
-                            //     taskNumber: entry.taskNumber
-                            // }, entry, {
-                            //     new: true,
-                            //     upsert: true
-                            // }, (err, doc) => {
-                            //     if (err) {
-                            //         console.log('Error while saving an entry!');
-                            //         console.log(err);
-                            //         errors.push(err);
-                            //         resolve(err);
-                            //     } else {
-                            //         console.log('Entry saved/updated successfully');
-                            //         resolve(doc);
-                            //     }
-                            // });
                         });
                         entryPromisesArray.push(promiseIssueUpsert);
                     });
@@ -135,9 +124,6 @@ exports.importRedmineIssues = function(req, res) {
 
                 });
             });
-
-
-
 
             // params:
             // limit: Num (number of issues per page)

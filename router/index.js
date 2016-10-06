@@ -7,6 +7,7 @@ const taskAPI = require('./taskAPI');
 const helperRoutes = require('./helperRoutes');
 const redmine = require('./redmine');
 const upload = require('../helpers/file_upload');
+const checkFrontPath = require('./frontPaths.js');
 
 module.exports = function(app, passport) {
 
@@ -33,6 +34,6 @@ module.exports = function(app, passport) {
 
     app.get('/redmine/sync', redmine.importRedmineIssues);
 
-    app.get('*', checkAuthStatus, helperRoutes.redirectUndefinedRoutes);
+    app.get('*', checkAuthStatus, checkFrontPath, helperRoutes.redirectUndefinedRoutes);
 
 }

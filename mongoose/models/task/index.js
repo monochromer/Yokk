@@ -5,6 +5,7 @@ var statics = require('./statics');
 module.exports = function(app, mongoose) {
     var taskSchema = new mongoose.Schema({
         taskNumber: Number,
+        redmineTimeEntryId: Number,
         executor: {
             type: String,
             required: true
