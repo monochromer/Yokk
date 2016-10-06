@@ -22,8 +22,6 @@ const router = (
 				<Route path="addUser" component={ UserAdd }></Route>
 				<Route path="user/:login" component={ UserPage }></Route>
 				<Route path="user/edit/:login" component={ UserEdit }></Route>
-				<Route path="tests" component={ RequestTest }></Route>
-        <Route path="issues" component={ RedmineIssuesTable }></Route>
 			</Route>
 		</Router>
 	</Provider>
