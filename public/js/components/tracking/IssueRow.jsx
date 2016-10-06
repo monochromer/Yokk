@@ -35,7 +35,7 @@ var IssueRow = React.createClass({
 
     render: function() {
         let { taskSource, description, duration, taskNumber } = this.props.issue;
-        if(taskSource = "redmine") {
+        if(taskSource == "redmine") {
             description = '<a href="http://redmine.soshace.com/issues/' + taskNumber + '">issue ' + taskNumber + '</a> ' + description;
         }
 
@@ -59,6 +59,11 @@ var IssueRow = React.createClass({
                 </button>
             </div>
         );
+        let buttonsBlock = "";
+        if(taskSource != "redmine") {
+            buttonsBlock = this.state.editing ? buttonsEditing : buttons;
+        }
+
         return (
             <tr>
                 <td> { taskSource } </td>
@@ -76,12 +81,7 @@ var IssueRow = React.createClass({
                             : <InputElement className="form-control" mask="9:99" defaultValue={ durationBeatify(duration) } ref="duration" />
                     }
                 </td>
-                <td>
-                    {
-                        !this.state.editing ? buttons : buttonsEditing
-                    }
-
-                </td>
+                <td> { buttonsBlock } </td>
             </tr>
         )
     }

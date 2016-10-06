@@ -1,9 +1,10 @@
 import { FETCH_ISSUES_URI, CREATE_ISSUE_URI, DELETE_ISSUE_URI, FETCH_REDMINE_ISSUES_URI, UPDATE_ISSUE_URI } from '../constants'
+import moment from 'moment'
 
-export function fetchIssues() {
+export function fetchIssues(from) {
     return {
         type: "FETCH_ISSUES",
-        loadItems: FETCH_ISSUES_URI
+        loadItems: FETCH_ISSUES_URI + '?from=' + from
     }
 }
 
