@@ -17,6 +17,7 @@ exports.importRedmineIssues = function(req, res) {
     }, (err, user) => {
         if (!user.redmineApiKey) {
             console.log('Redmine API key not found for current user');
+            res.status(401).send();
             return
         };
         const redmineConnectionConfig = {
@@ -65,7 +66,11 @@ exports.importRedmineIssues = function(req, res) {
                                 entry.taskNumber = element.issue.id;
                                 entry.executor = timeEntriesParams.user_id;
                                 entry.dateAdded = entry.dateCreated = moment(element.created_on).toDate();
-                                entry.description = element.comments;
+                                if (!element.comments) {
+                                    entry.description = 'no comments';
+                                } else {
+                                    entry.description = element.comments;
+                                }
                                 entry.duration = (element.hours * 60).toFixed(0);
                                 entry.taskSource = 'redmine';
                                 entries.push(entry);
@@ -92,22 +97,34 @@ exports.importRedmineIssues = function(req, res) {
                     const entryPromisesArray = [];
                     entries.forEach((entry) => {
                         let promiseIssueUpsert = new Promise((resolve, reject) => {
-                            taskModel.findOneAndUpdate({
-                                taskNumber: entry.taskNumber
-                            }, entry, {
-                                new: true,
-                                upsert: true
-                            }, (err, doc) => {
+                            let task = new taskModel(entry);
+                            task.save((err, doc) => {
                                 if (err) {
                                     console.log('Error while saving an entry!');
                                     console.log(err);
                                     errors.push(err);
                                     resolve(err);
                                 } else {
-                                    console.log('Entry saved/updated successfully');
+                                    console.log('Entry saved successfully');
                                     resolve(doc);
                                 }
                             });
+                            // taskModel.findOneAndUpdate({
+                            //     taskNumber: entry.taskNumber
+                            // }, entry, {
+                            //     new: true,
+                            //     upsert: true
+                            // }, (err, doc) => {
+                            //     if (err) {
+                            //         console.log('Error while saving an entry!');
+                            //         console.log(err);
+                            //         errors.push(err);
+                            //         resolve(err);
+                            //     } else {
+                            //         console.log('Entry saved/updated successfully');
+                            //         resolve(doc);
+                            //     }
+                            // });
                         });
                         entryPromisesArray.push(promiseIssueUpsert);
                     });
