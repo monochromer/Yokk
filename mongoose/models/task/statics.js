@@ -7,7 +7,7 @@ module.exports = function(schema) {
             _id: 1,
             taskNumber: 1,
             executor: 1,
-            date: 1,
+            dateAdded: 1,
             description: 1,
             minutesSpent: 1,
             taskSource: 1
@@ -22,6 +22,7 @@ module.exports = function(schema) {
             description: 1,
             duration: 1,
             dateAdded: 1,
+            dateCreated: 1,
             executor: 1,
             taskSource: 1,
             duration: 1

@@ -13,6 +13,10 @@ module.exports = function(app, mongoose) {
             type: Date,
             default: Date.now
         },
+        dateCreated: {
+            type: Date,
+            default: Date.now
+        },
         startDate: {
             type: Date,
             default: Date.now
