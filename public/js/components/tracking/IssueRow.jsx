@@ -3,6 +3,7 @@ import store from '../../store'
 import { deleteIssue, updateIssue } from '../../actions/issues'
 import { durationBeatify, refsToObject } from '../../helpers'
 import moment from 'moment'
+import InputElement from 'react-input-mask'
 
 var IssueRow = React.createClass({
     getInitialState: function() {
@@ -26,7 +27,7 @@ var IssueRow = React.createClass({
     handleSave: function(e) {
         e.preventDefault();
         let editedIssue = Object.assign({}, this.props.issue, refsToObject(this.refs));
-        editedIssue.duration = moment(editedIssue.duration).asMinutes;
+        editedIssue.duration = moment.duration(editedIssue.duration).asMinutes();
         store.dispatch(updateIssue(editedIssue));
         this.setState({ editing: false });
     },
@@ -52,7 +53,7 @@ var IssueRow = React.createClass({
                     <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
                 </button>
             </div>
-        )
+        );
         return (
             <tr>
                 <td> { taskSource } </td>
@@ -67,7 +68,7 @@ var IssueRow = React.createClass({
                     {
                         !this.state.editing
                             ? durationBeatify(duration)
-                            : <input className="form-control" defaultValue={ durationBeatify(duration) } ref="duration" />
+                            : <InputElement className="form-control" mask="9:99" defaultValue={ durationBeatify(duration) } ref="duration" />
                     }
                 </td>
                 <td>
