@@ -34,7 +34,11 @@ var IssueRow = React.createClass({
     },
 
     render: function() {
-        let { taskSource, description, duration } = this.props.issue;
+        let { taskSource, description, duration, taskNumber } = this.props.issue;
+        if(taskSource = "redmine") {
+            description = '<a href="http://redmine.soshace.com/issues/' + taskNumber + '">issue ' + taskNumber + '</a> ' + description;
+        }
+
         let buttons = (
             <div>
                 <button type="button" className="btn btn-default btn-xs issue__leftButton" onClick={ this.handleEdit }>
@@ -61,7 +65,7 @@ var IssueRow = React.createClass({
                 <td>
                     {
                         !this.state.editing
-                            ? description
+                            ? <span dangerouslySetInnerHTML={{__html: description}}></span>
                             : <input className="form-control" defaultValue={ description } ref="description" />
                      }
                 </td>

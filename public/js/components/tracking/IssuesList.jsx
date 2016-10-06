@@ -12,10 +12,9 @@ var IssuesList = React.createClass({
     },
 
     render: function() {
-        const { issues } = this.props;
-        var days = groupIssuesByDay(issues);
+        const { days } = this.props;
         var rows = [];
-
+        console.log(days);
         for( var day in days) {
             var duration = durationBeatify(days[day].totalDuration);
             rows.push(<IssuesPerDay day={ day } duration={ duration } issues={ days[day].list } key={ day } />)
@@ -29,9 +28,11 @@ var IssuesList = React.createClass({
 });
 
 var getProps = function(state) {
-        return {
-            issues: state.issues
-        }
+    console.log("STATE_ISSUES_IS");
+    console.log(state.issues);    
+    return {
+        days: groupIssuesByDay(state.issues)
+    }
 }
 
 export default connect(getProps)(IssuesList)
