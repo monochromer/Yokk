@@ -20,7 +20,8 @@ module.exports = function(schema) {
             cv: 1,
             profileImg: 1,
             joinedon: 1,
-            role: 1
+            role: 1,
+            redmineApiKey: 1
         }
         return this.find({}, fieldsToReturn, cb);
     };

@@ -146,6 +146,14 @@ var UserEdit = React.createClass({
                                 </div>
                                 <div className="row">
                                     <div className="col-md-12">
+                                        <div className="form-group">
+                                            <label htmlFor="redmineApiKey">Redmine API key</label>
+                                            <input type="text" className="form-control" id="redmineApiKey" ref="redmineApiKey" defaultValue={this.state.user.redmineApiKey} />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-md-12">
                                         <button type="submit" className="btn btn-lg btn-success" style={{
                                             "margin": "20px 0",
                                             "float": "right"

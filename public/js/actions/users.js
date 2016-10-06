@@ -31,7 +31,7 @@ export function deleteUser(login) {
 
 export function updateUser(user) {
     return function(dispatch) {
-        request.put(UPDATE_USER_URI + user.login).send(user.login, user).end((err, response) => {
+        request.put(UPDATE_USER_URI + user.login).send(user).end((err, response) => {
             dispatch({
                 type: "CHANGE_USER",
                 payload: response.body

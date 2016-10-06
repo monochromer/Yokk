@@ -12,7 +12,6 @@ exports.login = function(req, res) {
 }
 
 exports.auth = function(req, res) {
-    console.log(req.body);
     var logMsq = 'User (login: ' + req.user.login + ') is authorized and redirected to /';
     log(req, logMsq).info();
     res.redirect('/');

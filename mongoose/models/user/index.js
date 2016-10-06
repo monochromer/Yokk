@@ -40,7 +40,8 @@ module.exports = function(app, mongoose) {
         role: {
             type: String,
             default: 'user'
-        }
+        },
+        redmineApiKey: String
     });
 
     methods(userSchema);
