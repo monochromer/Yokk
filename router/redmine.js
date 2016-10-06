@@ -11,7 +11,7 @@ exports.importRedmineIssues = function(req, res) {
     const userModel = req.app.db.models.User;
     const redmineConnectionConfig = {};
     userModel.findOne({
-        login: req.query.login
+        login: req.user.login
     }, {
         redmineApiKey: 1
     }, (err, user) => {
