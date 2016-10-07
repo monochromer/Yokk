@@ -101,7 +101,8 @@ exports.importRedmineIssues = (req, res) => {
                             taskModel.findOneAndUpdate({
                                 redmineTimeEntryId: entry.redmineTimeEntryId
                             }, entry, {
-                                upsert: true
+                                new: true,
+                                upsert: true,
                             }, (err, doc) => {
                                 if (err) {
                                     console.log('Error while saving an entry:');
