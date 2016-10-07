@@ -2,11 +2,11 @@ import React from 'react'
 import InputElement from 'react-input-mask'
 import store from '../../store.js'
 import moment from 'moment'
+import datePicker from './DatePicker.jsx'
 import { createIssue, fetchRedmineIssues } from '../../actions/issues.js'
 import { connect } from 'react-redux'
 import { refsToObject, findUserByLogin } from '../../helpers'
 import { validateDuration } from '../../utils/validators'
-
 
 var NewIssueForm = React.createClass({
     getInitialState: function() {
@@ -119,6 +119,11 @@ var NewIssueForm = React.createClass({
                                 <InputElement className="form-control" onBlur={ this.blurDate } mask="99.99.9999" id="date" defaultValue={ moment().format("DD.MM.YYYY") } />
                             </div>
                         </div>
+                        {/* DON'T WORK
+                          <div className="col-md-2">
+                          <datePicker />
+                          </div>
+                          */}
                         <div className="col-md-2">
                             <div className={ (duration.valid || duration.virgin) ? "form-group" : "group has-error" }>
                                 <label htmlFor="duration">Time</label>

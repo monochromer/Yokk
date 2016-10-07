@@ -135,6 +135,5 @@ exports.uploadUserAvatar = function(req, res) {
 
 exports.checkUserPermissions = (req, res) => {
     // as of now, returned fields can be adjusted in userpassport.js
-    console.log(req.user);
     res.send(req.user);
 }

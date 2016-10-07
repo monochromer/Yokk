@@ -20,6 +20,9 @@ module.exports = {
                 presets: ['es2015', 'react'],
                 plugins: ['transform-decorators-legacy'],
             }
+        }, {
+            test: /\.css$/,
+            loader: "style-loader!css-loader"
         }]
     },
     watch: true,

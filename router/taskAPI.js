@@ -6,6 +6,7 @@ const stringToMinutes = require('../helpers/issues').stringToMinutes;
 const queryFiller = require('./helpers/queryFiller');
 
 exports.saveTask = (req, res) => {
+    console.log(req.body);
     const taskModel = req.app.db.models.tasks;
     const task = new taskModel(req.body);
 
@@ -136,6 +137,7 @@ exports.projectTasks = (req, res) => {
     const taskModel = req.app.db.models.tasks;
     const query = queryFiller(req.query);
     query.executor = req.user.login;
+    // console.log(query); !!!!!!! INVALID DATE
 
     taskModel.findTasks(query, (err, data) => {
         // var responseData = {};
