@@ -1,15 +1,15 @@
-var path = require('path')
-var webpack = require('webpack')
+const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
     devtool: 'source-map',
     entry: {
         index: './public/js/app.js',
-        login: './public/js/login.js'
+        login: './public/js/login.js',
     },
     output: {
         path: path.join(__dirname, 'public/build/'),
-        filename: "[name].bundle.js"
+        filename: '[name].bundle.js',
     },
     module: {
         loaders: [{
@@ -18,9 +18,9 @@ module.exports = {
             exclude: /node_modules/,
             query: {
                 presets: ['es2015', 'react'],
-                plugins: ['transform-decorators-legacy']
+                plugins: ['transform-decorators-legacy'],
             }
         }]
     },
-    watch: true
+    watch: true,
 }

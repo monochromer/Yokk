@@ -6,8 +6,8 @@ const FrontPaths = [
 ]
 
 module.exports = function(req, res, next) {
-    if (FrontPaths.includes(req.url)) {
-        res.send('req.url');
-    };
+    // if (FrontPaths.includes(req.url)) {
+    //     res.send('req.url');
+    // };
     next();
 };

@@ -2,110 +2,96 @@
 
 const log = require('../helpers/logger');
 
-exports.getAllUsers = function(req, res) {
-    var userModel = req.app.db.models.User;
-    userModel.allUsers(function(err, user) {
+exports.getAllUsers = (req, res) => {
+    const userModel = req.app.db.models.User;
+    userModel.allUsers((err, user) => {
         // returned fields can be adjusted in User schema
         if (err) {
-            var logMsq = 'There was some error while gettin data on users from DB';
+            const logMsq = 'There was some error while gettin data on users from DB';
             log(req, logMsq).err();
-            return res.send('Error. Look server logs.');
+            return res.status(500).send();
         }
         res.send(user);
     });
 }
 
-exports.saveUserToDb = function(req, res) {
-
-    var userModel = req.app.db.models.User;
-    var user = new userModel(req.body);
+exports.saveUserToDb = (req, res) => {
+    const userModel = req.app.db.models.User;
+    const user = new userModel(req.body);
     user.joinedon = Date.now();
 
     if (!user.login) {
-        var logmsg = 'User login not specified';
+        const logmsg = 'User login not specified';
         res.send({
             message: logmsg
         });
         return log(req, logmsg).err();
     }
 
-    userModel.findByLogin(user.login, function(err, dbUser) {
+    userModel.findByLogin(user.login, (err, dbUser) => {
         if (err) {
-            res.send({
-                message: 'Some error occured while checking if user (login: ' +
-                    user.login + ') in DB. Look server logs.'
-            });
+            res.status(500).send();
             return log(req, err).err();
         }
         if (!dbUser) {
-            user.save(function(err, user) {
+            user.save((err, user) => {
                 if (err) {
                     log(req, err).err();
-                    return res.send({
-                        message: 'Some error occured while saving user (login: ' +
-                            user.login + ') in DB. Look server logs.'
-                    });
+                    return res.status(500).send();
                 };
-                var logMsq = 'User (login: ' + user.login + ') is saved to DB';
+                const logMsq = `User (login: ${user.login}) is saved to DB`;
                 res.status(200).send(user);
                 return log(req, logMsq).info();
             });
         } else {
-            var logMsq = 'User (login: ' + user.login + ') is already in DB';
-            res.status(500).send({
-                message: logMsq
-            });
+            const logMsq = `User (login: ${user.login}) is already in DB`;
+            res.status(500).send();
             return log(req, logMsq).info()
         }
-
     });
-
 }
 
-exports.showUser = function(req, res) {
-    var userModel = req.app.db.models.User;
-    var login = req.params.user_login;
-    // returned fields can be adjusted in User schema
-    userModel.findByLogin(login, function(err, user) {
+exports.showUser = (req, res) => {
+    const userModel = req.app.db.models.User;
+    const login = req.params.user_login;
+    userModel.findByLogin(login, (err, user) => {
         if (err) return log(req, err).err();
         log(req).info();
         res.send(user);
     });
 }
 
-exports.updateUser = function(req, res) {
-    var userModel = req.app.db.models.User;
-    var login = req.params.user_login;
-    var update = req.body;
-    userModel.editUser(login, update, function(err, user) {
+exports.updateUser = (req, res) => {
+    const userModel = req.app.db.models.User;
+    const login = req.params.user_login;
+    const update = req.body;
+    userModel.editUser(login, update, (err, user) => {
         if (err) {
-            var logMsq = 'There was some error while updating user data';
+            const logMsq = 'There was some error while updating user data';
             log(req, logMsq).err();
-            return res.send('Error. Look server logs.');
+            return res.status(500).send();
         }
-        var logMsq = 'User (login: ' + login + ') is updated';
-        log(req, logMsq).info()
+        const logMsq = `User (login: ${login}) is updated`;
+        log(req, logMsq).info();
+        console.log(user);
         res.status(200).send(user);
     });
 }
 
-exports.deleteUser = function(req, res) {
-    var userModel = req.app.db.models.User;
-    var login = req.params.user_login;
+exports.deleteUser = (req, res) => {
+    const userModel = req.app.db.models.User;
+    const login = req.params.user_login;
     const rmdir = require('../helpers/rmdir');
     const path = require('path');
 
-    if (login === req.user.login) { //deleting yourself (authorized user)
-        userModel.deleteUser(login, function(err) {
+    if (login === req.user.login) { //deleting current user
+        userModel.deleteUser(login, (err) => {
             if (err) {
                 log(req, err).err();
-                return res.send({
-                    message: 'Some error occured while deleting user (login: ' +
-                        login + ') in DB. Look server logs.'
-                });
+                return res.status(500).send();
             };
             rmdir(path.join(__dirname, '../uploads/users/', login));
-            var logMsq = 'User ' + login + ' succesfully deleted';
+            const logMsq = `User ${login} succesfully deleted`;
             log(req, logMsq).info();
             req.logout();
             res.status(200).send({
@@ -114,12 +100,12 @@ exports.deleteUser = function(req, res) {
         });
 
     } else { //deleting any other user (admins can do)
-        userModel.deleteUser(login, function(err) {
+        userModel.deleteUser(login, (err) => {
             if (err) {
                 return log(req, err).err();
             };
             rmdir(path.join(__dirname, '../uploads/users/', login));
-            var logMsq = 'User ' + login + ' succesfully deleted';
+            const logMsq = `User ${login} succesfully deleted`;
             log(req, logMsq).info()
             res.status(200).send(login);
         });
@@ -127,29 +113,28 @@ exports.deleteUser = function(req, res) {
 }
 
 exports.uploadUserAvatar = function(req, res) {
-    var userModel = req.app.db.models.User;
-    var login = req.params.user_login;
-    var path = require('path');
-    var momemnt = require('moment')
+    const userModel = req.app.db.models.User;
+    const login = req.params.user_login;
+    const path = require('path');
+    const momemnt = require('moment');
 
     const urlToSave = '/' + req.file.path.split('/').slice(1).slice(-4).join('/');
-    var update = {
+    const update = {
         profileImg: urlToSave
     };
-    userModel.editUser(login, update, function(err, user) {
+    userModel.editUser(login, update, (err, user) => {
         if (err)
             res.send(err);
         if (user) {
             res.status(200).send(user);
         } else {
-            res.status(404).send({
-                message: 'User ' + login + ' is not found in DB'
-            });
+            res.status(404).send();
         }
     });
 }
 
-exports.checkUserPermissions = function(req, res) {
+exports.checkUserPermissions = (req, res) => {
     // as of now, returned fields can be adjusted in userpassport.js
+    console.log(req.user);
     res.send(req.user);
 }

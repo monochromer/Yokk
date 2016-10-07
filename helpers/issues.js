@@ -1,6 +1,8 @@
-var moment = require('moment');
+'use strict'
 
-exports.stringToMinutes = function(duration) {
-    var minutes = moment.duration(duration).asMinutes();
+const moment = require('moment');
+
+exports.stringToMinutes = (duration) => {
+    const minutes = moment.duration(duration).asMinutes();
     return minutes;
 }

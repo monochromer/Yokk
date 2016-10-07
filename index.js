@@ -11,16 +11,12 @@ const sessions = require('express-session');
 require('./mongoose')(app);
 
 //middleware
-app.use(bodyParser.json({
-    strict: true
-}));
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
+app.use(bodyParser.json({ strict: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(sessions({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
 }));
 
 // setting static folder
@@ -33,6 +29,4 @@ var passport = require('./helpers/userpassport')(app);
 require('./router')(app, passport);
 
 app.set('port', (process.env.PORT || 5000));
-app.listen(app.get('port'), () => {
-    console.log('App is listening on port ' + app.get('port'));
-});
+app.listen(app.get('port'), () => console.log(`App is listening on port  + ${app.get('port')}`));

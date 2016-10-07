@@ -1,5 +1,5 @@
 const path = require('path');
-let allTheRoutes = [];
+const allTheRoutes = [];
 
 /******* Heap's Permutation Algorithm *********/
 var swap = function(array, pos1, pos2) {

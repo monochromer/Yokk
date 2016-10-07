@@ -9,7 +9,7 @@ const redmine = require('./redmine');
 const upload = require('../helpers/file_upload');
 const checkFrontPath = require('./frontPaths.js');
 
-module.exports = function(app, passport) {
+module.exports = (app, passport) => {
 
     app.get('/', checkAuthStatus, authorization.index);
     app.get('/login', authorization.login);

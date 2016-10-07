@@ -3,9 +3,9 @@
 const fs = require('fs');
 const path = require("path");
 
-var deleteFolderRecursive = function(pathToDelete) {
+const deleteFolderRecursive = (pathToDelete) => {
     if (fs.existsSync(pathToDelete)) {
-        fs.readdirSync(pathToDelete).forEach(function(file, index) {
+        fs.readdirSync(pathToDelete).forEach((file, index) => {
             var curPath = path.join(pathToDelete, file);
             if (fs.lstatSync(curPath).isDirectory()) { // recurse
                 deleteFolderRecursive(curPath);

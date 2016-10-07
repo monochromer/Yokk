@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = function(checkedValue, assignedValue) {
+module.exports = (checkedValue, assignedValue) => {
     if (typeof assignedValue === 'undefined') {
         assignedValue = checkedValue;
     };

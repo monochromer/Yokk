@@ -7,7 +7,7 @@ const assignDefined = require('./helpers/assignDefined');
 var hostname = process.env.REDMINE_HOST || 'redmine.soshace.com';
 
 
-exports.importRedmineIssues = function(req, res) {
+exports.importRedmineIssues = (req, res) => {
     const userModel = req.app.db.models.User;
     const redmineConnectionConfig = {};
     userModel.findOne({
@@ -18,14 +18,14 @@ exports.importRedmineIssues = function(req, res) {
         if (!user.redmineApiKey) {
             console.log('Redmine API key not found for current user');
             res.status(401).send();
-            return
+            return;
         };
+
         const redmineConnectionConfig = {
             apiKey: user.redmineApiKey
         };
 
         const redmine = new redmineObject(hostname, redmineConnectionConfig);
-
         const params = {};
         params.limit = req.query.limit;
 
@@ -56,9 +56,9 @@ exports.importRedmineIssues = function(req, res) {
                     var timeEntriesParams = {
                         limit: numOfEntriesToGet, //redmine limit for getting entries
                         user_id: userData.user.id,
-                        offset: offset
+                        offset: offset,
                     };
-                    console.log(timeEntriesParams);
+
                     let promiseToGetEntries = new Promise((resolve, reject) => {
                         redmine.time_entries(timeEntriesParams, (err, data) => {
                             if (err) reject(err);
@@ -80,7 +80,6 @@ exports.importRedmineIssues = function(req, res) {
                             resolve(entries);
                         });
                     });
-                    // promiseToGetEntries.then((val)=>{res.send(val);});
                     p.push(promiseToGetEntries);
 
                     offset += 100; //redmine limit for getting entries 100
@@ -105,108 +104,23 @@ exports.importRedmineIssues = function(req, res) {
                                 upsert: true
                             }, (err, doc) => {
                                 if (err) {
-                                    console.log('Error while saving an entry!');
+                                    console.log('Error while saving an entry:');
                                     console.log(err);
                                     errors.push(err);
                                     resolve(err);
                                 } else {
-                                    console.log('Entry saved/updated successfully');
                                     resolve(doc);
                                 }
                             });
                         });
                         entryPromisesArray.push(promiseIssueUpsert);
                     });
-                    Promise.all(entryPromisesArray).then(documents => {
+                    Promise.all(entryPromisesArray).then((documents) => {
+                        console.log('Tasks are syncronized');
                         res.status(200).send(documents);
                     })
-
-
                 });
             });
-
-            // params:
-            // limit: Num (number of issues per page)
-            // offset: Num (skip this number of issues in response)
-            // sort: ColumntName (or sort:desc)
-            // FILTERS: project_id, subproject_id, tracker_id, status_id, assigned_to_id ...
-            // created_on: date (TODO: how to give a period?)
-
-            //         redmine.issues(params, function(err, data) {
-            //             var issuePromisesArray = [];
-            //             if (err) throw err;
-            //
-            //             data.issues.forEach((element) => {
-            //                 let promiseIssue = new Promise((resolve, reject) => {
-            //                     redmine.get_issue_by_id(element.id, params, (err, data) => {
-            //                         let task = {};
-            //                         task.taskNumber = element.id;
-            //
-            //                         // executor probably should be from request
-            //                         if (typeof data.issue.assigned_to === 'undefined') {
-            //                             task.executor = 'not assigned';
-            //                         } else {
-            //                             task.executor = data.issue.assigned_to.name;
-            //                         };
-            //                         task.dateAdded = moment(data.issue.created_on, 'YYYY-MM-DD').toDate();
-            //
-            //                         if (typeof data.issue.start_date === 'undefined') {
-            //                             task.startDate = moment().toDate()
-            //                         } else {
-            //                             task.startDate = moment(data.issue.start_date, 'YYYY-MM-DD').toDate();
-            //                         };
-            //
-            //                         if (typeof data.issue.due_date === 'undefined') {
-            //                             task.endDate = moment().toDate()
-            //                         } else {
-            //                             task.endDate = moment(data.issue.due_date, 'YYYY-MM-DD').toDate();
-            //                         };
-            //
-            //                         task.description = data.issue.subject;
-            //                         task.duration = (data.issue.spent_hours * 60).toFixed(0);
-            //                         task.taskSource = 'redmine';
-            //                         resolve(task);
-            //                     });
-            //                 });
-            //                 issuePromisesArray.push(promiseIssue);
-            //             });
-            //             Promise.all(issuePromisesArray).then(tasks => {
-            //                 var updateIssuePromisesArray = [];
-            //                 let errors = [];
-            //                 tasks.forEach(task => {
-            //                     let promiseIssueUpdate = new Promise((resolve, reject) => {
-            //                         taskModel.findOneAndUpdate({
-            //                             taskNumber: task.taskNumber
-            //                         }, task, {
-            //                             new: true,
-            //                             upsert: true
-            //                         }, (err, doc) => {
-            //                             if (err) {
-            //                                 console.log('Error while saving a task!');
-            //                                 console.log(err);
-            //                                 errors.push(err);
-            //                                 resolve(err);
-            //                             } else {
-            //                                 console.log('Task saved/updated successfully');
-            //                                 resolve(doc);
-            //                             }
-            //                         })
-            //                     });
-            //                     updateIssuePromisesArray.push(promiseIssueUpdate);
-            //                 });
-            //                 Promise.all(updateIssuePromisesArray).then(issues => {
-            //                     res.send(issues);
-            //                 });
-            //                 // if (Object.keys(errors).length === 0 && errors.constructor === Object) {
-            //                 //     res.send({
-            //                 //         errors: errors
-            //                 //     });
-            //                 // } else {
-            //                 //     res.send(tasks);
-            //                 // }
-            //
-            //             });
-            //         });
         });
     });
 }
