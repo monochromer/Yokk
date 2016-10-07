@@ -11,9 +11,21 @@ import { validateDuration } from '../../utils/validators'
 var NewIssueForm = React.createClass({
     getInitialState: function() {
         return {
-            description: true,
-            duration: true,
-            date: true
+            description: {
+                value: "",
+                valid: false,
+                virgin: true,
+            },
+            duration: {
+                value: "",
+                valid: false,
+                virgin: true,
+            },
+            dateCreated: {
+                value: "",
+                valid: true,
+                virgin: false,
+            }
         }
     },
 
@@ -21,32 +33,61 @@ var NewIssueForm = React.createClass({
         store.dispatch(fetchRedmineIssues());
     },
 
-    validate: function(issue) {
-        if(!issue.description) {
-            this.setState({ description: false });
-            return false;
-        }
+    blurDescription: function(event) {
+        const { value } = event.target
+        this.setState({
+            description: {
+                value: value,
+                valid: value ? true : false,
+                virgin: false,
+            }
+        });
+    },
 
-        if(!moment(issue.dateAdded).isValid()) {
-            this.setState({ date: false });
-            return false;
-        }
+    blurDate: function(event) {
+        const { value } = event.target
+        this.setState({
+            dateCreated: {
+                value: value,
+                valid: moment(value, "DD.MM.YYYY").isValid(),
+                virgin: false,
+            }
+        });
+    },
 
-        if(validateDuration(issue.duration)) {
-            this.setState({ duration: false });
-            return false;
-        }
-        return true;
+    blurDuration: function(event) {
+        const { value } = event.target
+        this.setState({
+            duration: {
+                value: value,
+                valid: validateDuration(value),
+                virgin: false,
+            }
+        });
     },
 
     handleSubmit: function(event) {
         event.preventDefault();
-        var issue = refsToObject(this.refs);
+        const issue = {}
+        for(let key in this.state) {
+            if(this.state[key].valid) {
+                issue[key] = this.state[key].value;
+            } else {
+                this.setState({
+                    [key]: {
+                        virgin: false
+                    }
+                })
+                return false;
+            }
+        }
+        issue.taskSource = "eop";
+        issue.executor = this.props.currentUser;
         store.dispatch(createIssue(issue));
     },
 
     render: function() {
-        let { description, date, duration } = this.state
+        let { description, dateCreated, duration } = this.state
         return (
             <div className="jumbotron">
                 <div className="row issues-heading">
@@ -61,21 +102,21 @@ var NewIssueForm = React.createClass({
                         <input type="hidden" ref="executor" value={ this.props.currentUser } />
                         <input type="hidden" ref="taskSource" value="eop" />
                         <div className="col-md-7">
-                            <div className="form-group">
+                            <div className={ (description.valid || description.virgin) ? "form-group" : "group has-error" }>
                                 <label htmlFor="date">Task</label>
-                                <input type="text" className={ description ? "form-control" : "form-control has-error" } ref="description" placeholder="What are you working on?"/>
+                                <input type="text" className="form-control" onBlur={ this.blurDescription } placeholder="What are you working on?"/>
                             </div>
                         </div>
                         <div className="col-md-2">
-                            <div className="form-group">
+                            <div className={ dateCreated.valid ? "form-group" : "form-group has-error" }>
                                 <label htmlFor="date">Date</label>
-                                <InputElement className={ date ? "form-control" : "form-control has-error" } ref="dateAdded" mask="99.99.9999" id="date" defaultValue={ moment().format("DD.MM.YYYY") } />
+                                <InputElement className="form-control" onBlur={ this.blurDate } mask="99.99.9999" id="date" defaultValue={ moment().format("DD.MM.YYYY") } />
                             </div>
                         </div>
                         <div className="col-md-2">
-                            <div className="form-group">
+                            <div className={ (duration.valid || duration.virgin) ? "form-group" : "group has-error" }>
                                 <label htmlFor="duration">Time</label>
-                                <InputElement className={ duration ? "form-control" : "form-control has-error" } ref="duration" mask="9:99" id="duration" placeholder="0:00"/>
+                                <InputElement className="form-control" onBlur={ this.blurDuration } mask="9:99" id="duration" placeholder="0:00"/>
                             </div>
                         </div>
                         <div className="col-md-1">
