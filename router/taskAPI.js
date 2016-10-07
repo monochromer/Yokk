@@ -135,7 +135,7 @@ exports.updateTask = (req, res) => {
 exports.projectTasks = (req, res) => {
     const taskModel = req.app.db.models.tasks;
     const query = queryFiller(req.query);
-    query.login = req.user.login;
+    query.executor = req.user.login;
 
     taskModel.findTasks(query, (err, data) => {
         // var responseData = {};
