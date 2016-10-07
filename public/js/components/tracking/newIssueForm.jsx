@@ -4,7 +4,7 @@ import store from '../../store.js'
 import moment from 'moment'
 import { createIssue, fetchRedmineIssues } from '../../actions/issues.js'
 import { connect } from 'react-redux'
-import { refsToObject } from '../../helpers'
+import { refsToObject, findUserByLogin } from '../../helpers'
 import { validateDuration } from '../../utils/validators'
 
 
@@ -30,7 +30,13 @@ var NewIssueForm = React.createClass({
     },
 
     syncRedmine: function() {
-        store.dispatch(fetchRedmineIssues());
+        const user = findUserByLogin(this.props.users, this.props.currentUser);
+        console.log(user);
+        if(!user.redmineApiKey) {
+            store.dispatch({type: "ALERT_SHOW", text: "Error! Check your Redmine API key!", class: "danger" });
+        } else {
+            store.dispatch(fetchRedmineIssues());
+        }
     },
 
     blurDescription: function(event) {
@@ -133,7 +139,8 @@ var NewIssueForm = React.createClass({
 
 var getProps = function(store) {
     return {
-        currentUser: store.currentUser.login
+        currentUser: store.currentUser.login,
+        users: store.users
     }
 }
 
