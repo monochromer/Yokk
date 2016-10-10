@@ -26,7 +26,8 @@ module.exports = (app, passport) => {
     app.delete('/api/user/:user_login', checkAuthStatus, userAPI.deleteUser);
     app.post('/api/user/:user_login/upload_profile_picture', checkAuthStatus, upload.single('pic'), userAPI.uploadUserAvatar);
 
-    app.get('/api/task', checkAuthStatus, taskAPI.projectTasks);
+    // app.get('/api/task', checkAuthStatus, taskAPI.projectTasks);
+    app.get('/api/tasksbatch', taskAPI.projectTasksBatch);
     app.get('/api/task/duration', checkAuthStatus, taskAPI.totalDuration);
     app.post('/api/task/add', checkAuthStatus, taskAPI.saveTask); // body should contain: executor, description, taskSource
     app.delete('/api/task/:taskId', checkAuthStatus, taskAPI.deleteTask);

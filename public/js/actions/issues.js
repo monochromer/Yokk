@@ -1,10 +1,28 @@
-import { FETCH_ISSUES_URI, CREATE_ISSUE_URI, DELETE_ISSUE_URI, FETCH_REDMINE_ISSUES_URI, UPDATE_ISSUE_URI } from '../constants'
+import {
+    FETCH_ISSUES_URI,
+    CREATE_ISSUE_URI,
+    DELETE_ISSUE_URI,
+    FETCH_REDMINE_ISSUES_URI,
+    UPDATE_ISSUE_URI,
+    FETCH_NEXT_BATCH_URI
+} from '../constants'
 import moment from 'moment'
 
-export function fetchIssues(from) {
+export function fetchIssues(limit) {
+    // return {
+    //     type: "FETCH_ISSUES",
+    //     loadItems: FETCH_ISSUES_URI + '?from=' + from
+    // }
     return {
         type: "FETCH_ISSUES",
-        loadItems: FETCH_ISSUES_URI + '?from=' + from
+        loadItems: FETCH_ISSUES_URI + '?from=' + limit
+    }
+}
+
+export function fetchNextBatch(skip, limit, from) {
+    return {
+        type: "FETCH_NEXT_BATCH",
+        loadItems: FETCH_NEXT_BATCH_URI + '?skip=' + skip + '&limit=' + limit
     }
 }
 

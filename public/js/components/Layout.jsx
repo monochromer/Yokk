@@ -8,16 +8,15 @@ import { fetchUsers } from '../actions/users.js'
 import { fetchCurrentUser } from '../actions/currentUser.js'
 import { fetchIssues } from '../actions/issues.js'
 
+class Layout extends React.Component {
 
-var Layout = React.createClass({
-
-    componentWillMount: function() {
+    componentWillMount() {
         store.dispatch(fetchUsers());
         store.dispatch(fetchCurrentUser());
-        store.dispatch(fetchIssues());
-    },
+        // store.dispatch(fetchIssues());
+    }
 
-    render: function() {
+    render() {
         return (
             <div>
                 <TopPanel/>
@@ -26,8 +25,8 @@ var Layout = React.createClass({
                     <ModalUserDelete/> { this.props.children }
                 </div>
             </div>
-        )
+        );
     }
-});
+}
 
 export default Layout

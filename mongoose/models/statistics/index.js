@@ -7,5 +7,7 @@ module.exports = (app, mongoose) => {
             default: 0,
         }
     });
-    app.db.model('statistics', statistics);
+
+
+app.db.model('statistics', statistics);
 }

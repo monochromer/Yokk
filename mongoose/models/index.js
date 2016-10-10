@@ -5,7 +5,8 @@
 const models = [
     'user',
     'task',
-    'statistics'
+    'statistics',
+    'serverState'
 ];
 
 // previously was in models.js in root

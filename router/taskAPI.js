@@ -133,35 +133,58 @@ exports.updateTask = (req, res) => {
     });
 }
 
-exports.projectTasks = (req, res) => {
-    const taskModel = req.app.db.models.tasks;
+// DO WE NEED THIS?
+// exports.projectTasks = (req, res) => {
+//     const taskModel = req.app.db.models.tasks;
+//     const query = queryFiller(req.query);
+//     if (typeof req.user !== 'undefined') {
+//         query.executor = req.user.login;
+//     };
+//
+//     taskModel
+//         .find(query)
+//         .limit(numberOfDocsToReturn)
+//         .exec((err, data) => {
+//             if (err) {console.log(err)}
+//             res.send(data);
+//         });
+//     taskModel.findTasks(query, (err, data) => {
+//
+//         res.send(data);
+//     });
+// }
+
+exports.projectTasksBatch = (req, res) => {
+    // dates and user.login are derived from query
     const query = queryFiller(req.query);
-    query.executor = req.user.login;
-    // console.log(query); !!!!!!! INVALID DATE
+    const taskModel = req.app.db.models.tasks;
 
-    taskModel.findTasks(query, (err, data) => {
-        // var responseData = {};
-        // data.forEach((element) => {
-        //     let date = moment(element.dateAdded).format('DDMMYYYY');
-        //     element.dateAdded = undefined;
-        //
-        //     if (responseData[date]) {
-        //         responseData[date].list.push(element);
-        //         responseData[date].totalDuration += element.duration;
-        //     } else {
-        //         responseData[date] = {};
-        //         responseData[date].list = [];
-        //         responseData[date].list.push(element);
-        //         responseData[date].totalDuration = element.duration;
-        //     }
-        // });
+    const numberOfDocsToSkip = +req.query.skip;
+    const numberOfDocsToReturn = +req.query.limit;
+    const maximumDocsToReturn = numberOfDocsToReturn + 20;
 
-        // var debugInfo = {};
-        // debugInfo.params = req.params;
-        // debugInfo.query = query;
-        // debugInfo.data = data;
-        res.send(data);
-    });
+    if (typeof req.user !== 'undefined') {
+        query.executor = req.user.login;
+    };
+
+    taskModel
+        .find(query)
+        .sort({ dateCreated: -1 })
+        // .select({ _id: 0, dateCreated: 1 })
+        .skip(numberOfDocsToSkip)
+        .limit(maximumDocsToReturn)
+        .exec((err, data) => {
+            if (err) {
+                console.log(err);
+            }
+
+            for (let i = numberOfDocsToReturn - 1; i < maximumDocsToReturn - 1; i++) {
+                if (!moment(data[i].dateCreated).isSame(moment(data[i + 1].dateCreated), 'day')) {
+                    return res.send(data.slice(0, i+1));
+                }
+            }
+
+        });
 }
 
 exports.totalDuration = (req, res) => {
