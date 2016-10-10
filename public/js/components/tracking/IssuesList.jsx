@@ -9,32 +9,29 @@ import {dayBeatify, durationBeatify, groupIssuesByDay} from '../../helpers'
 var IssuesList = React.createClass({
     getInitialState: function() {
         // return {from: 5}
-        return {skip: 0, limit: 20}
+        return {limit: 10}
     },
 
     componentWillMount: function() {
         let from = moment().subtract(this.state.from, 'days').format("DD.MM.YYYY");
+
+        this.setState({
+            // from: this.state.from + 10,
+            skip: this.state.skip + this.props.offset
+        });
         let skip = this.state.skip;
         let limit = this.state.limit;
         // store.dispatch(fetchIssues(from));
         store.dispatch(fetchNextBatch(skip, limit, from));
-        this.setState({
-            from: this.state.from + 10,
-            skip: this.state.skip + this.props.offset
-        });
     },
 
     loadMore: function() {
-
         // as of now from parameter is not being used
         let from = moment().subtract(this.state.from + 10, 'days').format("DD.MM.YYYY");
-        let skip = this.state.skip;
+        // let skip = this.state.skip;
+        let skip = store.getState().issues.length;
         let limit = this.state.limit;
         store.dispatch(fetchNextBatch(skip, limit, from));
-        this.setState({
-            from: this.state.from + 10,
-            skip: this.state.skip + this.props.offset
-        });
     },
 
     render: function() {

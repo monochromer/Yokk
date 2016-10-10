@@ -155,11 +155,12 @@ exports.updateTask = (req, res) => {
 // }
 
 exports.projectTasksBatch = (req, res) => {
+
     // dates and user.login are derived from query
     const query = queryFiller(req.query);
     const taskModel = req.app.db.models.tasks;
 
-    const numberOfDocsToSkip = +req.query.skip;
+    const numberOfDocsToSkip = +req.query.skip || 0;
     const numberOfDocsToReturn = +req.query.limit;
     const maximumDocsToReturn = numberOfDocsToReturn + 20;
 
@@ -169,7 +170,9 @@ exports.projectTasksBatch = (req, res) => {
 
     taskModel
         .find(query)
-        .sort({ dateCreated: -1 })
+        .sort({
+            dateCreated: -1
+        })
         // .select({ _id: 0, dateCreated: 1 })
         .skip(numberOfDocsToSkip)
         .limit(maximumDocsToReturn)
@@ -180,7 +183,7 @@ exports.projectTasksBatch = (req, res) => {
 
             for (let i = numberOfDocsToReturn - 1; i < maximumDocsToReturn - 1; i++) {
                 if (!moment(data[i].dateCreated).isSame(moment(data[i + 1].dateCreated), 'day')) {
-                    return res.send(data.slice(0, i+1));
+                    return res.send(data.slice(0, i + 1));
                 }
             }
 
