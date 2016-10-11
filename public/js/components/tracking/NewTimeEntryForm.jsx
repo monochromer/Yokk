@@ -88,6 +88,8 @@ var NewTimeEntryForm = React.createClass({
         }
         timeEntry.entrySource = "eop";
         timeEntry.executor = this.props.currentUser;
+
+        timeEntry.dateCreated = Date.now();
         store.dispatch(createTimeEntry(timeEntry));
     },
 
