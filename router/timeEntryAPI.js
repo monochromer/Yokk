@@ -113,27 +113,27 @@ exports.saveTimeEntry = (req, res) => {
 
 exports.deleteTimeEntry = (req, res) => {
     const TimeEntryModel = req.app.db.models.timeEntry;
-    const taskId = req.params.taskId;
+    const timeEntryId = req.params.timeEntryId;
 
-    TimeEntryModel.findByIdAndRemove(taskId, (err, task) => {
+    TimeEntryModel.findByIdAndRemove(timeEntryId, (err, timeEntry) => {
         if (err) {
             log(req, err).err();
             var response = {
                 message: "Some error uccured while deleting the task",
-                taskId: taskId
+                taskId: timeEntryId
             };
         } else {
             var response = {
                 message: "Task successfully deleted",
-                taskId: taskId
+                taskId: timeEntryId
             };
             log(req, response.message).info();
         }
 
-        if (task == undefined) {
+        if (timeEntry == undefined) {
             var response = {
-                message: "Task {taskId: " + taskId + "} could not be found in DB",
-                taskId: taskId
+                message: "Task {taskId: " + timeEntryId + "} could not be found in DB",
+                taskId: timeEntryId
             };
             log(req, response.message).info();
         }
