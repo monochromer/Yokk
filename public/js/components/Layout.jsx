@@ -6,14 +6,12 @@ import store from '../store.js'
 
 import { fetchUsers } from '../actions/users.js'
 import { fetchCurrentUser } from '../actions/currentUser.js'
-import { fetchNextTimeEntryBatch } from '../actions/timeEntries.js'
 
 class Layout extends React.Component {
 
     componentWillMount() {
         store.dispatch(fetchUsers());
         store.dispatch(fetchCurrentUser());
-        store.dispatch(fetchNextTimeEntryBatch());
     }
 
     render() {
