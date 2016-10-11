@@ -29,6 +29,7 @@ var TimeEntryRow = React.createClass({
         e.preventDefault();
         let editedTimeEntry = Object.assign({}, this.props.timeEntry, refsToObject(this.refs));
         editedTimeEntry.duration = moment.duration(editedTimeEntry.duration).asMinutes();
+        console.log(editedTimeEntry);
         store.dispatch(updateTimeEntry(editedTimeEntry));
         this.setState({ editing: false });
     },

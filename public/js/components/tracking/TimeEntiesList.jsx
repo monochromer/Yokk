@@ -45,6 +45,7 @@ var TimeEntriesList = React.createClass({
 });
 
 var getProps = function(state) {
+// console.log(state.timeEntries);
     return {
         days: groupTimeEntriesByDay(state.timeEntries),
         offset: state.timeEntries.length

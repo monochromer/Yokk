@@ -67,7 +67,7 @@ exports.importRedmineIssues = (req, res) => {
                                 entry.redmineTimeEntryId = element.id;
                                 entry.number = element.issue.id;
                                 entry.executor = req.user.login;
-                                entry.dateAdded = entry.dateCreated = moment(element.created_on).toDate();
+                                entry.date = entry.dateCreated = moment(element.created_on).toDate();
                                 if (!element.comments) {
                                     entry.description = 'no comments';
                                 } else {

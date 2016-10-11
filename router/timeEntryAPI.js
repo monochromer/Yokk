@@ -42,20 +42,20 @@ exports.timeEntryBatch = (req, res) => {
 exports.saveTimeEntry = (req, res) => {
     console.log(req.body);
     const TimeEntryModel = req.app.db.models.timeEntry;
-    const task = new TimeEntryModel(req.body);
+    const timeEntry = new TimeEntryModel(req.body);
 
-    if (req.body.dateAdded) {
-        task.dateAdded = moment(req.body.dateAdded, 'DD.MM.YYYY').toDate();
+    if (req.body.date) {
+        timeEntry.date = moment(req.body.date, 'DD.MM.YYYY').toDate();
     }
 
     if (req.body.startDate) {
-        task.startDate = moment(req.body.startDate, 'DD.MM.YYYY').toDate();
+        timeEntry.startDate = moment(req.body.startDate, 'DD.MM.YYYY').toDate();
     }
     if (req.body.endDate) {
-        task.endDate = moment(req.body.endDate, 'DD.MM.YYYY').toDate();
+        timeEntry.endDate = moment(req.body.endDate, 'DD.MM.YYYY').toDate();
     }
 
-    task.duration = stringToMinutes(req.body.duration); // getting Minutes
+    timeEntry.duration = stringToMinutes(req.body.duration); // getting Minutes
 
     const statistics = req.app.db.models.statistics;
     const stat = new statistics;
