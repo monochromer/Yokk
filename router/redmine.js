@@ -65,7 +65,7 @@ exports.importRedmineIssues = (req, res) => {
                             data.time_entries.forEach(element => {
                                 let entry = {};
                                 entry.redmineTimeEntryId = element.id;
-                                entry.taskNumber = element.issue.id;
+                                entry.number = element.issue.id;
                                 entry.executor = req.user.login;
                                 entry.dateAdded = entry.dateCreated = moment(element.created_on).toDate();
                                 if (!element.comments) {
@@ -74,7 +74,7 @@ exports.importRedmineIssues = (req, res) => {
                                     entry.description = element.comments;
                                 }
                                 entry.duration = (element.hours * 60).toFixed(0);
-                                entry.taskSource = 'redmine';
+                                entry.entrySource = 'redmine';
                                 entries.push(entry);
                             });
                             resolve(entries);
@@ -94,11 +94,11 @@ exports.importRedmineIssues = (req, res) => {
                     }
 
                     // saving to DB
-                    const taskModel = req.app.db.models.tasks;
+                    const TimeEntryModel = req.app.db.models.timeEntry;
                     const entryPromisesArray = [];
                     entries.forEach((entry) => {
                         let promiseIssueUpsert = new Promise((resolve, reject) => {
-                            taskModel.findOneAndUpdate({
+                            TimeEntryModel.findOneAndUpdate({
                                 redmineTimeEntryId: entry.redmineTimeEntryId
                             }, entry, {
                                 new: true,

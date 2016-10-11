@@ -31,7 +31,6 @@ var TimeEntriesList = React.createClass({
         var rows = [];
         for (var day in days) {
             var duration = durationBeatify(days[day].totalDuration);
-            console.log(days[day].list);
             rows.push(<TimeEntriesPerDay day={day} duration={duration} timeEntries={days[day].list} key={day}/>)
         }
         return (
