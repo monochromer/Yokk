@@ -4,6 +4,7 @@ const authorization = require('./authorization');
 const checkAuthStatus = require('connect-ensure-login').ensureLoggedIn();
 const userAPI = require('./userAPI');
 const timeEntryAPI = require('./timeEntryAPI');
+const statisticsAPI = require('./statisticsAPI.js');
 const helperRoutes = require('./helperRoutes');
 const redmine = require('./redmine');
 const upload = require('../helpers/file_upload');
@@ -31,6 +32,8 @@ module.exports = (app, passport) => {
     app.post('/api/timeEntry/add', checkAuthStatus, timeEntryAPI.saveTimeEntry); // body should contain: executor, description, taskSource
     app.delete('/api/timeEntry/:timeEntryId', checkAuthStatus, timeEntryAPI.deleteTimeEntry);
     app.put('/api/timeEntry/:timeEntryId', checkAuthStatus, timeEntryAPI.updateTimeEntry);
+
+    app.get('/api/statistics/', statisticsAPI.getStatistics);
 
     app.get('/redmine/sync', checkAuthStatus, redmine.importRedmineIssues);
 
