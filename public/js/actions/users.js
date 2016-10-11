@@ -33,7 +33,7 @@ export function updateUser(user) {
     return function(dispatch) {
         request.put(UPDATE_USER_URI + user.login).send(user).end((err, response) => {
             dispatch({
-                type: "CHANGE_USER",
+                type: "UPDATE_USER",
                 payload: response.body
             });
             dispatch({
@@ -65,7 +65,7 @@ export function uploadUserPhoto(files, login) {
     return function(dispatch) {
         request.post(COMBINE_USER_ADDPHOTO_URI(login)).attach('pic', files[0]).end(function(err, response) {
             dispatch({
-                type: "CHANGE_USER",
+                type: "UPDATE_USER",
                 payload: response.body
             });
             dispatch({

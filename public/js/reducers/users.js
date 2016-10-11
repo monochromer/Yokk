@@ -15,7 +15,7 @@ export default function( state = defaultState, action ) {
             break;
 
         case "UPDATE_USER":
-            var newState = _.filter( state, ( o ) => o.login != payload.login );
+            const newState = _.filter( state, ( o ) => o.login != payload.login );
             return [...newState, payload];
             break;
 
