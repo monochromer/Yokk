@@ -12,18 +12,13 @@ var TimeEntriesList = React.createClass({
     },
 
     componentWillMount: function() {
-        this.setState({
-            skip: this.state.skip + this.props.offset
-        });
-        let skip = this.state.skip;
         let limit = this.state.limit;
-        store.dispatch(fetchNextTimeEntryBatch(skip, limit));
+        store.dispatch(fetchNextTimeEntryBatch(this.props.offset, limit));
     },
 
     loadMore: function() {
-        let skip = store.getState().timeEntries.length;
         let limit = this.state.limit;
-        store.dispatch(fetchNextTimeEntryBatch(skip, limit));
+        store.dispatch(fetchNextTimeEntryBatch(this.props.offset, limit));
     },
 
     render: function() {
@@ -33,10 +28,11 @@ var TimeEntriesList = React.createClass({
             var duration = durationBeatify(days[day].totalDuration);
             rows.push(<TimeEntriesPerDay day={day} duration={duration} timeEntries={days[day].list} key={day}/>)
         }
+        const loadMoreClasses = this.props.allBatches ? 'btn btn-success center-block loadmore disabled' : 'btn btn-success center-block loadmore' ;
         return (
             <div>
                 {rows}
-                <button className="btn btn-success center-block loadmore" onClick={this.loadMore}>
+                <button className={loadMoreClasses} onClick={this.loadMore}>
                     Load More
                 </button>
             </div>
@@ -45,10 +41,10 @@ var TimeEntriesList = React.createClass({
 });
 
 var getProps = function(state) {
-// console.log(state.timeEntries);
     return {
-        days: groupTimeEntriesByDay(state.timeEntries),
-        offset: state.timeEntries.length
+        days: groupTimeEntriesByDay(state.timeEntries.list),
+        offset: state.timeEntries.list.length,
+        allBatches: state.timeEntries.helpers.allBatches
     }
 }
 

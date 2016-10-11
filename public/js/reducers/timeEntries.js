@@ -1,34 +1,41 @@
 import _ from 'lodash'
 import moment from 'moment'
-const defaultState = []
+const defaultState = {
+    list: [],
+    helpers: {
+        allBatches: false
+    }
+}
 
 export default function(state = defaultState, action) {
-    const {
-        type,
-        payload
-    } = action;
+    const { type, payload } = action;
 
     switch (type) {
         case "CREATE_TIME_ENTRY":
-            return state.concat(payload);
+            return Object.assign({}, state, { list: state.list.concat(payload) });
             break;
 
         case "FETCH_NEXT_TIME_ENTRY_BATCH":
-            return state.concat(payload);
+            let allBatches = (payload.length == 0 || payload.lenght < 10) ? true : false;
+            return Object.assign({}, state, {
+                list: state.list.concat(payload),
+                helpers: { allBatches: allBatches } 
+            });
             break;
 
         case "FETCH_REDMINE_TIME_ENTRIES":
-            let withoutRedmine = _.filter(state, (el) => el.entrySource != "redmine");
-            return withoutRedmine.concat(payload);
+            const withoutRedmine = _.filter(state.list, (el) => el.entrySource != "redmine");
+            return Object.assign({}, state, { list: withoutRedmine.concat(payload) });
             break;
 
         case "DELETE_TIME_ENTRY":
-            return _.filter(state, (el) => el._id != payload.taskId);
+            let withoutDeleted =  _.filter(state.list, (el) => el._id != payload.taskId);
+            return Object.assign({}, state, { list: withoutDeleted });
             break;
 
         case "UPDATE_TIME_ENTRY":
-            const newState = _.filter(state, (o) => o._id != payload._id);
-            return [...newState, payload]
+            let withoutUpdated = _.filter(state.list, (o) => o._id != payload._id);
+            return Object.assign({}, state, { list: withoutUpdated.concat(payload) });
 
         default:
             return state;

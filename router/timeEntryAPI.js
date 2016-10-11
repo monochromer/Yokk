@@ -75,7 +75,7 @@ exports.saveTimeEntry = (req, res) => {
         // - executor
         // - description
         // - entrySource
-        if (!task.executor || !task.description || !task.entrySource) {
+        if (!timeEntry.executor || !timeEntry.description || !timeEntry.entrySource) {
             // TODO Return not specified field
             const logmsg = 'One of the required fields is not specified';
             res.send({
@@ -84,17 +84,17 @@ exports.saveTimeEntry = (req, res) => {
             return log(req, logmsg).err();
         }
 
-        task.taskNumber = lastTaskNumber + 1;
+        timeEntry.taskNumber = lastTaskNumber + 1;
 
         // TODO Check task.description and send warning if already exists
-        task.save((err, task) => {
+        timeEntry.save((err, task) => {
             if (err) {
                 log(req, err).err();
                 return res.status(500).send();
             };
 
             statistics.findOneAndUpdate({}, {
-                lastTaskNumber: task.taskNumber
+                lastTaskNumber: timeEntry.taskNumber
             }, {
                 new: true
             }, function(err, data) {
@@ -104,7 +104,7 @@ exports.saveTimeEntry = (req, res) => {
                 };
             });
 
-            let logMsq = 'Task (login: ' + task.taskNumber + ') is saved to DB';
+            let logMsq = 'Task (login: ' + timeEntry.taskNumber + ') is saved to DB';
             res.status(200).send(task);
             return log(req, logMsq).info();
         });
