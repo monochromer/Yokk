@@ -9,7 +9,7 @@ module.exports = function(schema) {
             executor: 1,
             dateAdded: 1,
             description: 1,
-            minutesSpent: 1,
+            duration: 1,
             taskSource: 1
         }
         return this.find({}, fieldsToReturn, cb);

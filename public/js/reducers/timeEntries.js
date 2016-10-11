@@ -9,28 +9,24 @@ export default function(state = defaultState, action) {
     } = action;
 
     switch (type) {
-        case "CREATE_ISSUE":
+        case "CREATE_TIME_ENTRY":
             return state.concat(payload);
             break;
 
-        case "FETCH_ISSUES":
-            return payload;
-            break;
-
-        case "FETCH_NEXT_BATCH":
+        case "FETCH_NEXT_TIME_ENTRY_BATCH":
             return state.concat(payload);
             break;
 
-        case "FETCH_REDMINE_ISSUES":
+        case "FETCH_REDMINE_TIME_ENTRIES":
             let withoutRedmine = _.filter(state, (el) => el.taskSource != "redmine");
             return withoutRedmine.concat(payload);
             break;
 
-        case "DELETE_ISSUE":
+        case "DELETE_TIME_ENTRY":
             return _.filter(state, (el) => el._id != payload.taskId);
             break;
 
-        case "UPDATE_ISSUE":
+        case "UPDATE_TIME_ENTRY":
             var newState = _.filter(state, (o) => o._id != payload._id);
             return [...newState, payload]
 

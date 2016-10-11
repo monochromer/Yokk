@@ -3,26 +3,18 @@
 var statics = require('./statics');
 
 module.exports = function(app, mongoose) {
-    var taskSchema = new mongoose.Schema({
-        taskNumber: Number,
-        redmineTimeEntryId: Number,
+    var timeEntry = new mongoose.Schema({
+        number: Number,
+        redmineId: Number,
         executor: {
             type: String,
             required: true
         },
-        dateAdded: {
+        date: {
             type: Date,
             default: Date.now
         },
         dateCreated: {
-            type: Date,
-            default: Date.now
-        },
-        startDate: {
-            type: Date,
-            default: Date.now
-        },
-        endDate: {
             type: Date,
             default: Date.now
         },
@@ -31,13 +23,13 @@ module.exports = function(app, mongoose) {
             required: true
         },
         duration: Number,
-        taskSource: {
+        entrySource: {
             type: String,
             required: true
         }
     });
 
-    statics(taskSchema);
+    // statics(timeEntry);
 
-    app.db.model('tasks', taskSchema);
+    app.db.model('timeEntry', timeEntry);
 }

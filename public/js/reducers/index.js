@@ -2,7 +2,7 @@ import users from './users'
 import modals from './modals'
 import alerts from './alerts'
 import currentUser from './currentUser'
-import issues from './issues'
+import timeEntries from './timeEntries'
 
 import { combineReducers } from 'redux'
 
@@ -11,5 +11,5 @@ export default combineReducers({
     modals,
     alerts,
     currentUser,
-    issues
+    timeEntries
 })

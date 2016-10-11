@@ -1,12 +1,13 @@
 import React from 'react'
-import IssueRow from './IssueRow.jsx'
+import TimeEntryRow from './TimeEntryRow.jsx'
 
-var IssuesPerDay = React.createClass({
+var TimeEntriesPerDay = React.createClass({
     render: function() {
         var rows = [];
-        this.props.issues.map( (issue) => {
-            rows.push(<IssueRow issue={ issue } key={ issue._id } />);
+        this.props.timeEntries.map( (timeEntry) => {
+            rows.push(<TimeEntryRow timeEntry={ timeEntry } key={ timeEntry._id } />);
         });
+
         return (
             <div className="row">
                 <div className="col-md-12">
@@ -41,4 +42,4 @@ var IssuesPerDay = React.createClass({
     }
 })
 
-export default IssuesPerDay;
+export default TimeEntriesPerDay;

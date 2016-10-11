@@ -5,10 +5,43 @@ const moment = require('moment');
 const stringToMinutes = require('../helpers/issues').stringToMinutes;
 const queryFiller = require('./helpers/queryFiller');
 
-exports.saveTask = (req, res) => {
+exports.timeEntryBatch = (req, res) => {
+    const query = queryFiller(req.query); //CHECK?
+    const TimeEntryModel = req.app.db.models.timeEntry;
+    const numberOfDocsToSkip = +req.query.skip || 0;
+    const numberOfDocsToReturn = +req.query.limit;
+    const maximumDocsToReturn = numberOfDocsToReturn + 20;
+
+    if (typeof req.user !== 'undefined') {
+        query.executor = req.user.login;
+    };
+
+    TimeEntryModel
+        .find(query)
+        .sort({
+            dateCreated: -1
+        })
+        // .select({ _id: 0, dateCreated: 1 })
+        .skip(numberOfDocsToSkip)
+        // .limit(10)
+        .exec((err, timeEntries) => {
+            if (err) {
+                console.log(err);
+            }
+            for (let i = numberOfDocsToReturn - 1; i < maximumDocsToReturn - 1; i++) {
+
+                if (!moment(timeEntries[i].dateCreated).isSame(moment(timeEntries[i + 1].dateCreated), 'day')) {
+                    return res.send(timeEntries.slice(0, i + 1));
+                }
+            }
+            res.send(timeEntries);
+        });
+}
+
+exports.saveTimeEntry = (req, res) => {
     console.log(req.body);
-    const taskModel = req.app.db.models.tasks;
-    const task = new taskModel(req.body);
+    const TimeEntryModel = req.app.db.models.timeEntry;
+    const task = new TimeEntryModel(req.body);
 
     if (req.body.dateAdded) {
         task.dateAdded = moment(req.body.dateAdded, 'DD.MM.YYYY').toDate();
@@ -40,8 +73,8 @@ exports.saveTask = (req, res) => {
         // req.body should contain required field:
         // - executor
         // - description
-        // - taskSource
-        if (!task.executor || !task.description || !task.taskSource) {
+        // - entrySource
+        if (!task.executor || !task.description || !task.entrySource) {
             // TODO Return not specified field
             const logmsg = 'One of the required fields is not specified';
             res.send({
@@ -77,11 +110,11 @@ exports.saveTask = (req, res) => {
     });
 }
 
-exports.deleteTask = (req, res) => {
-    const taskModel = req.app.db.models.tasks;
+exports.deleteTimeEntry = (req, res) => {
+    const TimeEntryModel = req.app.db.models.timeEntry;
     const taskId = req.params.taskId;
 
-    taskModel.findByIdAndRemove(taskId, (err, task) => {
+    TimeEntryModel.findByIdAndRemove(taskId, (err, task) => {
         if (err) {
             log(req, err).err();
             var response = {
@@ -108,12 +141,12 @@ exports.deleteTask = (req, res) => {
     });
 }
 
-exports.updateTask = (req, res) => {
-    const taskModel = req.app.db.models.tasks;
+exports.updateTimeEntry = (req, res) => {
+    const TimeEntryModel = req.app.db.models.timeEntry;
     const taskId = req.params.taskId;
     const update = req.body;
 
-    taskModel.findByIdAndUpdate(taskId, update, {
+    TimeEntryModel.findByIdAndUpdate(taskId, update, {
         new: true
     }, (err, task) => {
         if (err) {
@@ -133,68 +166,11 @@ exports.updateTask = (req, res) => {
     });
 }
 
-// DO WE NEED THIS?
-// exports.projectTasks = (req, res) => {
-//     const taskModel = req.app.db.models.tasks;
-//     const query = queryFiller(req.query);
-//     if (typeof req.user !== 'undefined') {
-//         query.executor = req.user.login;
-//     };
-//
-//     taskModel
-//         .find(query)
-//         .limit(numberOfDocsToReturn)
-//         .exec((err, data) => {
-//             if (err) {console.log(err)}
-//             res.send(data);
-//         });
-//     taskModel.findTasks(query, (err, data) => {
-//
-//         res.send(data);
-//     });
-// }
-
-exports.projectTasksBatch = (req, res) => {
-
-    // dates and user.login are derived from query
-    const query = queryFiller(req.query);
-    const taskModel = req.app.db.models.tasks;
-
-    const numberOfDocsToSkip = +req.query.skip || 0;
-    const numberOfDocsToReturn = +req.query.limit;
-    const maximumDocsToReturn = numberOfDocsToReturn + 20;
-
-    if (typeof req.user !== 'undefined') {
-        query.executor = req.user.login;
-    };
-
-    taskModel
-        .find(query)
-        .sort({
-            dateCreated: -1
-        })
-        // .select({ _id: 0, dateCreated: 1 })
-        .skip(numberOfDocsToSkip)
-        .limit(maximumDocsToReturn)
-        .exec((err, data) => {
-            if (err) {
-                console.log(err);
-            }
-
-            for (let i = numberOfDocsToReturn - 1; i < maximumDocsToReturn - 1; i++) {
-                if (!moment(data[i].dateCreated).isSame(moment(data[i + 1].dateCreated), 'day')) {
-                    return res.send(data.slice(0, i + 1));
-                }
-            }
-
-        });
-}
-
 exports.totalDuration = (req, res) => {
-    const taskModel = req.app.db.models.tasks;
+    const TimeEntryModel = req.app.db.models.timeEntry;
     const query = queryFiller(req.query);
 
-    taskModel.getDuration(query, (err, data) => {
+    TimeEntryModel.getDuration(query, (err, data) => {
         // const debugInfo = {};
         // debugInfo.query = query;
         // debugInfo.data = data;

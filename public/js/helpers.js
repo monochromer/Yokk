@@ -25,19 +25,19 @@ export function durationBeatify(minutes) {
 	return duration.get('hours') + ":" + min;
 }
 
-export function groupIssuesByDay(issues) {
+export function groupTimeEntriesByDay(timeEntries) {
 	var days = {};
-	var sorted = _.orderBy(issues, ['dateAdded'], ['desc']);
-	sorted.map((issue) => {
-		let day = dayBeatify(issue.dateAdded);
+	var sorted = _.orderBy(timeEntries, ['dateAdded'], ['desc']);
+	sorted.map((timeEntry) => {
+		let day = dayBeatify(timeEntry.dateAdded);
 		if(!days[day]) {
 			days[day] = {
-				list: [issue],
-				totalDuration: issue.duration
+				list: [timeEntry],
+				totalDuration: timeEntry.duration
 			};
 		} else {
-			days[day].list.push(issue);
-			days[day].totalDuration += issue.duration;
+			days[day].list.push(timeEntry);
+			days[day].totalDuration += timeEntry.duration;
 		}
 	});
 	for(let day in days) {

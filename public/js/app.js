@@ -7,7 +7,6 @@ import UserAdd from './components/user/UserAdd.jsx'
 import UserPage from './components/user/UserPage.jsx'
 import UserEdit from './components/user/UserEdit.jsx'
 import Tracking from './components/tracking/index.jsx'
-import RedmineIssuesTable from './components/RedmineIssuesTable.jsx'
 
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 import { Provider } from 'react-redux'

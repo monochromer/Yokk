@@ -3,12 +3,12 @@ import InputElement from 'react-input-mask'
 import store from '../../store.js'
 import moment from 'moment'
 import datePicker from './DatePicker.jsx'
-import { createIssue, fetchRedmineIssues } from '../../actions/issues.js'
+import { createTimeEntry, fetchRedmineTimeEntries } from '../../actions/timeEntries.js'
 import { connect } from 'react-redux'
 import { refsToObject, findUserByLogin } from '../../helpers'
 import { validateDuration } from '../../utils/validators'
 
-var NewIssueForm = React.createClass({
+var NewTimeEntryForm = React.createClass({
     getInitialState: function() {
         return {
             description: {
@@ -31,11 +31,10 @@ var NewIssueForm = React.createClass({
 
     syncRedmine: function() {
         const user = findUserByLogin(this.props.users, this.props.currentUser);
-        console.log(user);
         if(!user.redmineApiKey) {
             store.dispatch({type: "ALERT_SHOW", text: "Error! Check your Redmine API key!", class: "danger" });
         } else {
-            store.dispatch(fetchRedmineIssues());
+            store.dispatch(fetchRedmineTimeEntries());
         }
     },
 
@@ -74,10 +73,10 @@ var NewIssueForm = React.createClass({
 
     handleSubmit: function(event) {
         event.preventDefault();
-        const issue = {}
+        const timeEntry = {}
         for(let key in this.state) {
             if(this.state[key].valid) {
-                issue[key] = this.state[key].value;
+                timeEntry[key] = this.state[key].value;
             } else {
                 this.setState({
                     [key]: {
@@ -87,9 +86,9 @@ var NewIssueForm = React.createClass({
                 return false;
             }
         }
-        issue.taskSource = "eop";
-        issue.executor = this.props.currentUser;
-        store.dispatch(createIssue(issue));
+        timeEntry.entrySource = "eop";
+        timeEntry.executor = this.props.currentUser;
+        store.dispatch(createtimeEntry(timeEntry));
     },
 
     render: function() {
@@ -149,4 +148,4 @@ var getProps = function(store) {
     }
 }
 
-export default connect(getProps)(NewIssueForm)
+export default connect(getProps)(NewTimeEntryForm)

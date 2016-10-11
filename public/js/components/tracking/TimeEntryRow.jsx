@@ -2,11 +2,11 @@ import React from 'react'
 import InputElement from 'react-input-mask'
 import moment from 'moment'
 import store from '../../store'
-import { deleteIssue, updateIssue } from '../../actions/issues'
+import { deleteTimeEntry, updateTimeEntry } from '../../actions/timeEntries.js'
 import { durationBeatify, refsToObject } from '../../helpers'
 
 
-var IssueRow = React.createClass({
+var TimeEntryRow = React.createClass({
     getInitialState: function() {
             return {
                 editing: false
@@ -14,7 +14,7 @@ var IssueRow = React.createClass({
     },
 
     handleDelete: function(e) {
-        store.dispatch(deleteIssue(this.props.issue._id));
+        store.dispatch(deleteTimeEntry(this.props.timeEntry._id));
     },
 
     handleEdit: function() {
@@ -27,16 +27,17 @@ var IssueRow = React.createClass({
 
     handleSave: function(e) {
         e.preventDefault();
-        let editedIssue = Object.assign({}, this.props.issue, refsToObject(this.refs));
-        editedIssue.duration = moment.duration(editedIssue.duration).asMinutes();
-        store.dispatch(updateIssue(editedIssue));
+        let editedTimeEntry = Object.assign({}, this.props.timeEntry, refsToObject(this.refs));
+        editedTimeEntry.duration = moment.duration(editedTimeEntry.duration).asMinutes();
+        store.dispatch(updateTimeEntry(editedTimeEntry));
         this.setState({ editing: false });
     },
 
     render: function() {
-        let { taskSource, description, duration, taskNumber } = this.props.issue;
-        if(taskSource == "redmine") {
-            description = '<a href="http://redmine.soshace.com/issues/' + taskNumber + '">issue ' + taskNumber + '</a> ' + description;
+
+        let { entrySource, description, duration, number } = this.props.timeEntry;
+        if (entrySource == "redmine") {
+            description = '<a href="http://redmine.soshace.com/issues/' + number + '">issue ' + number + '</a> ' + description;
         }
 
         let buttons = (
@@ -60,13 +61,13 @@ var IssueRow = React.createClass({
             </div>
         );
         let buttonsBlock = "";
-        if(taskSource != "redmine") {
+        if(entrySource != "redmine") {
             buttonsBlock = this.state.editing ? buttonsEditing : buttons;
         }
 
         return (
             <tr>
-                <td> { taskSource } </td>
+                <td> { entrySource } </td>
                 <td>
                     {
                         !this.state.editing
@@ -87,4 +88,4 @@ var IssueRow = React.createClass({
     }
 })
 
-export default IssueRow
+export default TimeEntryRow
