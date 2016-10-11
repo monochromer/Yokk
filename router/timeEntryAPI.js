@@ -28,8 +28,9 @@ exports.timeEntryBatch = (req, res) => {
             if (err) {
                 console.log(err);
             }
-            for (let i = numberOfDocsToReturn - 1; i < maximumDocsToReturn - 1; i++) {
 
+            for (let i = numberOfDocsToReturn - 1; i < maximumDocsToReturn - 1; i++) {
+                if (timeEntries.length <= numberOfDocsToReturn) { return res.send(timeEntries); }
                 if (!moment(timeEntries[i].dateCreated).isSame(moment(timeEntries[i + 1].dateCreated), 'day')) {
                     return res.send(timeEntries.slice(0, i + 1));
                 }
