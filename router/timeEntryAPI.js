@@ -59,23 +59,23 @@ exports.saveTimeEntry = (req, res) => {
 
     const statistics = req.app.db.models.statistics;
     const stat = new statistics;
-    let lastTaskNumber;
+    let lastTimeEntryNumber;
 
-    // initialize lastTaskNumber if not in the statistics collection
+    // initialize lastTimeEntryNumber if not in the statistics collection
     statistics.find({}, (err, stats) => {
-        if (stats.length == 0 || typeof stats[0].lastTaskNumber == 'undefined') {
-            stat.lastTaskNumber = 0;
+        if (stats.length == 0 || typeof stats[0].lastTimeEntryNumber == 'undefined') {
+            stat.lastTimeEntryNumber = 0;
             stat.save();
-            lastTaskNumber = 0;
+            lastTimeEntryNumber = 0;
         } else {
-            lastTaskNumber = stats[0].lastTaskNumber;
+            lastTimeEntryNumber = stats[0].lastTimeEntryNumber;
         }
 
         // req.body should contain required field:
         // - executor
         // - description
         // - entrySource
-        if (!task.executor || !task.description || !task.entrySource) {
+        if (!timeEntry.executor || !timeEntry.description || !timeEntry.entrySource) {
             // TODO Return not specified field
             const logmsg = 'One of the required fields is not specified';
             res.send({
@@ -84,17 +84,17 @@ exports.saveTimeEntry = (req, res) => {
             return log(req, logmsg).err();
         }
 
-        task.taskNumber = lastTaskNumber + 1;
+        timeEntry.lastTimeEntryNumber = lastTimeEntryNumber + 1;
 
-        // TODO Check task.description and send warning if already exists
-        task.save((err, task) => {
+        // TODO Check lastTimeEntryNumber.description and send warning if already exists
+        timeEntry.save((err, timeEntry) => {
             if (err) {
                 log(req, err).err();
                 return res.status(500).send();
             };
 
             statistics.findOneAndUpdate({}, {
-                lastTaskNumber: task.taskNumber
+                lastTimeEntryNumber: timeEntry.number
             }, {
                 new: true
             }, function(err, data) {
@@ -104,8 +104,8 @@ exports.saveTimeEntry = (req, res) => {
                 };
             });
 
-            let logMsq = 'Task (login: ' + task.taskNumber + ') is saved to DB';
-            res.status(200).send(task);
+            let logMsq = 'Time entry (login: ' + timeEntry.number + ') is saved to DB';
+            res.status(200).send(timeEntry);
             return log(req, logMsq).info();
         });
     });
@@ -119,21 +119,21 @@ exports.deleteTimeEntry = (req, res) => {
         if (err) {
             log(req, err).err();
             var response = {
-                message: "Some error uccured while deleting the task",
-                taskId: timeEntryId
+                message: "Some error uccured while deleting the time entry",
+                timeEntryId: timeEntryId
             };
         } else {
             var response = {
-                message: "Task successfully deleted",
-                taskId: timeEntryId
+                message: "Time entry successfully deleted",
+                timeEntryId: timeEntryId
             };
             log(req, response.message).info();
         }
 
         if (timeEntry == undefined) {
             var response = {
-                message: "Task {taskId: " + timeEntryId + "} could not be found in DB",
-                taskId: timeEntryId
+                message: "Time entry {timeEntryId: " + timeEntryId + "} could not be found in DB",
+                timeEntryId: timeEntryId
             };
             log(req, response.message).info();
         }
@@ -156,8 +156,8 @@ exports.updateTimeEntry = (req, res) => {
         } else {
             console.log(timeEntry);
             const message = {
-                operationResult: 'Task updated',
-                updatedTaskId: timeEntryId,
+                operationResult: 'Time entry updated',
+                updatedTimeEntryId: timeEntryId,
                 update: update
             };
             log(req, message.operationResult).info()
