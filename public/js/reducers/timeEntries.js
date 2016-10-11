@@ -18,7 +18,7 @@ export default function(state = defaultState, action) {
             break;
 
         case "FETCH_REDMINE_TIME_ENTRIES":
-            let withoutRedmine = _.filter(state, (el) => el.taskSource != "redmine");
+            let withoutRedmine = _.filter(state, (el) => el.entrySource != "redmine");
             return withoutRedmine.concat(payload);
             break;
 
@@ -27,7 +27,7 @@ export default function(state = defaultState, action) {
             break;
 
         case "UPDATE_TIME_ENTRY":
-            var newState = _.filter(state, (o) => o._id != payload._id);
+            const newState = _.filter(state, (o) => o._id != payload._id);
             return [...newState, payload]
 
         default:

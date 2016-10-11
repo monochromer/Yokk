@@ -144,25 +144,24 @@ exports.deleteTimeEntry = (req, res) => {
 
 exports.updateTimeEntry = (req, res) => {
     const TimeEntryModel = req.app.db.models.timeEntry;
-    const taskId = req.params.taskId;
+    const timeEntryId = req.params.timeEntryId;
     const update = req.body;
-
-    TimeEntryModel.findByIdAndUpdate(taskId, update, {
+    TimeEntryModel.findByIdAndUpdate(timeEntryId, update, {
         new: true
-    }, (err, task) => {
+    }, (err, timeEntry) => {
         if (err) {
             var logMsq = 'There was some error while updating user data';
             log(req, logMsq).err();
             return res.send('Error. Look server logs.');
         } else {
-            console.log(task);
+            console.log(timeEntry);
             const message = {
                 operationResult: 'Task updated',
-                updatedTaskId: taskId,
+                updatedTaskId: timeEntryId,
                 update: update
             };
             log(req, message.operationResult).info()
-            res.status(200).send(task);
+            res.status(200).send(timeEntry);
         }
     });
 }
