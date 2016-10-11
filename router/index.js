@@ -9,6 +9,7 @@ const helperRoutes = require('./helperRoutes');
 const redmine = require('./redmine');
 const upload = require('../helpers/file_upload');
 const checkFrontPath = require('./frontPaths.js');
+const path = require('path');
 
 module.exports = (app, passport) => {
 
@@ -27,7 +28,7 @@ module.exports = (app, passport) => {
     app.delete('/api/user/:user_login', checkAuthStatus, userAPI.deleteUser);
     app.post('/api/user/:user_login/upload_profile_picture', checkAuthStatus, upload.single('pic'), userAPI.uploadUserAvatar);
 
-    app.get('/api/timeEntryBatch',  timeEntryAPI.timeEntryBatch);
+    app.get('/api/timeEntryBatch', timeEntryAPI.timeEntryBatch);
     app.get('/api/timeEntry/duration', checkAuthStatus, timeEntryAPI.totalDuration);
     app.post('/api/timeEntry/add', checkAuthStatus, timeEntryAPI.saveTimeEntry); // body should contain: executor, description, taskSource
     app.delete('/api/timeEntry/:timeEntryId', checkAuthStatus, timeEntryAPI.deleteTimeEntry);

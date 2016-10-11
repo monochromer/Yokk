@@ -1,28 +1,32 @@
 import React from 'react'
 import Logout from './Logout.jsx'
 import { Link } from 'react-router'
+import { LinkContainer } from 'react-router-bootstrap'
 import { connect } from 'react-redux'
+import { Navbar, Nav, NavDropdown, MenuItem, NavItem } from 'react-bootstrap'
 
 var TopPanel = React.createClass({
 	render: function() {
 		return (
-			<nav className="navbar navbar-default">
-				<div className="container-fluid">
-					<div className="navbar-header">
+			<Navbar>
+				<Navbar.Header>
+					<Navbar.Brand>
 						<Link className="navbar-brand" to="/">Eye of providence</Link>
-					</div>
-					<ul className="nav navbar-nav">
-						<li><Link to="/">Tracking</Link></li>
-					  	<li><Link to="/users">Team</Link></li>
-					  	{
-					  		this.props.role == "admin" ? <li><Link to="/addUser">Add User</Link></li> : ""
-					  	}
-					</ul>
-					<ul className="nav navbar-nav navbar-right">
-						<li><Logout /></li>
-					</ul>
-				</div>
-			</nav>
+					</Navbar.Brand>
+				</Navbar.Header>
+				<Nav>
+					<LinkContainer to="/tracking/">
+						<NavItem eventKey={1}>Tracking</NavItem>
+					</LinkContainer>
+					<LinkContainer to="/users/">
+						<NavItem eventKey={2}>Team</NavItem>
+					</LinkContainer>
+					<NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
+						<MenuItem eventKey={3.1}>Your Profile</MenuItem>
+						<MenuItem eventKey={3.2}>Logout</MenuItem>
+					</NavDropdown>
+				</Nav>
+			</Navbar>
 		)
 	}
 });

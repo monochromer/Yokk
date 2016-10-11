@@ -16,6 +16,7 @@ const router = (
 		<Router history={ browserHistory }>
 			<Route path="/" component={ Layout }>
 				<IndexRoute component={ Tracking }></IndexRoute>
+				<Route path="tracking" component={ Tracking }></Route>
 				<Route path="users" component={ UserTable }></Route>
 				<Route path="addUser" component={ UserAdd }></Route>
 				<Route path="user/:login" component={ UserPage }></Route>
