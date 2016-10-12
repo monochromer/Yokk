@@ -15,7 +15,7 @@ var Alert = React.createClass({
                 <button type="button" className="close" onClick={this.handleClose}>
                     <span aria-hidden="true">&times;</span>
                 </button>
-                {this.props.text}
+                <span dangerouslySetInnerHTML={{__html: this.props.text}}></span>
             </div>
         )
     }

@@ -3,7 +3,6 @@
 const easyimg = require('easyimage');
 
 module.exports = (imageInfo, sizesArrayfoo) => {
-    const sizesArrayfoo = sizesArrayfoo || [];
     sizesArrayfoo.forEach((size) => {
         const destination = '';
         const width = +size.split('-')[0];

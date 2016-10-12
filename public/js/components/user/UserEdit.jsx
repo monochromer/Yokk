@@ -41,11 +41,12 @@ var UserEdit = React.createClass({
                     Wait a moment please...</p>
             );
         } else {
+            const photo = this.state.user.profileImg ? this.state.user.profileImg.original : "";
             return (
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-md-3 text-center center-block profile__photo">
-                            <DropPicture login={this.state.user.login} photo={this.state.user.profileImg.original}/>
+                            <DropPicture login={this.state.user.login} photo={photo}/>
                         </div>
                         <div className="col-md-9 profile">
                             <form onSubmit={this.handleSubmit}>

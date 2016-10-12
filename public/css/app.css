@@ -82,7 +82,11 @@ footer {
 	font-weight: normal;
 }
 .issue__source {
-	width: 100px;
+	width: 30px;
+	text-align: center;
+}
+.issue__duration {
+	width:100px;
 }
 .issue__description {
 	width: 660px;
@@ -99,4 +103,8 @@ footer {
 }
 .issues-heading {
 	margin-bottom: 20px;
+}
+.timeEntries__head {
+	color: #000;
+	opacity:0.4;
 }

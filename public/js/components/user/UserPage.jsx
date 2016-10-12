@@ -23,12 +23,13 @@ var UserPage = React.createClass({
 		if(this.state.user == undefined) {
 			return ( <p> Wait a moment please...</p> );
 		} else {
+			const photo = this.state.user.profileImg ? this.state.user.profileImg.original : "";
 			return (
 			    <div className="container-fluid">
 			        <div className="row">
 			        	<div className="col-md-3 text-center center-block profile__photo">
 		        			<div className="profile__dropzone vertical-center">
-                    			<img src={ this.state.user.profileImg.original } className="img-thumbnail center-block"/>
+                    			<img src={ photo } className="img-thumbnail center-block"/>
                 			</div>
 		        		</div>
 			        	<div className="col-md-9 profile">

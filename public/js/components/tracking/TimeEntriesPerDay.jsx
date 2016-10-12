@@ -21,13 +21,13 @@ var TimeEntriesPerDay = React.createClass({
                     </div>
                     <div className="row">
                         <div className="col-md-12">
-                            <table className="table table-bordered">
+                            <table className="table table-striped timeEntries">
                                 <thead>
                                     <tr>
-                                        <td className="issue__source"></td>
-                                        <td className="issue__description">Task</td>
-                                        <td>Duration</td>
-                                        <td className="issue__actions">Actions</td>
+                                        <th className="timeEntries__head issue__source"></th>
+                                        <th className="timeEntries__head issue__description">Task</th>
+                                        <th className="timeEntries__head issue__duration">Duration</th>
+                                        <th className="timeEntries__head issue__actions">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>

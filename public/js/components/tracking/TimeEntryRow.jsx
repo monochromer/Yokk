@@ -65,10 +65,10 @@ var TimeEntryRow = React.createClass({
         if(entrySource != "redmine") {
             buttonsBlock = this.state.editing ? buttonsEditing : buttons;
         }
-
+        const sourceIcon = entrySource == "redmine" ? '<span><img src="/img/redmine_fluid_icon.png" width="20px"/></span>' : '';
         return (
             <tr>
-                <td> { entrySource } </td>
+                <td dangerouslySetInnerHTML={{__html: sourceIcon}}></td>
                 <td>
                     {
                         !this.state.editing

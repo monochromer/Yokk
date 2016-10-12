@@ -32,7 +32,7 @@ var NewTimeEntryForm = React.createClass({
     syncRedmine: function() {
         const user = findUserByLogin(this.props.users, this.props.currentUser);
         if(!user.redmineApiKey) {
-            store.dispatch({type: "ALERT_SHOW", text: "Error! Check your Redmine API key!", class: "danger" });
+            store.dispatch({type: "ALERT_SHOW", text: 'Error! Check your Redmine API key! <a href="http://recordit.co/j15qHVOC9n" target="_blank">Instruction</a>', class: "danger" });
         } else {
             store.dispatch(fetchRedmineTimeEntries());
         }
