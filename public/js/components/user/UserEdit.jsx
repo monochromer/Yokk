@@ -5,6 +5,7 @@ import store from '../../store.js'
 import DropPicture from './DropPicture.jsx'
 import { findUserByLogin } from '../../helpers.js'
 import { updateUser } from '../../actions/users.js'
+import { browserHistory } from 'react-router'
 
 var UserEdit = React.createClass({
 
@@ -21,7 +22,7 @@ var UserEdit = React.createClass({
     },
 
     handleSubmit: function( event ) {
-        event.preventDefault( );
+        event.preventDefault();
         var fields = {};
 
         for ( var field in this.refs ) {
@@ -30,6 +31,7 @@ var UserEdit = React.createClass({
 
         fields.login = this.state.user.login;
         store.dispatch(updateUser( fields ));
+        browserHistory.push('/user/' + fields.login);
     },
 
     render: function( ) {
@@ -112,14 +114,6 @@ var UserEdit = React.createClass({
                                         <div className="form-group">
                                             <label htmlFor="vk">VK</label>
                                             <input type="text" className="form-control" ref="vk" id="vk" placeholder="vk.com/jackshephard" defaultValue={this.state.user.vk}/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <label htmlFor="twitter">Twitter</label>
-                                            <input type="text" className="form-control" ref="twitter" id="twitter" placeholder="@jackshephard" defaultValue={this.state.user.twitter}/>
                                         </div>
                                     </div>
                                 </div>

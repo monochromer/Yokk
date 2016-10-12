@@ -5,7 +5,7 @@ html {
 
 body {
 	/* Margin bottom by footer height */
-	margin-bottom: 60px;
+	margin-bottom: 100px;
 }
 
 footer {
@@ -15,6 +15,7 @@ footer {
 	/* Set the fixed height of the footer here */
 	height: 80px;
 	background-color: #f5f5f5;
+
 }
 
 .footer__content {
@@ -94,7 +95,7 @@ footer {
 }
 .loadmore {
 	margin-top: 20px;
-	margin-bottom: 50px;
+	margin-bottom: 10px;
 }
 .issues-heading {
 	margin-bottom: 20px;
