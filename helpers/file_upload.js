@@ -10,6 +10,8 @@ const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         var userDir = baseDir + req.params.user_login;
         var avatarDir = `${userDir}/avatars/`;
+        console.log(userDir);
+        console.log(avatarDir);
         if (!fs.existsSync(userDir)) {
             fs.mkdirSync(userDir);
             fs.mkdirSync(avatarDir);
@@ -21,6 +23,7 @@ const storage = multer.diskStorage({
     },
     filename: (req, file, cb) => {
         cb(null, moment().format().split(':').join('-') + path.extname(file.originalname));
+        console.log(moment().format().split(':').join('-') + path.extname(file.originalname));
     }
 });
 
