@@ -19,7 +19,7 @@ export default function(state = defaultState, action) {
             let allBatches = (payload.length == 0 || payload.lenght < 10) ? true : false;
             return Object.assign({}, state, {
                 list: state.list.concat(payload),
-                helpers: { allBatches: allBatches } 
+                helpers: { allBatches: allBatches }
             });
             break;
 
@@ -29,7 +29,7 @@ export default function(state = defaultState, action) {
             break;
 
         case "DELETE_TIME_ENTRY":
-            let withoutDeleted =  _.filter(state.list, (el) => el._id != payload.taskId);
+            let withoutDeleted =  _.filter(state.list, (el) => el._id != payload.timeEntryId);
             return Object.assign({}, state, { list: withoutDeleted });
             break;
 
