@@ -1,15 +1,17 @@
 'use strict'
 
-const redmineObject = require('../node-redmine-ss');
 const moment = require('moment');
 const assignDefined = require('./helpers/assignDefined');
 
-var hostname = process.env.REDMINE_HOST || 'redmine.soshace.com';
+// Original node-redmine module cannot be used because
+// redmine.time_entries lacks params configuration
+const redmineObject = require('../node-redmine-ss');
 
+const hostname = process.env.REDMINE_HOST || 'redmine.soshace.com';
 
-exports.importRedmineIssues = (req, res) => {
+exports.importRedmineIssues = function(req, res) {
     const userModel = req.app.db.models.User;
-    const redmineConnectionConfig = {};
+
     userModel.findOne({
         login: req.user.login
     }, {
@@ -26,8 +28,6 @@ exports.importRedmineIssues = (req, res) => {
         };
 
         const redmine = new redmineObject(hostname, redmineConnectionConfig);
-        const params = {};
-        params.limit = req.query.limit;
 
         redmine.current_user({}, (err, userData) => {
             if (err) {
@@ -39,7 +39,6 @@ exports.importRedmineIssues = (req, res) => {
                 console.log(err);
                 return;
             };
-            params.assigned_to_id = userData.user.id;
 
             var getNumberOfEntries = new Promise((resolve, reject) => {
                 redmine.time_entries({}, (err, data) => {
@@ -48,12 +47,10 @@ exports.importRedmineIssues = (req, res) => {
             });
 
             getNumberOfEntries.then((numOfEntriesToGet) => {
-
-                const p = [];
-                const entries = [];
+                let allPromisesToGetEntries = [], entries = [];
                 let offset = 0;
                 do {
-                    var timeEntriesParams = {
+                    let timeEntriesParams = {
                         limit: numOfEntriesToGet, //redmine limit for getting entries
                         user_id: userData.user.id,
                         offset: offset,
@@ -80,14 +77,14 @@ exports.importRedmineIssues = (req, res) => {
                             resolve(entries);
                         });
                     });
-                    p.push(promiseToGetEntries);
+                    allPromisesToGetEntries.push(promiseToGetEntries);
 
                     offset += 100; //redmine limit for getting entries 100
                     numOfEntriesToGet -= offset;
                 }
                 while (numOfEntriesToGet > 0);
 
-                Promise.all(p).then((arraysToConcat) => {
+                Promise.all(allPromisesToGetEntries).then((arraysToConcat) => {
                     let entries = arraysToConcat[0];
                     for (let i = 1; i < arraysToConcat.length; i++) {
                         entries.concat(arraysToConcat[i]);
@@ -95,7 +92,7 @@ exports.importRedmineIssues = (req, res) => {
 
                     // saving to DB
                     const TimeEntryModel = req.app.db.models.timeEntry;
-                    const entryPromisesArray = [];
+                    let entryPromisesArray = [];
                     entries.forEach((entry) => {
                         let promiseIssueUpsert = new Promise((resolve, reject) => {
                             TimeEntryModel.findOneAndUpdate({
@@ -105,9 +102,7 @@ exports.importRedmineIssues = (req, res) => {
                                 upsert: true,
                             }, (err, doc) => {
                                 if (err) {
-                                    console.log('Error while saving an entry:');
-                                    console.log(err);
-                                    errors.push(err);
+                                    console.log('Error while saving an entry:' + err);
                                     resolve(err);
                                 } else {
                                     resolve(doc);

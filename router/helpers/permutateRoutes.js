@@ -2,13 +2,13 @@ const path = require('path');
 const allTheRoutes = [];
 
 /******* Heap's Permutation Algorithm *********/
-var swap = function(array, pos1, pos2) {
+const swap = function(array, pos1, pos2) {
     var temp = array[pos1];
     array[pos1] = array[pos2];
     array[pos2] = temp;
 };
 
-var heapsPermute = function(array, output, n) {
+const heapsPermute = function(array, output, n) {
     n = n || array.length; // set n default to array.length
     if (n === 1) {
         output(array);
@@ -25,19 +25,18 @@ var heapsPermute = function(array, output, n) {
     }
 };
 /******* end Heap's Permutation Algorithm *********/
-var allRouterOptions = [];
 
-var buildRoutes = function(routeParts) {
+let allRouterOptions = [];
 
+let buildRoutes = function(routeParts) {
     let string = '';
     routeParts.forEach((element) => {
         string += '/' + element + '.:' + element + '?';
     });
     allRouterOptions.push(string);
-
 }
 
 module.exports = function(array) {
-  heapsPermute(array, buildRoutes);
-  return allRouterOptions;
+    heapsPermute(array, buildRoutes);
+    return allRouterOptions;
 }

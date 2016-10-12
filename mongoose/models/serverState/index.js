@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = (app, mongoose) => {
+module.exports = function(app, mongoose) {
     var serverState = new mongoose.Schema({
         login: {
             type: String

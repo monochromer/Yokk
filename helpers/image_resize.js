@@ -2,8 +2,8 @@
 
 const easyimg = require('easyimage');
 
-module.exports = (imageInfo, sizesArrayfoo) => {
-    sizesArrayfoo.forEach((size) => {
+module.exports = function(imageInfo, sizesArray = []) {
+    sizesArray.forEach((size) => {
         const destination = '';
         const width = +size.split('-')[0];
         const height = +size.split('-')[1];

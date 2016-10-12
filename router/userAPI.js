@@ -2,7 +2,7 @@
 
 const log = require('../helpers/logger');
 
-exports.getAllUsers = (req, res) => {
+exports.getAllUsers = function(req, res) {
     const userModel = req.app.db.models.User;
     userModel.allUsers((err, user) => {
         // returned fields can be adjusted in User schema
@@ -15,7 +15,7 @@ exports.getAllUsers = (req, res) => {
     });
 }
 
-exports.saveUserToDb = (req, res) => {
+exports.saveUserToDb = function(req, res) {
     const userModel = req.app.db.models.User;
     const user = new userModel(req.body);
     user.joinedon = Date.now();
@@ -51,34 +51,35 @@ exports.saveUserToDb = (req, res) => {
     });
 }
 
-exports.showUser = (req, res) => {
+exports.showUser = function(req, res) {
     const userModel = req.app.db.models.User;
     const login = req.params.user_login;
     userModel.findByLogin(login, (err, user) => {
         if (err) return log(req, err).err();
-        log(req).info();
         res.send(user);
+        log(req).info();
     });
 }
 
-exports.updateUser = (req, res) => {
+exports.updateUser = function(req, res) {
     const userModel = req.app.db.models.User;
     const login = req.params.user_login;
     const update = req.body;
+
     userModel.editUser(login, update, (err, user) => {
         if (err) {
             const logMsq = 'There was some error while updating user data';
+            res.status(500).send()
             log(req, logMsq).err();
-            return res.status(500).send();
+        } else {
+            res.status(200).send(user);
+            const logMsq = `User (login: ${login}) is updated`;
+            log(req, logMsq).info();
         }
-        const logMsq = `User (login: ${login}) is updated`;
-        log(req, logMsq).info();
-        console.log(user);
-        res.status(200).send(user);
     });
 }
 
-exports.deleteUser = (req, res) => {
+exports.deleteUser = function(req, res) {
     const userModel = req.app.db.models.User;
     const login = req.params.user_login;
     const rmdir = require('../helpers/rmdir');
@@ -87,16 +88,16 @@ exports.deleteUser = (req, res) => {
     if (login === req.user.login) { //deleting current user
         userModel.deleteUser(login, (err) => {
             if (err) {
-                log(req, err).err();
-                return res.status(500).send();
+                res.status(500).send();
+                return log(req, err).err();
             };
+            res.status(200).send({
+                action: 'Logout'
+            });
+            req.logout();
             rmdir(path.join(__dirname, '../uploads/users/', login));
             const logMsq = `User ${login} succesfully deleted`;
             log(req, logMsq).info();
-            req.logout();
-            res.status(200).send({
-                action: 'Logout'
-            }); //client side action logout
         });
 
     } else { //deleting any other user (admins can do)
@@ -104,10 +105,10 @@ exports.deleteUser = (req, res) => {
             if (err) {
                 return log(req, err).err();
             };
+            res.status(200).send(login);
             rmdir(path.join(__dirname, '../uploads/users/', login));
             const logMsq = `User ${login} succesfully deleted`;
             log(req, logMsq).info()
-            res.status(200).send(login);
         });
     }
 }
@@ -116,8 +117,8 @@ exports.uploadUserAvatar = function(req, res) {
     const userModel = req.app.db.models.User;
     const login = req.params.user_login;
     const path = require('path');
-    const momemnt = require('moment');
     const resize = require('../helpers/image_resize');
+    const replaceAll = require('../helpers/replace');
 
     // element of the array typeof STRING
     // first number in the string is width, second – height
@@ -128,7 +129,7 @@ exports.uploadUserAvatar = function(req, res) {
         '200-200'
     ];
 
-    const imageInfo = {};
+    let imageInfo = {};
     imageInfo.dir = req.file.destination;
     imageInfo.name = req.file.filename.split(':').join('-');
     resize(imageInfo, requiredSizes)
@@ -137,7 +138,6 @@ exports.uploadUserAvatar = function(req, res) {
     const smallImg = ('/' + req.file.destination.split('/').slice(1).slice(-4).join('/') + requiredSizes[0] + '-' + req.file.filename).split(':').join('-');;
     const mediumImg = ('/' + req.file.destination.split('/').slice(1).slice(-4).join('/') + requiredSizes[1] + '-' + req.file.filename).split(':').join('-');
 
-console.log(imageInfo);
     // Below could be used if there is no defined Schema (pure Mongo):
     // requiredSizes.forEach((size) => {
     //     updateFoo.profileImg[size] = '/' + req.file.destination.split('/').slice(1).slice(-4).join('/') + size + ':' + req.file.filename;
@@ -151,7 +151,7 @@ console.log(imageInfo);
             medium: mediumImg,
         }
     };
-console.log(update);
+
     userModel.editUser(login, update, (err, user) => {
         if (err || !user) {
             res.status(404).send();
@@ -161,7 +161,7 @@ console.log(update);
     });
 }
 
-exports.checkUserPermissions = (req, res) => {
+exports.checkUserPermissions = function(req, res) {
     // as of now, returned fields can be adjusted in userpassport.js
     res.send(req.user);
 }

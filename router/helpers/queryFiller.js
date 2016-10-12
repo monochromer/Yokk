@@ -2,7 +2,7 @@
 
 const moment = require('moment');
 
-module.exports = (query) => {
+module.exports = function(query) {
 
     let queryToReturn = {};
     if (query.from || query.to) {

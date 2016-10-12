@@ -13,7 +13,7 @@ if (!fs.existsSync(dir)) {
 
 const log = new Log('debug', fs.createWriteStream(dir + '/start_' + moment().format() + '.log'));
 
-module.exports = (request, message) => {
+module.exports = function(request, message) {
     const logger = {
         err: function() {
             if (process.env.NODE_ENV == 'development') {

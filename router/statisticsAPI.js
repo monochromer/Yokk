@@ -4,11 +4,12 @@ const log = require('../helpers/logger');
 const moment = require('moment');
 const queryFiller = require('./helpers/queryFiller');
 
-exports.getStatistics = (req, res) => {
+exports.getStatistics = function(req, res) {
     const query = queryFiller(req.query);
     const TimeEntryModel = req.app.db.models.timeEntry;
     const UserModel = req.app.db.models.User;
-    const rawData = {};
+
+    let rawData = {};
 
     const statisticsPromises = [
         new Promise((resolve, reject) => {
@@ -27,7 +28,7 @@ exports.getStatistics = (req, res) => {
 
     Promise.all(statisticsPromises).then((val) => {
         console.log(val);
-        const statistics = {};
+        let statistics = {};
         statistics.numberOfUsers = rawData.users.length;
         statistics.totalNumberOfTimeentries = rawData.timeEntries.length;
         statistics.numberOfTimeEntriesByUsers = rawData.timeEntries.length;

@@ -5,12 +5,12 @@ const moment = require('moment');
 const stringToMinutes = require('../helpers/issues').stringToMinutes;
 const queryFiller = require('./helpers/queryFiller');
 
-exports.timeEntryBatch = (req, res) => {
-    const query = queryFiller(req.query); //CHECK?
+exports.timeEntryBatch = function(req, res) {
+    const query = queryFiller(req.query); //CHECK!
     const TimeEntryModel = req.app.db.models.timeEntry;
     const numberOfDocsToSkip = +req.query.skip || 0;
     const numberOfDocsToReturn = +req.query.limit;
-    const maximumDocsToReturn = numberOfDocsToReturn + 20;
+    const maximumDocsToReturn = numberOfDocsToReturn + 20; //20 is possible additional entries that are needed to 'complete' the last returned date
 
     if (typeof req.user !== 'undefined') {
         query.executor = req.user.login;
@@ -30,7 +30,9 @@ exports.timeEntryBatch = (req, res) => {
             }
 
             for (let i = numberOfDocsToReturn - 1; i < maximumDocsToReturn - 1; i++) {
-                if (timeEntries.length <= numberOfDocsToReturn) { return res.send(timeEntries); }
+                if (timeEntries.length <= numberOfDocsToReturn) {
+                    return res.send(timeEntries);
+                }
                 if (!moment(timeEntries[i].dateCreated).isSame(moment(timeEntries[i + 1].dateCreated), 'day')) {
                     return res.send(timeEntries.slice(0, i + 1));
                 }
@@ -39,8 +41,7 @@ exports.timeEntryBatch = (req, res) => {
         });
 }
 
-exports.saveTimeEntry = (req, res) => {
-    console.log(req.body);
+exports.saveTimeEntry = function(req, res) {
     const TimeEntryModel = req.app.db.models.timeEntry;
     const timeEntry = new TimeEntryModel(req.body);
 
@@ -55,18 +56,17 @@ exports.saveTimeEntry = (req, res) => {
         timeEntry.endDate = moment(req.body.endDate, 'DD.MM.YYYY').toDate();
     }
 
-    timeEntry.duration = stringToMinutes(req.body.duration); // getting Minutes
+    timeEntry.duration = stringToMinutes(req.body.duration); //duration in minutes
 
     const statistics = req.app.db.models.statistics;
     const stat = new statistics;
-    let lastTimeEntryNumber;
+    let lastTimeEntryNumber = 0;
 
     // initialize lastTimeEntryNumber if not in the statistics collection
     statistics.find({}, (err, stats) => {
         if (stats.length == 0 || typeof stats[0].lastTimeEntryNumber == 'undefined') {
             stat.lastTimeEntryNumber = 0;
             stat.save();
-            lastTimeEntryNumber = 0;
         } else {
             lastTimeEntryNumber = stats[0].lastTimeEntryNumber;
         }
@@ -76,11 +76,10 @@ exports.saveTimeEntry = (req, res) => {
         // - description
         // - entrySource
         if (!timeEntry.executor || !timeEntry.description || !timeEntry.entrySource) {
-            // TODO Return not specified field
-            const logmsg = 'One of the required fields is not specified';
-            res.send({
-                message: logmsg
-            });
+            // TODO If some of the fiels not specified
+            // Return the name of not specified field
+            const logMsg = 'One of the required fields is not specified';
+            res.send(logMsg);
             return log(req, logmsg).err();
         }
 
@@ -104,14 +103,14 @@ exports.saveTimeEntry = (req, res) => {
                 };
             });
 
-            let logMsq = 'Time entry (login: ' + timeEntry.number + ') is saved to DB';
-            res.status(200).send(timeEntry);
-            return log(req, logMsq).info();
+            let logMsq = `Time entry (number: ${timeEntry.number}) is saved to DB`;
+            log(req, logMsq).info();
+            return res.status(200).send(timeEntry);
         });
     });
 }
 
-exports.deleteTimeEntry = (req, res) => {
+exports.deleteTimeEntry = function(req, res) {
     const TimeEntryModel = req.app.db.models.timeEntry;
     const timeEntryId = req.params.timeEntryId;
 
@@ -130,7 +129,7 @@ exports.deleteTimeEntry = (req, res) => {
             log(req, response.message).info();
         }
 
-        if (timeEntry == undefined) {
+        if (timeEntry === undefined) {
             var response = {
                 message: "Time entry {timeEntryId: " + timeEntryId + "} could not be found in DB",
                 timeEntryId: timeEntryId
@@ -142,10 +141,11 @@ exports.deleteTimeEntry = (req, res) => {
     });
 }
 
-exports.updateTimeEntry = (req, res) => {
+exports.updateTimeEntry = function(req, res) {
     const TimeEntryModel = req.app.db.models.timeEntry;
     const timeEntryId = req.params.timeEntryId;
     const update = req.body;
+
     TimeEntryModel.findByIdAndUpdate(timeEntryId, update, {
         new: true
     }, (err, timeEntry) => {
@@ -154,7 +154,6 @@ exports.updateTimeEntry = (req, res) => {
             log(req, logMsq).err();
             return res.send('Error. Look server logs.');
         } else {
-            console.log(timeEntry);
             const message = {
                 operationResult: 'Time entry updated',
                 updatedTimeEntryId: timeEntryId,
@@ -166,14 +165,11 @@ exports.updateTimeEntry = (req, res) => {
     });
 }
 
-exports.totalDuration = (req, res) => {
+exports.totalDuration = function(req, res) {
     const TimeEntryModel = req.app.db.models.timeEntry;
     const query = queryFiller(req.query);
 
     TimeEntryModel.getDuration(query, (err, data) => {
-        // const debugInfo = {};
-        // debugInfo.query = query;
-        // debugInfo.data = data;
         let sumMinutes = 0;
         data.forEach((element) => {
             sumMinutes = sumMinutes + element.duration;

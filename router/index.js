@@ -11,7 +11,7 @@ const upload = require('../helpers/file_upload');
 const checkFrontPath = require('./frontPaths.js');
 const path = require('path');
 
-module.exports = (app, passport) => {
+module.exports = function(app, passport) {
 
     app.get('/', checkAuthStatus, authorization.index);
     app.get('/login', authorization.login);
@@ -39,5 +39,5 @@ module.exports = (app, passport) => {
     app.get('/redmine/sync', checkAuthStatus, redmine.importRedmineIssues);
 
     app.get('*', checkAuthStatus, checkFrontPath, helperRoutes.redirectUndefinedRoutes);
-
+    
 }

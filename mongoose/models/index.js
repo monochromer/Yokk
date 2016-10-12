@@ -9,7 +9,7 @@ const models = [
 ];
 
 // previously was in models.js in root
-module.exports = (app, mongoose) => {
+module.exports = function(app, mongoose) {
     models.forEach((model) => {
         require('./' + model)(app, mongoose)
     });

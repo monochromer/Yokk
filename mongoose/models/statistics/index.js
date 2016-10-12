@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = (app, mongoose) => {
+module.exports = function(app, mongoose) {
     var statistics = new mongoose.Schema({
         lastTaskNumber: {
             type: Number,
