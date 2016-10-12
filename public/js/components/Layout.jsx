@@ -17,7 +17,7 @@ class Layout extends React.Component {
     render() {
         return (
             <div>
-                <TopPanel/>
+                <TopPanel location={this.props.location.pathname}/>
                 <div className="container-fluid">
                     <Alert/>
                     <ModalUserDelete/> { this.props.children }
