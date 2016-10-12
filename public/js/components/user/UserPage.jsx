@@ -28,7 +28,7 @@ var UserPage = React.createClass({
 			        <div className="row">
 			        	<div className="col-md-3 text-center center-block profile__photo">
 		        			<div className="profile__dropzone vertical-center">
-                    			<img src={ this.state.user.profileImg.medium } className="img-thumbnail center-block"/>
+                    			<img src={ this.state.user.profileImg.original } className="img-thumbnail center-block"/>
                 			</div>
 		        		</div>
 			        	<div className="col-md-9 profile">
