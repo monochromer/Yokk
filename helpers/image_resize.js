@@ -10,7 +10,7 @@ module.exports = (imageInfo, sizesArrayfoo = []) => {
 
         easyimg.rescrop({
             src: imageInfo.dir + imageInfo.name,
-            dst: imageInfo.dir + size + ':' + imageInfo.name,
+            dst: imageInfo.dir + size + '-' + imageInfo.name,
             width: width,
             height: height,
             cropwidth: width,

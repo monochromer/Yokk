@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
         cb(null, avatarDir);
     },
     filename: (req, file, cb) => {
-        cb(null, moment().format() + path.extname(file.originalname));
+        cb(null, moment().format().split(':').join('-') + path.extname(file.originalname));
     }
 });
 

@@ -130,28 +130,29 @@ exports.uploadUserAvatar = function(req, res) {
 
     const imageInfo = {};
     imageInfo.dir = req.file.destination;
-    imageInfo.name = req.file.filename;
+    imageInfo.name = req.file.filename.split(':').join('-');
     resize(imageInfo, requiredSizes)
 
-    const originalImg = '/' + req.file.path.split('/').slice(1).slice(-4).join('/');
-    const smallImg = '/' + req.file.destination.split('/').slice(1).slice(-4).join('/') + requiredSizes[0] + ':' + req.file.filename;
-    const mediumImg = '/' + req.file.destination.split('/').slice(1).slice(-4).join('/') + requiredSizes[1] + ':' + req.file.filename;
+    const originalImg = ('/' + req.file.path.split('/').slice(1).slice(-4).join('/')).split(':').join('-');
+    const smallImg = ('/' + req.file.destination.split('/').slice(1).slice(-4).join('/') + requiredSizes[0] + '-' + req.file.filename).split(':').join('-');;
+    const mediumImg = ('/' + req.file.destination.split('/').slice(1).slice(-4).join('/') + requiredSizes[1] + '-' + req.file.filename).split(':').join('-');
 
+console.log(imageInfo);
     // Below could be used if there is no defined Schema (pure Mongo):
     // requiredSizes.forEach((size) => {
     //     updateFoo.profileImg[size] = '/' + req.file.destination.split('/').slice(1).slice(-4).join('/') + size + ':' + req.file.filename;
     // })
 
     // IF update object structure is changed, don't forget to change Mongoose model
-    const updateFoo = {
+    const update = {
         profileImg: {
             original: originalImg,
             small: smallImg,
             medium: mediumImg,
         }
     };
-
-    userModel.editUser(login, updateFoo, (err, user) => {
+console.log(update);
+    userModel.editUser(login, update, (err, user) => {
         if (err || !user) {
             res.status(404).send();
         } else {
