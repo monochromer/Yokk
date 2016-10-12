@@ -139,6 +139,16 @@ var UserPage = React.createClass({
 									</div>
 								</div>
 							</div>
+							<div className="row">
+								<div className="col-md-12 profile__fields">
+									<div className="profile__field-name">
+										<span>Redmine API key</span>
+									</div>
+									<div className="profile__field-value">
+										<span>{ this.state.user.redmineApiKey }</span>
+									</div>
+								</div>
+							</div>
 						</div>
 			        </div>
 			    </div>
