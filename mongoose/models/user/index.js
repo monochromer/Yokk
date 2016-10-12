@@ -32,7 +32,11 @@ module.exports = function(app, mongoose) {
         linkedin: String,
         aboutme: String,
         cv: String,
-        profileImg: String,
+        profileImg: {
+          original: String,
+          small: String,
+          medium: String
+        },
         joinedon: {
             type: Date,
             default: null

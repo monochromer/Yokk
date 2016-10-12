@@ -117,18 +117,45 @@ exports.uploadUserAvatar = function(req, res) {
     const login = req.params.user_login;
     const path = require('path');
     const momemnt = require('moment');
+    const resize = require('../helpers/image_resize');
 
-    const urlToSave = '/' + req.file.path.split('/').slice(1).slice(-4).join('/');
-    const update = {
-        profileImg: urlToSave
+    // element of the array typeof STRING
+    // first number in the string is width, second – height
+    // no crop is done
+    // resized images are saved in the same directory with the 'width-height:' prefix
+    const requiredSizes = [
+        '57-57',
+        '200-200'
+    ];
+
+    const imageInfo = {};
+    imageInfo.dir = req.file.destination;
+    imageInfo.name = req.file.filename;
+    resize(imageInfo, requiredSizes)
+
+    const originalImg = '/' + req.file.path.split('/').slice(1).slice(-4).join('/');
+    const smallImg = '/' + req.file.destination.split('/').slice(1).slice(-4).join('/') + requiredSizes[0] + ':' + req.file.filename;
+    const mediumImg = '/' + req.file.destination.split('/').slice(1).slice(-4).join('/') + requiredSizes[1] + ':' + req.file.filename;
+
+    // Below could be used if there is no defined Schema (pure Mongo):
+    // requiredSizes.forEach((size) => {
+    //     updateFoo.profileImg[size] = '/' + req.file.destination.split('/').slice(1).slice(-4).join('/') + size + ':' + req.file.filename;
+    // })
+
+    // IF update object structure is changed, don't forget to change Mongoose model
+    const updateFoo = {
+        profileImg: {
+            original: originalImg,
+            small: smallImg,
+            medium: mediumImg,
+        }
     };
-    userModel.editUser(login, update, (err, user) => {
-        if (err)
-            res.send(err);
-        if (user) {
-            res.status(200).send(user);
-        } else {
+
+    userModel.editUser(login, updateFoo, (err, user) => {
+        if (err || !user) {
             res.status(404).send();
+        } else {
+            res.status(200).send(user);
         }
     });
 }
