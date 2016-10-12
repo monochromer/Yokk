@@ -34,7 +34,7 @@ var UserRow = React.createClass({
 				<td>{ this.props.user.position }</td>
 				<td>{ moment(this.props.user.joinedon).format("DD.MM.YYYY") }</td>
 				<td>{ this.props.user.role }</td>
-				<td>
+				<td className="text-right">
 					{ buttons }
 				</td>
 			</tr>

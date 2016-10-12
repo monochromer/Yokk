@@ -1,6 +1,9 @@
 const defaultState = {
     visible: false,
-    login: ""
+    login: "",
+    userAdd: {
+        visible: false
+    }
 }
 
 export default function( state = defaultState, action ) {
