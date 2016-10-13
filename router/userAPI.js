@@ -84,7 +84,7 @@ exports.updateUser = function(req, res) {
             }
             user.updatePassword(req.body.password);
             user.save((err, user) => {
-                res.status(200).send();
+                res.status(200).send(user);
             });
             const logMsq = `User's password (login: ${user.login}) is updated`;
 
