@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom'
 import store from './store.js'
 import Layout from './components/Layout.jsx'
 import UserTable from './components/user/UserTable.jsx'
-import UserAdd from './components/user/UserAdd.jsx'
 import UserPage from './components/user/UserPage.jsx'
 import UserEdit from './components/user/UserEdit.jsx'
 import Tracking from './components/tracking/index.jsx'
@@ -17,7 +16,6 @@ const router = (
 			<Route path="/" component={ Layout }>
 				<IndexRoute component={ Tracking }></IndexRoute>
 				<Route path="/users" component={ UserTable }></Route>
-				<Route path="addUser" component={ UserAdd }></Route>
 				<Route path="user/:login" component={ UserPage }></Route>
 				<Route path="user/edit/:login" component={ UserEdit }></Route>
 			</Route>

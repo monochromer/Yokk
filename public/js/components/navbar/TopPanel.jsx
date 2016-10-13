@@ -21,9 +21,6 @@ var TopPanel = React.createClass({
 					<LinkContainer to="/users">
 						<NavItem eventKey={2}>Team</NavItem>
 					</LinkContainer>
-					<LinkContainer to="/addUser">
-						<NavItem eventKey={3}>Add User</NavItem>
-					</LinkContainer>
 				</Nav>
 				<Nav pullRight>
 					<NavDropdown eventKey={4} title={this.props.login} id="basic-nav-dropdown" >
