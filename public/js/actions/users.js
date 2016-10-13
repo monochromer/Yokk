@@ -31,6 +31,7 @@ export function deleteUser(login) {
 
 export function updateUser(user) {
     return function(dispatch) {
+        console.log(user);
         request.put(UPDATE_USER_URI + user.login).send(user).end((err, response) => {
             dispatch({
                 type: "UPDATE_USER",
@@ -41,6 +42,7 @@ export function updateUser(user) {
                 class: "success",
                 text: updateUserSuccess(user.login)
             });
+            dispatch({type: "MODAL_CHANGE_PASSWORD_CLOSE"});
         });
     }
 }

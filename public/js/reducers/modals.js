@@ -5,6 +5,9 @@ const defaultState = {
     },
     userAdd: {
         visible: false
+    },
+    userChangePassword: {
+        visible: false
     }
 }
 
@@ -38,6 +41,23 @@ export default function( state = defaultState, action ) {
             return Object.assign({}, state, {
                 userAdd: {
                     visible:false
+                }
+            })
+            break;
+
+        case "MODAL_CHANGE_PASSWORD_SHOW":
+            return Object.assign({}, state, {
+                userChangePassword: {
+                    visible: true,
+                    login: action.login
+                }
+            })
+            break;
+
+        case "MODAL_CHANGE_PASSWORD_CLOSE":
+            return Object.assign({}, state, {
+                userChangePassword: {
+                    visible: false
                 }
             })
             break;

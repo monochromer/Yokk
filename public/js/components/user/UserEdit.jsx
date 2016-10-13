@@ -1,11 +1,12 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import _ from 'lodash'
 import store from '../../store.js'
 import DropPicture from './DropPicture.jsx'
-import { findUserByLogin } from '../../helpers.js'
-import { updateUser } from '../../actions/users.js'
+import ModalChangePassword from './ModalChangePassword.jsx'
+import { findUserByLogin } from '../../helpers'
+import { updateUser } from '../../actions/users'
 import { browserHistory } from 'react-router'
+import { connect } from 'react-redux'
 
 var UserEdit = React.createClass({
 
@@ -34,11 +35,14 @@ var UserEdit = React.createClass({
         browserHistory.push('/user/' + fields.login);
     },
 
+    openModalChangePassword: function() {
+        store.dispatch({type: "MODAL_CHANGE_PASSWORD_SHOW", login: this.state.user.login});
+    },
+
     render: function( ) {
         if ( this.state.user == undefined ) {
             return (
-                <p>
-                    Wait a moment please...</p>
+                <p> Wait a moment please... </p>
             );
         } else {
             const photo = this.state.user.profileImg ? this.state.user.profileImg.original : "";
@@ -50,8 +54,10 @@ var UserEdit = React.createClass({
                         </div>
                         <div className="col-md-9 profile">
                             <form onSubmit={this.handleSubmit}>
-                                <h2>{this.state.user.login}
-                                </h2>
+                                <h2>{this.state.user.login}</h2>
+                                <button type="button" className="btn btn-default" onClick={ this.openModalChangePassword }>
+                                    Change Password
+                                </button>
                                 <div className="row">
                                     <div className="col-md-10">
                                         <h3>General</h3>
@@ -158,6 +164,7 @@ var UserEdit = React.createClass({
                             </form>
                         </div>
                     </div>
+                    <ModalChangePassword login={this.props.routeParams.login}/>
                 </div>
             )
         }
