@@ -65,7 +65,6 @@ exports.updateUser = function(req, res) {
     const userModel = req.app.db.models.User;
     const login = req.params.user_login;
     const update = req.body;
-    console.log(req.body);
 
     if (req.body.password !== undefined) {
         userModel.findByLogin(login, (err, user) => {
@@ -75,7 +74,7 @@ exports.updateUser = function(req, res) {
             }
             user.updatePassword(req.body.password);
             user.save((err, user) => {
-              res.status(200).send(user);
+              res.status(200).send();
             });
             const logMsq = `User's password (login: ${user.login}) is updated`;
 
