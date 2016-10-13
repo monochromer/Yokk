@@ -2,38 +2,6 @@
 
 const log = require('../helpers/logger');
 
-exports.regtest = function(req, res) {
-    let nodemailer = require('nodemailer');
-    let smtpConfig = {
-        host: 'smtp.gmail.ru',
-        port: 465,
-        secure: true, // use SSL
-        auth: {
-            user: process.env.MAIL_USERNAME,
-            pass: process.env.MAIL_PASS
-        },
-        rejectUnauthorized: false
-    };
-    console.log(smtpConfig);
-
-    let transporter = nodemailer.createTransport(smtpConfig);
-
-    var mailOptions = {
-        from: '"Soshace team 👥" <HELLO@SOSHACE.COM>', // sender address
-        to: 'olegzhermal@gmail.com', // list of receivers
-        subject: 'Confirm registration', // Subject line
-        text: 'Hello Username! Your password is.. In order to start using your account confirm your email', // plaintext body
-        html: '<a>Here should be a confirmation link</a>' // html body
-    };
-
-    transporter.sendMail(mailOptions, function(error, info) {
-        if (error) {
-            console.log('fuck');
-            return res.send(error);
-        }
-        res.send('Message sent: ' + info.response);
-    });
-}
 exports.getAllUsers = function(req, res) {
     const userModel = req.app.db.models.User;
     userModel.allUsers((err, user) => {
@@ -50,6 +18,7 @@ exports.getAllUsers = function(req, res) {
 exports.saveUserToDb = function(req, res) {
     const userModel = req.app.db.models.User;
     const user = new userModel(req.body);
+    const sendLoginPasswordToEmail = require('./helpers/sendLoginPassword');
     user.joinedon = Date.now();
 
     if (!user.login) {
@@ -71,8 +40,16 @@ exports.saveUserToDb = function(req, res) {
                     log(req, err).err();
                     return res.status(500).send();
                 };
-                const logMsq = `User (login: ${user.login}) is saved to DB`;
                 res.status(200).send(user);
+                if (typeof req.body.email !== 'undefined') {
+                    let credentials = {
+                      login: req.body.login,
+                      password: req.body.password,
+                      email: req.body.email
+                    }
+                    sendLoginPasswordToEmail(credentials);
+                };
+                const logMsq = `User (login: ${user.login}) is saved to DB`;
                 return log(req, logMsq).info();
             });
         } else {

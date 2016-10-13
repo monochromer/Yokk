@@ -23,7 +23,6 @@ module.exports = function(app, passport) {
     app.get('/api/user', checkAuthStatus, userAPI.getAllUsers);
     app.post('/api/user/add', checkAuthStatus, userAPI.saveUserToDb);
     app.post('/api/user/register', userAPI.saveUserToDb);
-    app.post('/reg', userAPI.regtest);
     app.get('/api/user/check_permissions', userAPI.checkUserPermissions); //can cause conflicts when login is 'check_permissions'
     app.get('/api/user/:user_login', checkAuthStatus, userAPI.showUser);
     app.put('/api/user/:user_login', checkAuthStatus, userAPI.updateUser);

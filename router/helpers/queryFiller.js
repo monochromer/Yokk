@@ -6,7 +6,7 @@ module.exports = function(query) {
 
     let queryToReturn = {};
     if (query.from || query.to) {
-        if (query.from == query.to) {
+        if (query.from === query.to) {
             queryToReturn.date = query.from;
         } else {
             queryToReturn.date = {};
