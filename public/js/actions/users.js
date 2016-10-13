@@ -57,6 +57,7 @@ export function addUser(user) {
                 text: addUserSuccess(user.login),
                 class: "success"
             });
+            dispatch({type: "MODAL_ADD_USER_CLOSE"});
         });
     }
 }

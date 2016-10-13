@@ -40,8 +40,8 @@ var ModalUserDelete = React.createClass({
 
 var getProps = function(store) {
 	return {
-		visible: store.modals.visible,
-		login: store.modals.login
+		visible: store.modals.userDelete.visible,
+		login: store.modals.userDelete.login
 	}
 }
 

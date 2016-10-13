@@ -8,7 +8,9 @@ import ModalUserAdd from './ModalUserAdd.jsx'
 
 
 var UsersTable = React.createClass({
-
+    showModalUserAdd: function() {
+        store.dispatch({type: "MODAL_ADD_USER_SHOW"});
+    },
     render: function() {
         return (
             <div>
@@ -17,7 +19,7 @@ var UsersTable = React.createClass({
                         <h2>Team </h2>
                     </div>
                     <div className="col-md-2 col-md-offset-8 text-right" style={{ "marginTop": "23px"}}>
-                        <button className="btn btn-default">
+                        <button className="btn btn-default" onClick={this.showModalUserAdd}>
                             <span className="glyphicon glyphicon-plus"></span> add new
                         </button>
                     </div>
