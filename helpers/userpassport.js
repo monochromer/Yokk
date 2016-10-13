@@ -9,7 +9,6 @@ module.exports = function(app) {
             const userModel = app.db.models.User;
             // !!! not all the fields should be returned – check and refactor
             userModel.userAuthorize(login, (err, user) => {
-                console.log(user);
                 if (err) {
                     return cb(err);
                 }
@@ -41,10 +40,13 @@ module.exports = function(app) {
                 return cb(err);
             }
             //should be done in schemas Schema.statics.userAuthorize method
-            const stripped_user = {
-                login: user.login,
-                role: user.role,
-            };
+            let stripped_user = null
+            if (user) {
+                stripped_user = {
+                    login: user.login,
+                    role: user.role,
+                };
+            }
             cb(null, stripped_user);
         });
     });
