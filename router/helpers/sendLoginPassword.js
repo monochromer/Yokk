@@ -19,7 +19,7 @@ module.exports = function(credentials) {
     let htmlToSend = `\
   <div>Login: <b>${credentials.login}</b></div>\
   <div>Password: <b>${credentials.password}</b></div>\
-  <div><a href='http://eop.soshace.com/'></a></div>`;
+  <div><a href='http://eop.soshace.com/'>eop.soshace.com</a></div>`;
 
     let mailOptions = {
         from: '"Soshace team 👥" <bot@izst.ru>', // sender address
