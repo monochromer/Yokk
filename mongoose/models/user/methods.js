@@ -20,4 +20,10 @@ module.exports = function(schema) {
     schema.methods.checkPassword = function(password) {
         return this.encryptPassword(password) === this.hashedPassword;
     };
+
+    schema.methods.updatePassword = function(password) {
+        this._plainPassword = password;
+        this.salt = Math.random() + '';
+        this.hashedPassword = this.encryptPassword(password);
+    }
 }

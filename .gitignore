@@ -8,6 +8,9 @@
 # Testing server code
 test.js
 
+# DB dumps
+/backup
+
 /node_modules/
 /bower_components/
 

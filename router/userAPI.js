@@ -65,18 +65,36 @@ exports.updateUser = function(req, res) {
     const userModel = req.app.db.models.User;
     const login = req.params.user_login;
     const update = req.body;
+    console.log(req.body);
 
-    userModel.editUser(login, update, (err, user) => {
-        if (err) {
-            const logMsq = 'There was some error while updating user data';
-            res.status(500).send()
-            log(req, logMsq).err();
-        } else {
-            res.status(200).send(user);
-            const logMsq = `User (login: ${login}) is updated`;
-            log(req, logMsq).info();
-        }
-    });
+    if (req.body.password !== undefined) {
+        userModel.findByLogin(login, (err, user) => {
+            if (err) {
+                res.status(500).send();
+                return log(req, err).err();
+            }
+            user.updatePassword(req.body.password);
+            user.save((err, user) => {
+              res.status(200).send(user);
+            });
+            const logMsq = `User's password (login: ${user.login}) is updated`;
+
+            return log(req, logMsq).info()
+
+        });
+    } else {
+        userModel.editUser(login, update, (err, user) => {
+            if (err) {
+                res.status(500).send();
+                const logMsq = 'There was some error while updating user data';
+                log(req, logMsq).err();
+            } else {
+                res.status(200).send(user);
+                const logMsq = `User (login: ${login}) is updated`;
+                log(req, logMsq).info();
+            }
+        });
+    }
 }
 
 exports.deleteUser = function(req, res) {

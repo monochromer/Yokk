@@ -18,10 +18,9 @@ exports.auth = function(req, res) {
 }
 
 exports.logout = function(req, res) {
-    if (!req.user) {
-        let logMsq = 'Deleted user is logged out';
-    } else {
-        let logMsq = 'User (login: ' + req.user.login + ') is logged out';
+    let logMsq = 'Deleted user is logged out';
+    if (req.user) {
+        logMsq = `User (login: ${req.user.login}) is logged out`;
     }
     log(req, logMsq).info();
     req.logout();

@@ -39,5 +39,5 @@ module.exports = function(app, passport) {
     app.get('/redmine/sync', checkAuthStatus, redmine.importRedmineIssues);
 
     app.get('*', checkAuthStatus, checkFrontPath, helperRoutes.redirectUndefinedRoutes);
-    
+
 }

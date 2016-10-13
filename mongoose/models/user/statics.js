@@ -41,8 +41,7 @@ module.exports = function(schema) {
             _id: 1,
             login: 1,
             hashedPassword: 1,
-            salt: 1,
-            admin: 1
+            salt: 1
         };
         return this.findOne({
             login: login
@@ -55,6 +54,14 @@ module.exports = function(schema) {
     };
 
     schema.statics.editUser = function(login, updateObject, cb) {
+        return this.findOneAndUpdate({
+            login: login
+        }, updateObject, {
+            new: true
+        }, cb);
+    };
+
+    schema.statics.updateUserPassword = function(login, updateObject, cb) {
         return this.findOneAndUpdate({
             login: login
         }, updateObject, {
