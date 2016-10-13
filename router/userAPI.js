@@ -43,9 +43,9 @@ exports.saveUserToDb = function(req, res) {
                 res.status(200).send(user);
                 if (typeof req.body.email !== 'undefined') {
                     let credentials = {
-                      login: req.body.login,
-                      password: req.body.password,
-                      email: req.body.email
+                        login: req.body.login,
+                        password: req.body.password,
+                        email: req.body.email
                     };
 
                     return sendLoginPasswordToEmail(credentials);
@@ -84,11 +84,12 @@ exports.updateUser = function(req, res) {
             }
             user.updatePassword(req.body.password);
             user.save((err, user) => {
+                // seding passwords BAD
                 res.status(200).send(user);
             });
             const logMsq = `User's password (login: ${user.login}) is updated`;
 
-            return log(req, logMsq).info()
+            return log(req, logMsq).info();
 
         });
     } else {
