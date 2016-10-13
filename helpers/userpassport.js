@@ -4,17 +4,17 @@ const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
 
 module.exports = function(app) {
-
     passport.use(new localStrategy(
-        (username, password, cb) => {
+        (login, password, cb) => {
             const userModel = app.db.models.User;
             // !!! not all the fields should be returned – check and refactor
-            userModel.userAuthorize(username, (err, user) => {
+            userModel.userAuthorize(login, (err, user) => {
+                console.log(user);
                 if (err) {
                     return cb(err);
                 }
                 if (!user) {
-                    console.log('User ' + username + ' not found in DB');
+                    console.log('User ' + login + ' not found in DB');
                     return cb(null, false);
                 }
                 if (user.checkPassword(password)) {

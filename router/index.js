@@ -10,6 +10,7 @@ const redmine = require('./redmine');
 const upload = require('../helpers/file_upload');
 const checkFrontPath = require('./frontPaths.js');
 const path = require('path');
+const registration = require('./register');
 
 module.exports = function(app, passport) {
 
@@ -22,7 +23,9 @@ module.exports = function(app, passport) {
 
     app.get('/api/user', checkAuthStatus, userAPI.getAllUsers);
     app.post('/api/user/add', checkAuthStatus, userAPI.saveUserToDb);
-    app.post('/api/user/register', userAPI.saveUserToDb);
+    app.post('/api/user/register', registration, passport.authenticate('local', {
+        failureRedirect: '/login'
+    }), authorization.auth);
     app.get('/api/user/check_permissions', userAPI.checkUserPermissions); //can cause conflicts when login is 'check_permissions'
     app.get('/api/user/:user_login', checkAuthStatus, userAPI.showUser);
     app.put('/api/user/:user_login', checkAuthStatus, userAPI.updateUser);
