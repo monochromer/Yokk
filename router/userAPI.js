@@ -145,7 +145,6 @@ exports.uploadUserAvatar = function(req, res) {
     const login = req.params.user_login;
     const path = require('path');
     const resize = require('../helpers/image_resize');
-    const replaceAll = require('../helpers/replace');
 
     // element of the array typeof STRING
     // first number in the string is width, second – height

@@ -41,9 +41,9 @@ module.exports = function(req, res, next) {
               next();
           });
       } else {
-          const logMsq = `User (login: ${user.login}) is already in DB`;
-          res.status(500).send();
-          return log(req, logMsq).info()
+          const logMsq = `Sorry! User (login: ${user.login}) is already in DB. Please, <a href='/api/user/register'>try again</a>`;
+          log(req, logMsq).info();
+          res.status(200).send(logMsq);
       }
   });
 }
