@@ -56,9 +56,13 @@ const ModalUserAdd = React.createClass({
     			        		<button type="button" className="close" onClick={ this.handleClose } aria-label="Close">
     			        			<span aria-hidden="true">&times;</span>
     			        		</button>
-    			        		<h4 className="modal-title">Add new user</h4>
+    			        		<h4 className="modal-title">Send invitation.</h4>
     			      		</div>
     			      		<div className="modal-body">
+                                    <div className="form-group">
+                                        <label htmlFor="email">Email</label>
+                                        <input type="email" className="form-control" id="email" ref="email" placeholder="email"/>
+                                    </div>
                                     <div className="form-group">
                                         <label htmlFor="login">Login</label>
                                         <input type="text" className="form-control" id="login" ref="login" placeholder="username"/>
@@ -73,7 +77,7 @@ const ModalUserAdd = React.createClass({
                                     </div>
     			      		</div>
     			      		<div className="modal-footer">
-    			        		<button type="submit" className="btn btn-success">Add User</button>
+    			        		<button type="submit" className="btn btn-success">Send</button>
     			        		<button type="button" className="btn btn-default" onClick={ this.handleClose }>Cancel</button>
     			      		</div>
                         </form>
