@@ -3,17 +3,20 @@ import ReactDOM from 'react-dom';
 import request from 'superagent';
 
 var LoginForm = React.createClass({
-
-	onChange: function (event) {
-		event.preventDefault();
+	getInitialState: function() {
+		return {
+			auth: true
+		}
 	},
 
-	onSubmit: function(event) {
-		event.preventDefault();
+	changeForm: function() {
+		this.setState({
+			auth: this.state.auth ? false : true
+		})
 	},
 
 	render: function() {
-		return (
+		const auth = (
 			<div className="container">
 				<form className="form-signin" method="POST" action="/login">
         			<h2 className="form-signin-heading">Please sign in</h2>
@@ -25,9 +28,25 @@ var LoginForm = React.createClass({
 	          			</label>
         			</div>
         			<button className="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+					<span className="changeFormLink" onClick={ this.changeForm }> Don't have an account? <a href="#">Sign Up</a></span>
       			</form>
       		</div>
-		) 
+		);
+		const reg = (
+			<div className="container">
+				<form className="form-signup" method="POST" action="/api/user/register">
+        			<h2 className="form-signin-heading">Signing up</h2>
+        			<input type="email" className="form-control" placeholder="Email" required="true" name="email" />
+					<input type="text" className="form-control" placeholder="Login" required="true" name="login" />
+        			<input type="password" className="form-control" placeholder="Password" required="true" name="password"/>
+        			<button className="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+					<span className="changeFormLink" onClick={ this.changeForm }> Already there? <a href="#">Sign In</a></span>
+      			</form>
+      		</div>
+		)
+		return (
+			<div>{ this.state.auth ? auth : reg }</div>
+		)
 	  }
 });
 
