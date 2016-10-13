@@ -2,7 +2,7 @@
 
 const nodemailer = require('nodemailer');
 const smtpConfig = {
-    host: 'smtp.gmail.com',
+    host: 'smtp.yandex.ru',
     port: 465,
     secure: true, // use SSL
     auth: {
@@ -21,7 +21,7 @@ module.exports = function(credentials) {
   <div>Password: <b>${credentials.password}</b></div>`;
 
     let mailOptions = {
-        from: '"Soshace team 👥" <HELLO@SOSHACE.COM>', // sender address
+        from: '"Soshace team 👥" <bot@izst.ru>', // sender address
         to: credentials.email, // list of receivers
         subject: 'Congratulations! You\'re now registered user', // Subject line
         text: text,
