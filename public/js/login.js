@@ -34,7 +34,7 @@ var LoginForm = React.createClass({
 		);
 		const reg = (
 			<div className="container">
-				<form className="form-signup" method="POST" action="/api/user/register">
+				<form className="form-signup" method="POST" action="/register">
         			<h2 className="form-signin-heading">Signing up</h2>
         			<input type="email" className="form-control" placeholder="Email" required="true" name="email" />
 					<input type="text" className="form-control" placeholder="Login" required="true" name="login" />
