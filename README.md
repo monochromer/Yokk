@@ -12,7 +12,7 @@ First of all you should clone files from the git, then create .env file in root 
     MAIL_USERNAME = bot@gmail.com
     MAIL_PASS = password
 
-After all run webpack and application:
+Install all modules via npm
 
     webpack
     npm start

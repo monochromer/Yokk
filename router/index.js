@@ -22,7 +22,7 @@ module.exports = function(app, passport) {
         failureRedirect: '/login'
     }), authorization.auth);
 
-    app.use('/api', checkAuthStatus, api)
+    app.use('/api', api)
 
     app.get('*', checkAuthStatus, checkFrontPath, helperRoutes.redirectUndefinedRoutes);
 
