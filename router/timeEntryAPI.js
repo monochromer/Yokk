@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const log = require('../helpers/logger');
 const moment = require('moment');
@@ -14,7 +14,7 @@ exports.timeEntryBatch = function(req, res) {
 
     if (typeof req.user !== 'undefined') {
         query.executor = req.user.login;
-    };
+    }
 
     TimeEntryModel
         .find(query)
@@ -39,7 +39,7 @@ exports.timeEntryBatch = function(req, res) {
             }
             res.send(timeEntries);
         });
-}
+};
 
 exports.saveTimeEntry = function(req, res) {
     const TimeEntryModel = req.app.db.models.timeEntry;
@@ -90,17 +90,17 @@ exports.saveTimeEntry = function(req, res) {
             if (err) {
                 log(req, err).err();
                 return res.status(500).send();
-            };
+            }
 
             statistics.findOneAndUpdate({}, {
                 lastTimeEntryNumber: timeEntry.number
             }, {
                 new: true
-            }, function(err, data) {
+            }, function(err) {
                 if (err) {
                     log(req, err).err();
                     return res.status(500).send();
-                };
+                }
             });
 
             let logMsq = `Time entry (number: ${timeEntry.number}) is saved to DB`;
@@ -108,21 +108,22 @@ exports.saveTimeEntry = function(req, res) {
             return res.status(200).send(timeEntry);
         });
     });
-}
+};
 
 exports.deleteTimeEntry = function(req, res) {
     const TimeEntryModel = req.app.db.models.timeEntry;
     const timeEntryId = req.params.timeEntryId;
 
     TimeEntryModel.findByIdAndRemove(timeEntryId, (err, timeEntry) => {
+        var response = {};
         if (err) {
             log(req, err).err();
-            var response = {
+            response = {
                 message: "Some error uccured while deleting the time entry",
                 timeEntryId: timeEntryId
             };
         } else {
-            var response = {
+            response = {
                 message: "Time entry successfully deleted",
                 timeEntryId: timeEntryId
             };
@@ -130,7 +131,7 @@ exports.deleteTimeEntry = function(req, res) {
         }
 
         if (timeEntry === undefined) {
-            var response = {
+            response = {
                 message: "Time entry {timeEntryId: " + timeEntryId + "} could not be found in DB",
                 timeEntryId: timeEntryId
             };
@@ -139,7 +140,7 @@ exports.deleteTimeEntry = function(req, res) {
 
         res.send(response);
     });
-}
+};
 
 exports.updateTimeEntry = function(req, res) {
     const TimeEntryModel = req.app.db.models.timeEntry;
@@ -159,11 +160,11 @@ exports.updateTimeEntry = function(req, res) {
                 updatedTimeEntryId: timeEntryId,
                 update: update
             };
-            log(req, message.operationResult).info()
+            log(req, message.operationResult).info();
             res.status(200).send(timeEntry);
         }
     });
-}
+};
 
 exports.totalDuration = function(req, res) {
     const TimeEntryModel = req.app.db.models.timeEntry;
@@ -173,9 +174,9 @@ exports.totalDuration = function(req, res) {
         let sumMinutes = 0;
         data.forEach((element) => {
             sumMinutes = sumMinutes + element.duration;
-        })
+        });
         res.status(200).send({
             totalDuration: sumMinutes
         });
     });
-}
+};
