@@ -42,6 +42,7 @@ exports.timeEntryBatch = function(req, res) {
 }
 
 exports.saveTimeEntry = function(req, res) {
+    console.log(req);
     const TimeEntryModel = req.app.db.models.timeEntry;
     const timeEntry = new TimeEntryModel(req.body);
 
@@ -79,8 +80,9 @@ exports.saveTimeEntry = function(req, res) {
             // TODO If some of the fiels not specified
             // Return the name of not specified field
             const logMsg = 'One of the required fields is not specified';
+            console.log(timeEntry);
             res.send(logMsg);
-            return log(req, logmsg).err();
+            return log(req, logMsg).err();
         }
 
         timeEntry.lastTimeEntryNumber = lastTimeEntryNumber + 1;
@@ -90,7 +92,7 @@ exports.saveTimeEntry = function(req, res) {
             if (err) {
                 log(req, err).err();
                 return res.status(500).send();
-            };
+            }
 
             statistics.findOneAndUpdate({}, {
                 lastTimeEntryNumber: timeEntry.number

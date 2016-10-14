@@ -14,5 +14,12 @@ First of all you should clone files from the git, then create .env file in root 
 
 Install all modules via npm
 
+    npm install
+
+Run webpack
+
     webpack
+
+Start an application
+
     npm start
