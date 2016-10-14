@@ -1,9 +1,9 @@
-'use strict';
+'use strict'
 
-const log = require('../helpers/logger');
+const log = require('../../../helpers/logger');
 const moment = require('moment');
-const stringToMinutes = require('../helpers/issues').stringToMinutes;
-const queryFiller = require('./helpers/queryFiller');
+const stringToMinutes = require('../../../helpers/issues').stringToMinutes;
+const queryFiller = require('../helpers/queryFiller');
 
 exports.timeEntryBatch = function(req, res) {
     const query = queryFiller(req.query); //CHECK!
@@ -14,7 +14,7 @@ exports.timeEntryBatch = function(req, res) {
 
     if (typeof req.user !== 'undefined') {
         query.executor = req.user.login;
-    }
+    };
 
     TimeEntryModel
         .find(query)
@@ -39,7 +39,7 @@ exports.timeEntryBatch = function(req, res) {
             }
             res.send(timeEntries);
         });
-};
+}
 
 exports.saveTimeEntry = function(req, res) {
     const TimeEntryModel = req.app.db.models.timeEntry;
@@ -90,17 +90,17 @@ exports.saveTimeEntry = function(req, res) {
             if (err) {
                 log(req, err).err();
                 return res.status(500).send();
-            }
+            };
 
             statistics.findOneAndUpdate({}, {
                 lastTimeEntryNumber: timeEntry.number
             }, {
                 new: true
-            }, function(err) {
+            }, function(err, data) {
                 if (err) {
                     log(req, err).err();
                     return res.status(500).send();
-                }
+                };
             });
 
             let logMsq = `Time entry (number: ${timeEntry.number}) is saved to DB`;
@@ -108,22 +108,21 @@ exports.saveTimeEntry = function(req, res) {
             return res.status(200).send(timeEntry);
         });
     });
-};
+}
 
 exports.deleteTimeEntry = function(req, res) {
     const TimeEntryModel = req.app.db.models.timeEntry;
     const timeEntryId = req.params.timeEntryId;
 
     TimeEntryModel.findByIdAndRemove(timeEntryId, (err, timeEntry) => {
-        var response = {};
         if (err) {
             log(req, err).err();
-            response = {
+            var response = {
                 message: "Some error uccured while deleting the time entry",
                 timeEntryId: timeEntryId
             };
         } else {
-            response = {
+            var response = {
                 message: "Time entry successfully deleted",
                 timeEntryId: timeEntryId
             };
@@ -131,7 +130,7 @@ exports.deleteTimeEntry = function(req, res) {
         }
 
         if (timeEntry === undefined) {
-            response = {
+            var response = {
                 message: "Time entry {timeEntryId: " + timeEntryId + "} could not be found in DB",
                 timeEntryId: timeEntryId
             };
@@ -140,7 +139,7 @@ exports.deleteTimeEntry = function(req, res) {
 
         res.send(response);
     });
-};
+}
 
 exports.updateTimeEntry = function(req, res) {
     const TimeEntryModel = req.app.db.models.timeEntry;
@@ -160,11 +159,11 @@ exports.updateTimeEntry = function(req, res) {
                 updatedTimeEntryId: timeEntryId,
                 update: update
             };
-            log(req, message.operationResult).info();
+            log(req, message.operationResult).info()
             res.status(200).send(timeEntry);
         }
     });
-};
+}
 
 exports.totalDuration = function(req, res) {
     const TimeEntryModel = req.app.db.models.timeEntry;
@@ -174,9 +173,131 @@ exports.totalDuration = function(req, res) {
         let sumMinutes = 0;
         data.forEach((element) => {
             sumMinutes = sumMinutes + element.duration;
-        });
+        })
         res.status(200).send({
             totalDuration: sumMinutes
         });
     });
-};
+}
+
+/******** REDMINE *********/
+// const moment = require('moment');
+const assignDefined = require('../helpers/assignDefined');
+
+// Original node-redmine module cannot be used because
+// redmine.time_entries lacks params configuration
+const redmineObject = require('../../../node-redmine-ss');
+
+const hostname = process.env.REDMINE_HOST || 'redmine.soshace.com';
+
+exports.importRedmineIssues = function(req, res) {
+    const userModel = req.app.db.models.User;
+
+    userModel.findOne({
+        login: req.user.login
+    }, {
+        redmineApiKey: 1
+    }, (err, user) => {
+        if (!user.redmineApiKey) {
+            console.log('Redmine API key not found for current user');
+            res.status(401).send();
+            return;
+        };
+
+        const redmineConnectionConfig = {
+            apiKey: user.redmineApiKey
+        };
+
+        const redmine = new redmineObject(hostname, redmineConnectionConfig);
+
+        redmine.current_user({}, (err, userData) => {
+            if (err) {
+                if (err == 'Server returns : Unauthorized (401)') {
+                    res.status(401).send();
+                } else {
+                    res.status(403).send();
+                }
+                console.log(err);
+                return;
+            };
+
+            var getNumberOfEntries = new Promise((resolve, reject) => {
+                redmine.time_entries({}, (err, data) => {
+                    resolve(data.total_count)
+                });
+            });
+
+            getNumberOfEntries.then((numOfEntriesToGet) => {
+                let allPromisesToGetEntries = [], entries = [];
+                let offset = 0;
+                do {
+                    let timeEntriesParams = {
+                        limit: numOfEntriesToGet, //redmine limit for getting entries
+                        user_id: userData.user.id,
+                        offset: offset,
+                    };
+
+                    let promiseToGetEntries = new Promise((resolve, reject) => {
+                        redmine.time_entries(timeEntriesParams, (err, data) => {
+                            if (err) reject(err);
+                            data.time_entries.forEach(element => {
+                                let entry = {};
+                                entry.redmineTimeEntryId = element.id;
+                                entry.number = element.issue.id;
+                                entry.executor = req.user.login;
+                                entry.date = entry.dateCreated = moment(element.created_on).toDate();
+                                if (!element.comments) {
+                                    entry.description = 'no comments';
+                                } else {
+                                    entry.description = element.comments;
+                                }
+                                entry.duration = (element.hours * 60).toFixed(0);
+                                entry.entrySource = 'redmine';
+                                entries.push(entry);
+                            });
+                            resolve(entries);
+                        });
+                    });
+                    allPromisesToGetEntries.push(promiseToGetEntries);
+
+                    offset += 100; //redmine limit for getting entries 100
+                    numOfEntriesToGet -= offset;
+                }
+                while (numOfEntriesToGet > 0);
+
+                Promise.all(allPromisesToGetEntries).then((arraysToConcat) => {
+                    let entries = arraysToConcat[0];
+                    for (let i = 1; i < arraysToConcat.length; i++) {
+                        entries.concat(arraysToConcat[i]);
+                    }
+
+                    // saving to DB
+                    const TimeEntryModel = req.app.db.models.timeEntry;
+                    let entryPromisesArray = [];
+                    entries.forEach((entry) => {
+                        let promiseIssueUpsert = new Promise((resolve, reject) => {
+                            TimeEntryModel.findOneAndUpdate({
+                                redmineTimeEntryId: entry.redmineTimeEntryId
+                            }, entry, {
+                                new: true,
+                                upsert: true,
+                            }, (err, doc) => {
+                                if (err) {
+                                    console.log('Error while saving an entry:' + err);
+                                    resolve(err);
+                                } else {
+                                    resolve(doc);
+                                }
+                            });
+                        });
+                        entryPromisesArray.push(promiseIssueUpsert);
+                    });
+                    Promise.all(entryPromisesArray).then((documents) => {
+                        console.log('Tasks are syncronized');
+                        res.status(200).send(documents);
+                    })
+                });
+            });
+        });
+    });
+}

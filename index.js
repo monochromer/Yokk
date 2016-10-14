@@ -7,7 +7,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
 const sessions = require('express-session');
-
+// const api = require('./api');
 require('./mongoose')(app);
 
 //middleware

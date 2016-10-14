@@ -1,6 +1,6 @@
 'use strict'
 
-const log = require('../helpers/logger');
+const log = require('../../../helpers/logger');
 const moment = require('moment');
 const queryFiller = require('./helpers/queryFiller');
 

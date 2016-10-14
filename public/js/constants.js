@@ -6,7 +6,7 @@ export const ADD_USER_URI = '/api/user/add'
 export const FETCH_NEXT_TIME_ENTRY_BATCH_URI = '/api/timeEntryBatch'
 export const CREATE_TIME_ENTRY_URI = '/api/timeEntry/add'
 export const DELETE_TIME_ENTRY_URI = '/api/timeEntry/'
-export const FETCH_REDMINE_TIME_ENTRIES_URI = '/redmine/sync'
+export const FETCH_REDMINE_TIME_ENTRIES_URI = '/api/sync/redmine'
 export const UPDATE_TIME_ENTRY_URI = '/api/timeEntry/'
 
 export function COMBINE_USER_ADDPHOTO_URI(login) {
