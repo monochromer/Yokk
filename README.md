@@ -6,7 +6,7 @@ EoP is a service which helps you manage your team. In general, the first version
 First of all you should clone files from the git, then create .env file in root folder. Here is sample configuration:
 
     MONGO_URL = mongodb://localhost/eop
-    COLLECITON = users
+    COLLECTION = eop
     PORT = 5000
     SESSION_SECRET = secret
     MAIL_USERNAME = bot@gmail.com
