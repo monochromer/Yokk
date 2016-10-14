@@ -1,25 +1,18 @@
-# Instructions
+# Eye-of-Providence
 
-Environment should contain next vars (.env should be be defined with):<br>
-COLLECITON = collection_name<br>
-NODE_ENV = {'production' || 'development'}<br>
-SESSION_SECRET = 'Some secret phrase for sessions'<br>
-DB = mongodb://localhost/test<br>
-COLLECITON = user_profile<br>
-PORT = 5000
+EoP is a service which helps you manage your team. In general, the first version is an aggregator of time-tracking systems. Eye of providence can fetch time-entries form services e.g. Redmine or Upwork and shows all data in one place. Service is very helpful for managers or teamleaders.
 
-To install, clone the repository and install dependencies.
+### Installation
+First of all you should clone files from the git, then create .env file in root folder. Here is sample configuration:
 
-```bash
-$ git clone https://github.com/soshace/Eye-of-Providence.git
-$ cd Eye-of-Providence
-$ npm install
-```
+    MONGO_URL = mongodb://localhost/eop
+    COLLECITON = users
+    PORT = 5000
+    SESSION_SECRET = secret
+    MAIL_USERNAME = bot@gmail.com
+    MAIL_PASS = password
 
-Start the server.
+After all run webpack and application:
 
-```bash
-$ npm start
-```
-
-Open a web browser and navigate to [<http://localhost:5000/>]
+    webpack
+    npm start
