@@ -23,9 +23,7 @@ exports.timeEntryBatch = function(req, res) {
         .sort({
             dateCreated: -1
         })
-        // .select({ _id: 0, dateCreated: 1 })
         .skip(numberOfDocsToSkip)
-        // .limit(10)
         .exec((err, timeEntries) => {
             if (err) next(err);
 
@@ -52,6 +50,7 @@ exports.saveTimeEntry = function(req, res) {
     if (req.body.startDate) {
         timeEntry.startDate = moment(req.body.startDate, 'DD.MM.YYYY').toDate();
     }
+
     if (req.body.endDate) {
         timeEntry.endDate = moment(req.body.endDate, 'DD.MM.YYYY').toDate();
     }
