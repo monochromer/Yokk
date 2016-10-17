@@ -16,10 +16,18 @@ export default function(state = defaultState, action) {
             break;
 
         case "FETCH_NEXT_TIME_ENTRY_BATCH":
-            let allBatches = (payload.length == 0 || payload.lenght < 10) ? true : false;
+            let allBatches = !!(payload.length == 0 || payload.lenght < 10);
             return Object.assign({}, state, {
                 list: state.list.concat(payload),
                 helpers: { allBatches: allBatches }
+            });
+            break;
+
+        case "FETCH_USER_ACTIVITY":
+            let allBatches2 = !!(payload.length == 0 || payload.lenght < 10);
+            return Object.assign({}, state, {
+                list: state.list.concat(payload),
+                helpers: { allBatches: allBatches2 }
             });
             break;
 
@@ -29,7 +37,7 @@ export default function(state = defaultState, action) {
             break;
 
         case "DELETE_TIME_ENTRY":
-            let withoutDeleted =  _.filter(state.list, (el) => el._id != payload.timeEntryId);
+            let withoutDeleted =  _.filter(state.list, (el) => el._id != payload);
             return Object.assign({}, state, { list: withoutDeleted });
             break;
 

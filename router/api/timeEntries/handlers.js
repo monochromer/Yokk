@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const log = require('../../../helpers/logger');
 const moment = require('moment');
@@ -6,7 +6,6 @@ const stringToMinutes = require('../../../helpers/issues').stringToMinutes;
 const queryFiller = require('../helpers/queryFiller');
 
 exports.timeEntryBatch = function(req, res) {
-    // console.log(req.query);
     const query = queryFiller(req.query); //CHECK!
     const TimeEntryModel = req.app.db.models.timeEntry;
     const numberOfDocsToSkip = +req.query.skip || 0;
@@ -24,13 +23,9 @@ exports.timeEntryBatch = function(req, res) {
         .sort({
             dateCreated: -1
         })
-        // .select({ _id: 0, dateCreated: 1 })
         .skip(numberOfDocsToSkip)
-        // .limit(10)
         .exec((err, timeEntries) => {
-            if (err) {
-                console.log(err);
-            }
+            if (err) next(err);
 
             for (let i = numberOfDocsToReturn - 1; i < maximumDocsToReturn - 1; i++) {
                 if (timeEntries.length <= numberOfDocsToReturn) {
@@ -42,7 +37,7 @@ exports.timeEntryBatch = function(req, res) {
             }
             res.send(timeEntries);
         });
-}
+};
 
 exports.saveTimeEntry = function(req, res) {
     const TimeEntryModel = req.app.db.models.timeEntry;
@@ -55,6 +50,7 @@ exports.saveTimeEntry = function(req, res) {
     if (req.body.startDate) {
         timeEntry.startDate = moment(req.body.startDate, 'DD.MM.YYYY').toDate();
     }
+
     if (req.body.endDate) {
         timeEntry.endDate = moment(req.body.endDate, 'DD.MM.YYYY').toDate();
     }
@@ -74,37 +70,19 @@ exports.saveTimeEntry = function(req, res) {
             lastTimeEntryNumber = stats[0].lastTimeEntryNumber;
         }
 
-        // req.body should contain required field:
-        // - executor
-        // - description
-        // - entrySource
-        if (!timeEntry.executor || !timeEntry.description || !timeEntry.entrySource) {
-            // TODO If some of the fiels not specified
-            // Return the name of not specified field
-            const logMsg = 'One of the required fields is not specified';
-            console.log(timeEntry);
-            res.send(logMsg);
-            return log(req, logMsg).err();
-        }
 
         timeEntry.lastTimeEntryNumber = lastTimeEntryNumber + 1;
 
         // TODO Check lastTimeEntryNumber.description and send warning if already exists
         timeEntry.save((err, timeEntry) => {
-            if (err) {
-                log(req, err).err();
-                return res.status(500).send();
-            }
+            if (err) next(err);
 
             statistics.findOneAndUpdate({}, {
                 lastTimeEntryNumber: timeEntry.number
             }, {
                 new: true
-            }, function(err, data) {
-                if (err) {
-                    log(req, err).err();
-                    return res.status(500).send();
-                };
+            }, function(err) {
+                if(err) next(err);
             });
 
             let logMsq = `Time entry (number: ${timeEntry.number}) is saved to DB`;
@@ -112,38 +90,17 @@ exports.saveTimeEntry = function(req, res) {
             return res.status(200).send(timeEntry);
         });
     });
-}
+};
 
 exports.deleteTimeEntry = function(req, res) {
     const TimeEntryModel = req.app.db.models.timeEntry;
     const timeEntryId = req.params.timeEntryId;
 
     TimeEntryModel.findByIdAndRemove(timeEntryId, (err, timeEntry) => {
-        if (err) {
-            log(req, err).err();
-            var response = {
-                message: "Some error uccured while deleting the time entry",
-                timeEntryId: timeEntryId
-            };
-        } else {
-            var response = {
-                message: "Time entry successfully deleted",
-                timeEntryId: timeEntryId
-            };
-            log(req, response.message).info();
-        }
-
-        if (timeEntry === undefined) {
-            var response = {
-                message: "Time entry {timeEntryId: " + timeEntryId + "} could not be found in DB",
-                timeEntryId: timeEntryId
-            };
-            log(req, response.message).info();
-        }
-
-        res.send(response);
+        if (err) next(err);
+        res.status(200).send(timeEntryId);
     });
-}
+};
 
 exports.updateTimeEntry = function(req, res) {
     const TimeEntryModel = req.app.db.models.timeEntry;
@@ -153,36 +110,11 @@ exports.updateTimeEntry = function(req, res) {
     TimeEntryModel.findByIdAndUpdate(timeEntryId, update, {
         new: true
     }, (err, timeEntry) => {
-        if (err) {
-            var logMsq = 'There was some error while updating user data';
-            log(req, logMsq).err();
-            return res.send('Error. Look server logs.');
-        } else {
-            const message = {
-                operationResult: 'Time entry updated',
-                updatedTimeEntryId: timeEntryId,
-                update: update
-            };
-            log(req, message.operationResult).info()
-            res.status(200).send(timeEntry);
-        }
+        if (err) next(err);
+        res.status(200).send(timeEntry);
     });
-}
+};
 
-exports.totalDuration = function(req, res) {
-    const TimeEntryModel = req.app.db.models.timeEntry;
-    const query = queryFiller(req.query);
-
-    TimeEntryModel.getDuration(query, (err, data) => {
-        let sumMinutes = 0;
-        data.forEach((element) => {
-            sumMinutes = sumMinutes + element.duration;
-        })
-        res.status(200).send({
-            totalDuration: sumMinutes
-        });
-    });
-}
 
 /******** REDMINE *********/
 // const moment = require('moment');
