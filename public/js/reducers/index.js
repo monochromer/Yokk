@@ -4,6 +4,7 @@ import alerts from './alerts'
 import currentUser from './currentUser'
 import timeEntries from './timeEntries'
 import reportRequest from './reportRequest'
+import usersActivities from './usersActivities'
 
 import { combineReducers } from 'redux'
 
@@ -13,5 +14,6 @@ export default combineReducers({
     alerts,
     currentUser,
     timeEntries,
-    reportRequest
+    reportRequest,
+    usersActivities
 })

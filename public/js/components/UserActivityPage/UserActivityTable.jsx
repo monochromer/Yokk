@@ -20,6 +20,7 @@ class UserActivityTable extends React.Component {
     }
 
     loadMore() {
+      console.log(this.props);
         store.dispatch(fetchCustomUserNextTimeEntryBatch(this.props.offset, this.state.limit, this.props.login));
     }
 
@@ -73,12 +74,14 @@ class UserActivityTable extends React.Component {
 };
 
 var getProps = function(state) {
-    return {
-        days: groupTimeEntriesByDay(state.timeEntries.list),
-        offset: state.timeEntries.list.length,
-        allBatches: state.timeEntries.helpers.allBatches,
-        users: state.users
+    let user = state.usersActivities.showUser;
+    let props = {};
+    if (typeof state.usersActivities[user] !== 'undefined') {
+        props.days = groupTimeEntriesByDay(state.usersActivities[user].list);
+        props.offset = state.usersActivities[user].offset;
+        props.allBatches = state.usersActivities[user].helpers.allBatches;
     }
+    return props;
 }
 
 export default connect(getProps)(UserActivityTable)

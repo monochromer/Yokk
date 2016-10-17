@@ -27,14 +27,17 @@ var UserRow = React.createClass({
 		if(this.props.currentUser.role == "admin" || this.props.currentUser.login == this.props.user.login) {
 			buttons = <ActionButtons login={ this.props.user.login } />
 		}
-
 		return (
 			<tr>
 				<td><Link  to={ '/user/' + this.props.user.login }>{ this.props.user.login }</Link></td>
 				<td>{ this.props.user.position }</td>
 				<td>{ moment(this.props.user.joinedon).format("DD.MM.YYYY") }</td>
 				<td>{ this.props.user.role }</td>
-				<td><a href={UserActivityPageLink}>link</a></td>
+
+
+				<td>
+  				<Link  to={ UserActivityPageLink } className="btn btn-primary">Show activities</Link>
+				</td>
 				<td className="text-right">
 					{ buttons }
 				</td>

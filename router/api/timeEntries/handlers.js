@@ -18,7 +18,7 @@ exports.timeEntryBatch = function(req, res) {
     } else if (typeof req.user.login !== 'undefined') {
         query.executor = req.user.login;
     }
-    
+
     TimeEntryModel
         .find(query)
         .sort({
