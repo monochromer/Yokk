@@ -1,4 +1,5 @@
 import React from 'react'
+import { browserHistory } from 'react-router'
 import TimeEntriesPerDay from './TimeEntriesPerDay.jsx'
 import store from '../../store'
 import moment from 'moment'
@@ -8,7 +9,7 @@ import {dayBeatify, durationBeatify, groupTimeEntriesByDay} from '../../helpers'
 
 var TimeEntriesList = React.createClass({
     getInitialState: function() {
-        return {limit: 10}
+        return  {limit: 10}
     },
 
     componentWillMount: function() {

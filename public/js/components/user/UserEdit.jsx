@@ -11,6 +11,7 @@ import { connect } from 'react-redux'
 var UserEdit = React.createClass({
 
     getInitialState: function( ) {
+      console.log(this.props)
         return {
             user: findUserByLogin( this.props.users, this.props.routeParams.login )
         }

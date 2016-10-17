@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import _ from 'lodash';
 
 const defaultState = {};
 
@@ -7,18 +7,10 @@ export default function(state = defaultState, action) {
         type,
         payload
     } = action;
-
     switch (type) {
         case "ADD_USER_TO_REPORT":
-            let addUserState = Object.assign({}, state);
-            if (!addUserState.usersIds) {
-                addUserState.usersIds = []
-            };
-            // if (!_.includes(newState.usersIds, payload.id)) {
-            //     newState.usersIds.push(id)
-            // };
-            addUserState.usersIds.push(payload.id)
-            return addUserState;
+            return [...state, payload.id];
+            console.log(state);
             break;
 
         case "DELETE_USER_FROM_REPORT":

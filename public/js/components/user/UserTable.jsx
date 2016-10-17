@@ -33,7 +33,7 @@ var UsersTable = React.createClass({
                                     <th>Position</th>
                                     <th>Joined on</th>
                                     <th>Role</th>
-                                    <th></th>
+                                    <th>User Activity</th>
                                 </tr>
                             </thead>
                             <tbody>

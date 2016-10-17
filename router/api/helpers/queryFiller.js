@@ -29,9 +29,9 @@ module.exports = function(query) {
         }
     }
 
-    if (query.user) queryToReturn.executor = query.user;
-    if (query.source) queryToReturn.source = query.source;
 
+    if (typeof query.user !== undefined) { queryToReturn.executor = query.user };
+    if (query.source) queryToReturn.source = query.source;
     if (query.batch !== undefined) {
         queryToReturn.batch = query.batch;
     }

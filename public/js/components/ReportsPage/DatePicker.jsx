@@ -1,6 +1,6 @@
-import React from 'react'
-import DatePicker from 'react-datepicker'
-import moment from 'moment'
+import React from 'react';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
 
 require('../../../../node_modules/react-datepicker/dist/react-datepicker.min.css');
 

@@ -6,6 +6,7 @@ import UserTable from './components/user/UserTable.jsx'
 import UserPage from './components/user/UserPage.jsx'
 import UserEdit from './components/user/UserEdit.jsx'
 import Tracking from './components/tracking/index.jsx'
+import ReportsPage from './components/ReportsPage'
 import UserActivityPage from './components/UserActivityPage'
 
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
@@ -19,7 +20,8 @@ const router = (
 				<Route path="/users" component={ UserTable }></Route>
 				<Route path="user/:login" component={ UserPage }></Route>
 				<Route path="user/edit/:login" component={ UserEdit }></Route>
-				<Route path="/UserActivityPage" component={ UserActivityPage }></Route>
+				<Route path="user/activityPage/:login" component={ UserActivityPage }></Route>
+				<Route path="/ReportsPage" component={ ReportsPage }></Route>
 			</Route>
 		</Router>
 	</Provider>

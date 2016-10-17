@@ -6,16 +6,19 @@ const stringToMinutes = require('../../../helpers/issues').stringToMinutes;
 const queryFiller = require('../helpers/queryFiller');
 
 exports.timeEntryBatch = function(req, res) {
+    // console.log(req.query);
     const query = queryFiller(req.query); //CHECK!
     const TimeEntryModel = req.app.db.models.timeEntry;
     const numberOfDocsToSkip = +req.query.skip || 0;
     const numberOfDocsToReturn = +req.query.limit;
     const maximumDocsToReturn = numberOfDocsToReturn + 20; //20 is possible additional entries that are needed to 'complete' the last returned date
 
-    if (typeof req.user !== 'undefined') {
+    if (typeof req.query.user !== 'undefined') {
+        query.executor = req.query.user;
+    } else if (typeof req.user.login !== 'undefined') {
         query.executor = req.user.login;
     }
-
+    
     TimeEntryModel
         .find(query)
         .sort({
@@ -229,7 +232,8 @@ exports.importRedmineIssues = function(req, res) {
             });
 
             getNumberOfEntries.then((numOfEntriesToGet) => {
-                let allPromisesToGetEntries = [], entries = [];
+                let allPromisesToGetEntries = [],
+                    entries = [];
                 let offset = 0;
                 do {
                     let timeEntriesParams = {

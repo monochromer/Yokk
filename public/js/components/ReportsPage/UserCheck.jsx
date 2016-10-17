@@ -19,7 +19,7 @@ class UserCheck extends React.Component {
                 id: event.target.value
             }
         };
-        if (!this.state.checkd) {
+        if (!this.state.checked) {
             action.type = "ADD_USER_TO_REPORT";
         } else {
           action.type = "DELETE_USER_FROM_REPORT";

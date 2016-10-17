@@ -40,12 +40,12 @@ export class CustomPeriod extends React.Component {
             <div>
                 <div className="row">
                     <div className="col-md-12">
-                        from <datePicker/>
+                        from <datePicker />
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-md-12">
-                        to <datePicker/>
+                        to <datePicker />
                     </div>
                 </div>
             </div>
