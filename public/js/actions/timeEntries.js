@@ -1,11 +1,9 @@
 import {
     FETCH_NEXT_TIME_ENTRY_BATCH_URI,
-    CREATE_TIME_ENTRY_URI,
-    DELETE_TIME_ENTRY_URI,
     FETCH_REDMINE_TIME_ENTRIES_URI,
-    UPDATE_TIME_ENTRY_URI
+    TIME_ENTRY_CRUD
 } from '../constants'
-import moment from 'moment'
+
 
 export function fetchNextTimeEntryBatch(skip, limit) {
     return {
@@ -32,7 +30,7 @@ export function createTimeEntry(timeEntry) {
     return {
         type: "CREATE_TIME_ENTRY",
         createItem: {
-            url: CREATE_TIME_ENTRY_URI,
+            url: TIME_ENTRY_CRUD,
             data: timeEntry
         }
     }
@@ -42,7 +40,7 @@ export function deleteTimeEntry(id) {
     return {
         type: "DELETE_TIME_ENTRY",
         deleteItem: {
-            url: DELETE_TIME_ENTRY_URI + id
+            url: TIME_ENTRY_CRUD + id
         }
     }
 }
@@ -52,7 +50,7 @@ export function updateTimeEntry(timeEntry) {
     return {
         type: "UPDATE_TIME_ENTRY",
         updateItem: {
-            url: UPDATE_TIME_ENTRY_URI + timeEntry._id,
+            url: TIME_ENTRY_CRUD + timeEntry._id,
             data: timeEntry
         }
     }
