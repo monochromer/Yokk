@@ -27,7 +27,7 @@ Start an application
 
     npm start
 
-## TimeEntries Collection [/api/timeEntryBatch]
+## Time-entry batch [/api/timeEntryBatch]
 
 ### Get Batches for a user- about 20 items [GET]
 
@@ -48,48 +48,92 @@ Start an application
             }
         ]
 
-### Create a New Question [POST]
+## Adding a new time-entry [/api/timeEntry/add]
 
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
+### Create a new time-entry [POST]
+
+You may create new time-entry, just send object with time-entry.
 
 + Request (application/json)
 
         {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
-            ]
+            "entrySource": "eop",
+            "duration": 165,
+            "description": "My sample time-entry",
+            "executor": "57e8d0c84bb4a29392c72316",
+            "dateCreated": 1476689842494
         }
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
 
-    + Headers
+        {
+            "__v":0,
+            "entrySource":"eop",
+            "duration":0.00275,
+            "description":
+            "My sample time-entry",
+            "executor":"57e8d0c84bb4a29392c72316",
+            "_id":"5804801a34065e509ef893ad",
+            "dateCreated":"2016-10-17T07:37:22.494Z",
+            "date":"2016-10-17T07:39:06.827Z"
+        }
+        
+## Changing & deleting the time-entry [/api/timeEntry/5804801a34065e509ef893ad]
 
-            Location: /questions/2
+### Delete a time-entry [DELETE]
 
-    + Body
++ Response 200 (application/json)
+ 
 
+        {
+            "message":"Time entry successfully deleted",
+            "timeEntryId":"58047fb234065e509ef89385"
+        }
+
+        
+### Change a time-entry [PUT]
+
++ Request (application/json)
+
+        {
+            "entrySource": "eop",
+            "duration": 167,
+            "description": "My changed time-entry",
+            "executor": "57e8d0c84bb4a29392c72316",
+            "dateCreated": 1476689842494
+        }
+
++ Response 200 (application/json)
+
+        {
+            "__v":1,
+            "entrySource":"eop",
+            "duration":0.00275,
+            "description":
+            "My changed time-entry",
+            "executor":"57e8d0c84bb4a29392c72316",
+            "_id":"5804801a34065e509ef893ad",
+            "dateCreated":"2016-10-17T07:37:22.494Z",
+            "date":"2016-10-17T07:39:06.827Z"
+        }
+
+## Sync with redmine [/api/sync/redmine]
+
+### Syncing task for autorized user [GET]
+    
++ Response 200 (application/json)
+
+        [
             {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 0
-                    }, {
-                        "choice": "Python",
-                        "votes": 0
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
-                    }
-                ]
+                "_id": "5800949f5ac8ca30a2e5db29",
+                "redmineTimeEntryId": 1378,
+                "entrySource": "redmine",
+                "duration": 165,
+                "description": "Prototype for reports page is done, understanding and planning also are done",
+                "executor": "max-buranbaev",
+                "number": 2585,
+                "__v": 0,
+                "dateCreated": "2016-10-14T08:03:23.000Z",
+                "date": "2016-10-14T08:03:23.000Z"
             }
+        ]
