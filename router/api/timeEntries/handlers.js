@@ -42,7 +42,6 @@ exports.timeEntryBatch = function(req, res) {
 }
 
 exports.saveTimeEntry = function(req, res) {
-    console.log(req);
     const TimeEntryModel = req.app.db.models.timeEntry;
     const timeEntry = new TimeEntryModel(req.body);
 

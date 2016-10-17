@@ -1,5 +1,3 @@
-# Eye-of-Providence
-
 EoP is a service which helps you manage your team. In general, the first version is an aggregator of time-tracking systems. Eye of providence can fetch time-entries form services e.g. Redmine or Upwork and shows all data in one place. Service is very helpful for managers or teamleaders.
 
 ### Installation
@@ -16,7 +14,7 @@ Install all modules via npm
 
     npm install
 
-Run webpack
+Run webpack 
 
     webpack
 
