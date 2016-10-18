@@ -9,6 +9,8 @@ import DailyActivity from './DailyActivity.jsx';
 class UserActivityTable extends React.Component {
     constructor(props) {
         super(props);
+        // console.log('Props from constructor():');
+        // console.log(props);
         this.loadMore = this.loadMore.bind(this);
         this.state = {
             limit: 10
@@ -16,11 +18,14 @@ class UserActivityTable extends React.Component {
     }
 
     componentWillMount() {
+      // console.log('Props from componentWillMount():');
+      //   console.log(this.props);
         store.dispatch(fetchCustomUserNextTimeEntryBatch(this.props.offset, this.state.limit, this.props.login));
     }
 
     loadMore() {
-      console.log(this.props);
+      // console.log('Props from loadMore():');
+      //   console.log(this.props);
         store.dispatch(fetchCustomUserNextTimeEntryBatch(this.props.offset, this.state.limit, this.props.login));
     }
 
@@ -73,14 +78,22 @@ class UserActivityTable extends React.Component {
     }
 };
 
-var getProps = function(state) {
+let getProps = function(state) {
+// The bug is below. User is got from the store and there's an old user so the props (and offset) is gotten for the 'old' user
     let user = state.usersActivities.showUser;
     let props = {};
+    // console.log('User from getProps():');
+    // console.log(user);
+    // if (state.usersActivities[user]) {console.log(state.usersActivities[user].offset);} else {console.log('No fucking offset');}
     if (typeof state.usersActivities[user] !== 'undefined') {
         props.days = groupTimeEntriesByDay(state.usersActivities[user].list);
         props.offset = state.usersActivities[user].offset;
         props.allBatches = state.usersActivities[user].helpers.allBatches;
+    } else {
+        props.offset = 0;
     }
+    // console.log('Props from getProps():');
+    // console.log(props);
     return props;
 }
 

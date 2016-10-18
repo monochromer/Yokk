@@ -21,6 +21,10 @@ var ActionButtons = React.createClass({
 
 var UserRow = React.createClass({
 
+  dispatchUserToShow: function() {
+    store.dispatch({ type: "SAVE_USER_TO_SHOW", user: this.props.user.login });
+  },
+
 	render: function() {
 		var buttons = "";
     let UserActivityPageLink = `/user/activityPage/${this.props.user.login}`;
@@ -33,10 +37,8 @@ var UserRow = React.createClass({
 				<td>{ this.props.user.position }</td>
 				<td>{ moment(this.props.user.joinedon).format("DD.MM.YYYY") }</td>
 				<td>{ this.props.user.role }</td>
-
-
-				<td>
-  				<Link  to={ UserActivityPageLink } className="btn btn-primary">Show activities</Link>
+				<td >
+  				<Link onClick={ this.dispatchUserToShow } to={ UserActivityPageLink } className="btn btn-primary" >Show activities</Link>
 				</td>
 				<td className="text-right">
 					{ buttons }

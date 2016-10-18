@@ -14,7 +14,7 @@ export function fetchNextTimeEntryBatch(skip, limit) {
 export function fetchCustomUserNextTimeEntryBatch(skip, limit, user) {
     return {
         type: "FETCH_USER_ACTIVITY",
-        loadItems: FETCH_NEXT_TIME_ENTRY_BATCH_URI + '?skip=' + skip + '&limit=' + limit + '&user=' + user,
+        loadItems: TIME_ENTRY_CRUD + '?skip=' + skip + '&limit=' + limit + '&user=' + user,
         user: user
     }
 }

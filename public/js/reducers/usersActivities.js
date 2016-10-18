@@ -22,12 +22,16 @@ export default function(state = defaultState, action) {
                 newState[user].list = payload;
                 newState[user].offset = newState[user].list.length;
             }
-            newState.showUser = user;
             let allBatches = (payload.length == 0 || payload.lenght < 10) ? true : false;
             newState[user].helpers = {};
             newState[user].helpers.allBatches = allBatches;
 
             return newState;
+            break;
+
+        case "SAVE_USER_TO_SHOW":
+
+            return Object.assign({}, state, {showUser: user});
             break;
 
         default:
