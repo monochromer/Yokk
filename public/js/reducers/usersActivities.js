@@ -6,7 +6,9 @@ export default function(state = defaultState, action) {
     const {
         type,
         payload,
-        user
+        user,
+        startDateFilter,
+        endDateFilter
     } = action;
 
     switch (type) {
@@ -31,7 +33,17 @@ export default function(state = defaultState, action) {
 
         case "SAVE_USER_TO_SHOW":
 
-            return Object.assign({}, state, {showUser: user});
+            return Object.assign({}, state, {
+                showUser: user
+            });
+            break;
+
+        case "STORE_PERIOD_FILTER":
+
+            return Object.assign({}, state, {
+                startDateFilter: startDateFilter,
+                endDateFilter: endDateFilter
+            });
             break;
 
         default:

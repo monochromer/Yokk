@@ -1,6 +1,7 @@
 import React from 'react';
 import store from '../../store';
 import {connect} from 'react-redux';
+import moment from 'moment';
 import _ from 'lodash';
 import {dayBeatify, durationBeatify, groupTimeEntriesByDay, findUserByLogin} from '../../helpers';
 import {fetchCustomUserNextTimeEntryBatch} from '../../actions/timeEntries.js';
@@ -9,8 +10,6 @@ import DailyActivity from './DailyActivity.jsx';
 class UserActivityTable extends React.Component {
     constructor(props) {
         super(props);
-        // console.log('Props from constructor():');
-        // console.log(props);
         this.loadMore = this.loadMore.bind(this);
         this.state = {
             limit: 10
@@ -18,14 +17,10 @@ class UserActivityTable extends React.Component {
     }
 
     componentWillMount() {
-      // console.log('Props from componentWillMount():');
-      //   console.log(this.props);
         store.dispatch(fetchCustomUserNextTimeEntryBatch(this.props.offset, this.state.limit, this.props.login));
     }
 
     loadMore() {
-      // console.log('Props from loadMore():');
-      //   console.log(this.props);
         store.dispatch(fetchCustomUserNextTimeEntryBatch(this.props.offset, this.state.limit, this.props.login));
     }
 
@@ -79,21 +74,55 @@ class UserActivityTable extends React.Component {
 };
 
 let getProps = function(state) {
-// The bug is below. User is got from the store and there's an old user so the props (and offset) is gotten for the 'old' user
-    let user = state.usersActivities.showUser;
+    const user = state.usersActivities.showUser;
     let props = {};
-    // console.log('User from getProps():');
-    // console.log(user);
-    // if (state.usersActivities[user]) {console.log(state.usersActivities[user].offset);} else {console.log('No fucking offset');}
+    let startDateFilter,
+        endDateFilter;
     if (typeof state.usersActivities[user] !== 'undefined') {
-        props.days = groupTimeEntriesByDay(state.usersActivities[user].list);
+        if (state.usersActivities.startDateFilter) {
+            startDateFilter = moment(state.usersActivities.startDateFilter, 'DD.MM.YYYY').toDate()
+        }
+        if (state.usersActivities.endDateFilter) {
+            endDateFilter = moment(state.usersActivities.endDateFilter, 'DD.MM.YYYY').toDate()
+        }
+        const entries = state.usersActivities[user].list;
+        const periodFiltereEntries = _.filter(entries, function(o) {
+            let checkStartDate,
+                checkEndDate;
+            if (startDateFilter) {
+                checkStartDate = moment(o.dateCreated).isSameOrAfter(startDateFilter, 'day');
+            }
+            if (endDateFilter) {
+                checkEndDate = moment(o.dateCreated).isSameOrBefore(endDateFilter, 'day');
+            }
+            // console.log(checkStartDate);
+            // console.log(checkEndDate);
+
+            if ((typeof checkStartDate !== 'undefined') && (typeof checkEndDate !== 'undefined')) {
+                // console.log('case1');
+                return (checkStartDate && checkEndDate);
+            } else if (typeof checkStartDate !== 'undefined') {
+                // console.log('case2');
+                return checkStartDate;
+            } else if (typeof checkEndDate !== 'undefined') {
+                // console.log('case3');
+                return checkEndDate;
+            } else {
+                // console.log('case4');
+                return true;
+            }
+            // let checkStartDate = moment(o.dateCreated).isSameOrAfter(startDate, 'day');
+            // let checkEndDate = moment(o.dateCreated).isSameOrBefore(endDate, 'day');
+
+        });
+        // console.log(entries);
+        // console.log(periodFiltereEntries);
+        props.days = groupTimeEntriesByDay(periodFiltereEntries);
         props.offset = state.usersActivities[user].offset;
         props.allBatches = state.usersActivities[user].helpers.allBatches;
     } else {
         props.offset = 0;
     }
-    // console.log('Props from getProps():');
-    // console.log(props);
     return props;
 }
 

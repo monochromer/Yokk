@@ -27,7 +27,6 @@ var DailyActivity = React.createClass({
                                         <th className="timeEntries__head issue__source"></th>
                                         <th className="timeEntries__head issue__description">Task</th>
                                         <th className="timeEntries__head issue__duration">Duration</th>
-                                        <th className="timeEntries__head issue__actions">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>

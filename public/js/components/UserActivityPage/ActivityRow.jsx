@@ -40,30 +40,6 @@ var ActivityRow = React.createClass({
             description = '<a href="http://redmine.soshace.com/issues/' + number + '">issue ' + number + '</a> ' + description;
         }
 
-        let buttons = (
-            <div>
-                <button type="button" className="btn btn-default btn-xs issue__leftButton" onClick={ this.handleEdit }>
-                    <span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                </button>
-                <button type="button" className="btn btn-default btn-xs" onClick={ this.handleDelete }>
-                    <span className="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                </button>
-            </div>
-        );
-        let buttonsEditing = (
-            <div>
-                <button type="button" className="btn btn-default btn-xs issue__leftButton" onClick={ this.handleSave }>
-                    <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                </button>
-                <button type="button" className="btn btn-default btn-xs" onClick={ this.handleCancel }>
-                    <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                </button>
-            </div>
-        );
-        let buttonsBlock = "";
-        if(entrySource != "redmine") {
-            buttonsBlock = this.state.editing ? buttonsEditing : buttons;
-        }
         const sourceIcon = entrySource == "redmine" ? '<span><img src="/img/redmine_fluid_icon.png" width="20px"/></span>' : '';
         return (
             <tr>
@@ -82,7 +58,6 @@ var ActivityRow = React.createClass({
                             : <InputElement className="form-control" mask="9:99" defaultValue={ durationBeatify(duration) } ref="duration" />
                     }
                 </td>
-                <td> { buttonsBlock } </td>
             </tr>
         )
     }
