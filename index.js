@@ -28,8 +28,7 @@ var passport = require('./helpers/userpassport')(app);
 require('./router')(app, passport);
 
 // error handler
-app.use( (err, req, res, next) => {
-    console.log(err);
+app.use( (err, req, res) => {
     res.status(500).send(err.name);
 });
 

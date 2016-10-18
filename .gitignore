@@ -5,6 +5,8 @@
 # Mac finder artifacts
 .DS_Store
 
+# Testing server code
+test.js
 
 # DB dumps
 /backup

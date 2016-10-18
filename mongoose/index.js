@@ -11,6 +11,6 @@ module.exports = function(app) {
         console.log(err);
         console.log('!! Make sure your environment contains correct MONGO_URL constant and MongoDB server is running');
     });
-    app.db.once('open', () => {});
+    app.db.once('open', () => console.log('App is now connected to MongoDB server'));
     require('./models')(app, mongoose);
 }
