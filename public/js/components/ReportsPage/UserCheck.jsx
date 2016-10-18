@@ -16,7 +16,7 @@ class UserCheck extends React.Component {
         });
         let action = {
             payload: {
-                id: event.target.value
+                login: event.target.value
             }
         };
         if (!this.state.checked) {
@@ -38,7 +38,7 @@ class UserCheck extends React.Component {
         return (
             <div className="row">
                 <div className="col-md-12">
-                    <input type="checkbox" onClick={this.handleClick} value={this.props.user._id}/>&nbsp;{text}
+                    <input type="checkbox" onClick={this.handleClick} value={this.props.user.login}/>&nbsp;{text}
                     <hr/>
                 </div>
             </div>

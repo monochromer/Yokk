@@ -8,8 +8,12 @@ class ActivityTable extends React.Component{
     showModalUserAdd() {
         store.dispatch({type: "MODAL_ADD_USER_SHOW"});
     }
-    
+
     render() {
+        let propsToPass;
+        console.log(this.props.responseData);
+        if (typeof this.props.responseData !== 'undefined') {propsToPass = this.props.responseData}
+        console.log(propsToPass);
         return (
             <div>
                 <div className="row">
@@ -30,7 +34,7 @@ class ActivityTable extends React.Component{
                                 </tr>
                             </thead>
                             <tbody>
-                                <ActivityTableRow/>
+                                <ActivityTableRow responseData = {propsToPass}/>
                             </tbody>
                         </Table>
                     </div>

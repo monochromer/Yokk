@@ -32,18 +32,21 @@ export default function(state = defaultState, action) {
             break;
 
         case "SAVE_USER_TO_SHOW":
-
             return Object.assign({}, state, {
                 showUser: user
             });
             break;
 
         case "STORE_PERIOD_FILTER":
-
-            return Object.assign({}, state, {
-                startDateFilter: startDateFilter,
-                endDateFilter: endDateFilter
-            });
+            if (typeof startDateFilter !== 'undefined') {
+                return Object.assign({}, state, {
+                    startDateFilter: startDateFilter
+                });
+            } else {
+                return Object.assign({}, state, {
+                    endDateFilter: endDateFilter
+                });
+            }
             break;
 
         default:

@@ -27,7 +27,7 @@ export class FilterPeriod extends React.Component {
     }
 
     render() {
-        let {dateCreated} = this.state
+        let {dateCreated} = this.state;
         return (
             <div>
                 <div className="col-md-2">
