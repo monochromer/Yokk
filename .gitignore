@@ -49,3 +49,6 @@ public/js/login.bundle.js
 .foreverignore
 
 *.sh
+.idea/
+logs/
+public/build/
