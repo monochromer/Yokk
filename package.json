@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nf start",
-    "dev-front": "webpack --watch & forever index.js",
-    "dev-back": "webpack & forever -w index.js"
+    "dev-front": "webpack --watch & forever server.js",
+    "dev-back": "webpack & forever -w server.js"
   },
   "repository": {
     "type": "git",
@@ -75,6 +75,8 @@
     "css-loader": "^0.25.0",
     "jsx-loader": "^0.13.2",
     "react": "^15.3.1",
-    "style-loader": "^0.13.1"
+    "should": "^11.1.1",
+    "style-loader": "^0.13.1",
+    "supertest": "^2.0.0"
   }
 }
