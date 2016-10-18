@@ -47,3 +47,5 @@ public/js/login.bundle.js
 *.iml
 
 .foreverignore
+
+*.sh
