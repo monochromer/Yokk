@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 require('dotenv').config();
 
@@ -7,7 +7,6 @@ const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
 const sessions = require('express-session');
-// const api = require('./api');
 require('./mongoose')(app);
 
 //middleware
@@ -33,5 +32,7 @@ app.use( (err, req, res) => {
     res.status(500).send(err.name);
 });
 
-app.set('port', (process.env.PORT || 5000));
-app.listen(app.get('port'), () => console.log(`App is listening on port ${app.get('port')}`));
+
+
+
+module.exports = app;
