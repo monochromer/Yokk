@@ -5,9 +5,13 @@ HOST: http://eop.soshace.com
 
 EoP is a service which helps you manage your team. In general, the first version is an aggregator of time-tracking systems. Eye of providence can fetch time-entries form services e.g. Redmine or Upwork and shows all data in one place. Service is very helpful for managers or teamleaders.
 
-## Time-entry batch [/api/timeEntryBatch]
 
-### Get Batches for a user- about 20 items [GET]
+
+
+
+## Time Entry Collection [/api/timeEntry/]
+
+### Get time-entries, supports limit and skip params [GET]
 
 + Response 200 (application/json)
 
@@ -26,11 +30,9 @@ EoP is a service which helps you manage your team. In general, the first version
             }
         ]
 
-## Adding a new time-entry [/api/timeEntry/add]
 
 ### Create a new time-entry [POST]
 
-You may create new time-entry, just send object with time-entry.
 
 + Request (application/json)
 
@@ -55,8 +57,6 @@ You may create new time-entry, just send object with time-entry.
             "dateCreated":"2016-10-17T07:37:22.494Z",
             "date":"2016-10-17T07:39:06.827Z"
         }
-        
-## Changing & deleting the time-entry [/api/timeEntry/5804801a34065e509ef893ad]
 
 ### Delete a time-entry [DELETE]
 
@@ -115,3 +115,42 @@ You may create new time-entry, just send object with time-entry.
                 "date": "2016-10-14T08:03:23.000Z"
             }
         ]
+        
+## Reports [/api/report/?users=max-buranbaev,e&from=14.10.2016&to=17.10.2016]
+
+### Get custom report [GET]
+
++ Response 200 (application/json)
+
+        {
+            "data":
+                {
+                    "e":
+                        {
+                            "eop": 72,
+                            "total": 71
+                        },
+                    "max-buranbaev":
+                        {
+                            "eop": 120,
+                            "redmine": 766,
+                            "total": 885
+                        }
+                    },
+                    "query":
+                        {
+                            "dateCreated":
+                                {
+                                    "$gte": "2016-10-13T22:00:00.000Z",
+                                    "$lte": "2016-10-17T22:00:00.000Z"
+                                },
+                            "executor":
+                                {
+                                    "$in":
+                                        [
+                                            "max-buranbaev",
+                                            "e"
+                                        ]
+                                }
+                            }
+                        }
