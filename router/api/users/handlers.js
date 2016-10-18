@@ -1,6 +1,7 @@
 'use strict'
 
 const log = require('../../../helpers/logger');
+const sendLoginPasswordToEmail = require('../../helpers/sendLoginPassword');
 
 exports.getAllUsers = function(req, res) {
     const userModel = req.app.db.models.User;
@@ -18,7 +19,6 @@ exports.getAllUsers = function(req, res) {
 exports.saveUserToDb = function(req, res) {
     const userModel = req.app.db.models.User;
     const user = new userModel(req.body);
-    const sendLoginPasswordToEmail = require('../helpers/sendLoginPassword');
     user.joinedon = Date.now();
 
     if (!user.login) {
