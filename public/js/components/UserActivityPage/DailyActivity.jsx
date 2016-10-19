@@ -1,11 +1,11 @@
-import React from 'react'
-import ActivityRow from './ActivityRow.jsx'
+import React from 'react';
+import ActivityRow from './ActivityRow.jsx';
 
-var DailyActivity = React.createClass({
-    render: function() {
-        var rows = [];
-        this.props.timeEntries.map( (timeEntry) => {
-            rows.push(<ActivityRow timeEntry={ timeEntry } key={ timeEntry._id } />);
+class DailyActivity extends React.Component {
+    render() {
+        let rows = [];
+        this.props.timeEntries.map((timeEntry) => {
+            rows.push(<ActivityRow timeEntry={timeEntry} key={timeEntry._id}/>);
         });
 
         return (
@@ -13,9 +13,10 @@ var DailyActivity = React.createClass({
                 <div className="col-md-12">
                     <div className="row day">
                         <div className="col-md-4 day__date">
-                            <h3>{ this.props.day } &nbsp;
+                            <h3>{this.props.day}
+                                &nbsp;
                                 <span className="day__total-duration">
-                                    { this.props.duration }</span>
+                                    {this.props.duration}</span>
                             </h3>
                         </div>
                     </div>
@@ -30,15 +31,15 @@ var DailyActivity = React.createClass({
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    { rows }
+                                    {rows}
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-        )
+        );
     }
-})
+}
 
 export default DailyActivity;
