@@ -7,6 +7,4 @@ module.exports = function(api) {
     api.route('/timeEntry/:timeEntryId')
         .delete(handle.deleteTimeEntry)
         .put(handle.updateTimeEntry);
-    api.route('/sync/redmine')
-        .get(handle.importRedmineIssues);
 };
