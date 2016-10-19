@@ -2,6 +2,9 @@
 # Ignore these files when commiting to a git repository
 #----------------------------------------------------------------------------
 
+#local code tests
+tt.js
+
 # Mac finder artifacts
 .DS_Store
 

@@ -5,10 +5,6 @@ import {Table} from 'react-bootstrap';
 import ReportTableRow from './ReportTableRow.jsx'
 
 class ReportTable extends React.Component {
-    showModalUserAdd() {
-        store.dispatch({type: "MODAL_ADD_USER_SHOW"});
-    }
-
     render() {
         let propsToPass;
         if (typeof this.props.responseData !== 'undefined') {
@@ -17,21 +13,21 @@ class ReportTable extends React.Component {
 
         let tableToRender;
         if (typeof propsToPass !== 'undefined') {
-          tableToRender = <tbody>
-            {Object.keys(propsToPass).map(function(user) {
-              return <ReportTableRow userName={user} responseData={propsToPass[user]} key={user} />
-            })}
-          </tbody>;
-        } else {
+          tableToRender =
           <tbody>
-            <ReportTableRow />;
+            {
+              Object.keys(propsToPass).map(function(user) {
+                return <ReportTableRow userName={user} responseData={propsToPass[user]} key={user} />;
+              })
+            }
           </tbody>;
         }
+
         return (
-            <div>
+            <div className="col-md-12">
                 <div className="row">
                     <div className="col-md-12">
-                        <h2>Activity report from DATE</h2>
+                        <h2>Activity report</h2>
                     </div>
                 </div>
                 <div className="row">
@@ -56,7 +52,7 @@ class ReportTable extends React.Component {
 }
 
 var fetchUsersStateToProps = function(state) {
-    return {users: state.users, currentUser: state.currentUser}
+    return {users: state.users, currentUser: state.currentUser};
 }
 
 export default connect(fetchUsersStateToProps)(ReportTable);

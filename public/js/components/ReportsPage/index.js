@@ -20,9 +20,9 @@ class UserActivityPage extends React.Component {
                     <FilterUsers users={this.props.users}/>
                     <FilterPeriod/>
                     <div className="col-md-1">
-                        <button onClick={this.getTheReport} className="btn btn-success" style={{
-                            "marginTop": "3vh"
-                        }}>Calculate</button>
+                        <button onClick={this.getTheReport} className="btn btn-success" style={{"marginTop": "3vh"}}>
+                            Calculate
+                        </button>
                     </div>
                 </div>
                 <div className="col-md-9">
@@ -33,7 +33,7 @@ class UserActivityPage extends React.Component {
     }
 }
 
-let fetchProps = function(state) {
+const fetchProps = function(state) {
     return {users: state.users, responseData: state.reportRequest.responseData};
 };
 

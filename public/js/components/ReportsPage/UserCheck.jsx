@@ -1,44 +1,31 @@
 import React from 'react';
 import store from '../../store.js';
-// import {fetchReportData} from '../../actions/statistics';
 
 class UserCheck extends React.Component {
     constructor(props) {
         super();
-        this.state = {
-            checked: false
-        };
+        this.state = { checked: false };
         this.handleClick = this.handleClick.bind(this);
     }
 
     handleClick(event) {
-        this.setState({
-            checked: !this.state.checked
-        });
+        this.setState({ checked: !this.state.checked });
         let action = {
-            payload: {
-                login: event.target.value
-            }
+            payload: { login: event.target.value }
         };
         if (!this.state.checked) {
             action.type = "ADD_USER_TO_REPORT";
         } else {
-          action.type = "DELETE_USER_FROM_REPORT";
+            action.type = "DELETE_USER_FROM_REPORT";
         }
         store.dispatch(action);
-
-        // const users = store.getState().reportRequest.users;
-        // const startDateFilter = store.getState().reportRequest.startDateFilter;
-        // const endDateFilter = store.getState().reportRequest.endDateFilter;
-        // store.dispatch(fetchReportData(users, startDateFilter, endDateFilter));
-
     }
 
     render() {
-        let fullNameOrLogin = this.props.user.fullname
+        const fullNameOrLogin = this.props.user.fullname
             ? this.props.user.fullname
             : `(login:) ${this.props.user.login}`;
-        let text = this.state.checked
+        const text = this.state.checked
             ? <b>{fullNameOrLogin}</b>
             : fullNameOrLogin;
         return (
@@ -52,4 +39,4 @@ class UserCheck extends React.Component {
     }
 }
 
-export default UserCheck
+export default UserCheck;

@@ -1,44 +1,28 @@
 import React from 'react';
-import {Link} from 'react-router';
-import {deleteUser} from '../../actions/users.js';
 import store from '../../store.js';
 import moment from 'moment';
-import UserCheck from './UserCheck.jsx';
 import classNames from 'classnames';
 import InputElement from 'react-input-mask';
-import DateRangePicker from 'react-bootstrap-daterangepicker';
-// import {fetchReportData} from '../../actions/statistics';
-require('./css/dpicker.css')
-
-class someReactComponent extends React.Component {
-    render() {
-        return (
-            <DateRangePicker startDate={moment('1/1/2014')} endDate={moment('3/1/2014')}>
-                <div>Click Me To Open Picker!</div>
-            </DateRangePicker>
-        );
-    }
-};
 
 export class OptionalPeriod extends React.Component {
     render() {
-        let desiredWidth = 6;
-        var colClass = classNames(`col-md-${desiredWidth}`);
+        let colondwidth = 6;
+        var colonClass = classNames(`col-md-${colondwidth}`);
         return (
             <div>
                 <div className="row">
-                    <div className={colClass}>
+                    <div className={colonClass}>
                         <a>This week</a>
                     </div>
-                    <div className={colClass}>
+                    <div className={colonClass}>
                         <a>Last week</a>
                     </div>
                 </div>
                 <div className="row">
-                    <div className={colClass}>
+                    <div className={colonClass}>
                         <a>This month</a>
                     </div>
-                    <div className={colClass}>
+                    <div className={colonClass}>
                         <a>Last month</a>
                     </div>
                 </div>
@@ -59,19 +43,14 @@ export class CustomPeriod extends React.Component {
         };
     }
 
-    changePeriod(e) {
-        if (moment(e.target.value, 'DD.MM.YYYY', true).isValid()) {
+    changePeriod(event) {
+        if (moment(event.target.value, 'DD.MM.YYYY', true).isValid()) {
             let action = {
                 type: "CHOOSE_PERIOD_FOR_REPORT"
             };
-            action[e.target.id] = e.target.value;
+            action[event.target.id] = event.target.value;
             store.dispatch(action);
         }
-
-        // const users = store.getState().reportRequest.users;
-        // const startDateFilter = store.getState().reportRequest.startDateFilter;
-        // const endDateFilter = store.getState().reportRequest.endDateFilter;
-        // store.dispatch(fetchReportData(users, startDateFilter, endDateFilter));
     }
 
     render() {
