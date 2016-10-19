@@ -23,7 +23,9 @@ class ActivityTable extends React.Component {
             })}
           </tbody>;
         } else {
-          tableToRender = 'No data';
+          <tbody>
+            <ActivityTableRow />;
+          </tbody>;
         }
         return (
             <div>
