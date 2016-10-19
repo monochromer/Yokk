@@ -17,26 +17,6 @@ class ActivityTableRow extends React.Component {
         userName = totalDuration = redmineDuration = upworkDuration = directDuration = 'no data';
       }
 
-        // console.log('Props from ActivityTableRow');
-        // console.log(this.props);
-        // let tableRows = [];
-        // if (typeof this.props.responseData !== 'undefined') {
-        //   let data = this.props.responseData.data;
-        //   for (let key in data) {
-        //       console.log(key);
-        //       let tableRowString = `
-        //           <tr>
-        //               <td>${key}</td>
-        //               <td>${data[key].total}</td>
-        //               <td>${data[key].redmine}</td >
-        //               <td>No implementation</td>
-        //               <td>${data[key].eop}</td>
-        //           </tr>
-        //           `
-        //       tableRows.push(tableRowString);
-        //   }
-        // }
-        // console.log(tableRows);
         return (
             <tr>
                 <td>{userName}</td>

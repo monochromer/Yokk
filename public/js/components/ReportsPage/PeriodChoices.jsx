@@ -7,6 +7,7 @@ import UserCheck from './UserCheck.jsx';
 import classNames from 'classnames';
 import InputElement from 'react-input-mask';
 import DateRangePicker from 'react-bootstrap-daterangepicker';
+import {fetchReportData} from '../../actions/statistics';
 require('./css/dpicker.css')
 
 class someReactComponent extends React.Component {
@@ -66,7 +67,11 @@ export class CustomPeriod extends React.Component {
             action[e.target.id] = e.target.value;
             store.dispatch(action);
         }
-        console.log(moment(e.target.value, 'DD.MM.YYYY').toDate());
+
+        const users = store.getState().reportRequest.users;
+        const startDateFilter = store.getState().reportRequest.startDateFilter;
+        const endDateFilter = store.getState().reportRequest.endDateFilter;
+        store.dispatch(fetchReportData(users, startDateFilter, endDateFilter));
     }
 
     render() {
