@@ -1,6 +1,6 @@
 import React from 'react';
 import store from '../../store.js';
-import {fetchReportData} from '../../actions/statistics';
+// import {fetchReportData} from '../../actions/statistics';
 
 class UserCheck extends React.Component {
     constructor(props) {
@@ -27,10 +27,10 @@ class UserCheck extends React.Component {
         }
         store.dispatch(action);
 
-        const users = store.getState().reportRequest.users;
-        const startDateFilter = store.getState().reportRequest.startDateFilter;
-        const endDateFilter = store.getState().reportRequest.endDateFilter;
-        store.dispatch(fetchReportData(users, startDateFilter, endDateFilter));
+        // const users = store.getState().reportRequest.users;
+        // const startDateFilter = store.getState().reportRequest.startDateFilter;
+        // const endDateFilter = store.getState().reportRequest.endDateFilter;
+        // store.dispatch(fetchReportData(users, startDateFilter, endDateFilter));
 
     }
 
