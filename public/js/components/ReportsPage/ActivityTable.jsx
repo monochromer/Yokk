@@ -19,7 +19,7 @@ class ActivityTable extends React.Component {
         if (typeof propsToPass !== 'undefined') {
           tableToRender = <tbody>
             {Object.keys(propsToPass).map(function(user) {
-              return <ActivityTableRow userName={user} responseData={propsToPass[user]} />
+              return <ActivityTableRow userName={user} responseData={propsToPass[user]} key={user} />
             })}
           </tbody>;
         } else {

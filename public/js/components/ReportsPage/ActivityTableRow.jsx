@@ -6,9 +6,6 @@ import moment from 'moment';
 
 class ActivityTableRow extends React.Component {
     render() {
-      console.log('this.props from ActivityTableRow:');
-      console.log(this.props);
-
       let userName, totalDuration, redmineDuration, upworkDuration, directDuration;
       if (typeof this.props.responseData !== 'undefined') {
         userName = this.props.userName;
