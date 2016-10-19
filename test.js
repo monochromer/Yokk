@@ -102,7 +102,7 @@ describe('TESTING USERS API', () => {
                 },
                 (newUser) => {
                     supertest(app)
-                        .post('/api/user/add')
+                        .post('/api/user/')
                         .send(newUser)
                         .expect(200)
                         .end((err, res) => {
