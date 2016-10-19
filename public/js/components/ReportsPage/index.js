@@ -1,7 +1,7 @@
 import React from 'react';
 import store from '../../store.js';
 import {connect} from 'react-redux';
-import ActivityTable from './ActivityTable.jsx';
+import ReportTable from './ReportTable.jsx';
 import {FilterUsers, FilterPeriod} from './Filters.jsx';
 import {fetchReportData} from '../../actions/statistics';
 
@@ -14,7 +14,7 @@ class UserActivityPage extends React.Component {
                     <FilterPeriod/>
                 </div>
                 <div className="col-md-9">
-                    <ActivityTable responseData={this.props.responseData} />
+                    <ReportTable responseData={this.props.responseData} />
                 </div>
             </div>
         );

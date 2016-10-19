@@ -4,7 +4,7 @@ import {deleteUser} from '../../actions/users.js';
 import store from '../../store.js';
 import moment from 'moment';
 
-class ActivityTableRow extends React.Component {
+class ReportTableRow extends React.Component {
     render() {
       let userName, totalDuration, redmineDuration, upworkDuration, directDuration;
       if (typeof this.props.responseData !== 'undefined') {
@@ -29,4 +29,4 @@ class ActivityTableRow extends React.Component {
     }
 }
 
-export default ActivityTableRow
+export default ReportTableRow

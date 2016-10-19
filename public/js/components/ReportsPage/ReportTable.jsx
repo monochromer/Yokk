@@ -2,9 +2,9 @@ import React from 'react';
 import store from '../../store.js';
 import {connect} from 'react-redux';
 import {Table} from 'react-bootstrap';
-import ActivityTableRow from './ActivityTableRow.jsx'
+import ReportTableRow from './ReportTableRow.jsx'
 
-class ActivityTable extends React.Component {
+class ReportTable extends React.Component {
     showModalUserAdd() {
         store.dispatch({type: "MODAL_ADD_USER_SHOW"});
     }
@@ -19,12 +19,12 @@ class ActivityTable extends React.Component {
         if (typeof propsToPass !== 'undefined') {
           tableToRender = <tbody>
             {Object.keys(propsToPass).map(function(user) {
-              return <ActivityTableRow userName={user} responseData={propsToPass[user]} key={user} />
+              return <ReportTableRow userName={user} responseData={propsToPass[user]} key={user} />
             })}
           </tbody>;
         } else {
           <tbody>
-            <ActivityTableRow />;
+            <ReportTableRow />;
           </tbody>;
         }
         return (
@@ -59,4 +59,4 @@ var fetchUsersStateToProps = function(state) {
     return {users: state.users, currentUser: state.currentUser}
 }
 
-export default connect(fetchUsersStateToProps)(ActivityTable);
+export default connect(fetchUsersStateToProps)(ReportTable);
