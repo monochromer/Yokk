@@ -4,16 +4,27 @@ import {connect} from 'react-redux';
 import {Table} from 'react-bootstrap';
 import ActivityTableRow from './ActivityTableRow.jsx'
 
-class ActivityTable extends React.Component{
+class ActivityTable extends React.Component {
     showModalUserAdd() {
         store.dispatch({type: "MODAL_ADD_USER_SHOW"});
     }
 
     render() {
         let propsToPass;
-        console.log(this.props.responseData);
-        if (typeof this.props.responseData !== 'undefined') {propsToPass = this.props.responseData}
-        console.log(propsToPass);
+        if (typeof this.props.responseData !== 'undefined') {
+            propsToPass = this.props.responseData.data
+        }
+
+        let tableToRender;
+        if (typeof propsToPass !== 'undefined') {
+          tableToRender = <tbody>
+            {Object.keys(propsToPass).map(function(user) {
+              return <ActivityTableRow userName={user} responseData={propsToPass[user]} />
+            })}
+          </tbody>;
+        } else {
+          tableToRender = 'No data';
+        }
         return (
             <div>
                 <div className="row">
@@ -33,9 +44,7 @@ class ActivityTable extends React.Component{
                                     <th>Direct</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <ActivityTableRow responseData = {propsToPass}/>
-                            </tbody>
+                            {tableToRender}
                         </Table>
                     </div>
                 </div>

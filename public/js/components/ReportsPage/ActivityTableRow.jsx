@@ -6,8 +6,20 @@ import moment from 'moment';
 
 class ActivityTableRow extends React.Component {
     render() {
-      let foo = 'bar';
+      console.log('this.props from ActivityTableRow:');
       console.log(this.props);
+
+      let userName, totalDuration, redmineDuration, upworkDuration, directDuration;
+      if (typeof this.props.responseData !== 'undefined') {
+        userName = this.props.userName;
+        totalDuration = this.props.responseData.total;
+        redmineDuration = this.props.responseData.redmine;
+        upworkDuration = 'feature is not implemented yet'
+        directDuration = this.props.responseData.eop;
+      } else {
+        userName = totalDuration = redmineDuration = upworkDuration = directDuration = 'no data';
+      }
+
         // console.log('Props from ActivityTableRow');
         // console.log(this.props);
         // let tableRows = [];
@@ -28,14 +40,13 @@ class ActivityTableRow extends React.Component {
         //   }
         // }
         // console.log(tableRows);
-
         return (
             <tr>
-                <td>{this.foo}</td>
-                <td>120 hours</td>
-                <td>100 hours</td >
-                <td>10 hours</td>
-                <td>10 hours</td>
+                <td>{userName}</td>
+                <td>{totalDuration}</td>
+                <td>{redmineDuration}</td>
+                <td>{upworkDuration}</td>
+                <td>{directDuration}</td>
             </tr>
         );
     }
