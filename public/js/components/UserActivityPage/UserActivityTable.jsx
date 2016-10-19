@@ -12,7 +12,6 @@ class UserActivityTable extends React.Component {
         this.loadMore = this.loadMore.bind(this);
         this.state = { limit: 10 };
     }
-
     componentWillMount() {
         const offset = inititializeOffset(store.getState().usersActivities[this.props.login]);
         store.dispatch(fetchCustomUserNextTimeEntryBatch(offset, this.state.limit, this.props.login));

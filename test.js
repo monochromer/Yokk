@@ -169,7 +169,7 @@ describe('TESTING USERS API', () => {
 describe('TESTING SYNC SERVICES', () => {
     it('syncing redmine for max-buranbaev', (done) => {
         supertest(app)
-            .get('/api/sync/redmine?user=max-buranbaev')
+            .get('/api/sync/redmine?login=max-buranbaev')
             .expect(200)
             .end((err, res) => {
                 res.body.length.should.be.above(1);

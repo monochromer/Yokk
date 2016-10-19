@@ -5,9 +5,9 @@ const moment = require('moment');
 
 module.exports = function(req, res, next) {
     const userModel = req.app.db.models.User;
-
+    var login = req.user ? req.user.login : req.query.login;
     userModel.findOne({
-        login: req.user.login
+        login: login
     }, {
         redmineApiKey: 1
     }, (err, user) => {
@@ -58,7 +58,7 @@ module.exports = function(req, res, next) {
                                 let entry = {};
                                 entry.redmineTimeEntryId = element.id;
                                 entry.number = element.issue.id;
-                                entry.executor = req.user.login;
+                                entry.executor = login;
                                 entry.date = entry.dateCreated = moment(element.created_on).toDate();
                                 if (!element.comments) {
                                     entry.description = 'no comments';
@@ -97,7 +97,6 @@ module.exports = function(req, res, next) {
                                 upsert: true,
                             }, (err, doc) => {
                                 if (err) {
-                                    console.log('Error while saving an entry:' + err);
                                     resolve(err);
                                 } else {
                                     resolve(doc);
@@ -107,7 +106,6 @@ module.exports = function(req, res, next) {
                         entryPromisesArray.push(promiseIssueUpsert);
                     });
                     Promise.all(entryPromisesArray).then((documents) => {
-                        console.log('Tasks are syncronized');
                         res.status(200).send(documents);
                     })
                 });
