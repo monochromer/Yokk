@@ -16,30 +16,18 @@ exports.getAllUsers = function(req, res) {
     });
 }
 
-exports.saveUserToDb = function(req, res) {
+exports.saveUserToDb = function(req, res, next) {
     const userModel = req.app.db.models.User;
     const user = new userModel(req.body);
     user.joinedon = Date.now();
 
-    if (!user.login) {
-        const logmsg = 'User login not specified';
-        res.send({
-            message: logmsg
-        });
-        return log(req, logmsg).err();
-    }
 
     userModel.findByLogin(user.login, (err, dbUser) => {
-        if (err) {
-            res.status(500).send();
-            return log(req, err).err();
-        }
+        if (err) next(err);
+
         if (!dbUser) {
             user.save((err, user) => {
-                if (err) {
-                    log(req, err).err();
-                    return res.status(500).send();
-                };
+                if (err) next(err);
                 res.status(200).send(user);
                 if (typeof req.body.email !== 'undefined') {
                     let credentials = {
@@ -49,7 +37,7 @@ exports.saveUserToDb = function(req, res) {
                     };
 
                     return sendLoginPasswordToEmail(credentials);
-                };
+                }
                 const logMsq = `User (login: ${user.login}) is saved to DB`;
                 return log(req, logMsq).info();
             });
@@ -61,7 +49,7 @@ exports.saveUserToDb = function(req, res) {
     });
 }
 
-exports.showUser = function(req, res) {
+exports.showUser = function(req, res, next) {
     const userModel = req.app.db.models.User;
     const login = req.params.user_login;
     userModel.findByLogin(login, (err, user) => {
@@ -71,7 +59,7 @@ exports.showUser = function(req, res) {
     });
 }
 
-exports.updateUser = function(req, res) {
+exports.updateUser = function(req, res, next) {
     const userModel = req.app.db.models.User;
     const login = req.params.user_login;
     const update = req.body;
@@ -107,41 +95,23 @@ exports.updateUser = function(req, res) {
     }
 }
 
-exports.deleteUser = function(req, res) {
+exports.deleteUser = function(req, res, next) {
     const userModel = req.app.db.models.User;
     const login = req.params.user_login;
     const rmdir = require('../helpers/rmdir');
     const path = require('path');
 
-    if (login === req.user.login) { //deleting current user
-        userModel.deleteUser(login, (err) => {
-            if (err) {
-                res.status(500).send();
-                return log(req, err).err();
-            };
-            res.status(200).send({
-                action: 'Logout'
-            });
-            req.logout();
-            rmdir(path.join(__dirname, '../uploads/users/', login));
-            const logMsq = `User ${login} succesfully deleted`;
-            log(req, logMsq).info();
-        });
+    userModel.deleteUser(login, (err) => {
+        if (err) next(err);
+        res.status(200).send(login);
+        rmdir(path.join(__dirname, '../uploads/users/', login));
+        const logMsq = `User ${login} succesfully deleted`;
+        log(req, logMsq).info()
+    });
 
-    } else { //deleting any other user (admins can do)
-        userModel.deleteUser(login, (err) => {
-            if (err) {
-                return log(req, err).err();
-            };
-            res.status(200).send(login);
-            rmdir(path.join(__dirname, '../uploads/users/', login));
-            const logMsq = `User ${login} succesfully deleted`;
-            log(req, logMsq).info()
-        });
-    }
 }
 
-exports.uploadUserAvatar = function(req, res) {
+exports.uploadUserAvatar = function(req, res, next) {
     const userModel = req.app.db.models.User;
     const login = req.params.user_login;
     const path = require('path');
@@ -188,7 +158,7 @@ exports.uploadUserAvatar = function(req, res) {
     });
 }
 
-exports.checkUserPermissions = function(req, res) {
+exports.checkUserPermissions = function(req, res, next) {
     // as of now, returned fields can be adjusted in userpassport.js
     res.send(req.user);
 }
