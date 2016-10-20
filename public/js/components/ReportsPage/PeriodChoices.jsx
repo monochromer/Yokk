@@ -4,6 +4,16 @@ import moment from 'moment';
 import classNames from 'classnames';
 import InputElement from 'react-input-mask';
 
+const PeriodFilterLink = function({filter, children}) {
+  <a href='#'
+    onClick={e => e.preventDefault();
+    store.dispatch({
+      type: 'SET_REPORT_PERIOD',
+      filter
+    })}>
+  </a>
+};
+
 export class OptionalPeriod extends React.Component {
     render() {
         let colondwidth = 6;
@@ -58,24 +68,24 @@ export class CustomPeriod extends React.Component {
         return (
             <div>
                 <div className="row">
-                  <div className="col-md-7">
-                      <div className={dateCreated.valid
-                          ? "form-group"
-                          : "form-group has-error"}>
-                          <label htmlFor="date">From</label>
-                          <InputElement onChange={this.changePeriod} className="form-control" onBlur={this.blurDate} mask="99.99.9999" id="startDateFilter"/>
-                      </div>
-                  </div>
+                    <div className="col-md-7">
+                        <div className={dateCreated.valid
+                            ? "form-group"
+                            : "form-group has-error"}>
+                            <label htmlFor="date">From</label>
+                            <InputElement onChange={this.changePeriod} className="form-control" onBlur={this.blurDate} mask="99.99.9999" id="startDateFilter"/>
+                        </div>
+                    </div>
                 </div>
                 <div className="row">
-                  <div className="col-md-7">
-                      <div className={dateCreated.valid
-                          ? "form-group"
-                          : "form-group has-error"}>
-                          <label htmlFor="date">To</label>
-                          <InputElement onChange={this.changePeriod} className="form-control" onBlur={this.blurDate} mask="99.99.9999" id="endDateFilter"/>
-                      </div>
-                  </div>
+                    <div className="col-md-7">
+                        <div className={dateCreated.valid
+                            ? "form-group"
+                            : "form-group has-error"}>
+                            <label htmlFor="date">To</label>
+                            <InputElement onChange={this.changePeriod} className="form-control" onBlur={this.blurDate} mask="99.99.9999" id="endDateFilter"/>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
