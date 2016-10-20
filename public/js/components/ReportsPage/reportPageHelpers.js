@@ -12,6 +12,6 @@ export function getCheckboxStatus(checkBoxStatus, loginToCheck) {
 export function convertToHours(durationInMinutes, digit) {
     const numberOfMinutes = durationInMinutes % 60;
     const digitsAfterComma = digit || 0;
-    const numberOfHours = (durationInMinutes / 60).toFixed(digitsAfterComma)
+    const numberOfHours = Math.floor(durationInMinutes / 60);
     return `${numberOfHours} h ${numberOfMinutes} min`;
 }
