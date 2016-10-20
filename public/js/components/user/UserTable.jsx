@@ -26,14 +26,12 @@ var UsersTable = React.createClass({
                 </div>
                 <div className="row">
                     <div className="col-md-12">
-                        <Table striped hover>
-                            <thead>
+                        <Table hover>
+                            <thead className="users-table__thead">
                                 <tr>
-                                    <th>Fullname</th>
-                                    <th>Position</th>
-                                    <th>Joined on</th>
-                                    <th>Role</th>
-                                    <th>User Activity</th>
+                                    <th className="users-table__title">User</th>
+                                    <th className="users-table__title">Position</th>
+                                    <th className="users-table__title">Joined on</th>
                                 </tr>
                             </thead>
                             <tbody>
