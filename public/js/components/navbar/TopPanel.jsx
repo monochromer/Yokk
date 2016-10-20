@@ -7,7 +7,6 @@ import { findUserByLogin } from '../../helpers'
 
 var TopPanel = React.createClass({
 	render: function() {
-		console.log(this.props);
 		return (
 			<Navbar fluid>
 				<Navbar.Header>
@@ -34,19 +33,13 @@ var TopPanel = React.createClass({
 						<MenuItem href="/logout" eventKey={4.2}>Logout</MenuItem>
 					</NavDropdown>
 				</Nav>
-				<Navbar.Text pullRight>
-					<img src={ this.props.photo } height="25px"/>
-				</Navbar.Text>
 			</Navbar>
 		)
 	}
 });
 
 var getProps = function(store) {
-	var user = findUserByLogin(store.users, store.currentUser.login);
-	var photo = user ? user.profileImg.small : "";
 	return {
-		photo: photo,
 		login: store.currentUser.login
 	}
 };
