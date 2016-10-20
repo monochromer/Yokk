@@ -31,7 +31,7 @@ module.exports = function(credentials) {
 
     transporter.sendMail(mailOptions, function(error, info) {
         if (error) {
-            console.log(`Error sending message ${error}`);
+            return error;
         }
     });
 }

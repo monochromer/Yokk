@@ -35,7 +35,6 @@ exports.saveUserToDb = function(req, res, next) {
                         password: req.body.password,
                         email: req.body.email
                     };
-
                     return sendLoginPasswordToEmail(credentials);
                 }
                 const logMsq = `User (login: ${user.login}) is saved to DB`;

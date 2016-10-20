@@ -1,4 +1,5 @@
 import React from 'react';
+import store from '../../store';
 import InputElement from 'react-input-mask';
 import moment from 'moment';
 import {durationBeatify} from '../../helpers';
@@ -9,6 +10,7 @@ class ActivityRow extends React.Component {
         this.state = {
             editing: false
         };
+
     }
 
     render() {
