@@ -121,17 +121,17 @@ exports.uploadUserAvatar = function(req, res, next) {
     // no crop is done
     // resized images are saved in the same directory with the 'width-height:' prefix
     const requiredSizes = [
-        '57-57',
-        '200-200'
+        '200-200',
+        '400-400'
     ];
 
     let imageInfo = {};
     imageInfo.dir = req.file.destination;
     imageInfo.name = req.file.filename.split(':').join('-');
-    resize(imageInfo, requiredSizes)
+    resize(imageInfo, requiredSizes);
 
     const originalImg = ('/' + req.file.path.split('/').slice(1).slice(-4).join('/')).split(':').join('-');
-    const smallImg = ('/' + req.file.destination.split('/').slice(1).slice(-4).join('/') + requiredSizes[0] + '-' + req.file.filename).split(':').join('-');;
+    const smallImg = ('/' + req.file.destination.split('/').slice(1).slice(-4).join('/') + requiredSizes[0] + '-' + req.file.filename).split(':').join('-');
     const mediumImg = ('/' + req.file.destination.split('/').slice(1).slice(-4).join('/') + requiredSizes[1] + '-' + req.file.filename).split(':').join('-');
 
     // Below could be used if there is no defined Schema (pure Mongo):
@@ -149,11 +149,9 @@ exports.uploadUserAvatar = function(req, res, next) {
     };
 
     userModel.editUser(login, update, (err, user) => {
-        if (err || !user) {
-            res.status(404).send();
-        } else {
-            res.status(200).send(user);
-        }
+        if (err) next(err);
+        res.status(200).send(user);
+
     });
 }
 
