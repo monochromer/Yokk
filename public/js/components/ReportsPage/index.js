@@ -2,7 +2,7 @@ import React from 'react';
 import store from '../../store.js';
 import {connect} from 'react-redux';
 import ReportTable from './ReportTable.jsx';
-import {FilterUsers, FilterPeriod} from './Filters.jsx';
+import Filters from './Filters.jsx';
 import {fetchReportData} from '../../actions/statistics';
 
 class UserActivityPage extends React.Component {
@@ -17,8 +17,7 @@ class UserActivityPage extends React.Component {
         return (
             <div>
                 <div className="col-md-3">
-                    <FilterUsers users={this.props.users}/>
-                    <FilterPeriod/>
+                    <Filters users={this.props.users}/>
                     <div className="col-md-1">
                         <button onClick={this.getTheReport} className="btn btn-success" style={{"marginTop": "3vh"}}>
                             Calculate
