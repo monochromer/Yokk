@@ -10,6 +10,9 @@ export function getCheckboxStatus(checkBoxStatus, loginToCheck) {
 }
 
 export function convertToHours(durationInMinutes) {
+    if (typeof durationInMinutes === 'undefined') {
+        return '0 h 0 min';
+    }
     const numberOfMinutes = durationInMinutes % 60;
     const numberOfHours = Math.floor(durationInMinutes / 60);
     return `${numberOfHours} h ${numberOfMinutes} min`;
