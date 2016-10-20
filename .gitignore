@@ -10,6 +10,7 @@ tt.js
 
 # DB dumps
 /backup
+dump.sh
 
 /node_modules/
 /bower_components/
