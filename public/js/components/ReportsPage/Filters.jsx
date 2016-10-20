@@ -1,6 +1,7 @@
 import React from 'react';
 import UserCheck from './UserCheck.jsx';
-import {OptionalPeriod, CustomPeriod} from './PeriodChoices.jsx';
+import CustomPeriod from './CustomPeriod.jsx';
+import OptionalPeriod from './OptionalPeriod.jsx'
 
 export class FilterUsers extends React.Component {
     render() {
@@ -21,7 +22,7 @@ export class FilterPeriod extends React.Component {
         return (
             <div>
                 <h2>Periods</h2>
-                {/*<OptionalPeriod/>*/}
+                <OptionalPeriod/>
                 <CustomPeriod/>
             </div>
         );

@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment';
 
 const defaultState = {};
 
@@ -7,8 +8,10 @@ export default function(state = defaultState, action) {
         type,
         payload,
         startDateFilter,
-        endDateFilter
+        endDateFilter,
+        optionalPeriod
     } = action;
+
     switch (type) {
         case "ADD_USER_TO_REPORT":
             let newState = Object.assign({}, state);
@@ -45,6 +48,29 @@ export default function(state = defaultState, action) {
                     endDateFilter: endDateFilter
                 });
             }
+            break;
+
+        case "STORE_OPTIONAL_PERIOD_FILTER":
+            let periodChanges = {endDateFilter: moment().format('DD.MM.YYYY')};
+            
+            switch (optionalPeriod) {
+                case "This week":
+                  periodChanges.startDateFilter = moment().startOf('isoWeek').format('DD.MM.YYYY');
+                  break;
+                case "Last week":
+                  periodChanges.startDateFilter = moment().subtract(1, 'week').format('DD.MM.YYYY');
+                  break;
+                case "This month":
+                  periodChanges.startDateFilter = moment().startOf('month').format('DD.MM.YYYY');
+                  break;
+                case "Last month":
+                  periodChanges.startDateFilter = moment().subtract(1, 'month').format('DD.MM.YYYY');
+                  break;
+                default:
+                  periodChanges = {};
+            }
+
+            return Object.assign({}, state, periodChanges);
             break;
 
         case "FETCH_REPORT_DATA":

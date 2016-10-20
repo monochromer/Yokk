@@ -17,3 +17,10 @@ export function convertToHours(durationInMinutes) {
     const numberOfHours = Math.floor(durationInMinutes / 60);
     return `${numberOfHours} h ${numberOfMinutes} min`;
 }
+
+export function getDefinedOrEmptyString(element) {
+    if (typeof element === 'undefined') {
+        return '';
+    }
+    return element;
+}
