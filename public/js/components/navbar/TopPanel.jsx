@@ -1,12 +1,13 @@
 import React from 'react'
-import Logout from './Logout.jsx'
 import { Link } from 'react-router'
 import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap'
 import { connect } from 'react-redux'
 import { Navbar, Nav, NavDropdown, MenuItem, NavItem } from 'react-bootstrap'
+import { findUserByLogin } from '../../helpers'
 
 var TopPanel = React.createClass({
 	render: function() {
+		console.log(this.props);
 		return (
 			<Navbar fluid>
 				<Navbar.Header>
@@ -26,23 +27,28 @@ var TopPanel = React.createClass({
 					</LinkContainer>
 				</Nav>
 				<Nav pullRight>
-					<NavDropdown eventKey={4} title={this.props.login} id="basic-nav-dropdown" >
+					<NavDropdown eventKey={4} title={ this.props.login } id="basic-nav-dropdown" >
 						<LinkContainer to={ "/user/edit/" + this.props.login }>
 							<MenuItem eventKey={4.1}>Your Profile</MenuItem>
 						</LinkContainer>
 						<MenuItem href="/logout" eventKey={4.2}>Logout</MenuItem>
 					</NavDropdown>
 				</Nav>
+				<Navbar.Text pullRight>
+					<img src={ this.props.photo } height="25px"/>
+				</Navbar.Text>
 			</Navbar>
 		)
 	}
 });
 
 var getProps = function(store) {
+	var user = findUserByLogin(store.users, store.currentUser.login);
+	var photo = user ? user.profileImg.small : "";
 	return {
-		login: store.currentUser.login,
-		role: store.currentUser.role
+		photo: photo,
+		login: store.currentUser.login
 	}
-}
+};
 
 export default connect(getProps)(TopPanel);
