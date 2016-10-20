@@ -51,7 +51,7 @@ class ReportTable extends React.Component {
     }
 }
 
-var fetchUsersStateToProps = function(state) {
+const fetchUsersStateToProps = function(state) {
     return {users: state.users, currentUser: state.currentUser};
 }
 

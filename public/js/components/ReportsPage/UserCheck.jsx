@@ -1,23 +1,30 @@
 import React from 'react';
 import store from '../../store.js';
+import {getCheckboxStatus} from './reportPageHelpers.js';
 
 class UserCheck extends React.Component {
     constructor(props) {
         super();
-        this.state = { checked: false };
+        const checkboxStatus = getCheckboxStatus(store.getState().reportRequest.checkbox, props.user.login);
+        this.state = { checked: checkboxStatus };
         this.handleClick = this.handleClick.bind(this);
     }
 
     handleClick(event) {
         this.setState({ checked: !this.state.checked });
+
         let action = {
             payload: { login: event.target.value }
         };
+
         if (!this.state.checked) {
             action.type = "ADD_USER_TO_REPORT";
+            action.payload.checked = true;
         } else {
             action.type = "DELETE_USER_FROM_REPORT";
+            action.payload.checked = false;
         }
+
         store.dispatch(action);
     }
 
@@ -31,8 +38,7 @@ class UserCheck extends React.Component {
         return (
             <div className="row">
                 <div className="col-md-12">
-                    <input type="checkbox" onClick={this.handleClick} value={this.props.user.login}/>&nbsp;{text}
-                    <hr/>
+                    <input type="checkbox" checked={this.state.checked} onChange={this.handleClick} value={this.props.user.login}/>&nbsp;{text}
                 </div>
             </div>
         );

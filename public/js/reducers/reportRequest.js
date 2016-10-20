@@ -12,10 +12,17 @@ export default function(state = defaultState, action) {
     switch (type) {
         case "ADD_USER_TO_REPORT":
             let newState = Object.assign({}, state);
+
             if (typeof newState.users === 'undefined') {
                 newState.users = [];
             }
             newState.users.push(payload.login);
+
+            if (typeof newState.checkbox === 'undefined') {
+                newState.checkbox = {};
+            }
+            newState.checkbox[payload.login] = true;
+
             return newState;
             break;
 
@@ -24,6 +31,7 @@ export default function(state = defaultState, action) {
             _.remove(stateAfterUserDeleted.users, function(login) {
                 return login === payload.login;
             });
+            stateAfterUserDeleted.checkbox[payload.login] = false;
             return stateAfterUserDeleted;
             break;
 
@@ -40,7 +48,9 @@ export default function(state = defaultState, action) {
             break;
 
         case "FETCH_REPORT_DATA":
-            return Object.assign({}, state, {responseData: payload});
+            return Object.assign({}, state, {
+                responseData: payload
+            });
             break;
 
         default:
