@@ -4,16 +4,6 @@ import moment from 'moment';
 import classNames from 'classnames';
 import InputElement from 'react-input-mask';
 
-const PeriodFilterLink = function({filter, children}) {
-  <a href='#'
-    onClick={e => e.preventDefault();
-    store.dispatch({
-      type: 'SET_REPORT_PERIOD',
-      filter
-    })}>
-  </a>
-};
-
 export class OptionalPeriod extends React.Component {
     render() {
         let colondwidth = 6;
