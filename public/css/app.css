@@ -108,3 +108,19 @@ footer {
 	color: #000;
 	opacity:0.4;
 }
+
+.profile-row__name {
+	font-size:18px;
+}
+
+.profile-row__role {
+	font-style: italic;
+	opacity: 0.6;
+}
+.margin-table__thead {
+	padding-top:20px;
+}
+.users-table__title {
+	opacity: 0.5;
+	padding-top:20px;
+}
