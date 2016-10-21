@@ -46,14 +46,12 @@ class DRPicker extends React.Component {
         }
         return (
             <DateRangePicker startDate={start} endDate={end} ranges={ranges} onEvent={this.handleEvent}>
-                <Button className="selected-date-range-btn" style={{
-                    width: '100%'
-                }}>
-                    <div className="pull-left"><Glyphicon glyph="calendar"/></div>
+                <Button className="selected-date-range-btn">
+                    <div className="pull-left"><Glyphicon glyph="calendar"/></div>&nbsp;
                     <div className="pull-right">
                         <span>
                             {label}
-                        </span>
+                        </span>&nbsp;
                         <span className="caret"></span>
                     </div>
                 </Button>

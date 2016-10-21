@@ -23,14 +23,18 @@ class UserActivityPage extends React.Component {
             <div className='row'>
                 <div className="col-md-3">
                     <div className="row">
-                        <Filters users={this.props.users} period={this.props.period}/>
+                        <div className="col-md-12">
+                            <Filters users={this.props.users} period={this.props.period}/>
+                        </div>
                     </div>
                     <div className="row">
-                        <button onClick={this.getTheReport}
-                                className="btn btn-success"
-                                style={{ "marginTop": "3vh" }}>
-                            Calculate
-                        </button>
+                        <div className="col-md-12">
+                            <button onClick={this.getTheReport}
+                                    className="btn btn-success"
+                                    style={{ "marginTop": "3vh" }}>
+                                Calculate
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div className="col-md-9">
