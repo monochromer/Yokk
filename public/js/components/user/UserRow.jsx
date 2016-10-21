@@ -1,6 +1,5 @@
 import React from 'react';
 import {Link} from 'react-router';
-import {deleteUser} from '../../actions/users.js';
 import store from '../../store.js';
 import moment from 'moment';
 
@@ -8,7 +7,7 @@ import moment from 'moment';
 var UserRow = React.createClass({
 
     handleRemove: function () {
-        store.dispatch({type: "MODAL_DELETE_SHOW", login: this.props.login});
+        store.dispatch({type: "MODAL_DELETE_SHOW", login: this.props.user.login});
     },
 
     dispatchUserToShow: function () {

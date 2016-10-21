@@ -36,10 +36,10 @@ class UserActivityTable extends React.Component {
             </div>
         );
     }
-};
+}
 
 let getProps = function(state) {
     return populateProps(this, state);
-}
+};
 
 export default connect(getProps)(UserActivityTable);
