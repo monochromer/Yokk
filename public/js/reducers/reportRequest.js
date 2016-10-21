@@ -52,7 +52,7 @@ export default function(state = defaultState, action) {
 
         case "STORE_OPTIONAL_PERIOD_FILTER":
             let periodChanges = {endDateFilter: moment().format('DD.MM.YYYY')};
-            
+
             switch (optionalPeriod) {
                 case "This week":
                   periodChanges.startDateFilter = moment().startOf('isoWeek').format('DD.MM.YYYY');

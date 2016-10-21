@@ -18,11 +18,6 @@ class UserActivityPage extends React.Component {
             <div>
                 <div className="col-md-3">
                     <Filters users={this.props.users}/>
-                    <div className="col-md-1">
-                        <button onClick={this.getTheReport} className="btn btn-success" style={{"marginTop": "3vh"}}>
-                            Calculate
-                        </button>
-                    </div>
                 </div>
                 <div className="col-md-9">
                     <ReportTable responseData={this.props.responseData}/>
