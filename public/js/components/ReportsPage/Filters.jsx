@@ -94,16 +94,6 @@ class Filters extends React.Component {
       const startDate = this.props.some.startDate;
       const endDate = this.props.some.endDate;
 
-      // let users = this.state.users;
-      // let startDateFilter, endDateFilter;
-      //
-      // if (moment(this.state.startDateFilter, 'DD.MM.YYYY', true).isValid()) {
-      //     startDateFilter = this.state.startDateFilter;
-      // }
-      // if (moment(this.state.endDateFilter, 'DD.MM.YYYY', true).isValid()) {
-      //     endDateFilter = this.state.endDateFilter;
-      // }
-      //
       store.dispatch(fetchReportData(users, startDate, endDate));
 
     }
@@ -137,12 +127,7 @@ class Filters extends React.Component {
                     );
                   })
                 }
-                <DRPicker />
-                <div className="col-md-1">
-                    <button onClick={this.getTheReport} className="btn btn-success" style={{"marginTop": "3vh"}}>
-                        Calculate
-                    </button>
-                </div>
+                <DRPicker period={this.props.period} />      
             </div>
         );
     }
@@ -150,7 +135,6 @@ class Filters extends React.Component {
 
 const fetchProps = function(state) {
     return {
-      some: state.reportRequest,
       startDate: state.reportRequest.startDateFilter,
       endDate: state.reportRequest.endDateFilter
     };

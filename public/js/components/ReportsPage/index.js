@@ -6,18 +6,32 @@ import Filters from './Filters.jsx';
 import {fetchReportData} from '../../actions/statistics';
 
 class UserActivityPage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.getTheReport = this.getTheReport.bind(this);
+    }
+
     getTheReport() {
-        const users = store.getState().reportRequest.users;
-        const startDateFilter = store.getState().reportRequest.startDateFilter;
-        const endDateFilter = store.getState().reportRequest.endDateFilter;
-        store.dispatch(fetchReportData(users, startDateFilter, endDateFilter));
+        const users = this.props.usersForReport;
+        const startDate = this.props.period.startDate;
+        const endDate = this.props.period.endDate;
+        store.dispatch(fetchReportData(users, startDate, endDate));
     }
 
     render() {
         return (
-            <div>
+            <div className='row'>
                 <div className="col-md-3">
-                    <Filters users={this.props.users}/>
+                    <div className="row">
+                        <Filters users={this.props.users} period={this.props.period}/>
+                    </div>
+                    <div className="row">
+                        <button onClick={this.getTheReport}
+                                className="btn btn-success"
+                                style={{ "marginTop": "3vh" }}>
+                            Calculate
+                        </button>
+                    </div>
                 </div>
                 <div className="col-md-9">
                     <ReportTable responseData={this.props.responseData}/>
@@ -28,7 +42,11 @@ class UserActivityPage extends React.Component {
 }
 
 const fetchProps = function(state) {
-    return {users: state.users, responseData: state.reportRequest.responseData};
+    const period = {
+        startDate: state.reportRequest.startDate,
+        endDate: state.reportRequest.endDate
+    }
+    return {usersForReport: state.reportRequest.users, users: state.users, responseData: state.reportRequest.responseData, period: period};
 };
 
 export default connect(fetchProps)(UserActivityPage);
