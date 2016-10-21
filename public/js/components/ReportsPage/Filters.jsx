@@ -6,8 +6,9 @@ import moment from 'moment';
 import classNames from 'classnames';
 import InputElement from 'react-input-mask';
 import {getDefinedOrEmptyString} from './reportPageHelpers';
-import { fetchReportData } from '../../actions/statistics'
+import { fetchReportData } from '../../actions/statistics';
 import _ from 'lodash';
+import DRPicker from './dateRangePicker';
 
 const getPeriodOptionalPeriodLink = function(text, appliedClasses, handler) {
     return (
@@ -30,10 +31,12 @@ class Filters extends React.Component {
         };
         this.handleUserCheck = this.handleUserCheck.bind(this);
         this.chooseCustomPeriod = this.chooseCustomPeriod.bind(this);
-        this.chooseOptionalPeriod = this.chooseOptionalPeriod.bind(thais);
+        this.chooseOptionalPeriod = this.chooseOptionalPeriod.bind(this);
         this.getTheReport = this.getTheReport.bind(this);
     }
-
+    foo() {
+      console.log('Its alive!');
+    }
     handleUserCheck(event) {
       if (event.target.checked) {
         this.state.users.push(event.target.value);
@@ -42,6 +45,11 @@ class Filters extends React.Component {
             return login === event.target.value;
         });
       }
+      let action = {
+        type: 'STORE_REPORT_USERS',
+        users: this.state.users
+      }
+      store.dispatch(action);
     }
 
     chooseCustomPeriod(event) {
@@ -81,17 +89,22 @@ class Filters extends React.Component {
     }
 
     getTheReport() {
-      let users = this.state.users;
-      let startDateFilter, endDateFilter;
+      console.log('this.props.some');
+      const users = this.props.some.users;
+      const startDate = this.props.some.startDate;
+      const endDate = this.props.some.endDate;
 
-      if (moment(this.state.startDateFilter, 'DD.MM.YYYY', true).isValid()) {
-          startDateFilter = this.state.startDateFilter;
-      }
-      if (moment(this.state.endDateFilter, 'DD.MM.YYYY', true).isValid()) {
-          endDateFilter = this.state.endDateFilter;
-      }
-
-      store.dispatch(fetchReportData(users, startDateFilter, endDateFilter));
+      // let users = this.state.users;
+      // let startDateFilter, endDateFilter;
+      //
+      // if (moment(this.state.startDateFilter, 'DD.MM.YYYY', true).isValid()) {
+      //     startDateFilter = this.state.startDateFilter;
+      // }
+      // if (moment(this.state.endDateFilter, 'DD.MM.YYYY', true).isValid()) {
+      //     endDateFilter = this.state.endDateFilter;
+      // }
+      //
+      store.dispatch(fetchReportData(users, startDate, endDate));
 
     }
 
@@ -124,37 +137,7 @@ class Filters extends React.Component {
                     );
                   })
                 }
-                <div>
-                    <h2>Periods</h2>
-                      <div>
-                          <div className="row">
-                              {getPeriodOptionalPeriodLink('This week', colonClass, this.chooseOptionalPeriod)}
-                              {getPeriodOptionalPeriodLink('Last week', colonClass, this.chooseOptionalPeriod)}
-                          </div>
-                          <div className="row">
-                              {getPeriodOptionalPeriodLink('This month', colonClass, this.chooseOptionalPeriod)}
-                              {getPeriodOptionalPeriodLink('Last month', colonClass, this.chooseOptionalPeriod)}
-                          </div>
-                      </div>
-                      <div>
-                          <div className="row">
-                              <div className="col-md-7">
-                                  <div className={dateCreated.valid ? "form-group" : "form-group has-error"}>
-                                      <label htmlFor="date">From</label>
-                                      <InputElement placeholder={this.state.startDateFilter} onChange={this.chooseCustomPeriod} className="form-control" onBlur={this.blurDate} mask="99.99.9999" id="startDateFilter"/>
-                                  </div>
-                              </div>
-                          </div>
-                          <div className="row">
-                              <div className="col-md-7">
-                                  <div className={dateCreated.valid ? "form-group" : "form-group has-error"}>
-                                      <label htmlFor="date">To</label>
-                                      <InputElement placeholder={this.state.endDateFilter} onChange={this.chooseCustomPeriod} className="form-control" onBlur={this.blurDate} mask="99.99.9999" id="endDateFilter"/>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                </div>
+                <DRPicker />
                 <div className="col-md-1">
                     <button onClick={this.getTheReport} className="btn btn-success" style={{"marginTop": "3vh"}}>
                         Calculate
@@ -167,6 +150,7 @@ class Filters extends React.Component {
 
 const fetchProps = function(state) {
     return {
+      some: state.reportRequest,
       startDate: state.reportRequest.startDateFilter,
       endDate: state.reportRequest.endDateFilter
     };
