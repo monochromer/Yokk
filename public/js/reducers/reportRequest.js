@@ -7,12 +7,25 @@ export default function(state = defaultState, action) {
     const {
         type,
         payload,
-        startDateFilter,
-        endDateFilter,
-        optionalPeriod
+        startDate,
+        endDate,
+        users
     } = action;
 
     switch (type) {
+        case "STORE_REPORT_USERS":
+            return Object.assign({}, state, {
+                users: users
+            });
+            break;
+
+        case "STORE_REPORT_PERIOD":
+            return Object.assign({}, state, {
+                startDate: startDate,
+                endDate: endDate
+            });
+            break;
+
         case "FETCH_REPORT_DATA":
             console.log('Reducer FETCH_REPORT_DATA payload');
             console.log(payload);
