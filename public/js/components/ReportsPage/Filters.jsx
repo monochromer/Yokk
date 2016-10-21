@@ -30,7 +30,7 @@ class Filters extends React.Component {
         };
         this.handleUserCheck = this.handleUserCheck.bind(this);
         this.chooseCustomPeriod = this.chooseCustomPeriod.bind(this);
-        this.chooseOptionalPeriod = this.chooseOptionalPeriod.bind(this);
+        this.chooseOptionalPeriod = this.chooseOptionalPeriod.bind(thais);
         this.getTheReport = this.getTheReport.bind(this);
     }
 
@@ -42,22 +42,21 @@ class Filters extends React.Component {
             return login === event.target.value;
         });
       }
-      console.log(this.state.users);
     }
 
     chooseCustomPeriod(event) {
       const stateField = event.target.id;
       if (event.target.id === 'startDateFilter') {
         this.setState({startDateFilter: event.target.value});
+
       } else {
         this.setState({endDateFilter: event.target.value});
       }
-      console.log('this.state after chooseCustomPeriod()');
-      console.log(this.state);
     }
 
     chooseOptionalPeriod(event) {
-      // event.preventDefault();
+      event.preventDefault();
+
       const optionalPeriod = event.target.innerHTML;
       let periodChanges = {endDateFilter: moment().format('DD.MM.YYYY')};
 
@@ -77,13 +76,14 @@ class Filters extends React.Component {
           default:
             periodChanges = {};
       }
+
+      this.setState(periodChanges);
     }
 
     getTheReport() {
-
       let users = this.state.users;
-
       let startDateFilter, endDateFilter;
+
       if (moment(this.state.startDateFilter, 'DD.MM.YYYY', true).isValid()) {
           startDateFilter = this.state.startDateFilter;
       }
@@ -96,13 +96,11 @@ class Filters extends React.Component {
     }
 
     render() {
-        // console.log('render is called');
-        // console.log(this.state);
         const colondwidth = 6;
         const colonClass = classNames(`col-md-${colondwidth}`);
         const {dateCreated} = this.state;
-        const startDate = '10.10.2016';
-        const endDate = '20.10.2016';
+
+        console.log(this.state.startDateFilter);
 
         return (
             <div>
@@ -143,7 +141,7 @@ class Filters extends React.Component {
                               <div className="col-md-7">
                                   <div className={dateCreated.valid ? "form-group" : "form-group has-error"}>
                                       <label htmlFor="date">From</label>
-                                      <InputElement defaultValue={this.state.startDateFilter} onChange={this.chooseCustomPeriod} className="form-control" onBlur={this.blurDate} mask="99.99.9999" id="startDateFilter"/>
+                                      <InputElement placeholder={this.state.startDateFilter} onChange={this.chooseCustomPeriod} className="form-control" onBlur={this.blurDate} mask="99.99.9999" id="startDateFilter"/>
                                   </div>
                               </div>
                           </div>
@@ -151,7 +149,7 @@ class Filters extends React.Component {
                               <div className="col-md-7">
                                   <div className={dateCreated.valid ? "form-group" : "form-group has-error"}>
                                       <label htmlFor="date">To</label>
-                                      <InputElement defaultValue={this.state.startDateFilter} onChange={this.chooseCustomPeriod} className="form-control" onBlur={this.blurDate} mask="99.99.9999" id="endDateFilter"/>
+                                      <InputElement placeholder={this.state.endDateFilter} onChange={this.chooseCustomPeriod} className="form-control" onBlur={this.blurDate} mask="99.99.9999" id="endDateFilter"/>
                                   </div>
                               </div>
                           </div>
@@ -168,16 +166,9 @@ class Filters extends React.Component {
 }
 
 const fetchProps = function(state) {
-    console.log('Here is the store!:');
-    console.log(state);
-    // let startDate;
-    // let endDate;
-    // if (typeof state.usersActivities.startDateFilter !=== 'undefined') {
-    //   startDate === state.usersActivities.startDateFilter;
-    // }
     return {
-      startDate: state.usersActivities.startDateFilter,
-      endDate: state.usersActivities.endDateFilter
+      startDate: state.reportRequest.startDateFilter,
+      endDate: state.reportRequest.endDateFilter
     };
 }
 
