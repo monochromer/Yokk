@@ -1,9 +1,15 @@
 import React from 'react';
 import store from '../../store.js';
 import {convertToHours} from './reportPageHelpers.js';
+import {Link} from 'react-router';
 
 class ReportTableRow extends React.Component {
+    dispatchUserToShow() {
+        store.dispatch({type: "SAVE_USER_TO_SHOW", user: this.props.userName});
+    }
     render() {
+        let UserActivityPageLink = `/user/activityPage/${this.props.userName}`;
+
         let userName,
             totalDuration,
             redmineDuration,
@@ -22,7 +28,9 @@ class ReportTableRow extends React.Component {
 
         return (
             <tr>
-                <td>{userName}</td>
+                <td>
+                  <Link onClick={ this.dispatchUserToShow } to={ UserActivityPageLink }>{userName}</Link>
+                </td>
                 <td>{totalDuration}</td>
                 <td>{redmineDuration}</td>
                 <td>{upworkDuration}</td>
