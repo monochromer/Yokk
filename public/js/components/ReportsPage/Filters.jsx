@@ -30,7 +30,7 @@ class Filters extends React.Component {
         };
         this.handleUserCheck = this.handleUserCheck.bind(this);
         this.chooseCustomPeriod = this.chooseCustomPeriod.bind(this);
-        this.chooseOptionalPeriod = this.chooseOptionalPeriod.bind(thais);
+        this.chooseOptionalPeriod = this.chooseOptionalPeriod.bind(this);
         this.getTheReport = this.getTheReport.bind(this);
     }
 
