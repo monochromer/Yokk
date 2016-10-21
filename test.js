@@ -3,6 +3,7 @@ const should = require('should');
 const supertest = require('supertest');
 const request = require('request');
 const async = require('async');
+const fs = require('fs');
 
 const randomUserAPI = "https://beta.randomapi.com/api/dimmc6ab?key=4LZJ-USXM-7MEN-K404";
 
@@ -89,14 +90,17 @@ describe('TESTING TIME ENTRY API', () => {
 describe('TESTING USERS API', () => {
 
     var userLogin = "";
+    var photo = "";
 
     it('creating the new user', (done) => {
         async.waterfall(
             [
                 (callback) => {
                     request(randomUserAPI, (error, response, body) => {
+                        if(error) console.log(error);
                         var newUser = JSON.parse(body).results[0];
                         userLogin = newUser.login;
+                        photo = newUser.photo;
                         callback(null, newUser);
                     });
                 },
@@ -118,6 +122,26 @@ describe('TESTING USERS API', () => {
             ]
         );
     });
+
+    // it('uploading user photo', (done) => {
+    //     fs.mkdir('uploads/users/' + userLogin, function(e){
+    //         if(!e || (e && e.code === 'EEXIST')){
+    //             var filepath = 'uploads/users/' + userLogin + '/1.jpg';
+    //             request(photo).pipe(fs.createWriteStream(filepath));
+    //             supertest(app)
+    //                 .post('/api/user/' + userLogin + '/upload_profile_picture')
+    //                 .attach('image', filepath)
+    //                 .end((err, res) => {
+    //                     res.status.should.equal(200);
+    //                     res.body.should.have.property('profileImg').which.is.a.Object();
+    //                     done();
+    //                 });
+    //         }
+    //     });
+    //
+    //
+    //
+    // });
 
     it('updating the user', (done) => {
         async.waterfall(
