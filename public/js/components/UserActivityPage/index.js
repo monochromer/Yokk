@@ -18,7 +18,9 @@ class UserActivityPage extends React.Component {
 
         if(user) {
             this.state.userHeading = user.fullname ? user.fullname : user.login;
-            this.state.photo = user.profileImg.medium;
+            if (user.profileImg) {
+                this.state.photo = user.profileImg.medium;
+            }
             this.state.position = user.position ? user.position : "Here is user's an activity";
         }
 
