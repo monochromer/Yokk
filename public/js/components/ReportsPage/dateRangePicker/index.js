@@ -18,32 +18,34 @@ const ranges = {
 class DRPicker extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            startDate: moment().subtract(29, 'days'),
-            endDate: moment()
-        }
         this.handleEvent = this.handleEvent.bind(this);
     }
 
     handleEvent(event, picker) {
-        this.setState({startDate: picker.startDate, endDate: picker.endDate});
         let action = {
             type: 'STORE_REPORT_PERIOD',
             startDate: picker.startDate.format('DD.MM.YYYY'),
             endDate: picker.endDate.format('DD.MM.YYYY')
         }
+
         store.dispatch(action);
     }
 
     render() {
-        var start = this.state.startDate.format('DD.MM.YYYY');
-        var end = this.state.endDate.format('DD.MM.YYYY');
-        var label = start + ' - ' + end;
+        let start, end;
+        if (typeof this.props.period.startDate !== 'undefined') {
+          start = moment(this.props.period.startDate, 'DD.MM.YYYY');
+          end = moment(this.props.period.endDate, 'DD.MM.YYYY');
+        } else {
+          start = moment().subtract(1, 'month');
+          end = moment();
+        }
+        var label = start.format('DD.MM.YYYY') + ' - ' + end.format('DD.MM.YYYY');
         if (start === end) {
-            label = start;
+            label = start.format('DD.MM.YYYY');
         }
         return (
-            <DateRangePicker startDate={this.state.startDate} endDate={this.state.endDate} ranges={ranges} onEvent={this.handleEvent}>
+            <DateRangePicker startDate={start} endDate={end} ranges={ranges} onEvent={this.handleEvent}>
                 <Button className="selected-date-range-btn" style={{
                     width: '100%'
                 }}>

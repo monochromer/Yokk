@@ -27,8 +27,6 @@ export default function(state = defaultState, action) {
             break;
 
         case "FETCH_REPORT_DATA":
-            console.log('Reducer FETCH_REPORT_DATA payload');
-            console.log(payload);
             return Object.assign({}, state, {
                 responseData: payload
             });
