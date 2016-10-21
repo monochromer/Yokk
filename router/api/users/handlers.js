@@ -61,10 +61,7 @@ exports.updateUser = function(req, res, next) {
 
     if (req.body.password !== undefined) {
         userModel.findByLogin(login, (err, user) => {
-            if (err) {
-                res.status(500).send();
-                return log(req, err).err();
-            }
+            if (err) next (err);
             user.updatePassword(req.body.password);
             user.save((err, user) => {
                 // seding passwords BAD
