@@ -1,20 +1,16 @@
-'use strict'
-
+'use strict';
+const resize = require('../helpers/image_resize');
 const log = require('../../../helpers/logger');
 const sendLoginPasswordToEmail = require('../../helpers/sendLoginPassword');
+const async = require('async');
 
-exports.getAllUsers = function(req, res) {
+exports.getAllUsers = function(req, res, next) {
     const userModel = req.app.db.models.User;
     userModel.allUsers((err, user) => {
-        // returned fields can be adjusted in User schema
-        if (err) {
-            const logMsq = 'There was some error while gettin data on users from DB';
-            log(req, logMsq).err();
-            return res.status(500).send();
-        }
+        if (err) next(err);
         res.send(user);
     });
-}
+};
 
 exports.saveUserToDb = function(req, res, next) {
     const userModel = req.app.db.models.User;
@@ -52,11 +48,11 @@ exports.showUser = function(req, res, next) {
     const userModel = req.app.db.models.User;
     const login = req.params.user_login;
     userModel.findByLogin(login, (err, user) => {
-        if (err) return log(req, err).err();
+        if (err) next(err);
         res.send(user);
         log(req).info();
     });
-}
+};
 
 exports.updateUser = function(req, res, next) {
     const userModel = req.app.db.models.User;
@@ -113,13 +109,7 @@ exports.deleteUser = function(req, res, next) {
 exports.uploadUserAvatar = function(req, res, next) {
     const userModel = req.app.db.models.User;
     const login = req.params.user_login;
-    const path = require('path');
-    const resize = require('../helpers/image_resize');
 
-    // element of the array typeof STRING
-    // first number in the string is width, second – height
-    // no crop is done
-    // resized images are saved in the same directory with the 'width-height:' prefix
     const requiredSizes = [
         '200-200',
         '400-400'
@@ -128,34 +118,39 @@ exports.uploadUserAvatar = function(req, res, next) {
     let imageInfo = {};
     imageInfo.dir = req.file.destination;
     imageInfo.name = req.file.filename.split(':').join('-');
-    resize(imageInfo, requiredSizes);
 
-    const originalImg = ('/' + req.file.path.split('/').slice(1).slice(-4).join('/')).split(':').join('-');
-    const smallImg = ('/' + req.file.destination.split('/').slice(1).slice(-4).join('/') + requiredSizes[0] + '-' + req.file.filename).split(':').join('-');
-    const mediumImg = ('/' + req.file.destination.split('/').slice(1).slice(-4).join('/') + requiredSizes[1] + '-' + req.file.filename).split(':').join('-');
+    async.waterfall([
+        (callback) => {
+            resize(imageInfo, requiredSizes);
+            callback(null);
+        },
+        (callback) => {
+            const originalImg = ('/' + req.file.path.split('/').slice(1).slice(-4).join('/')).split(':').join('-');
+            const smallImg = ('/' + req.file.destination.split('/').slice(1).slice(-4).join('/') + requiredSizes[0] + '-' + req.file.filename).split(':').join('-');
+            const mediumImg = ('/' + req.file.destination.split('/').slice(1).slice(-4).join('/') + requiredSizes[1] + '-' + req.file.filename).split(':').join('-');
 
-    // Below could be used if there is no defined Schema (pure Mongo):
-    // requiredSizes.forEach((size) => {
-    //     updateFoo.profileImg[size] = '/' + req.file.destination.split('/').slice(1).slice(-4).join('/') + size + ':' + req.file.filename;
-    // })
+            const update = {
+                profileImg: {
+                    original: originalImg,
+                    small: smallImg,
+                    medium: mediumImg,
+                }
+            };
 
-    // IF update object structure is changed, don't forget to change Mongoose model
-    const update = {
-        profileImg: {
-            original: originalImg,
-            small: smallImg,
-            medium: mediumImg,
+            userModel.editUser(login, update, (err, user) => {
+                if (err) next(err);
+                res.status(200).send(user);
+                callback(null);
+            });
         }
-    };
-
-    userModel.editUser(login, update, (err, user) => {
+    ], (err) => {
         if (err) next(err);
-        res.status(200).send(user);
+        }
+    );
 
-    });
-}
+};
 
 exports.checkUserPermissions = function(req, res, next) {
     // as of now, returned fields can be adjusted in userpassport.js
     res.send(req.user);
-}
+};

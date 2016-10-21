@@ -4,7 +4,6 @@ const easyimg = require('easyimage');
 
 module.exports = function(imageInfo, sizesArray = []) {
     sizesArray.forEach((size) => {
-        const destination = '';
         const width = +size.split('-')[0];
         const height = +size.split('-')[1];
 
@@ -17,14 +16,9 @@ module.exports = function(imageInfo, sizesArray = []) {
             cropheight: height,
             x: 0,
             y: 0
-        }).then(
-            function(image) {
-                return (true);
-            },
-            function(err) {
-                return (false);
-            }
-        );
+        }).then((err) => {
+            if (err) return err;
+        });
     })
 
-}
+};
