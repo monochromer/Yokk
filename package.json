@@ -7,6 +7,7 @@
     "start": "nf start",
     "test": "mocha --no-timeouts test.js",
     "dev-front": "webpack --watch & forever server.js",
+    "dev-no-watch": "webpack & forever server.js",
     "dev-back": "webpack & forever -w server.js"
   },
   "repository": {
