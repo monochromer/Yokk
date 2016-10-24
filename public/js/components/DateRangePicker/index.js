@@ -1,8 +1,8 @@
 import React from 'react';
-import store from '../../../store.js';
+import store from '../../store.js';
 import moment from 'moment';
 import DateRangePicker from 'react-bootstrap-daterangepicker';
-import {fetchReportData} from '../../../actions/statistics';
+import {fetchReportData} from '../../actions/statistics';
 import {Button, Glyphicon} from 'react-bootstrap';
 require('./react-daterangepicker.css');
 
@@ -23,22 +23,33 @@ class DRPicker extends React.Component {
 
     handleEvent(event, picker) {
         let action = {
-            type: 'STORE_REPORT_PERIOD',
             startDate: picker.startDate.format('DD.MM.YYYY'),
             endDate: picker.endDate.format('DD.MM.YYYY')
+        }
+
+        switch (this.props.parentComponent) {
+            case 'Filters':
+                action.type = 'STORE_REPORT_PERIOD';
+                break;
+            case 'UserActivityPage':
+                action.type = 'STORE_REPORT_PERIOD';
+                break;
+            default:
+                action.type = 'STORE_REPORT_PERIOD';
         }
 
         store.dispatch(action);
     }
 
     render() {
-        let start, end;
+        let start,
+            end;
         if (typeof this.props.period.startDate !== 'undefined') {
-          start = moment(this.props.period.startDate, 'DD.MM.YYYY');
-          end = moment(this.props.period.endDate, 'DD.MM.YYYY');
+            start = moment(this.props.period.startDate, 'DD.MM.YYYY');
+            end = moment(this.props.period.endDate, 'DD.MM.YYYY');
         } else {
-          start = moment().subtract(1, 'month');
-          end = moment();
+            start = moment().subtract(1, 'month');
+            end = moment();
         }
         var label = start.format('DD.MM.YYYY') + ' - ' + end.format('DD.MM.YYYY');
         if (start === end) {

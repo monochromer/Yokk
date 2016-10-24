@@ -9,13 +9,22 @@ export default function(state = defaultState, action) {
         payload,
         startDate,
         endDate,
-        users
+        user
     } = action;
 
     switch (type) {
-        case "STORE_REPORT_USERS":
+        case "SAVE_USER_FOR_REPORT_TO_STORE":
+            let usersAfterAddition = state.users || [];
+            usersAfterAddition.push(user);
             return Object.assign({}, state, {
-                users: users
+                users: usersAfterAddition
+            });
+            break;
+
+        case "DELETE_USER_FOR_REPORT_FROM_STORE":
+            const usersAfterDeletion = _.filter(state.users, (o) => {return o !== user});
+            return Object.assign({}, state, {
+                users: usersAfterDeletion
             });
             break;
 

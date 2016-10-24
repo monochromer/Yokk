@@ -29,7 +29,7 @@ class ReportTableRow extends React.Component {
         return (
             <tr>
                 <td>
-                  <Link onClick={ this.dispatchUserToShow } to={ UserActivityPageLink }>{userName}</Link>
+                    <Link onClick={this.dispatchUserToShow} to={UserActivityPageLink}>{userName}</Link>
                 </td>
                 <td>{totalDuration}</td>
                 <td>{redmineDuration}</td>

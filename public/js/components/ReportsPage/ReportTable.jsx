@@ -1,6 +1,5 @@
 import React from 'react';
 import store from '../../store.js';
-import {connect} from 'react-redux';
 import {Table} from 'react-bootstrap';
 import ReportTableRow from './ReportTableRow.jsx'
 
@@ -51,8 +50,4 @@ class ReportTable extends React.Component {
     }
 }
 
-const fetchUsersStateToProps = function(state) {
-    return {users: state.users, currentUser: state.currentUser};
-}
-
-export default connect(fetchUsersStateToProps)(ReportTable);
+export default ReportTable;
