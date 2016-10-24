@@ -11,10 +11,18 @@ export function fetchNextTimeEntryBatch(skip, limit) {
     }
 }
 
-export function fetchCustomUserNextTimeEntryBatch(skip, limit, user) {
+export function fetchCustomUserNextTimeEntryBatch(skip, limit, user, from, to) {
     return {
         type: "FETCH_USER_ACTIVITY",
-        loadItems: TIME_ENTRY_CRUD + '?skip=' + skip + '&limit=' + limit + '&user=' + user + '&from=',
+        loadItems: TIME_ENTRY_CRUD + '?skip=' + skip + '&limit=' + limit + '&user=' + user,
+        user: user
+    }
+}
+
+export function fetchNextTimeEntryBatchWhenChangingDate(skip, limit, user, from, to) {
+    return {
+        type: "FETCH_USER_ACTIVITY_AFTER_DATE_CHANGE",
+        loadItems: TIME_ENTRY_CRUD + '?skip=' + skip + '&limit=' + limit + '&user=' + user + '&from=' + from + '&to=' + to,
         user: user
     }
 }

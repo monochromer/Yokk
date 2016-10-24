@@ -5,6 +5,7 @@ import DateRangePicker from 'react-bootstrap-daterangepicker';
 import {fetchReportData} from '../../actions/statistics';
 import {Button, Glyphicon} from 'react-bootstrap';
 require('./react-daterangepicker.css');
+import {fetchNextTimeEntryBatchWhenChangingDate} from '../../actions/timeEntries.js';
 
 const ranges = {
     'Today': [ moment(), moment() ],
@@ -22,6 +23,10 @@ class DRPicker extends React.Component {
     }
 
     handleEvent(event, picker) {
+        console.log('MAYV');
+        console.log(this.props);
+        const oldestMoment = moment(this.props.oldestLoadedRecorDate, 'YYYY-MM-DD');
+
         let action = {
             startDate: picker.startDate.format('DD.MM.YYYY'),
             endDate: picker.endDate.format('DD.MM.YYYY')
@@ -30,21 +35,29 @@ class DRPicker extends React.Component {
         switch (this.props.parentComponent) {
             case 'Filters':
                 action.type = 'STORE_REPORT_PERIOD';
+                store.dispatch(action);
                 break;
             case 'UserActivityPage':
-                action.type = 'STORE_REPORT_PERIOD';
-                break;
-            default:
-                action.type = 'STORE_REPORT_PERIOD';
-        }
+                action.type = 'STORE_USER_ACTIVITY_PERIOD_FILTER';
+                action.user = this.props.login;
 
-        store.dispatch(action);
+                if (picker.startDate.isBefore(oldestMoment.toDate(), 'day')) {
+                    console.log('fucking event');
+                    console.log(store.getState().usersActivities);
+                    // if no return -> warning in console because function is called twice
+                    store.dispatch(fetchNextTimeEntryBatchWhenChangingDate(0, 1000, this.props.login, action.startDate, oldestMoment.subtract(1, 'day').format('DD.MM.YYYY')));
+                }
+
+                store.dispatch(action);
+
+                break;
+        }
     }
 
     render() {
         let start,
             end;
-        if (typeof this.props.period.startDate !== 'undefined') {
+        if (this.props.period && this.props.period.startDate) {
             start = moment(this.props.period.startDate, 'DD.MM.YYYY');
             end = moment(this.props.period.endDate, 'DD.MM.YYYY');
         } else {

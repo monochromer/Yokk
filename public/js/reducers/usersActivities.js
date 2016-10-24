@@ -7,8 +7,8 @@ export default function(state = defaultState, action) {
         type,
         payload,
         user,
-        startDateFilter,
-        endDateFilter
+        startDate,
+        endDate
     } = action;
 
     switch (type) {
@@ -28,7 +28,29 @@ export default function(state = defaultState, action) {
             newState[user].helpers = {};
             newState[user].helpers.allBatches = allBatches;
 
+            newState[user].startDate = moment(payload[payload.length-1].dateCreated).format('DD.MM.YYYY');
+            newState[user].endDate = moment(payload[0].dateCreated).format('DD.MM.YYYY');
+
             return newState;
+            break;
+
+        case "FETCH_USER_ACTIVITY_AFTER_DATE_CHANGE":
+            let newStateAfterDateChange = Object.assign({}, state);
+            if (typeof newStateAfterDateChange[user] === 'undefined') {
+                newStateAfterDateChange[user] = {};
+            }
+            if (typeof newStateAfterDateChange[user].list !== 'undefined') {
+                newStateAfterDateChange[user].list = newStateAfterDateChange[user].list.concat(payload);
+                newStateAfterDateChange[user].offset = newStateAfterDateChange[user].list.length;
+            } else {
+                newStateAfterDateChange[user].list = payload;
+                newStateAfterDateChange[user].offset = newStateAfterDateChange[user].list.length;
+            }
+            let allBatchesAfterDateChange = (payload.length == 0 || payload.lenght < 10) ? true : false;
+            newStateAfterDateChange[user].helpers = {};
+            newStateAfterDateChange[user].helpers.allBatches = allBatchesAfterDateChange;
+
+            return newStateAfterDateChange;
             break;
 
         case "SAVE_USER_TO_SHOW":
@@ -37,16 +59,11 @@ export default function(state = defaultState, action) {
             });
             break;
 
-        case "STORE_PERIOD_FILTER":
-            if (typeof startDateFilter !== 'undefined') {
-                return Object.assign({}, state, {
-                    startDateFilter: startDateFilter
-                });
-            } else {
-                return Object.assign({}, state, {
-                    endDateFilter: endDateFilter
-                });
-            }
+        case "STORE_USER_ACTIVITY_PERIOD_FILTER":
+            let stateAfterPeriodChange = Object.assign({}, state);
+            stateAfterPeriodChange[user].startDate = startDate;
+            stateAfterPeriodChange[user].endDate = endDate;
+            return stateAfterPeriodChange;
             break;
 
         default:

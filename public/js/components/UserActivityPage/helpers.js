@@ -23,58 +23,13 @@ export function getUserFullName(login, usersArray) {
     return `(login: ${login})`;
 }
 
-export function populateProps(thisObject, state) {
-    let propsToReturn = {};
-    if (typeof thisObject !== 'undefined') {
-        const user = thisObject.props.login;
-        getUserFullName(user, state.users);
-        let startDateFilter,
-            endDateFilter;
-        if (typeof state.usersActivities[user] !== 'undefined') {
-            if (state.usersActivities.startDateFilter) {
-                startDateFilter = moment(state.usersActivities.startDateFilter, 'DD.MM.YYYY').toDate()
-            }
-            if (state.usersActivities.endDateFilter) {
-                endDateFilter = moment(state.usersActivities.endDateFilter, 'DD.MM.YYYY').toDate()
-            }
-            const entries = state.usersActivities[user].list;
-            const periodFiltereEntries = _.filter(entries, function(o) {
-                let checkStartDate,
-                    checkEndDate;
-                if (startDateFilter) {
-                    checkStartDate = moment(o.dateCreated).isSameOrAfter(startDateFilter, 'day');
-                }
-                if (endDateFilter) {
-                    checkEndDate = moment(o.dateCreated).isSameOrBefore(endDateFilter, 'day');
-                }
-                if ((typeof checkStartDate !== 'undefined') && (typeof checkEndDate !== 'undefined')) {
-                    // console.log('case1');
-                    return (checkStartDate && checkEndDate);
-                } else if (typeof checkStartDate !== 'undefined') {
-                    // console.log('case2');
-                    return checkStartDate;
-                } else if (typeof checkEndDate !== 'undefined') {
-                    // console.log('case3');
-                    return checkEndDate;
-                } else {
-                    // console.log('case4');
-                    return true;
-                }
-            });
-            propsToReturn.days = groupTimeEntriesByDay(periodFiltereEntries);
-            propsToReturn.offset = state.usersActivities[user].offset;
-            propsToReturn.allBatches = state.usersActivities[user].helpers.allBatches;
-        } else {
-            propsToReturn.offset = 0;
-        }
-    }
+export function filterPeriod(userActivity) {
+  const startDateFilter = moment(userActivity.startDate, 'DD.MM.YYYY').toDate();
+  const endDateFilter = moment(userActivity.endDate, 'DD.MM.YYYY').toDate();
 
-    return propsToReturn;
-}
+  const filteredEntries = _.filter(userActivity.list, (o) => {
+    return moment(o.dateCreated).isSameOrAfter(startDateFilter, 'day') && moment(o.dateCreated).isSameOrBefore(endDateFilter, 'day');
+  });
 
-export function inititializeOffset(userActivities) {
-    if (typeof userActivities !== 'undefined') {
-        return userActivities.offset;
-    }
-    return 0;
+  return filteredEntries;
 }

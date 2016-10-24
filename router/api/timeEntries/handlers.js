@@ -5,7 +5,14 @@ const stringToMinutes = require('../../../helpers/issues').stringToMinutes;
 const queryFiller = require('../helpers/queryFiller');
 
 exports.timeEntryBatch = function(req, res) {
+    if (req.query.from === 'undefined') {
+        delete req.query.from;
+    }
+    if (req.query.to === 'undefined') {
+        delete req.query.to;
+    }
     const query = queryFiller(req.query); //CHECK!
+    
     const TimeEntryModel = req.app.db.models.timeEntry;
     const numberOfDocsToSkip = +req.query.skip || 0;
     const numberOfDocsToReturn = +req.query.limit;
@@ -74,10 +81,10 @@ exports.updateTimeEntry = function(req, res) {
     const timeEntryId = req.params.timeEntryId;
     const update = req.body;
 
-    TimeEntryModel.findByIdAndUpdate(timeEntryId, update, { new: true }, (err, timeEntry) => {
+    TimeEntryModel.findByIdAndUpdate(timeEntryId, update, {
+        new: true
+    }, (err, timeEntry) => {
         if (err) next(err);
         res.status(200).send(timeEntry);
     });
 };
-
-
