@@ -8,56 +8,84 @@ export default function(state = defaultState, action) {
         payload,
         user,
         startDate,
-        endDate
+        endDate,
+        oldestDate
     } = action;
 
     switch (type) {
-        case "FETCH_USER_ACTIVITY":
-            let newState = Object.assign({}, state);
-            if (typeof newState[user] === 'undefined') {
+          case "INITIALIZE_USER_ACTIVITY":
+              {
+                let newState = Object.assign({}, state);
                 newState[user] = {};
-            }
-            if (typeof newState[user].list !== 'undefined') {
-                newState[user].list = newState[user].list.concat(payload);
-                newState[user].offset = newState[user].list.length;
-            } else {
                 newState[user].list = payload;
-                newState[user].offset = newState[user].list.length;
+                newState[user].offset = payload.length;
+
+                let allBatches = (payload.length == 0 || payload.lenght < 10) ? true : false;
+                newState[user].helpers = {};
+                newState[user].helpers.allBatches = allBatches;
+
+                newState[user].startDate = moment(payload[payload.length-1].dateCreated).format('DD.MM.YYYY');
+                newState[user].endDate = moment(payload[0].dateCreated).format('DD.MM.YYYY');
+
+                newState[user].filter = false;
+
+                return newState;
+                break;
+              }
+
+        case "FETCH_USER_ACTIVITY":
+            {
+              let newState = Object.assign({}, state);
+              if (typeof newState[user] === 'undefined') {
+                  newState[user] = {};
+              }
+              if (typeof newState[user].list !== 'undefined') {
+                  newState[user].list = newState[user].list.concat(payload);
+                  newState[user].offset = newState[user].list.length;
+              } else {
+                  newState[user].list = payload;
+                  newState[user].offset = newState[user].list.length;
+              }
+              let allBatches = (payload.length == 0 || payload.lenght < 10) ? true : false;
+              newState[user].helpers = {};
+              newState[user].helpers.allBatches = allBatches;
+
+              // refactor this because when loading more, filtering changes!!
+              // newState[user].startDate = moment(payload[payload.length-1].dateCreated).format('DD.MM.YYYY');
+              // newState[user].endDate = moment(payload[0].dateCreated).format('DD.MM.YYYY');
+
+              return newState;
+              break;
             }
-            let allBatches = (payload.length == 0 || payload.lenght < 10) ? true : false;
-            newState[user].helpers = {};
-            newState[user].helpers.allBatches = allBatches;
 
-            newState[user].startDate = moment(payload[payload.length-1].dateCreated).format('DD.MM.YYYY');
-            newState[user].endDate = moment(payload[0].dateCreated).format('DD.MM.YYYY');
 
-            return newState;
-            break;
+        case "FETCH_USER_ACTIVITY_ON_LOAD_MORE":
+        {
+          let newState = Object.assign({}, state);
 
-        case "FETCH_USER_ACTIVITY_AFTER_DATE_CHANGE":
-            let newStateAfterDateChange = Object.assign({}, state);
-            if (typeof newStateAfterDateChange[user] === 'undefined') {
-                newStateAfterDateChange[user] = {};
-            }
-            if (typeof newStateAfterDateChange[user].list !== 'undefined') {
-                newStateAfterDateChange[user].list = newStateAfterDateChange[user].list.concat(payload);
-                newStateAfterDateChange[user].offset = newStateAfterDateChange[user].list.length;
-            } else {
-                newStateAfterDateChange[user].list = payload;
-                newStateAfterDateChange[user].offset = newStateAfterDateChange[user].list.length;
-            }
-            let allBatchesAfterDateChange = (payload.length == 0 || payload.lenght < 10) ? true : false;
-            newStateAfterDateChange[user].helpers = {};
-            newStateAfterDateChange[user].helpers.allBatches = allBatchesAfterDateChange;
-
-            return newStateAfterDateChange;
-            break;
+          return newState;
+          break;
+        }
 
         case "SAVE_USER_TO_SHOW":
             return Object.assign({}, state, {
                 showUser: user
             });
             break;
+
+        case "STORE_OLDEST_DATE":
+        {
+          let newState = Object.assign({}, state);
+          newState[user].oldestDate = oldestDate;
+          return newState;
+          break;
+        }
+
+        // case "PREVENT_DOUBLE_LOADING":
+        //     return Object.assign({}, state, {
+        //         showUser: user
+        //     });
+        //     break;
 
         case "STORE_USER_ACTIVITY_PERIOD_FILTER":
             let stateAfterPeriodChange = Object.assign({}, state);

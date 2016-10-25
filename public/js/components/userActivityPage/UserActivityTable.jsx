@@ -2,7 +2,7 @@ import React from 'react';
 import store from '../../store';
 import {connect} from 'react-redux';
 import {durationBeatify} from '../../helpers';
-import {fetchCustomUserNextTimeEntryBatch} from '../../actions/timeEntries.js';
+import {initializeUserActivity, fetchCustomUserNextTimeEntryBatch} from '../../actions/timeEntries.js';
 import DailyActivity from './DailyActivity.jsx';
 import {filterPeriod} from './helpers.js';
 import {groupTimeEntriesByDay} from '../../helpers';
@@ -21,7 +21,7 @@ class UserActivityTable extends React.Component {
         if (this.props.userActivity) {
           offset = this.props.userActivity.offset;
         }
-        store.dispatch(fetchCustomUserNextTimeEntryBatch(offset, this.state.limit, this.props.login));
+        store.dispatch(initializeUserActivity(offset, this.state.limit, this.props.login));
     }
 
     loadMore() {
@@ -29,11 +29,10 @@ class UserActivityTable extends React.Component {
     }
 
     render() {
-        console.log('Get some filtering');
-        console.log(this.props.userActivity);
-
         let list;
-        if (this.props.userActivity) {
+        console.log('this.props.userActivity && this.props.userActivity.filter');
+        console.log(this.props.userActivity && this.props.userActivity.filter);
+        if (this.props.userActivity && this.props.userActivity.filter) {
             // list = this.props.userActivity.list;
             list = filterPeriod(this.props.userActivity);
             // console.log('list');

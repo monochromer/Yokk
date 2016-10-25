@@ -3,11 +3,18 @@ import {
     TIME_ENTRY_CRUD
 } from '../constants'
 
-
 export function fetchNextTimeEntryBatch(skip, limit) {
     return {
         type: "FETCH_NEXT_TIME_ENTRY_BATCH",
         loadItems: TIME_ENTRY_CRUD + '?skip=' + skip + '&limit=' + limit
+    }
+}
+
+export function initializeUserActivity(skip, limit, user, from, to) {
+    return {
+        type: "INITIALIZE_USER_ACTIVITY",
+        loadItems: TIME_ENTRY_CRUD + '?skip=' + skip + '&limit=' + limit + '&user=' + user,
+        user: user
     }
 }
 
@@ -21,7 +28,7 @@ export function fetchCustomUserNextTimeEntryBatch(skip, limit, user, from, to) {
 
 export function fetchNextTimeEntryBatchWhenChangingDate(skip, limit, user, from, to) {
     return {
-        type: "FETCH_USER_ACTIVITY_AFTER_DATE_CHANGE",
+        type: "FETCH_USER_ACTIVITY",
         loadItems: TIME_ENTRY_CRUD + '?skip=' + skip + '&limit=' + limit + '&user=' + user + '&from=' + from + '&to=' + to,
         user: user
     }
