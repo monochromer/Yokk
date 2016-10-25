@@ -5,7 +5,8 @@
 const models = [
     'user',
     'timeEntry',
-    'statistics'
+    'statistics',
+    'team'
 ];
 
 // previously was in models.js in root
