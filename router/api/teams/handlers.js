@@ -41,7 +41,8 @@ exports.read = function(req, res, next) {
         if (teamOrTeamsArray) {
             return res.status(200).send(teamOrTeamsArray);
         }
-        res.send('No team found');
+        // no team found
+        res.status(500).send();
     })
 
 };
@@ -52,11 +53,11 @@ exports.update = function(req, res, next) {
     if (req.params.name) {
         teamModel.update(req.params.name, req.body, (err, team) => {
             if (err) next(err);
-            if (!team) return res.send('No team with given name found');
+            if (!team) return res.status(500).send();
             res.status(200).send(team);
         })
     } else {
-        res.send('No team specified');
+        res.status(500).send();
     }
 };
 
@@ -69,6 +70,7 @@ exports.delete = function(req, res, next) {
             res.status(200).send(result);
         })
     } else {
-        res.send('No team specified');
+        // No team specified
+        res.status(500).send();
     }
 };
