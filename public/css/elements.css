@@ -1,0 +1,46 @@
+/* forms */
+
+/* /forms */
+
+/* buttons */
+.btn {
+    border: 0;
+    box-shadow: 0;
+    height: 50px;
+    border-radius: 25px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn__white {
+    background-color: #FFFFFF;
+    color: #4A77DA;
+}
+
+.btn__lg {
+    padding: 0 25px;
+    font-size: 1.2rem;
+}
+/* /buttons */
+
+/* inputs */
+.input {
+    background-color: inherit;
+    border: 0;
+    border-bottom: 2px solid #B7CBF0;
+    color: #FFFFFF;
+    width: 100%;
+    outline:0;
+    font-family: 'Montserrat', sans-serif;
+    padding-bottom: 6px;
+}
+
+.input::-webkit-input-placeholder {color:#B7CBF0;}
+.input::-moz-placeholder          {color:#B7CBF0;}
+.input:-moz-placeholder           {color:#B7CBF0;}
+.input:-ms-input-placeholder      {color:#B7CBF0;}
+
+.input:focus {
+    border-bottom: 2px solid #FFFFFF;
+}
