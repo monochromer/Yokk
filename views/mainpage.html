@@ -6,26 +6,41 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/elements.css">
+    <link rel="stylesheet" href="/css/flexboxgrid.min.css">
+    <link rel="stylesheet" href="/css/helpers.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 </head>
 <body>
-<div class="container">
-    <div class="row">
-        <div class="col-md-12"></div>
-    </div>
-    <div class="row">
-        <div class="col-md-12 text-center">
-            <h1></h1>
+<div class="container-fluid main-container">
+    <div class="container-fluid top">
+        <div class="row top">
+            <div class="col-md-3 col-sm-4">Eye of providence</div>
+            <div class="col-md-3 col-md-offset-6 text-right">Sign In</div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <form action=""><input type="text">
-                <button></button>
-            </form>
+    <div class="container center">
+        <div class="heading">
+            <h1>Eye of Providence <br> helps to manage your team</h1>
         </div>
-        <div class="row">
-            <div class="col-md-12 text-center"><img src="" alt=""></div>
+        <div class="container-fluid team-create">
+            <div class="row middle-md">
+                <div class="col-md-7 col-md-offset-1">
+                    <input type="text" class="input input__white" placeholder="E-mail address">
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn__white btn__lg">Create New Team</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container footer">
+        <div class="span2">
+            <a href="http://soshace.com" target="_blank">
+                <img src="/img/logo.png" alt="soshace" title="soshace" alt="soshace" height="36px">
+            </a>
         </div>
     </div>
 </div>

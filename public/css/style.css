@@ -1,6 +1,54 @@
 /* main page */
 
 body {
-    background-image: url('../img/bg-mainpage.jpg');
+    background-image: url('../img/bg-promo-md.jpg');
     background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    height: 100vh;
+}
+
+/* top */
+
+.top {
+    color: #fff;
+    padding-top:1rem;
+}
+
+/* center */
+
+.center {
+    flex-direction: column;
+    align-items: center;
+}
+
+.heading {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 50px;
+}
+
+.heading h1 {
+    font-weight: 400;
+}
+
+.team-create {
+    background-color: rgba(74, 119, 218, 0.95);
+    width: 960px;
+    padding: 45px 0px;
+}
+
+.footer{
+    display: flex;
+    justify-content: space-around;
+    padding-bottom: 20px;
 }
