@@ -15,7 +15,8 @@ module.exports = function(app, mongoose) {
         created: {
             type: Date,
             default: Date.now
-        }
+        },
+        members: Array
     });
 
     methods(teamSchema);

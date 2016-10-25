@@ -5,5 +5,5 @@ module.exports = function(api) {
         .post(handle.create)
         .get(handle.read)
         .put(handle.update)
-        .delete(handle.delete)
+        .delete(handle.delete);
 };
