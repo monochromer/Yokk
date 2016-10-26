@@ -4,7 +4,7 @@ export default function(state = {}, action) {
 
     switch (type) {
 
-        case "CREATE_TEAM":
+        case "STEP_0":
             return Object.assign({}, state, { email: action.createItem.data.email });
             break;
 
