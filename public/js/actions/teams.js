@@ -5,7 +5,10 @@ export function step0(email) {
         type: "STEP_0",
         createItem: {
             url: TEAM_CRUD,
-            data: { email: email }
+            data: {
+                email: email,
+                step: 0
+            }
         }
     }
 }
