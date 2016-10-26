@@ -2,6 +2,11 @@
 
 /* /forms */
 
+.heading {
+    font-weight: normal;
+    font-size: 1.8rem;
+}
+
 /* buttons */
 .btn {
     border: 0;
@@ -13,12 +18,17 @@
     cursor: pointer;
 }
 
-.btn__white {
+.btn_white {
     background-color: #FFFFFF;
     color: #4A77DA;
 }
 
-.btn__lg {
+.btn_blue {
+    background-color: #4A77DA;
+    color: #FFFFFF;
+}
+
+.btn_lg {
     padding: 0 25px;
     font-size: 0.9rem;
 }
@@ -36,6 +46,8 @@
     padding-bottom: 6px;
 }
 
+
+
 .input::-webkit-input-placeholder {color:#B7CBF0;}
 .input::-moz-placeholder          {color:#B7CBF0;}
 .input:-moz-placeholder           {color:#B7CBF0;}
@@ -45,19 +57,47 @@
     border-bottom: 2px solid #FFFFFF;
 }
 
+.input_black {
+    border-bottom: 2px solid #DBDBDB;
+    color: #000000;
+}
+
+.input_black:focus {
+    border-bottom: 2px solid #000000;
+}
+
+.input_black::-webkit-input-placeholder {color:#919191;}
+.input_black::-moz-placeholder          {color:#919191;}
+.input_black:-moz-placeholder           {color:#919191;}
+.input_black:-ms-input-placeholder      {color:#919191;}
+
+
+.blue-active-logo {
+    text-decoration: none;
+    font-size: 1.5rem;
+    color: #4A77DA;
+}
+
 /* sm */
 
 @media only screen and (min-width: 48em) {
-    .btn__lg {
+    .btn_lg {
         padding: 0 25px;
         font-size: 1.2rem;
+    }
+
+    .heading {
+        font-size: 2.4rem;
     }
 }
 
 /* md */
 @media only screen and (min-width: 62em) {
-    .btn__lg {
+    .btn_lg {
         padding: 0 25px;
         font-size: 1.2rem;
+    }
+    .heading {
+        font-size: 2.8rem;
     }
 }

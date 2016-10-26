@@ -24,7 +24,8 @@ module.exports = function(app, passport) {
 
     app.use('/api', api);
 
-    app.get('/promo/*', (req, res, next) => res.sendFile(path.resolve(__dirname, '../views', 'promo.html')));
+    app.get('/promo/', (req, res, next) => res.sendFile(path.resolve(__dirname, '../views', 'promo.html')));
+    app.get('/team/*', (req, res, next) => res.sendFile(path.resolve(__dirname, '../views', 'promo.html')));
 
     app.get('*', checkAuthStatus, checkFrontPath, helperRoutes.redirectUndefinedRoutes);
 
