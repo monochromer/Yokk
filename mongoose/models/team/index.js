@@ -7,10 +7,18 @@ module.exports = function(app, mongoose) {
     var teamSchema = new mongoose.Schema({
         name: {
             type: String,
-            uniq: true,
-            required: true
+            uniq: true
         },
         teamLead: String,
+        teamLeadEmail: {
+            type: String,
+            required: true
+        },
+        confirmationCode: String,
+        confirmed: {
+            type: Boolean,
+            default: false
+        },
         teamLogo: String,
         created: {
             type: Date,
