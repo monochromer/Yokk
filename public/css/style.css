@@ -44,7 +44,7 @@ body {
 .team-create {
     background-color: rgba(74, 119, 218, 0.95);
     max-width: 960px;
-    padding: 45px 0px;
+    padding: 45px 0;
 }
 
 .team-create__create {
