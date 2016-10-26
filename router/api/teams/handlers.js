@@ -10,7 +10,7 @@ exports.create = function(req, res, next) {
     const teamModel = req.app.db.models.Team;
     const step = req.body.step;
     const email = req.body.email;
-    const code = req.body.confirmationCode;
+    const code = req.body.code;
     const login = req.body.login;
     const name = req.body.name;
 
@@ -79,6 +79,7 @@ exports.create = function(req, res, next) {
             teamLeadEmail: email
         }, (err, team) => {
             if (err) next(err);
+            if (team.confirmed === true) return res.status(500).send('Code already confirmed');
             if (team === null) return res.send('No team found');
             if (team.confirmationCode === confirmationCode) {
                 team.confirmed = true;
@@ -91,13 +92,13 @@ exports.create = function(req, res, next) {
     }
 
     function saveTeamLeadLogin(login) {
-        if (!login) res.status(500).send();
+        if (!login) return res.status(500).send();
         teamModel.findOne({
             teamLeadEmail: email
         }, (err, team) => {
             if (err) next(err);
             if (team === null) return res.status(500).send('No team found');
-            if (team.confirmed) return res.status(500).send('Email not confirmed');
+            if (team.confirmed === false) return res.status(500).send('Email is not confirmed');
             team.teamLead = login;
             team.save();
             res.send('Team leader\'s login saved');
