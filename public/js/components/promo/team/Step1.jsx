@@ -11,7 +11,7 @@ class Step1 extends React.Component {
             <div className="container">
                 <div className="row center-xs step1__heading">
                     <div className="col-md-6 col-sm-8 col-xs-10">
-                        <h1>Check your E-mail</h1>
+                        <h1 className="heading">Check your E-mail</h1>
                     </div>
                 </div>
                 <div className="row center-xs step1__message">

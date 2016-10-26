@@ -30,8 +30,8 @@ class PromoPage extends React.Component {
                     </div>
                 </div>
                 <div className="container center">
-                    <div className="heading">
-                        <h1>Eye of Providence <br /> helps to manage your team</h1>
+                    <div className="promo__heading text-center">
+                        <h1 className="heading">Eye of Providence <br /> helps to manage your team</h1>
                     </div>
                     <div className="container team-create">
                         <form onSubmit={ this.handleSubmit.bind(this) }>

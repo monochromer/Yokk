@@ -2,6 +2,11 @@
 
 /* /forms */
 
+.heading {
+    font-weight: normal;
+    font-size: 1.8rem;
+}
+
 /* buttons */
 .btn {
     border: 0;
@@ -61,6 +66,12 @@
     border-bottom: 2px solid #000000;
 }
 
+.input_black::-webkit-input-placeholder {color:#919191;}
+.input_black::-moz-placeholder          {color:#919191;}
+.input_black:-moz-placeholder           {color:#919191;}
+.input_black:-ms-input-placeholder      {color:#919191;}
+
+
 .blue-active-logo {
     text-decoration: none;
     font-size: 1.5rem;
@@ -74,6 +85,10 @@
         padding: 0 25px;
         font-size: 1.2rem;
     }
+
+    .heading {
+        font-size: 2.4rem;
+    }
 }
 
 /* md */
@@ -81,5 +96,8 @@
     .btn_lg {
         padding: 0 25px;
         font-size: 1.2rem;
+    }
+    .heading {
+        font-size: 2.8rem;
     }
 }
