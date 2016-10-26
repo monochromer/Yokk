@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import request from 'superagent';
 
 var LoginForm = React.createClass({
 	getInitialState: function() {
