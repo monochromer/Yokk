@@ -21,7 +21,10 @@ module.exports = function(app, mongoose) {
 
         fullname: String,
         position: String,
-        email: String,
+        email: {
+            type: String,
+            uniq: true
+        },
         phone: String,
         skype: String,
         workours: String,

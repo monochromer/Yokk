@@ -28,7 +28,7 @@ exports.create = function(req, res, next) {
             break
 
         case '4':
-            saveTeamName(teamName);
+            saveTeamName(name);
             break
 
         default:
@@ -139,8 +139,83 @@ exports.read = function(req, res, next) {
 exports.update = function(req, res, next) {
     const teamModel = req.app.db.models.Team;
     const userModel = req.app.db.models.User;
+    const teamName = req.params.teamName;
+
+    function getEmailsArray(emailsString) {
+        if (emailsString) return emailsString.split(',');
+    }
+    const emailsToAdd = getEmailsArray(req.body.addMembers)
+
+    if (req.query.confirm) {
+        res.send(req.query.confirm + ' confirmed');
+    }
+
+    promiseFilteredEmails(emailsToAdd).then(emails => {
+        const emailsToConfirm = emails.toInvite.map(email => {
+            return {
+                email: email,
+                confirmed: false
+            }
+        });
+        sendInvitations(emails.toInvite, teamName);
+        addMembersToTeam(teamName, emailsToConfirm);
+        // res.status(200).send(emails.toInvite);
+    });
 
 
+
+    function addMembersToTeam(teamName, members) {
+        teamModel.read(teamName, (err, team) => {
+            if (err) next(err);
+            if (!team) return res.status(500).send('No team found');
+            const matcher = obj => obj.email;
+            team.members = _.unionBy(team.members, members, matcher);
+            team.save();
+        })
+    }
+
+    function promiseFilteredEmails(emailsToFilter) {
+        return new Promise((resolve, reject) => {
+            userModel.find({}, {
+                _id: 0,
+                email: 1
+            }, (err, users) => {
+                const emailsInDB = users.map((member) => {
+                    if (member.email) return member.email;
+                });
+                const toInvite = _.difference(emailsToAdd, emailsInDB);
+                const toSkip = _.difference(emailsToAdd, toInvite);
+
+                const members = {
+                    toInvite: toInvite,
+                    toSkip: toSkip
+                }
+
+                resolve(members);
+            });
+        })
+    }
+
+    function sendInvitations(emails, teamName) {
+        emails.forEach(email => {
+            const confirmationLink = `http://eop.soshace.com/api/teams/${teamName}?confirm=${email}`;
+
+            const htmlToSend = `
+                <div>You invited to be a part of team ${teamName}</div>
+                <div>Confirm your participation by clicking <a href="${confirmationLink}">the link</a></div>`;
+
+            const mailOptions = {
+                from: '"Soshace team 👥" <bot@soshace.com>',
+                to: email,
+                subject: `Invitation to follow team ${teamName}`,
+                html: htmlToSend
+            };
+
+            console.log(mailOptions);
+
+            sendEmail(mailOptions);
+        })
+    }
 
     // teamModel.read(req.params.name, (err, team) => {
     //     if (err) next(err);
@@ -180,13 +255,12 @@ exports.update = function(req, res, next) {
 // DELETE
 exports.delete = function(req, res, next) {
     const teamModel = req.app.db.models.Team;
-    if (req.params.name) {
-        teamModel.delete(req.params.name, (err, result) => {
+    if (req.params.teamName) {
+        teamModel.delete(req.params.teamName, (err, result) => {
             if (err) next(err);
             res.status(200).send(result);
         })
     } else {
-        // No team specified
         res.status(500).send();
     }
 };
