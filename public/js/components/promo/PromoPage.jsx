@@ -41,12 +41,12 @@ class PromoPage extends React.Component {
                                     <input type="email" onChange={ this.handleChange.bind(this) } className="input input__white" placeholder="E-mail address" required />
                                 </div>
                                 <div className="col-md-3 col-sm-4 col-xs-12 hide-xs">
-                                    <button className="btn btn__white btn__lg">Create New Team</button>
+                                    <button className="btn btn_white btn_lg">Create New Team</button>
                                 </div>
                             </div>
                             <div className="row hide-sm hide-lg hide-md">
                                 <div className="col-xs-12 center-xs">
-                                    <button className="btn btn__white btn__lg team-create__create">Create New Team
+                                    <button className="btn btn_white btn_lg team-create__create">Create New Team
                                     </button>
                                 </div>
                             </div>
