@@ -5,6 +5,7 @@ module.exports = {
     entry: {
         index: './public/js/app.js',
         login: './public/js/login.js',
+        team: './public/js/team.js',
     },
     output: {
         path: path.join(__dirname, 'public/build/'),
