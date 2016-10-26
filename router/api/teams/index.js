@@ -8,4 +8,7 @@ module.exports = function(api) {
         .get(handle.read)
         .put(handle.update)
         .delete(handle.delete);
+    api.route('/teams/:teamName/email/:email')
+        .get(handle.confirmEmail)
+        .delete(handle.deleteMeberFromTeam);
 };

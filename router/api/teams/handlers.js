@@ -48,7 +48,7 @@ exports.create = function(req, res, next) {
         }
         teamModel.findOne(teamInitialData, (err, team) => {
             if (!team) {
-                teamInitialData.confirmationCode = Math.floor(Math.random() * 1000000);
+                teamInitialData.confirmationCode = Math.random().toString().slice(2,8);
                 const newTeam = new teamModel(teamInitialData);
                 newTeam.save((err, team) => {
                     if (err) next(err);
@@ -79,8 +79,8 @@ exports.create = function(req, res, next) {
             teamLeadEmail: email
         }, (err, team) => {
             if (err) next(err);
+            if (!team) return res.status(500).send('No team found')
             if (team.confirmed === true) return res.status(500).send('Code already confirmed');
-            if (team === null) return res.send('No team found');
             if (team.confirmationCode === confirmationCode) {
                 team.confirmed = true;
                 team.save();
@@ -140,14 +140,16 @@ exports.update = function(req, res, next) {
     const teamModel = req.app.db.models.Team;
     const userModel = req.app.db.models.User;
     const teamName = req.params.teamName;
+    const action = req.query.action;
 
     function getEmailsArray(emailsString) {
         if (emailsString) return emailsString.split(',');
     }
     const emailsToAdd = getEmailsArray(req.body.addMembers)
 
-    if (req.query.confirm) {
-        res.send(req.query.confirm + ' confirmed');
+    if (action === 'confirm_email') {
+        teamModel.findOne()
+        return res.send(req.query.email + ' confirmed');
     }
 
     promiseFilteredEmails(emailsToAdd).then(emails => {
@@ -198,7 +200,7 @@ exports.update = function(req, res, next) {
 
     function sendInvitations(emails, teamName) {
         emails.forEach(email => {
-            const confirmationLink = `http://eop.soshace.com/api/teams/${teamName}?confirm=${email}`;
+            const confirmationLink = `http://eop.soshace.com/api/teams/${teamName}/email/${email}`;
 
             const htmlToSend = `
                 <div>You invited to be a part of team ${teamName}</div>
@@ -211,45 +213,21 @@ exports.update = function(req, res, next) {
                 html: htmlToSend
             };
 
-            console.log(mailOptions);
-
             sendEmail(mailOptions);
         })
     }
 
-    // teamModel.read(req.params.name, (err, team) => {
-    //     if (err) next(err);
-    //
-    //     if (req.body.addMembers) {
-    //         req.body.addMembers = req.body.addMembers.split(',');
-    //
-    //         // Should add a team to each user!!
-    //         // req.body.addMembers.forEach((login) => {
-    //         //     userModel.findByLogin(login, (err, user) => {
-    //         //         if (err) next(err);
-    //         //         console.log(user.login);
-    //         //     })
-    //         // })
-    //
-    //         team.members = _.union(team.members, req.body.addMembers);
-    //     }
-    //
-    //     if (req.body.deleteMembers) {
-    //         req.body.deleteMembers = req.body.deleteMembers.split(',');
-    //         team.members = _.difference(team.members, req.body.deleteMembers);
-    //     }
-    //
-    //     for (let key in req.body) {
-    //         if (key === 'members') {
-    //             team[key] = req.body[key].split(',');
-    //         } else {
-    //             team[key] = req.body[key];
-    //         }
-    //     }
-    //
-    //     team.save();
-    //     res.status(200).send(team);
-    // })
+    teamModel.read(teamName, (err, team) => {
+        if (err) next(err);
+        if (!team) return res.status(500).send('No team found')
+
+        for (let key in req.body) {
+            team[key] = req.body[key];
+        }
+
+        team.save();
+        res.status(200).send(team);
+    })
 };
 
 // DELETE
@@ -264,3 +242,47 @@ exports.delete = function(req, res, next) {
         res.status(500).send();
     }
 };
+
+exports.confirmEmail = function(req, res, next) {
+    const teamModel = req.app.db.models.Team;
+
+    const teamName = req.params.teamName;
+    const email = req.params.email;
+
+    teamModel.read(teamName, (err, team) => {
+        if (err) next(err);
+        if (!team) return res.status(500).send('No team found');
+
+        const mappedEmails = team.members.map((emailObject) => {
+            if (emailObject.email === email) emailObject.confirmed = true;
+            return emailObject;
+        });
+
+        team.members = [];
+        team.save();
+        team.members = mappedEmails; //doesn't work without clearning team.members first
+        team.save();
+
+        res.status(200).send(team);
+    })
+}
+
+exports.deleteMeberFromTeam = function(req, res, next) {
+    const teamModel = req.app.db.models.Team;
+
+    const teamName = req.params.teamName;
+    const email = req.params.email;
+
+    teamModel.read(teamName, (err, team) => {
+        if (err) next(err);
+        if (!team) return res.status(500).send('No team found');
+
+        team.members = _.filter(team.members, (o) => {
+            return o.email !== email;
+        });
+
+        team.save();
+
+        res.send(team);
+    })
+}
