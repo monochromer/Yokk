@@ -11,4 +11,6 @@ import createItem from './middlewares/createItem'
 const middleware = applyMiddleware(promise(), thunk, loadItems, updateItem, deleteItem, createItem, logger());
 const store = createStore(reducer, middleware);
 
+window.store = store;
+
 export default store;
