@@ -75,18 +75,18 @@
 }
 
 
-.step1__message {
+.step__message {
     margin-bottom: 40px;
     font-weight: lighter;
     color: #95989A;
     line-height: 1.5rem;
 }
 
-.step1__message b {
+.step__message b {
     color: #000000;
 }
 
-.step1__code {
+.step__code {
     margin-bottom: 50px;
 }
 
@@ -95,8 +95,7 @@
     max-width: 80px;
 }
 
-.step2__heading {
-    margin-bottom: 40px;
+.step__heading {
 }
 
 /* sm */

@@ -9,12 +9,12 @@ class Step1 extends React.Component {
     render() {
         return (
             <div className="container">
-                <div className="row center-xs step1__heading">
+                <div className="row center-xs step__heading">
                     <div className="col-md-6 col-sm-8 col-xs-10">
                         <h1 className="heading">Check your E-mail</h1>
                     </div>
                 </div>
-                <div className="row center-xs step1__message">
+                <div className="row center-xs step__message">
                     <div className="col-md-6 col-sm-8 col-xs-10">
                         <p>
                             We’ve sent a six-digit confirmation code to <b>{ this.props.email }</b>.<br />
@@ -22,7 +22,7 @@ class Step1 extends React.Component {
                         </p>
                     </div>
                 </div>
-                <div className="row center-xs step1__code">
+                <div className="row center-xs step__code">
                     <div className="col-md-1 col-sm-2 col-xs-2">
                         <input className="input input_black step1__confirmation-input text-center" type="text" maxLength="1"/>
                     </div>
