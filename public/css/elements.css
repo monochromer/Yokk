@@ -20,7 +20,7 @@
 
 .btn__lg {
     padding: 0 25px;
-    font-size: 1.2rem;
+    font-size: 0.9rem;
 }
 /* /buttons */
 
@@ -43,4 +43,21 @@
 
 .input:focus {
     border-bottom: 2px solid #FFFFFF;
+}
+
+/* sm */
+
+@media only screen and (min-width: 48em) {
+    .btn__lg {
+        padding: 0 25px;
+        font-size: 1.2rem;
+    }
+}
+
+/* md */
+@media only screen and (min-width: 62em) {
+    .btn__lg {
+        padding: 0 25px;
+        font-size: 1.2rem;
+    }
 }

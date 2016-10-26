@@ -33,7 +33,7 @@ body {
 
 .heading {
     text-align: center;
-    font-size: 1.5rem;
+    font-size: 0.8rem;
     margin-bottom: 50px;
 }
 
@@ -43,12 +43,37 @@ body {
 
 .team-create {
     background-color: rgba(74, 119, 218, 0.95);
-    width: 960px;
+    max-width: 960px;
     padding: 45px 0px;
+}
+
+.team-create__create {
+    margin-top: 30px;
 }
 
 .footer{
     display: flex;
     justify-content: space-around;
     padding-bottom: 20px;
+}
+
+/* sm */
+
+@media only screen and (min-width: 48em) {
+    .team-create__create {
+        marin-top: 0;
+    }
+    .heading {
+        font-size: 1.5rem;
+    }
+}
+
+/* md */
+@media only screen and (min-width: 62em) {
+
+}
+
+/* lg */
+@media only screen and (min-width: 75em) {
+
 }
