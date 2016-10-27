@@ -25,3 +25,25 @@ export function step1(code) {
         }
     }
 }
+
+
+export function step2(username) {
+    return {
+        type: "STEP_2",
+        username: username
+    }
+}
+
+export function step3(password) {
+    return {
+        type: "STEP_3",
+        password: password
+    }
+}
+
+export function step4(teamName) {
+    return {
+        type: "STEP_4",
+        teamName: teamName
+    }
+}
