@@ -7,13 +7,14 @@ export function step0(email) {
             url: TEAM_CRUD,
             data: {
                 email: email,
-                step: 0
+                step: '0'
             }
         }
     }
 }
 
 export function step1(code, email) {
+    console.log(arguments);
     return {
         type: "STEP_1",
         createItem: {
@@ -21,7 +22,7 @@ export function step1(code, email) {
             data: {
                 code: code,
                 email: email,
-                step: 1
+                step: '1'
             }
         }
     }
