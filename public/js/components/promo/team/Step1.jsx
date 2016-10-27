@@ -21,7 +21,7 @@ class Step1 extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        store.dispatch(step1(_.join(this.state.code, "")), this.props.email);
+        store.dispatch(step1(_.join(this.state.code, ""), this.props.email));
     }
 
     render() {
