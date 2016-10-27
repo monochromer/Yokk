@@ -6,7 +6,7 @@ module.exports = function(query) {
     let queryToReturn = {};
     if (query.from || query.to) {
         if (query.from === query.to) {
-            queryToReturn.date = query.from;
+            queryToReturn.date = moment(query.from, 'DD.MM.YYYY').toDate();
         } else {
             queryToReturn.date = {};
             switch (query.from) {
@@ -15,7 +15,7 @@ module.exports = function(query) {
                     queryToReturn.date["$gte"] = moment().toDate();
                     break;
                 default:
-                    queryToReturn.date["$gte"] = moment(query.from, 'DDMMYYYY').toDate()
+                    queryToReturn.date["$gte"] = moment(query.from, 'DD.MM.YYYY').toDate()
             }
 
             switch (query.to) {
@@ -23,7 +23,7 @@ module.exports = function(query) {
                     queryToReturn.date["$lte"] = moment().toDate();
                     break;
                 default:
-                    queryToReturn.date["$lte"] = moment(query.to, 'DDMMYYYY').toDate()
+                    queryToReturn.date["$lte"] = moment(query.to, 'DD.MM.YYYY').toDate()
             }
         }
     }

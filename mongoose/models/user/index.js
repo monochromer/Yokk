@@ -48,7 +48,7 @@ module.exports = function(app, mongoose) {
             type: String,
             default: 'user'
         },
-        teams: Array,
+        team: mongoose.Schema.Types.ObjectId,
         redmineApiKey: String
     });
 

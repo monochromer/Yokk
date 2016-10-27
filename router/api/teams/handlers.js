@@ -144,17 +144,32 @@ exports.update = function(req, res, next) {
 
     const emailsToAdd = getEmailsArray(addMembers);
 
-    promiseFilteredEmails(emailsToAdd).then(emails => {
-        const emailsToConfirm = emails.toInvite.map(email => {
-            return {
-                email: email,
-                confirmed: false
-            }
-        });
-        sendInvitations(emails.toInvite, teamName);
-        addMembersToTeam(teamName, emailsToConfirm);
-        // res.status(200).send(emails.toInvite);
-    });
+    teamModel.read(teamName, (err, team) => {
+        if (err) next(err);
+        if (!team) return res.status(500).send('No team found')
+
+        const teamId = team._id;
+
+        for (let key in req.body) {
+            team[key] = req.body[key];
+        }
+
+        if (addMembers) {
+            promiseFilteredEmails(emailsToAdd).then(emails => {
+                const emailsToConfirm = emails.toInvite.map(email => {
+                    return {
+                        email: email,
+                        confirmed: false
+                    }
+                });
+                sendInvitations(emails.toInvite, teamName, teamId);
+                addMembersToTeam(teamName, emailsToConfirm);
+            });
+        }
+
+        team.save();
+        res.status(200).send(team);
+    })
 
     function getEmailsArray(emailsString) {
         if (emailsString) return emailsString.split(',');
@@ -163,7 +178,7 @@ exports.update = function(req, res, next) {
     function addMembersToTeam(teamName, members) {
         teamModel.read(teamName, (err, team) => {
             if (err) next(err);
-            if (!team) return res.status(500).send('No team found');
+            if (!team) return res.status(500).send('No team found'); //this can cause server crash (Can't set headers after they are sent.)
             const matcher = obj => obj.email;
             team.members = _.unionBy(team.members, members, matcher);
             team.save();
@@ -192,9 +207,9 @@ exports.update = function(req, res, next) {
         })
     }
 
-    function sendInvitations(emails, teamName) {
+    function sendInvitations(emails, teamName, teamId) {
         emails.forEach(email => {
-            const confirmationLink = `http://eop.soshace.com/api/teams/${teamName}/email/${email}`;
+            const confirmationLink = `http://eop.soshace.com/login?team=${teamId}&email=${email}`;
 
             const htmlToSend = `
                 <div>You invited to be a part of team ${teamName}</div>
@@ -211,17 +226,6 @@ exports.update = function(req, res, next) {
         })
     }
 
-    teamModel.read(teamName, (err, team) => {
-        if (err) next(err);
-        if (!team) return res.status(500).send('No team found')
-
-        for (let key in req.body) {
-            team[key] = req.body[key];
-        }
-
-        team.save();
-        res.status(200).send(team);
-    })
 };
 
 // DELETE
