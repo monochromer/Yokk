@@ -36,10 +36,6 @@ exports.create = function(req, res, next) {
             break
     }
 
-    // const teamInitialData = {
-    //     teamLeadEmail: email
-    // };
-
     function createTeamWithGivenEmail(email) {
         if (!email) return res.status(500).send('No email specified');
         // TODO email validation
@@ -48,7 +44,7 @@ exports.create = function(req, res, next) {
         }
         teamModel.findOne(teamInitialData, (err, team) => {
             if (!team) {
-                teamInitialData.confirmationCode = Math.random().toString().slice(2,8);
+                teamInitialData.confirmationCode = Math.random().toString().slice(2, 8);
                 const newTeam = new teamModel(teamInitialData);
                 newTeam.save((err, team) => {
                     if (err) next(err);
@@ -79,14 +75,14 @@ exports.create = function(req, res, next) {
             teamLeadEmail: email
         }, (err, team) => {
             if (err) next(err);
-            if (!team) return res.status(500).send('No team found')
+            if (!team) return res.status(500).send('No team found');
             if (team.confirmed === true) return res.status(500).send('Code already confirmed');
             if (team.confirmationCode === confirmationCode) {
                 team.confirmed = true;
                 team.save();
-                res.status(200).send('Code confirmed');
+                res.status(200).send(team);
             } else {
-                res.status(500).send('Code is wrong')
+                res.status(500).send(team);
             }
         })
     }
@@ -101,7 +97,7 @@ exports.create = function(req, res, next) {
             if (team.confirmed === false) return res.status(500).send('Email is not confirmed');
             team.teamLead = login;
             team.save();
-            res.send('Team leader\'s login saved');
+            res.status(200).send(team);
         })
     }
 
@@ -110,10 +106,10 @@ exports.create = function(req, res, next) {
             teamLeadEmail: email
         }, (err, team) => {
             if (err) next(err);
-            if (team === null) return res.send('No team found');
+            if (team === null) return res.status(500).send('No team found');
             team.name = name;
             team.save();
-            res.send('Team name is saved');
+            res.status(200).send(team);
         })
     }
 
@@ -122,9 +118,10 @@ exports.create = function(req, res, next) {
 // GET
 exports.read = function(req, res, next) {
     const teamModel = req.app.db.models.Team;
+    const teamName = req.params.teamName;
 
     // change name to _id as searchable field
-    teamModel.read(req.params.name, (err, teamOrTeamsArray) => {
+    teamModel.read(teamName, (err, teamOrTeamsArray) => {
         if (err) next(err);
         if (teamOrTeamsArray) {
             return res.status(200).send(teamOrTeamsArray);
@@ -139,18 +136,13 @@ exports.read = function(req, res, next) {
 exports.update = function(req, res, next) {
     const teamModel = req.app.db.models.Team;
     const userModel = req.app.db.models.User;
+    const addMembers = req.body.addMembers;
+
     const teamName = req.params.teamName;
-    const action = req.query.action;
 
-    function getEmailsArray(emailsString) {
-        if (emailsString) return emailsString.split(',');
-    }
-    const emailsToAdd = getEmailsArray(req.body.addMembers)
+    if (!teamName) return res.status(500).send();
 
-    if (action === 'confirm_email') {
-        teamModel.findOne()
-        return res.send(req.query.email + ' confirmed');
-    }
+    const emailsToAdd = getEmailsArray(addMembers);
 
     promiseFilteredEmails(emailsToAdd).then(emails => {
         const emailsToConfirm = emails.toInvite.map(email => {
@@ -164,7 +156,9 @@ exports.update = function(req, res, next) {
         // res.status(200).send(emails.toInvite);
     });
 
-
+    function getEmailsArray(emailsString) {
+        if (emailsString) return emailsString.split(',');
+    }
 
     function addMembersToTeam(teamName, members) {
         teamModel.read(teamName, (err, team) => {

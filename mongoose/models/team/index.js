@@ -19,7 +19,7 @@ module.exports = function(app, mongoose) {
             type: Boolean,
             default: false
         },
-        teamLogo: String,
+        teamLogoURL: String,
         created: {
             type: Date,
             default: Date.now

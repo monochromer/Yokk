@@ -15,6 +15,9 @@ dump.sh
 /node_modules/
 /bower_components/
 
+# Nodemon config
+nodemon.json
+
 # Ignore all log_files and temp_files.
 /log/*
 tmp/*
