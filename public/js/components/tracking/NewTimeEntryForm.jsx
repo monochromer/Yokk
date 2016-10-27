@@ -86,7 +86,7 @@ var NewTimeEntryForm = React.createClass({
             }
         }
         timeEntry.entrySource = "eop";
-        timeEntry.executor = this.props.currentUser;
+        timeEntry.executor = this.props.currentUserID;
 
         timeEntry.dateCreated = Date.now();
         store.dispatch(createTimeEntry(timeEntry));
@@ -145,6 +145,7 @@ var NewTimeEntryForm = React.createClass({
 var getProps = function(store) {
     return {
         currentUser: store.currentUser.login,
+        currentUserID: store.currentUser._id,
         users: store.users
     }
 }

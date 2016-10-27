@@ -5,9 +5,10 @@ const moment = require('moment');
 
 module.exports = function(req, res, next) {
     const userModel = req.app.db.models.User;
-    var login = req.user ? req.user.login : req.query.login;
+    const _id = req.user._id;
+    
     userModel.findOne({
-        login: login
+        _id: _id
     }, {
         redmineApiKey: 1
     }, (err, user) => {
@@ -30,7 +31,6 @@ module.exports = function(req, res, next) {
                 } else {
                     res.status(403).send();
                 }
-                console.log(err);
                 return;
             };
 
@@ -58,7 +58,7 @@ module.exports = function(req, res, next) {
                                 let entry = {};
                                 entry.redmineTimeEntryId = element.id;
                                 entry.number = element.issue.id;
-                                entry.executor = login;
+                                entry.executor = _id;
                                 entry.date = entry.dateCreated = moment(element.created_on).toDate();
                                 if (!element.comments) {
                                     entry.description = 'no comments';

@@ -43,6 +43,7 @@ module.exports = function(app) {
             let stripped_user = null
             if (user) {
                 stripped_user = {
+                    _id: user._id,
                     login: user.login,
                     role: user.role,
                 };

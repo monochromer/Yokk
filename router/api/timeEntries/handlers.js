@@ -12,7 +12,7 @@ exports.timeEntryBatch = function(req, res) {
         delete req.query.to;
     }
     const query = queryFiller(req.query); //CHECK!
-    
+
     const TimeEntryModel = req.app.db.models.timeEntry;
     const numberOfDocsToSkip = +req.query.skip || 0;
     const numberOfDocsToReturn = +req.query.limit;
@@ -21,7 +21,7 @@ exports.timeEntryBatch = function(req, res) {
     if (typeof req.query.user !== 'undefined') {
         query.executor = req.query.user;
     } else if (typeof req.user.login !== 'undefined') {
-        query.executor = req.user.login;
+        query.executor = req.user._id;
     }
 
     TimeEntryModel
@@ -45,7 +45,8 @@ exports.timeEntryBatch = function(req, res) {
         });
 };
 
-exports.saveTimeEntry = function(req, res) {
+exports.saveTimeEntry = function(req, res, next) {
+    console.log(req.body);
     const TimeEntryModel = req.app.db.models.timeEntry;
     const timeEntry = new TimeEntryModel(req.body);
 

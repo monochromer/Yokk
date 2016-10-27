@@ -276,7 +276,7 @@ describe('TESTING TEAMS API', () => {
             });
     });
 
-    it('CHECKICK RIGHT confirmationCode for olegzhermal@gmail.com should return JSON with confirmed field === true', (done) => {
+    it('CHECKING RIGHT confirmationCode for olegzhermal@gmail.com should return JSON with confirmed field === true', (done) => {
         const email = 'olegzhermal@gmail.com';
         const confirmationCode = rightConfirmationCode;
 

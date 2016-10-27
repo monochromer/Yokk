@@ -7,7 +7,7 @@ module.exports = function(app, mongoose) {
         number: Number,
         redmineId: Number,
         executor: {
-            type: String,
+            type: mongoose.Schema.Types.ObjectId,
             required: true
         },
         date: {
