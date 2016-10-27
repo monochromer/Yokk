@@ -1,10 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+var getParameter = require('get-parameter');
 
 var LoginForm = React.createClass({
 	getInitialState: function() {
+
+		var auth = true;
+
+		if(getParameter('team')) {
+			var team = getParameter('team');
+			var email = getParameter('email');
+			auth = false;
+		}
+
 		return {
-			auth: true
+			auth: auth,
+			team: team,
+			email: email
 		}
 	},
 
@@ -34,8 +46,8 @@ var LoginForm = React.createClass({
 		const reg = (
 			<div className="container">
 				<form className="form-signup" method="POST" action="/register">
-        			<h2 className="form-signin-heading">Signing up</h2>
-        			<input type="email" className="form-control" placeholder="Email" required="true" name="email" />
+        			<h2 className="form-signin-heading">Signing up to { this.state.team } </h2>
+        			<input type="hidden" className="form-control" placeholder="Email" required="true" name="email" defaultValue={ this.state.email }/>
 					<input type="text" className="form-control" placeholder="Login" required="true" name="login" />
         			<input type="password" className="form-control" placeholder="Password" required="true" name="password"/>
         			<button className="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
