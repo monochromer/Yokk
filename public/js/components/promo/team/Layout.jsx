@@ -1,7 +1,13 @@
 import React from 'react'
 
 class Layout extends React.Component {
+
+    constructor(props) {
+        super(props)
+    }
+
     render() {
+        const step = parseInt(this.props.location.pathname.replace(/\D+/g,""));
         return (
             <div className="steps-container">
                 <header className="steps-container__header">
@@ -11,10 +17,10 @@ class Layout extends React.Component {
                                 <a href="/" className="blue-active-logo">Eye&nbsp;of&nbsp;Providence</a>
                             </div>
                             <div className="col-md-6 col-sm-6 col-xs-6 text-center hide-sm hide-xs">
-                                <span className="steps-counter">step 1 of 5</span>
+                                <span className="steps-counter">step { step } of 5</span>
                             </div>
                             <div className="col-md-6 col-sm-6 col-xs-6 text-right hide-md hide-lg">
-                                <span className="steps-counter">step 1 of 5</span>
+                                <span className="steps-counter">step { step } of 5</span>
                             </div>
                         </div>
                     </div>
