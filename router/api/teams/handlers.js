@@ -55,7 +55,7 @@ exports.create = function(req, res, next) {
                         `<div>Confirmation code ${teamInitialData.confirmationCode}</div>`;
 
                     const mailOptions = {
-                        from: '"Soshace team 👥" <bot@soshace.com>',
+                        from: '"Soshace team 👥" <bot@izst.ru>',
                         to: email,
                         subject: 'Your team is being processed. Please follow the instructions', // Subject line
                         html: htmlToSend
