@@ -44,7 +44,7 @@
 .footer{
     display: flex;
     justify-content: space-around;
-    padding-bottom: 20px;
+    padding-bottm: 20px;
 }
 
 /* steps layout */
@@ -71,7 +71,7 @@
 }
 
 .steps-container__footer {
-    padding-bottom: 44px;
+    padding: 20px 0 40px 0;
 }
 
 
