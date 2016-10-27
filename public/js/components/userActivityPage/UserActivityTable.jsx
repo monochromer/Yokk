@@ -30,14 +30,12 @@ class UserActivityTable extends React.Component {
 
     render() {
         let list;
-        console.log('this.props.userActivity && this.props.userActivity.filter');
-        console.log(this.props.userActivity && this.props.userActivity.filter);
         if (this.props.userActivity && this.props.userActivity.filter) {
-            // list = this.props.userActivity.list;
             list = filterPeriod(this.props.userActivity);
-            // console.log('list');
-            // console.log(list);
+        } else if (this.props.userActivity) {
+          list = this.props.userActivity.list;
         };
+
         const days = groupTimeEntriesByDay(list);
 
         let rows = [];
@@ -45,7 +43,6 @@ class UserActivityTable extends React.Component {
             var duration = durationBeatify(days[day].totalDuration);
             rows.push(<DailyActivity day={day} duration={duration} timeEntries={days[day].list} key={day}/>)
         }
-
         const loadMoreClasses = this.props.allBatches ? 'btn btn-success center-block loadmore disabled' : 'btn btn-success center-block loadmore';
 
         return (

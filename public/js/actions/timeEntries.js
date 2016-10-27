@@ -13,7 +13,7 @@ export function fetchNextTimeEntryBatch(skip, limit) {
 export function initializeUserActivity(skip, limit, user, from, to) {
     return {
         type: "INITIALIZE_USER_ACTIVITY",
-        loadItems: TIME_ENTRY_CRUD + '?skip=' + skip + '&limit=' + limit + '&user=' + user,
+        loadItems: TIME_ENTRY_CRUD + '?skip=' + skip + '&limit=' + limit + '&login=' + user,
         user: user
     }
 }
@@ -21,7 +21,7 @@ export function initializeUserActivity(skip, limit, user, from, to) {
 export function fetchCustomUserNextTimeEntryBatch(skip, limit, user, from, to) {
     return {
         type: "FETCH_USER_ACTIVITY",
-        loadItems: TIME_ENTRY_CRUD + '?skip=' + skip + '&limit=' + limit + '&user=' + user,
+        loadItems: TIME_ENTRY_CRUD + '?skip=' + skip + '&limit=' + limit + '&login=' + user,
         user: user
     }
 }

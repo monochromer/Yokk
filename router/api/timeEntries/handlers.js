@@ -11,6 +11,7 @@ exports.timeEntryBatch = function(req, res) {
     if (req.query.to === 'undefined') {
         delete req.query.to;
     }
+
     const query = queryFiller(req.query); //CHECK!
 
     const TimeEntryModel = req.app.db.models.timeEntry;
@@ -24,25 +25,50 @@ exports.timeEntryBatch = function(req, res) {
         query.executor = req.user._id;
     }
 
-    TimeEntryModel
-        .find(query)
-        .sort({
-            dateCreated: -1
-        })
-        .skip(numberOfDocsToSkip)
-        .exec((err, timeEntries) => {
-            if (err) next(err);
+    const getUserId = promiseUserId(req.query.login, req.app.db.models.User);
 
-            for (let i = numberOfDocsToReturn - 1; i < maximumDocsToReturn - 1; i++) {
-                if (timeEntries.length <= numberOfDocsToReturn) {
-                    return res.send(timeEntries);
+    if (!req.query.login) {
+        getTimeEntries(query);
+    } else {
+        getUserId.then(userId => {
+            query.executor = userId;
+            getTimeEntries(query);
+        })
+    }
+
+    function getTimeEntries(query) {
+        TimeEntryModel
+            .find(query)
+            .sort({
+                dateCreated: -1
+            })
+            .skip(numberOfDocsToSkip)
+            .exec((err, timeEntries) => {
+                if (err) next(err);
+
+                for (let i = numberOfDocsToReturn - 1; i < maximumDocsToReturn - 1; i++) {
+                    if (timeEntries.length <= numberOfDocsToReturn) {
+                        return res.send(timeEntries);
+                    }
+                    if (!moment(timeEntries[i].dateCreated).isSame(moment(timeEntries[i + 1].dateCreated), 'day')) {
+                        return res.send(timeEntries.slice(0, i + 1));
+                    }
                 }
-                if (!moment(timeEntries[i].dateCreated).isSame(moment(timeEntries[i + 1].dateCreated), 'day')) {
-                    return res.send(timeEntries.slice(0, i + 1));
-                }
-            }
-            res.send(timeEntries);
-        });
+                res.send(timeEntries);
+            });
+    }
+
+    function promiseUserId(login, userModel) {
+        if (!login) return;
+        return new Promise((resolve, reject) => {
+            userModel.findOne({
+                login: login
+            }, (err, user) => {
+                resolve(user._id);
+            })
+        })
+    }
+
 };
 
 exports.saveTimeEntry = function(req, res, next) {
