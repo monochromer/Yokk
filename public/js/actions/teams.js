@@ -12,3 +12,16 @@ export function step0(email) {
         }
     }
 }
+
+export function step1(code) {
+    return {
+        type: "STEP_1",
+        createItem: {
+            url: TEAM_CRUD,
+            data: {
+                code: code,
+                step: 1
+            }
+        }
+    }
+}
