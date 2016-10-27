@@ -13,13 +13,14 @@ export function step0(email) {
     }
 }
 
-export function step1(code) {
+export function step1(code, email) {
     return {
         type: "STEP_1",
         createItem: {
             url: TEAM_CRUD,
             data: {
                 code: code,
+                email: email,
                 step: 1
             }
         }

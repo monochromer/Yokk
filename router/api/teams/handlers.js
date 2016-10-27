@@ -20,7 +20,7 @@ exports.create = function(req, res, next) {
             break
 
         case '1':
-            checkConfirmationCode(code);
+            checkConfirmationCode(code, email);
             break
 
         case '2':
@@ -70,7 +70,7 @@ exports.create = function(req, res, next) {
         })
     }
 
-    function checkConfirmationCode(confirmationCode) {
+    function checkConfirmationCode(confirmationCode, email) {
         teamModel.findOne({
             teamLeadEmail: email
         }, (err, team) => {
