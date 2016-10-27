@@ -10,6 +10,11 @@ export default function(state = {}, action) {
             return Object.assign({}, state, { email: action.createItem.data.email });
             break;
 
+        case "STEP_0_FAIL":
+            console.log(action.error);
+            return state;
+            break;
+
         case "STEP_1":
             browserHistory.push('/team/step2');
             return state;
