@@ -12,3 +12,38 @@ export function step0(email) {
         }
     }
 }
+
+export function step1(code) {
+    return {
+        type: "STEP_1",
+        createItem: {
+            url: TEAM_CRUD,
+            data: {
+                code: code,
+                step: 1
+            }
+        }
+    }
+}
+
+
+export function step2(username) {
+    return {
+        type: "STEP_2",
+        username: username
+    }
+}
+
+export function step3(password) {
+    return {
+        type: "STEP_3",
+        password: password
+    }
+}
+
+export function step4(teamName) {
+    return {
+        type: "STEP_4",
+        teamName: teamName
+    }
+}

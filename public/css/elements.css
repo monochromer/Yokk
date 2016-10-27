@@ -28,6 +28,15 @@
     color: #FFFFFF;
 }
 
+.btn_blue:disabled {
+    background-color: #919191;
+    cursor: not-allowed;
+}
+
+.btn_blue:active {
+    background-color: #2F5BBA;
+}
+
 .btn_lg {
     padding: 0 25px;
     font-size: 0.9rem;
