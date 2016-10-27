@@ -12,12 +12,9 @@ class Step5 extends React.Component {
     }
 
     addInvitation() {
-        console.log("ACTIVE");
         this.setState({
            rows: this.state.rows + 1
         });
-
-        console.log(this.state);
     }
 
     render() {
