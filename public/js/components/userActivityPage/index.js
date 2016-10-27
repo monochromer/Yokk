@@ -17,6 +17,15 @@ class UserActivityPage extends React.Component {
     render() {
         const login = this.props.routeParams.login;
 
+        function getUserId(userLogin, usersArray) {
+            if (!usersArray) return;
+            for (let i = 0; i < usersArray.length; i++) {
+                if (usersArray[i].login === userLogin) return usersArray[i]._id;
+            }
+        }
+        
+        const userId = getUserId(login, this.props.users)
+
         function findUserActivity(login, usersActivities) {
           if (usersActivities) {
             return usersActivities[login];
@@ -70,7 +79,7 @@ class UserActivityPage extends React.Component {
                 <DRPicker period={period} oldestLoadedRecorDate={oldestLoadedRecorDate} parentComponent="UserActivityPage" width = "100px" login={login} />
                 <div className="row">
                     <div className="col-md-12">
-                        <UserActivityTable login={this.props.routeParams.login} userActivity={userActivity} />
+                        <UserActivityTable userId={ userId } userActivity={userActivity} />
                     </div>
                 </div>
             </div>
