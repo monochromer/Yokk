@@ -8,7 +8,7 @@ export const FETCH_REDMINE_TIME_ENTRIES_URI = '/api/sync/redmine';
 
 export const REPORT_API_URI = '/api/report/';
 
-export const TEAM_CRUD = '/api/team/';
+export const TEAM_CRUD = '/api/teams/';
 
 export function COMBINE_USER_ADDPHOTO_URI(login) {
     return '/api/user/' + login + '/upload_profile_picture';
