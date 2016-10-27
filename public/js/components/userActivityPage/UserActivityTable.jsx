@@ -25,11 +25,13 @@ class UserActivityTable extends React.Component {
     }
 
     loadMore() {
+        store.dispatch({type: 'USER_ACTIVITY_SET_FILTER', filter: false, user: this.props.login});
         store.dispatch(fetchCustomUserNextTimeEntryBatch(this.props.userActivity.offset, this.state.limit, this.props.login));
     }
 
     render() {
         let list;
+
         if (this.props.userActivity && this.props.userActivity.filter) {
             list = filterPeriod(this.props.userActivity);
         } else if (this.props.userActivity) {

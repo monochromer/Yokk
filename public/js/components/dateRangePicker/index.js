@@ -23,8 +23,6 @@ class DRPicker extends React.Component {
     }
 
     handleEvent(event, picker) {
-        console.log('MAYV');
-        console.log(this.props);
         const oldestMoment = moment(this.props.oldestLoadedRecorDate, 'YYYY-MM-DD');
 
         let action = {
@@ -38,13 +36,17 @@ class DRPicker extends React.Component {
                 store.dispatch(action);
                 break;
             case 'UserActivityPage':
+                store.dispatch({type: 'USER_ACTIVITY_SET_FILTER', filter: true, user: this.props.login});
+
                 action.type = 'STORE_USER_ACTIVITY_PERIOD_FILTER';
                 action.user = this.props.login;
 
                 // if no oldestDate check, warning in console because function is called twice (some kind of DateRangePicker behavior when onEvent calle twice)
                 if (picker.startDate.isBefore(oldestMoment.toDate(), 'day') && (picker.startDate.format('DD.MM.YYYY') !== store.getState().usersActivities[this.props.login].oldestDate)) {
+                    console.log('it is here!!!');
+                    // console.log(fetchNextTimeEntryBatchWhenChangingDate(0, 1000, this.props.login, action.startDate, oldestMoment.subtract(1, 'day').format('DD.MM.YYYY')));
                     store.dispatch({type:'STORE_OLDEST_DATE', oldestDate: picker.startDate.format('DD.MM.YYYY'), user: this.props.login})
-                    store.dispatch(fetchNextTimeEntryBatchWhenChangingDate(0, 1000, this.props.login, action.startDate, oldestMoment.subtract(1, 'day').format('DD.MM.YYYY')));
+                    store.dispatch(fetchNextTimeEntryBatchWhenChangingDate(0, 1000, this.props.login, action.startDate, oldestMoment.format('DD.MM.YYYY')));
                 }
 
                 store.dispatch(action);
