@@ -209,7 +209,7 @@ exports.update = function(req, res, next) {
 
     function sendInvitations(emails, teamName, teamId) {
         emails.forEach(email => {
-            const confirmationLink = `http://eop.soshace.com/login?team=${teamId}&email=${email}`;
+            const confirmationLink = `http://eop.soshace.com/login?teamId=${teamId}&email=${email}&teamName=${teamName}`;
 
             const htmlToSend = `
                 <div>You invited to be a part of team ${teamName}</div>
