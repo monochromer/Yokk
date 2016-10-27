@@ -23,8 +23,8 @@ class PromoPage extends React.Component {
     render() {
         return (
             <div className="container-fluid main-container">
-                <div className="container-fluid top">
-                    <div className="row top">
+                <div className="container top">
+                    <div className="row">
                         <div className="col-md-3 col-sm-6 col-xs-6">Eye of providence</div>
                         <div className="col-md-offset-6 col-md-3 col-sm-6 col-xs-6 text-right">Sign In</div>
                     </div>
