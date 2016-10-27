@@ -6,7 +6,7 @@ class Layout extends React.Component {
             <div className="steps-container">
                 <header className="steps-container__header">
                     <div className="container">
-                        <div className="row">
+                        <div className="row bottom-xs">
                             <div className="col-md-3 col-sm-6 col-xs-6">
                                 <a href="/" className="blue-active-logo">Eye&nbsp;of&nbsp;Providence</a>
                             </div>
