@@ -6,19 +6,19 @@ class Step2 extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: ""
+            login: ""
         }
     }
 
     handleChange(event) {
         this.setState({
-            username: event.target.value
+            login: event.target.value
         })
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        store.dispatch(step2(this.state.username));
+        store.dispatch(step2(this.state.login));
     }
 
     render() {
@@ -42,7 +42,7 @@ class Step2 extends React.Component {
                     </div>
                     <div className="row center-xs">
                         <div className="col-md-6 col-sm-8 col-xs-10">
-                            <button type="submit" className="btn btn_blue btn_lg team-create__create" disabled={!this.state.username ? "disabled" : "" }>Continue to
+                            <button type="submit" className="btn btn_blue btn_lg team-create__create" disabled={!this.state.login ? "disabled" : "" }>Continue to
                                 Password
                             </button>
                         </div>

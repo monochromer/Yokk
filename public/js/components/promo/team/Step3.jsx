@@ -1,6 +1,7 @@
 import React from 'react'
 import store from '../../../store'
 import {step3} from '../../../actions/teams'
+import {addUser} from '../../../actions/users'
 import {connect} from 'react-redux'
 
 class Step3 extends React.Component {
@@ -19,7 +20,11 @@ class Step3 extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        store.dispatch(step3(this.state.password));
+        var user = Object.assign({}, this.props.user, { password: this.state.password });
+        console.log(user);
+        console.log(this.props.user);
+        store.dispatch(addUser(user));
+        store.dispatch(step3());
     }
 
     render() {
@@ -58,7 +63,11 @@ class Step3 extends React.Component {
 
 function getProps(state) {
     return {
-        email: "maxim@izst.ru"
+        user: {
+            login: state.teams.login,
+            email: state.teams.email,
+            team: state.teams._id
+        }
     }
 }
 

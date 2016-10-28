@@ -17,17 +17,17 @@ export default function(state = {}, action) {
 
         case "STEP_1":
             browserHistory.push('/team/step2');
-            return state;
+            return Object.assign({}, state, { team: payload._id });
             break;
 
         case "STEP_2":
             browserHistory.push('/team/step3');
-            return Object.assign({}, state, { username: action.username });
+            return Object.assign({}, state, { login: action.login });
             break;
 
         case "STEP_3":
             browserHistory.push('/team/step4');
-            return Object.assign({}, state, { password: action.password });
+            return state;
             break;
 
         case "STEP_4":
