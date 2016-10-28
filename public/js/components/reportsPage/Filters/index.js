@@ -1,5 +1,5 @@
 import React from 'react';
-import DRPicker from '../../DateRangePicker';
+import DRPicker from '../../dateRangePicker';
 import UsersFilter from './UsersFilter.jsx';
 
 class Filters extends React.Component {
