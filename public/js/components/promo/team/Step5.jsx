@@ -21,13 +21,10 @@ class Step5 extends React.Component {
 
     handleChange(e) {
         this.state.invitations[e.target.name] = e.target.value;
-        console.log(this.state);
     }
 
     handleSubmit(e) {
         e.preventDefault();
-        console.log(this.props.teamName);
-        console.log(_.join(this.state.invitations));
         store.dispatch(step5(this.props.teamName,this.state.invitations))
     }
 

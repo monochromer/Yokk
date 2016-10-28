@@ -4,6 +4,7 @@ const log = require('../helpers/logger');
 
 module.exports = function(req, res, next) {
   const userModel = req.app.db.models.User;
+  req.body.team = req.body.teamId;
   const user = new userModel(req.body);
   const sendEmail = require('./helpers/sendEmail');
   user.joinedon = Date.now();

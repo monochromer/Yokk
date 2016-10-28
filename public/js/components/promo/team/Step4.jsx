@@ -20,6 +20,8 @@ class Step4 extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
+        var user = Object.assign({}, this.props.user, { teamName: this.state.teamName });
+        store.dispatch(addUser(user));
         store.dispatch(step4(this.state.teamName, this.props.email));
     }
 

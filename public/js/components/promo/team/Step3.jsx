@@ -21,9 +21,6 @@ class Step3 extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         var user = Object.assign({}, this.props.user, { password: this.state.password });
-        console.log(user);
-        console.log(this.props.user);
-        store.dispatch(addUser(user));
         store.dispatch(step3());
     }
 
