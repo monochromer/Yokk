@@ -13,10 +13,12 @@ class Step1 extends React.Component {
 
     handleChange(event) {
         this.state.code[event.target.name] = event.target.value;
-
         this.setState({
             code: this.state.code
         });
+        if(parseInt(event.target.name) < 5) {
+            this.refs[parseInt(event.target.name) + 1].focus();
+        }
     }
 
     handleSubmit(event) {
@@ -47,27 +49,27 @@ class Step1 extends React.Component {
                     <div className="row center-xs step__code">
 
                         <div className="col-md-1 col-sm-2 col-xs-2">
-                            <input className={ inputClass  } onChange={ this.handleChange.bind(this) } name="0"
+                            <input className={ inputClass } ref="0" onChange={ this.handleChange.bind(this) } name="0"
                                    type="text" maxLength="1"/>
                         </div>
                         <div className="col-md-1 col-sm-2 col-xs-2">
-                            <input className={ inputClass } onChange={ this.handleChange.bind(this) } name="1"
+                            <input className={ inputClass } ref="1" onChange={ this.handleChange.bind(this) } name="1"
                                    type="text" maxLength="1"/>
                         </div>
                         <div className="col-md-1 col-sm-2 col-xs-2">
-                            <input className={ inputClass } onChange={ this.handleChange.bind(this) } name="2"
+                            <input className={ inputClass } ref="2" onChange={ this.handleChange.bind(this) } name="2"
                                    type="text" maxLength="1"/>
                         </div>
                         <div className="col-md-1 col-sm-2 col-xs-2">
-                            <input className={ inputClass } onChange={ this.handleChange.bind(this) } name="3"
+                            <input className={ inputClass } ref="3" onChange={ this.handleChange.bind(this) } name="3"
                                    type="text" maxLength="1"/>
                         </div>
                         <div className="col-md-1 col-sm-2 col-xs-2">
-                            <input className={ inputClass  } onChange={ this.handleChange.bind(this) } name="4"
+                            <input className={ inputClass  } ref="4" onChange={ this.handleChange.bind(this) } name="4"
                                    type="text" maxLength="1"/>
                         </div>
                         <div className="col-md-1 col-sm-2 col-xs-2">
-                            <input className={ inputClass } onChange={ this.handleChange.bind(this) } name="5"
+                            <input className={ inputClass } ref="5" onChange={ this.handleChange.bind(this) } name="5"
                                    type="text" maxLength="1"/>
                         </div>
 
