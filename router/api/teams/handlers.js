@@ -218,7 +218,7 @@ exports.update = function(req, res, next) {
                 <div>Confirm your participation by clicking <a href="${confirmationLink}">the link</a></div>`;
 
             const mailOptions = {
-                from: '"Soshace team 👥" <bot@soshace.com>',
+                from: '"Soshace team 👥" <bot@izst.ru>',
                 to: email,
                 subject: `Invitation to follow team ${teamName}`,
                 html: htmlToSend

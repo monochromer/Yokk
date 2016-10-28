@@ -1,6 +1,7 @@
 import React from 'react'
 import store from '../../store'
-import { step0 } from '../../actions/teams'
+import {step0} from '../../actions/teams'
+import {connect} from 'react-redux'
 
 
 class PromoPage extends React.Component {
@@ -17,7 +18,8 @@ class PromoPage extends React.Component {
     }
 
     handleChange(event) {
-         this.state.email = event.target.value;
+        this.state.email = event.target.value;
+        store.dispatch({type: "REMOVE_ERRORS"});
     }
 
     render() {
@@ -26,7 +28,9 @@ class PromoPage extends React.Component {
                 <div className="container top">
                     <div className="row">
                         <div className="col-md-3 col-sm-6 col-xs-6">Eye of providence</div>
-                        <div className="col-md-offset-6 col-md-3 col-sm-6 col-xs-6 text-right">Sign In</div>
+                        <div className="col-md-offset-6 col-md-3 col-sm-6 col-xs-6 text-right">
+                            <a href="/login" className="link_white">Sign In</a>
+                        </div>
                     </div>
                 </div>
                 <div className="container center">
@@ -38,7 +42,11 @@ class PromoPage extends React.Component {
                             <div className="row middle-md">
                                 <div
                                     className="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-7 col-sm-6 col-xs-10">
-                                    <input type="email" onChange={ this.handleChange.bind(this) } className="input input__white" placeholder="E-mail address" required />
+                                    <input type="email" onChange={ this.handleChange.bind(this) }
+                                           className={ (this.props.errorls) ? "input input_white input_error" : "input input_white" }
+                                           placeholder="E-mail address" required/>
+                                    <span
+                                        className={ (this.props.error) ? "error" : "error hide" }>{ this.props.error }</span>
                                 </div>
                                 <div className="col-md-3 col-sm-4 col-xs-12 hide-xs">
                                     <button className="btn btn_white btn_lg">Create New Team</button>
@@ -65,4 +73,10 @@ class PromoPage extends React.Component {
     }
 }
 
-export default PromoPage
+function getProps(store) {
+    return {
+        error: store.teams.errors.step0
+    }
+}
+
+export default connect(getProps)(PromoPage)

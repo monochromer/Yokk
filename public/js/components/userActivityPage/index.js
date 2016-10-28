@@ -2,7 +2,7 @@ import React from 'react';
 import UserActivityTable from './UserActivityTable.jsx';
 import { connect } from 'react-redux';
 import { findUserByLogin } from '../../helpers.js';
-import DRPicker from '../DateRangePicker';
+import DRPicker from '../dateRangePicker';
 
 class UserActivityPage extends React.Component {
     constructor(props) {
