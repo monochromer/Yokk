@@ -1,8 +1,8 @@
 import React from 'react'
 import store from '../../../store'
 import {step3} from '../../../actions/teams'
-import {addUser} from '../../../actions/users'
 import {connect} from 'react-redux'
+import {addUser} from '../../../actions/users'
 
 class Step3 extends React.Component {
     constructor(props) {
@@ -21,6 +21,7 @@ class Step3 extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         var user = Object.assign({}, this.props.user, { password: this.state.password });
+        store.dispatch(addUser(user));
         store.dispatch(step3());
     }
 

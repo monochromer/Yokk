@@ -2,6 +2,7 @@
 
 const _ = require('lodash');
 const sendEmail = require('../../helpers/sendEmail');
+const path = require('path');
 
 // CRUD API for teams
 
@@ -173,7 +174,8 @@ exports.update = function(req, res, next) {
         }
 
         team.save();
-        res.status(200).send(team);
+
+        res.status(200).send(path.resolve(__dirname, '../../views', 'index.html'));
     })
 
 
