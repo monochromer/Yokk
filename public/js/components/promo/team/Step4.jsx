@@ -1,6 +1,7 @@
 import React from 'react'
 import store from '../../../store';
 import {step4} from '../../../actions/teams'
+import {connect} from 'react-redux'
 
 
 class Step4 extends React.Component {
@@ -19,7 +20,7 @@ class Step4 extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        store.dispatch(step4(this.state.teamName));
+        store.dispatch(step4(this.state.teamName, this.props.email));
     }
 
     render() {
@@ -56,5 +57,10 @@ class Step4 extends React.Component {
     }
 }
 
+function getProps(state) {
+    return {
+        email: state.teams.email
+    }
+}
 
-export default Step4
+export default connect(getProps)(Step4)
