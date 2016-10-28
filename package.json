@@ -70,6 +70,8 @@
     "request": "^2.74.0",
     "style-loader": "^0.13.1",
     "superagent": "^2.3.0",
+    "validate.js": "^0.10.0",
+    "validator": "^6.1.0",
     "webpack": "^1.13.2"
   },
   "devDependencies": {
