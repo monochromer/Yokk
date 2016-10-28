@@ -50,7 +50,7 @@ class PromoPage extends React.Component {
                                 <div
                                     className="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-7 col-sm-6 col-xs-10">
                                     <input type="email" onChange={ this.handleChange.bind(this) }
-                                           className={ (this.props.errorls) ? "input input_white input_error" : "input input_white" }
+                                           className={ (this.props.error) ? "input input_white input_error" : "input input_white" }
                                            placeholder="E-mail address" required/>
                                     <span
                                         className={ (this.props.error) ? "error" : "error hide" }>{ this.props.error }</span>
