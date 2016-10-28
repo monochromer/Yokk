@@ -138,12 +138,12 @@ exports.update = function(req, res, next) {
     const teamModel = req.app.db.models.Team;
     const userModel = req.app.db.models.User;
     const addMembers = req.body.addMembers;
-
+    console.log(addMembers[0]);
     const teamName = req.params.teamName;
 
     if (!teamName) return res.status(500).send();
 
-    const emailsToAdd = getEmailsArray(addMembers);
+    const emailsToAdd = addMembers;
 
     teamModel.read(teamName, (err, team) => {
         if (err) next(err);
@@ -172,9 +172,6 @@ exports.update = function(req, res, next) {
         res.status(200).send(team);
     })
 
-    function getEmailsArray(emailsString) {
-        if (emailsString) return emailsString.split(',');
-    }
 
     function addMembersToTeam(teamName, members) {
         teamModel.read(teamName, (err, team) => {
