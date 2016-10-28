@@ -29,17 +29,16 @@ export function step1(code, email) {
 }
 
 
-export function step2(username) {
+export function step2(login) {
     return {
         type: "STEP_2",
-        username: username
+        login: login
     }
 }
 
-export function step3(password) {
+export function step3() {
     return {
-        type: "STEP_3",
-        password: password
+        type: "STEP_3"
     }
 }
 
