@@ -5,6 +5,8 @@ module.exports = function(api) {
     api.route('/user/')
         .get(handle.getAllUsers)
         .post(handle.saveUserToDb);
+    api.route('/user/get/team')
+        .get(handle.getTeamUsers);
     api.route('/user/check_permissions')
         .get(handle.checkUserPermissions);
     api.route('/user/:user_login')

@@ -4,13 +4,15 @@ import ModalUserDelete from './user/ModalUserDelete.jsx'
 import TopPanel from './navbar/TopPanel.jsx'
 import store from '../store.js'
 
-import { fetchUsers } from '../actions/users.js'
+// import { fetchUsers } from '../actions/users.js'
+import { fetchTeamUsers } from '../actions/users.js'
 import { fetchCurrentUser } from '../actions/currentUser.js'
 
 class Layout extends React.Component {
 
     componentWillMount() {
-        store.dispatch(fetchUsers());
+        // store.dispatch(fetchUsers());
+        store.dispatch(fetchTeamUsers());
         store.dispatch(fetchCurrentUser());
     }
 

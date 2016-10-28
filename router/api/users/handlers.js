@@ -6,9 +6,28 @@ const async = require('async');
 
 exports.getAllUsers = function(req, res, next) {
     const userModel = req.app.db.models.User;
+    const team = req.query.team;
+
     userModel.allUsers((err, user) => {
         if (err) next(err);
         res.send(user);
+    });
+};
+
+exports.getTeamUsers = function(req, res, next) {
+    const userModel = req.app.db.models.User;
+    const currentUser = req.user;
+    console.log(req.user);
+    userModel.findOne({
+        _id: currentUser._id
+    }, (err, user) => {
+        if (err) next(err);
+        userModel.find({
+            team: user.team
+        }, (err, teamUsers) => {
+            if (err) next(err);
+            res.status(200).send(teamUsers);
+        })
     });
 };
 

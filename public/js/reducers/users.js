@@ -26,6 +26,10 @@ export default function(state = defaultState, action) {
             return payload;
             break;
 
+        case "FETCH_TEAM_USERS":
+            return payload;
+            break;
+
         default:
             return state;
     }

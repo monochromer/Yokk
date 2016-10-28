@@ -2,6 +2,7 @@ import request from 'superagent';
 import {
     USER_CRUD,
     COMBINE_USER_ADDPHOTO_URI,
+    USER_TEAM
 } from '../constants'
 
 import {
@@ -14,6 +15,13 @@ export function fetchUsers() {
     return {
         type: "FETCH_USERS",
         loadItems: USER_CRUD
+    }
+}
+
+export function fetchTeamUsers() {
+    return {
+        type: "FETCH_TEAM_USERS",
+        loadItems: USER_TEAM
     }
 }
 
