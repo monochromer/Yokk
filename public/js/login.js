@@ -7,10 +7,10 @@ var LoginForm = React.createClass({
 
 		var auth = true;
 
-		if(getParameter('teamname')) {
-			var teamName = getParameter('teamname');
+		if(getParameter('teamName')) {
+			var teamName = getParameter('teamName');
 			var email = getParameter('email');
-			var teamId = getParameter('teamid');
+			var teamId = getParameter('teamId');
 			auth = false;
 		}
 
