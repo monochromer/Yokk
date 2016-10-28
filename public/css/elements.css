@@ -41,6 +41,16 @@
     padding: 0 25px;
     font-size: 0.9rem;
 }
+
+.link_white {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.link_white:hover {
+    text-decoration: underline;
+}
+
 /* /buttons */
 
 /* inputs */
@@ -80,6 +90,19 @@
 .input_black:-moz-placeholder           {color:#919191;}
 .input_black:-ms-input-placeholder      {color:#919191;}
 
+.input_error {
+    border-bottom-color: #FFC7C7;
+}
+
+.input_error:focus {
+    border-bottom-color: #FFC7C7;
+}
+
+.error {
+    color: #FFC7C7;
+    font-weight: lighter;
+    font-size: 0.7rem;
+}
 
 .blue-active-logo {
     text-decoration: none;
