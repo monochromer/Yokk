@@ -17,15 +17,6 @@ class UserActivityPage extends React.Component {
     render() {
         const login = this.props.routeParams.login;
 
-        // function getUserId(userLogin, usersArray) {
-        //     if (!usersArray) return;
-        //     for (let i = 0; i < usersArray.length; i++) {
-        //         if (usersArray[i].login === userLogin) return usersArray[i]._id;
-        //     }
-        // }
-        //
-        // const userId = getUserId(login, this.props.users)
-
         function findUserActivity(login, usersActivities) {
           if (usersActivities) {
             return usersActivities[login];
