@@ -23,14 +23,6 @@ export default function(state = defaultState, action) {
             });
             break;
 
-        case "FETCH_USER_ACTIVITY":
-            let allBatches2 = !!(payload.length == 0 || payload.lenght < 10);
-            return Object.assign({}, state, {
-                list: state.list.concat(payload),
-                helpers: { allBatches: allBatches2 }
-            });
-            break;
-
         case "FETCH_REDMINE_TIME_ENTRIES":
             const withoutRedmine = _.filter(state.list, (el) => el.entrySource != "redmine");
             return Object.assign({}, state, { list: withoutRedmine.concat(payload) });

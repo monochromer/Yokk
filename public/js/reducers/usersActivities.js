@@ -48,8 +48,6 @@ export default function(state = defaultState, action) {
 
         case "FETCH_USER_ACTIVITY":
             {
-                console.log('payload:');
-                console.log(payload);
                 let newState = Object.assign({}, state);
                 if (typeof newState[user] === 'undefined') {
                     newState[user] = {};

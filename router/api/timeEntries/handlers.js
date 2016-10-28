@@ -13,8 +13,7 @@ exports.timeEntryBatch = function(req, res, next) {
     }
 
     const query = queryFiller(req.query); //CHECK!
-    console.log(req.query);
-    console.log(query);
+
     const TimeEntryModel = req.app.db.models.timeEntry;
     const numberOfDocsToSkip = +req.query.skip || 0;
     const numberOfDocsToReturn = +req.query.limit;

@@ -8,12 +8,28 @@ require('./react-daterangepicker.css');
 import {fetchNextTimeEntryBatchWhenChangingDate} from '../../actions/timeEntries.js';
 
 const ranges = {
-    'Today': [ moment(), moment() ],
-    'Yesterday': [ moment().subtract(1, 'days'), moment().subtract(1, 'days') ],
-    'Last 7 Days': [ moment().subtract(6, 'days'), moment() ],
-    'Last 30 Days': [ moment().subtract(29, 'days'), moment() ],
-    'This Month': [ moment().startOf('month'), moment().endOf('month') ],
-    'Last Month': [ moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month') ]
+    'Today': [
+        moment(), moment()
+    ],
+    'Yesterday': [
+        moment().subtract(1, 'days'),
+        moment().subtract(1, 'days')
+    ],
+    'Last 7 Days': [
+        moment().subtract(6, 'days'),
+        moment()
+    ],
+    'Last 30 Days': [
+        moment().subtract(29, 'days'),
+        moment()
+    ],
+    'This Month': [
+        moment().startOf('month'), moment().endOf('month')
+    ],
+    'Last Month': [
+        moment().subtract(1, 'month').startOf('month'),
+        moment().subtract(1, 'month').endOf('month')
+    ]
 };
 
 class DRPicker extends React.Component {
@@ -43,9 +59,7 @@ class DRPicker extends React.Component {
 
                 // if no oldestDate check, warning in console because function is called twice (some kind of DateRangePicker behavior when onEvent calle twice)
                 if (picker.startDate.isBefore(oldestMoment.toDate(), 'day') && (picker.startDate.format('DD.MM.YYYY') !== store.getState().usersActivities[this.props.login].oldestDate)) {
-                    console.log('it is here!!!');
-                    // console.log(fetchNextTimeEntryBatchWhenChangingDate(0, 1000, this.props.login, action.startDate, oldestMoment.subtract(1, 'day').format('DD.MM.YYYY')));
-                    store.dispatch({type:'STORE_OLDEST_DATE', oldestDate: picker.startDate.format('DD.MM.YYYY'), user: this.props.login})
+                    store.dispatch({type: 'STORE_OLDEST_DATE', oldestDate: picker.startDate.format('DD.MM.YYYY'), user: this.props.login})
                     store.dispatch(fetchNextTimeEntryBatchWhenChangingDate(0, 1000, this.props.login, action.startDate, oldestMoment.format('DD.MM.YYYY')));
                 }
 
@@ -56,19 +70,31 @@ class DRPicker extends React.Component {
     }
 
     render() {
-        let start,
-            end;
-        if (this.props.period && this.props.period.startDate) {
-            start = moment(this.props.period.startDate, 'DD.MM.YYYY');
-            end = moment(this.props.period.endDate, 'DD.MM.YYYY');
-        } else {
-            start = moment().subtract(1, 'month');
-            end = moment();
+        const {start, end} = getStartEndMoments(moment, this.props.period);
+        const label = getDRPLabel(this.props.period);
+
+        function getDRPLabel(period) {
+            if (!period)
+                return;
+            if (period.startDate === period.endDate) {
+                return period.startDate;
+            }
+            return period.startDate + ' - ' + period.endDate;
         }
-        var label = start.format('DD.MM.YYYY') + ' - ' + end.format('DD.MM.YYYY');
-        if (start === end) {
-            label = start.format('DD.MM.YYYY');
+
+        function getStartEndMoments(momentNPM, period) {
+            if (period && period.startDate) {
+                return {
+                    start: momentNPM(period.startDate, 'DD.MM.YYYY'),
+                    end: momentNPM(period.endDate, 'DD.MM.YYYY')
+                }
+            }
+            return {
+                start: momentNPM().subtract(1, 'month'),
+                end: momentNPM()
+            }
         }
+
         return (
             <DateRangePicker startDate={start} endDate={end} ranges={ranges} onEvent={this.handleEvent}>
                 <Button className="selected-date-range-btn">
