@@ -83,7 +83,7 @@ exports.create = function(req, res, next) {
                 team.save();
                 res.status(200).send(team);
             } else {
-                res.status(500).send();
+                res.status(500).send(false);
             }
         })
     }

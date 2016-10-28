@@ -257,7 +257,7 @@ describe('TESTING TEAMS API', () => {
             .expect(500)
             .end((err, res) => {
                 res.status.should.equal(500);
-                res.body.confirmed.should.equal(false);
+                res.body.should.equal(false);
                 done();
             });
     });
