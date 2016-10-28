@@ -35,6 +35,10 @@ export default function(state = {}, action) {
             return Object.assign({}, state, { teamName: action.teamName });
             break;
 
+        case "STEP_5":
+            return state;
+            break;
+
         default:
             return state;
             break;
