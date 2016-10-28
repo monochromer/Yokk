@@ -1,6 +1,16 @@
 import { browserHistory } from 'react-router'
 
-export default function(state = {}, action) {
+var initialState = {
+    email: "",
+    team: "",
+    login: "",
+    teamName: "",
+    errors: {
+        step0: ""
+    }
+}
+
+export default function(state = initialState, action) {
     const { type, payload } = action;
 
     switch (type) {
@@ -12,7 +22,12 @@ export default function(state = {}, action) {
 
         case "STEP_0_FAIL":
             console.log(action.error);
-            return state;
+            return Object.assign({}, state,
+                {
+                    errors:  {
+                        step0: action.error
+                    }
+                });
             break;
 
         case "STEP_1":
@@ -39,6 +54,13 @@ export default function(state = {}, action) {
             return state;
             break;
 
+        case "REMOVE_ERRORS":
+            return Object.assign({}, state,
+                {
+                    errors: {
+                        step0: ""
+                    }
+                });
         default:
             return state;
             break;
