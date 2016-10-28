@@ -16,7 +16,12 @@ exports.create = function(req, res, next) {
 
     switch (step) {
         case '0':
-            createTeamWithGivenEmail(email);
+            createTeamWithGivenEmail(teamModel, email, sendEmail).then(team => {
+                if (team) {
+                    return res.status(200).send(team);
+                }
+                res.status(500).send('Team with given email already exists'); //team already exists
+            });
             break
 
         case '1':
@@ -36,38 +41,38 @@ exports.create = function(req, res, next) {
             break
     }
 
-    function createTeamWithGivenEmail(email) {
+    function createTeamWithGivenEmail(teamDBModel, email, sendEmailFunc) {
         if (!email) return res.status(500).send('No email specified');
         // TODO email validation
         const teamInitialData = {
             teamLeadEmail: email
-        }
-        teamModel.findOne(teamInitialData, (err, team) => {
-            if (!team) {
-                //teamInitialData.confirmationCode = Math.random().toString().slice(2, 8);
-                teamInitialData.confirmationCode = '111111';
-                const newTeam = new teamModel(teamInitialData);
-                newTeam.save((err, team) => {
-                    if (err) next(err);
-                    res.status(200).send(team);
+        };
+        return new Promise((resolve, reject) => {
+            teamDBModel.findOne(teamInitialData, (err, team) => {
+                if (!team) {
+                    // teamInitialData.confirmationCode = Math.random().toString().slice(2, 8);
+                    teamInitialData.confirmationCode = '111111'; //for debug purposes
+                    const newTeam = new teamDBModel(teamInitialData);
+                    newTeam.save((err, team) => {
+                        if (err) next(err);
 
+                        const htmlToSend = `<div>Confirmation code ${teamInitialData.confirmationCode}</div>`;
 
-                    const htmlToSend =
-                        `<div>Confirmation code ${teamInitialData.confirmationCode}</div>`;
+                        const mailOptions = {
+                            from: '"Soshace team 👥" <bot@izst.ru>',
+                            to: email,
+                            subject: 'Your team is being processed. Please follow the instructions',
+                            html: htmlToSend
+                        };
 
-                    const mailOptions = {
-                        from: '"Soshace team 👥" <bot@izst.ru>',
-                        to: email,
-                        subject: 'Your team is being processed. Please follow the instructions', // Subject line
-                        html: htmlToSend
-                    };
+                        sendEmailFunc(mailOptions);
 
-                    sendEmail(mailOptions);
-                })
-            } else(
-                res.status(500).send('Team with given email already exists')
-            )
-
+                        resolve(team);
+                    })
+                } else {
+                    resolve(false);
+                }
+            })
         })
     }
 
