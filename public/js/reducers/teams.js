@@ -11,7 +11,7 @@ var initialState = {
 }
 
 export default function(state = initialState, action) {
-    const { type, payload } = action;
+    const { type, payload, step, text } = action;
 
     switch (type) {
 
@@ -61,6 +61,16 @@ export default function(state = initialState, action) {
                         step0: ""
                     }
                 });
+            break;
+
+        case "CREATE_ERROR": {
+            return Object.assign({}, state, {
+                errors: {
+                    [step]: text
+                }
+            });
+        }
+
         default:
             return state;
             break;
