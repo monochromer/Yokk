@@ -28,7 +28,7 @@ exports.create = function(req, res, next) {
             break
 
         case '4':
-            saveTeamName(name);
+            saveTeamName(name, email);
             break
 
         default:
@@ -44,7 +44,8 @@ exports.create = function(req, res, next) {
         }
         teamModel.findOne(teamInitialData, (err, team) => {
             if (!team) {
-                teamInitialData.confirmationCode = Math.random().toString().slice(2, 8);
+                //teamInitialData.confirmationCode = Math.random().toString().slice(2, 8);
+                teamInitialData.confirmationCode = '111111';
                 const newTeam = new teamModel(teamInitialData);
                 newTeam.save((err, team) => {
                     if (err) next(err);
@@ -101,7 +102,7 @@ exports.create = function(req, res, next) {
         })
     }
 
-    function saveTeamName(name) {
+    function saveTeamName(name, teamLeadEmail) {
         teamModel.findOne({
             teamLeadEmail: email
         }, (err, team) => {
