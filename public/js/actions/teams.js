@@ -61,7 +61,7 @@ export function step5(teamName, addMembers) {
     return {
         type: "STEP_5",
         updateItem: {
-            url: TEAM_CRUD + 'teamName',
+            url: TEAM_CRUD + teamName,
             data: {
                 addMembers: addMembers,
                 step: 5

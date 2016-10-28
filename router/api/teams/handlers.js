@@ -143,7 +143,6 @@ exports.update = function(req, res, next) {
     const teamModel = req.app.db.models.Team;
     const userModel = req.app.db.models.User;
     const addMembers = req.body.addMembers;
-    console.log(addMembers[0]);
     const teamName = req.params.teamName;
 
     if (!teamName) return res.status(500).send();
@@ -152,7 +151,7 @@ exports.update = function(req, res, next) {
 
     teamModel.read(teamName, (err, team) => {
         if (err) next(err);
-        if (!team) return res.status(500).send('No team found')
+        if (!team) return res.status(500).send(); //No team found
 
         const teamId = team._id;
 
