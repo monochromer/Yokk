@@ -22,7 +22,7 @@ class Step3 extends React.Component {
         event.preventDefault();
         var user = Object.assign({}, this.props.user, { password: this.state.password });
         store.dispatch(addUser(user));
-        store.dispatch(step3());
+        store.dispatch(step3(this.state.password));
     }
 
     render() {

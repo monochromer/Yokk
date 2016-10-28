@@ -42,7 +42,7 @@ export default function(state = initialState, action) {
 
         case "STEP_3":
             browserHistory.push('/team/step4');
-            return state;
+            return Object.assign({}, state, { password: action.password });
             break;
 
         case "STEP_4":

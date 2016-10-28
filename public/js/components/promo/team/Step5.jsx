@@ -27,7 +27,7 @@ class Step5 extends React.Component {
     handleSubmit(e) {
         e.preventDefault();
         store.dispatch(step5(this.props.teamName,this.state.invitations));
-        store.dispatch(authUser(this.props.login, this.props.password));
+        document.location.href = '/login';
     }
 
     render() {

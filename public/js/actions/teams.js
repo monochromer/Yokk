@@ -37,9 +37,10 @@ export function step2(login) {
     }
 }
 
-export function step3() {
+export function step3(password) {
     return {
-        type: "STEP_3"
+        type: "STEP_3",
+        password: password
     }
 }
 
