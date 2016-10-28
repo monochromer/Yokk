@@ -2,6 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import {connect} from 'react-redux'
 import {step5} from '../../../actions/teams'
+import {authUser} from '../../../actions/teams'
 import store from '../../../store'
 
 class Step5 extends React.Component {
@@ -25,7 +26,8 @@ class Step5 extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        store.dispatch(step5(this.props.teamName,this.state.invitations))
+        store.dispatch(step5(this.props.teamName,this.state.invitations));
+        store.dispatch(authUser(this.props.login, this.props.password));
     }
 
     render() {
@@ -86,7 +88,9 @@ class Step5 extends React.Component {
 
 function getProps(state) {
     return {
-        teamName: state.teams.teamName
+        teamName: state.teams.teamName,
+        login: state.teams.login,
+        password: state.teams.password
     }
 }
 

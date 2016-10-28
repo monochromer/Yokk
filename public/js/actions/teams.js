@@ -1,4 +1,5 @@
 import { TEAM_CRUD } from '../constants'
+import request from 'superagent'
 
 export function step0(email) {
     return {
@@ -67,5 +68,12 @@ export function step5(teamName, addMembers) {
                 step: 5
             }
         }
+    }
+}
+
+export function authUser(login, password) {
+    return function(dispatch) {
+        request.post('/login').send({username: login, password: password});
+        console.log(login + password);
     }
 }
