@@ -42,9 +42,30 @@ export function step3() {
     }
 }
 
-export function step4(teamName) {
+export function step4(teamName, email) {
     return {
         type: "STEP_4",
-        teamName: teamName
+        teamName: teamName,
+        createItem: {
+            url: TEAM_CRUD,
+            data: {
+                name: teamName,
+                email: email,
+                step: '4'
+            }
+        }
+    }
+}
+
+export function step5(teamName, addMembers) {
+    return {
+        type: "STEP_5",
+        updateItem: {
+            url: TEAM_CRUD + 'teamName',
+            data: {
+                addMembers: addMembers,
+                step: 5
+            }
+        }
     }
 }
