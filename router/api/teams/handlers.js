@@ -18,92 +18,107 @@ exports.create = function(req, res, next) {
     switch (step) {
         case '0':
             createTeamWithGivenEmail(teamModel, email, sendEmail).then(team => {
-                if (team) {
-                    return res.status(200).send(team);
-                }
-                res.status(500).send('Team with given email already exists'); //team already exists
+                res.status(200).send(team);
+            }).catch(reason => {
+                res.status(500).send();
+                next(reason);
             });
             break
 
         case '1':
-            checkConfirmationCode(code, email);
+            checkConfirmationCode(code, email).then(team => {
+                res.status(200).send(team);
+            }).catch(reason => {
+                res.status(500).send();
+                next(reason);
+            });
             break
 
         case '2':
-            saveTeamLeadLogin(login);
+            saveTeamLeadLogin(login, email).then(team => {
+                res.status(200).send();
+            }).catch(reason => {
+                res.status(500).send();
+                next(reason);
+            });
             break
 
         case '4':
-            saveTeamName(name, email);
+            saveTeamName(name, email).then(team => {
+                res.status(200).send(team);
+            }).catch(reason => {
+                res.status(500).send();
+                next(reason);
+            });
             break
 
         default:
-            createTeamWithGivenEmail(email);
+            createTeamWithGivenEmail(teamModel, email, sendEmail).then(team => {
+                res.status(200).send(team);
+            }).catch(reason => {
+                res.status(500).send();
+                next(reason);
+            });
             break
     }
 
     function createTeamWithGivenEmail(teamDBModel, email, sendEmailFunc) {
-        if (!email) return res.status(500).send('No email specified');
-        // TODO email validation
-        const teamInitialData = {
-            teamLeadEmail: email
-        };
         return new Promise((resolve, reject) => {
+            if (!email) return reject(new Error());
+            // TODO email validation
+            const teamInitialData = {
+                teamLeadEmail: email
+            };
             teamDBModel.findOne(teamInitialData, (err, team) => {
-                if (!team) {
-                    teamInitialData.confirmationCode = Math.random().toString().slice(2, 8);
-                    const newTeam = new teamDBModel(teamInitialData);
-                    newTeam.save((err, team) => {
-                        if (err) next(err);
+                if (team) return reject(new Error());
 
-                        const htmlToSend = `<div>Confirmation code ${teamInitialData.confirmationCode}</div>`;
+                teamInitialData.confirmationCode = Math.random().toString().slice(2, 8);
+                const newTeam = new teamDBModel(teamInitialData);
+                newTeam.save((err, team) => {
+                    if (err) next(err);
 
-                        const mailOptions = {
-                            from: '"Soshace team 👥" <bot@izst.ru>',
-                            to: email,
-                            subject: 'Your team is being processed. Please follow the instructions',
-                            html: htmlToSend
-                        };
+                    const htmlToSend = `<div>Confirmation code ${teamInitialData.confirmationCode}</div>`;
 
-                        sendEmailFunc(mailOptions);
+                    const mailOptions = {
+                        from: '"Soshace team 👥" <bot@izst.ru>',
+                        to: email,
+                        subject: 'Your team is being processed. Please follow the instructions',
+                        html: htmlToSend
+                    };
 
-                        resolve(team);
-                    })
-                } else {
-                    resolve(false);
-                }
+                    sendEmailFunc(mailOptions);
+
+                    resolve(team);
+                })
             })
         })
     }
 
     function checkConfirmationCode(confirmationCode, email) {
-        teamModel.findOne({
-            teamLeadEmail: email
-        }, (err, team) => {
-            if (err) next(err);
-            if (!team) return res.status(500).send('No team found');
-            if (team.confirmed === true) return res.status(500).send('Code already confirmed');
-            if (team.confirmationCode === confirmationCode) {
-                team.confirmed = true;
-                team.save();
-                res.status(200).send(team);
-            } else {
-                res.status(500).send(false);
-            }
+        return new Promise((resolve, reject) => {
+            teamModel.findOne({
+                teamLeadEmail: email
+            }, (err, team) => {
+                if (err) next(err);
+                if (!team || (team.confirmationCode !== confirmationCode) || (team.confirmed === true)) reject(new Error());
+                resolve(team);
+            })
         })
     }
 
-    function saveTeamLeadLogin(login) {
-        if (!login) return res.status(500).send();
-        teamModel.findOne({
-            teamLeadEmail: email
-        }, (err, team) => {
-            if (err) next(err);
-            if (team === null) return res.status(500).send('No team found');
-            if (team.confirmed === false) return res.status(500).send('Email is not confirmed');
-            team.teamLead = login;
-            team.save();
-            res.status(200).send(team);
+    function saveTeamLeadLogin(login, teamLeadEmail) {
+        return new Promise((resolve, reject) => {
+            if (!login) reject('!login');
+            teamModel.findOne({
+                teamLeadEmail: teamLeadEmail
+            }, (err, team) => {
+                if (err) next(err);
+                if (team === null || team.confirmed === false) reject(new Error());
+
+                team.teamLead = login;
+                team.save();
+                resolve(team);
+            })
         })
     }
 
@@ -112,10 +127,11 @@ exports.create = function(req, res, next) {
             teamLeadEmail: email
         }, (err, team) => {
             if (err) next(err);
-            if (team === null) return res.status(500).send('No team found');
+            if (team === null) reject(new Error());
+
             team.name = name;
             team.save();
-            res.status(200).send(team);
+            resolve(team);
         })
     }
 
@@ -142,16 +158,17 @@ exports.read = function(req, res, next) {
 exports.update = function(req, res, next) {
     const teamModel = req.app.db.models.Team;
     const userModel = req.app.db.models.User;
+
     const addMembers = req.body.addMembers;
     const teamName = req.params.teamName;
 
     if (!teamName) return res.status(500).send();
 
-    const emailsToAdd = addMembers;
+    // const emailsToAdd = addMembers;
 
     teamModel.read(teamName, (err, team) => {
         if (err) next(err);
-        if (!team) return res.status(500).send(); //No team found
+        if (!team) return res.status(500).send();
 
         const teamId = team._id;
 
@@ -159,46 +176,41 @@ exports.update = function(req, res, next) {
             team[key] = req.body[key];
         }
 
-        if (addMembers) {
-            promiseFilteredEmails(emailsToAdd).then(emails => {
-                const emailsToConfirm = emails.toInvite.map(email => {
-                    return {
-                        email: email,
-                        confirmed: false
-                    }
-                });
-                sendInvitations(emails.toInvite, teamName, teamId);
-                addMembersToTeam(teamName, emailsToConfirm);
+        promiseFilteredEmails(addMembers).then(emails => {
+            if (!emails) {
+                team.save();
+                return res.status(200).send();
+            }
+
+            const emailsToConfirm = emails.toInvite.map(email => {
+                return {
+                    email: email,
+                    confirmed: false
+                }
             });
-        }
 
-        team.save();
+            sendInvitations(emails.toInvite, teamName, teamId, sendEmail);
 
-        res.status(200).send(path.resolve(__dirname, '../../views', 'index.html'));
-    })
+            team.members = _.unionBy(team.members, members, obj => obj.email);
 
-
-    function addMembersToTeam(teamName, members) {
-        teamModel.read(teamName, (err, team) => {
-            if (err) next(err);
-            if (!team) return res.status(500).send('No team found'); //this can cause server crash (Can't set headers after they are sent.)
-            const matcher = obj => obj.email;
-            team.members = _.unionBy(team.members, members, matcher);
             team.save();
-        })
-    }
+            res.status(200).send();
+        });
+    })
 
     function promiseFilteredEmails(emailsToFilter) {
         return new Promise((resolve, reject) => {
+            if (!emailsToFilter || emailsToFilter === []) return resolve(false);
+
             userModel.find({}, {
                 _id: 0,
                 email: 1
             }, (err, users) => {
-                const emailsInDB = users.map((member) => {
+                const emailsInDB = users.map(member => {
                     if (member.email) return member.email;
                 });
-                const toInvite = _.difference(emailsToAdd, emailsInDB);
-                const toSkip = _.difference(emailsToAdd, toInvite);
+                const toInvite = _.difference(emailsToFilter, emailsInDB);
+                const toSkip = _.difference(emailsToFilter, toInvite);
 
                 const members = {
                     toInvite: toInvite,
@@ -210,7 +222,7 @@ exports.update = function(req, res, next) {
         })
     }
 
-    function sendInvitations(emails, teamName, teamId) {
+    function sendInvitations(emails, teamName, teamId, sendEmailFunc) {
         emails.forEach(email => {
             const confirmationLink = `http://eop.soshace.com/login?teamId=${teamId}&email=${email}&teamName=${teamName}`;
 
@@ -225,7 +237,7 @@ exports.update = function(req, res, next) {
                 html: htmlToSend
             };
 
-            sendEmail(mailOptions);
+            sendEmailFunc(mailOptions);
         })
     }
 
@@ -234,14 +246,14 @@ exports.update = function(req, res, next) {
 // DELETE
 exports.delete = function(req, res, next) {
     const teamModel = req.app.db.models.Team;
-    if (req.params.teamName) {
-        teamModel.delete(req.params.teamName, (err, result) => {
-            if (err) next(err);
-            res.status(200).send(result);
-        })
-    } else {
-        res.status(500).send();
-    }
+    const teamName = req.params.teamName;
+
+    if (!teamName) return res.status(500).send();
+
+    teamModel.delete(teamName, (err, result) => {
+        if (err) next(err);
+        res.status(200).send(result);
+    })
 };
 
 exports.confirmEmail = function(req, res, next) {
@@ -252,9 +264,13 @@ exports.confirmEmail = function(req, res, next) {
 
     teamModel.read(teamName, (err, team) => {
         if (err) next(err);
-        if (!team) return res.status(500).send('No team found');
+        if (!team) {
+            res.status(500).send();
+            return new Error();
 
-        const mappedEmails = team.members.map((emailObject) => {
+        }
+
+        const mappedEmails = team.members.map(emailObject => {
             if (emailObject.email === email) emailObject.confirmed = true;
             return emailObject;
         });
@@ -276,7 +292,10 @@ exports.deleteMeberFromTeam = function(req, res, next) {
 
     teamModel.read(teamName, (err, team) => {
         if (err) next(err);
-        if (!team) return res.status(500).send('No team found');
+        if (!team) {
+            res.status(500).send();
+            return new Error();
+        }
 
         team.members = _.filter(team.members, (o) => {
             return o.email !== email;
