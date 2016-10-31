@@ -123,15 +123,17 @@ exports.create = function(req, res, next) {
     }
 
     function saveTeamName(name, teamLeadEmail) {
-        teamModel.findOne({
-            teamLeadEmail: email
-        }, (err, team) => {
-            if (err) next(err);
-            if (team === null) reject(new Error());
+        return new Promise((resolve, reject) => {
+            teamModel.findOne({
+                teamLeadEmail: email
+            }, (err, team) => {
+                if (err) next(err);
+                if (team === null) reject(new Error());
 
-            team.name = name;
-            team.save();
-            resolve(team);
+                team.name = name;
+                team.save();
+                resolve(team);
+            })
         })
     }
 
