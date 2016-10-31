@@ -17,7 +17,7 @@ exports.getAllUsers = function(req, res, next) {
 exports.getTeamUsers = function(req, res, next) {
     const userModel = req.app.db.models.User;
     const currentUser = req.user;
-    
+
     userModel.findOne({
         _id: currentUser._id
     }, (err, user) => {

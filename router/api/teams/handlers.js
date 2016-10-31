@@ -70,9 +70,10 @@ exports.create = function(req, res, next) {
                 teamLeadEmail: email
             };
             teamDBModel.findOne(teamInitialData, (err, team) => {
-                if (team) return reject(new Error());
+                // if (team) return reject(new Error());
+                if (team) console.log(team);
 
-                teamInitialData.confirmationCode = "123123";
+                teamInitialData.confirmationCode = "111111";
                 // teamInitialData.confirmationCode = Math.random().toString().slice(2, 8);
                 const newTeam = new teamDBModel(teamInitialData);
                 newTeam.save((err, team) => {
@@ -140,6 +141,31 @@ exports.create = function(req, res, next) {
 
 };
 
+exports.resendCode = function(req, res, next) {
+    const teamModel = req.app.db.models.Team;
+    const teamId = req.query.teamId;
+
+    teamModel.findOne({
+        _id: teamId
+    }, (err, team) => {
+        team.confirmationCode = Math.random().toString().slice(2, 8);
+
+        const htmlToSend = `<div>Confirmation code ${team.confirmationCode}</div>`;
+
+        const mailOptions = {
+            from: '"Soshace team 👥" <bot@izst.ru>',
+            to: email,
+            subject: 'Your team is being processed. Please follow the instructions',
+            html: htmlToSend
+        };
+
+        sendEmail(mailOptions);
+
+        team.save();
+        res.status(200).send();
+    })
+}
+
 // GET
 exports.read = function(req, res, next) {
     const teamModel = req.app.db.models.Team;
@@ -194,10 +220,12 @@ exports.update = function(req, res, next) {
 
             sendInvitations(emails.toInvite, teamName, teamId, sendEmail);
 
-            team.members = _.unionBy(team.members, members, obj => obj.email);
+            team.members = _.unionBy(team.members, emailsToConfirm, obj => obj.email);
 
             team.save();
             res.status(200).send();
+        }).catch(reason => {
+          console.log(reason);
         });
     })
 
@@ -258,34 +286,6 @@ exports.delete = function(req, res, next) {
         res.status(200).send(result);
     })
 };
-
-exports.confirmEmail = function(req, res, next) {
-    const teamModel = req.app.db.models.Team;
-
-    const teamName = req.params.teamName;
-    const email = req.params.email;
-
-    teamModel.read(teamName, (err, team) => {
-        if (err) next(err);
-        if (!team) {
-            res.status(500).send();
-            return new Error();
-
-        }
-
-        const mappedEmails = team.members.map(emailObject => {
-            if (emailObject.email === email) emailObject.confirmed = true;
-            return emailObject;
-        });
-
-        team.members = [];
-        team.save();
-        team.members = mappedEmails; //doesn't work without clearning team.members first
-        team.save();
-
-        res.status(200).send(team);
-    })
-}
 
 exports.deleteMeberFromTeam = function(req, res, next) {
     const teamModel = req.app.db.models.Team;
