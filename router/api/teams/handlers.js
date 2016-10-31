@@ -72,7 +72,8 @@ exports.create = function(req, res, next) {
             teamDBModel.findOne(teamInitialData, (err, team) => {
                 if (team) return reject(new Error());
 
-                teamInitialData.confirmationCode = Math.random().toString().slice(2, 8);
+                teamInitialData.confirmationCode = "123123";
+                // teamInitialData.confirmationCode = Math.random().toString().slice(2, 8);
                 const newTeam = new teamDBModel(teamInitialData);
                 newTeam.save((err, team) => {
                     if (err) next(err);
