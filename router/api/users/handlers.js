@@ -1,4 +1,5 @@
 'use strict';
+
 const resize = require('../helpers/image_resize');
 const log = require('../../../helpers/logger');
 const sendEmail = require('../../helpers/sendEmail');
@@ -18,17 +19,41 @@ exports.getTeamUsers = function(req, res, next) {
     const userModel = req.app.db.models.User;
     const currentUser = req.user;
 
-    userModel.findOne({
-        _id: currentUser._id
-    }, (err, user) => {
-        if (err) next(err);
-        userModel.find({
-            team: user.team
-        }, (err, teamUsers) => {
-            if (err) next(err);
+    getCurrentUserTeam(currentUser, userModel)
+        .then(teamId => {
+            return getTeamUsers(teamId, userModel);
+        })
+        .then(teamUsers => {
             res.status(200).send(teamUsers);
         })
-    });
+        .catch(reason => {
+            next(reason);
+        })
+
+    function getCurrentUserTeam(currentUserId, model) {
+        return new Promise((resolve, reject) => {
+            model.findOne({
+                _id: currentUserId
+            }, {
+                _id: 0,
+                team: 1
+            }, (err, user) => {
+                if (err) return reject(err);
+                resolve(user.team);
+            })
+        })
+    }
+
+    function getTeamUsers(teamId, model) {
+        return new Promise((resolve, reject) => {
+            model.find({
+                team: teamId
+            }, (err, teamUsers) => {
+                if (err) return reject(err);
+                resolve(teamUsers);
+            })
+        })
+    }
 };
 
 exports.saveUserToDb = function(req, res, next) {
@@ -39,7 +64,9 @@ exports.saveUserToDb = function(req, res, next) {
     const teamModel = req.app.db.models.Team;
     const teamName = req.body.teamName;
 
-    teamModel.findOne({ teamLeadEmail: req.body.email }, (err, team) => {
+    teamModel.findOne({
+        teamLeadEmail: req.body.email
+    }, (err, team) => {
         user.team = team._id;
 
         userModel.findByLogin(user.login, (err, dbUser) => {
