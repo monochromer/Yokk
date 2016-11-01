@@ -3,6 +3,7 @@
 const _ = require('lodash');
 const sendEmail = require('../../helpers/sendEmail');
 const path = require('path');
+const valid = require("valid-email");
 
 // CRUD API for teams
 
@@ -10,7 +11,13 @@ const path = require('path');
 exports.create = function(req, res, next) {
     const teamModel = req.app.db.models.Team;
     const step = req.body.step;
+
     const email = req.body.email;
+    if (!valid(email)) {
+        res.status(500).send();
+        return next(new Error());
+    }
+
     const code = req.body.code;
     const login = req.body.login;
     const name = req.body.name;
@@ -36,7 +43,7 @@ exports.create = function(req, res, next) {
 
         case '2':
             saveTeamLeadLogin(login, email).then(team => {
-                res.status(200).send();
+                res.status(200).send(team);
             }).catch(reason => {
                 res.status(500).send();
                 next(reason);
@@ -70,28 +77,31 @@ exports.create = function(req, res, next) {
                 teamLeadEmail: email
             };
             teamDBModel.findOne(teamInitialData, (err, team) => {
-                // if (team) return reject(new Error());
-                if (team) console.log(team);
+                if (team && team.confirmed) return reject(new Error());
 
                 teamInitialData.confirmationCode = "111111";
                 // teamInitialData.confirmationCode = Math.random().toString().slice(2, 8);
-                const newTeam = new teamDBModel(teamInitialData);
-                newTeam.save((err, team) => {
-                    if (err) next(err);
 
-                    const htmlToSend = `<div>Confirmation code ${teamInitialData.confirmationCode}</div>`;
+                const htmlToSend = `<div>Confirmation code ${teamInitialData.confirmationCode}</div>`;
 
-                    const mailOptions = {
-                        from: '"Soshace team 👥" <bot@izst.ru>',
-                        to: email,
-                        subject: 'Your team is being processed. Please follow the instructions',
-                        html: htmlToSend
-                    };
+                const mailOptions = {
+                    from: '"Soshace team 👥" <bot@izst.ru>',
+                    to: email,
+                    subject: 'Your team is being processed. Please follow the instructions',
+                    html: htmlToSend
+                };
 
-                    sendEmailFunc(mailOptions);
-
+                if (!team) {
+                    const newTeam = new teamDBModel(teamInitialData);
+                    newTeam.save((err, team) => {
+                        if (err) next(err);
+                        resolve(team);
+                        sendEmailFunc(mailOptions);
+                    })
+                } else {
                     resolve(team);
-                })
+                    sendEmailFunc(mailOptions);
+                }
             })
         })
     }
@@ -101,8 +111,14 @@ exports.create = function(req, res, next) {
             teamModel.findOne({
                 teamLeadEmail: email
             }, (err, team) => {
-                if (err) next(err);
-                if (!team || (team.confirmationCode !== confirmationCode) || (team.confirmed === true)) reject(new Error());
+                if (err) return reject(err);
+                if (!team) return reject(new Error());
+                if (team.confirmationCode !== confirmationCode) return reject(new Error());
+                if (team.confirmed === true) return reject(new Error());
+
+                team.confirmed = true;
+                team.save();
+
                 resolve(team);
             })
         })
@@ -115,7 +131,10 @@ exports.create = function(req, res, next) {
                 teamLeadEmail: teamLeadEmail
             }, (err, team) => {
                 if (err) next(err);
-                if (team === null || team.confirmed === false) reject(new Error());
+                if (team === null) return reject(new Error());
+                if (team.confirmed === false) return reject(new Error());
+                if (team.teamLead) return reject(new Error());
+                if (typeof login !== 'string' || login.length > 30) return reject(new Error());
 
                 team.teamLead = login;
                 team.save();
@@ -130,7 +149,9 @@ exports.create = function(req, res, next) {
                 teamLeadEmail: email
             }, (err, team) => {
                 if (err) next(err);
-                if (team === null) reject(new Error());
+                if (team === null) return reject(new Error());
+                if (team.name) return reject(new Error());
+                if (typeof name !== 'string' || name.length > 30) return reject(new Error());
 
                 team.name = name;
                 team.save();
@@ -225,7 +246,7 @@ exports.update = function(req, res, next) {
             team.save();
             res.status(200).send();
         }).catch(reason => {
-          console.log(reason);
+            console.log(reason);
         });
     })
 
