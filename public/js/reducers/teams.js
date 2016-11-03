@@ -8,7 +8,7 @@ var initialState = {
     errors: {
         step0: ""
     }
-}
+};
 
 export default function(state = initialState, action) {
     const { type, payload, step, text } = action;
@@ -16,8 +16,15 @@ export default function(state = initialState, action) {
     switch (type) {
 
         case "STEP_0":
+            const { email } = action.createItem.data;
+
+            if(!localStorage.getItem('team_email')) {
+                localStorage.setItem('team_email', email) ;
+            }
+
             browserHistory.push('/team/step1');
-            return Object.assign({}, state, { email: action.createItem.data.email });
+            return Object.assign({}, state, { email: email });
+
             break;
 
         case "STEP_0_FAIL":
