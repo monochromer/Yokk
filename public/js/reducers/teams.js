@@ -16,11 +16,9 @@ export default function(state = initialState, action) {
     switch (type) {
 
         case "STEP_0":
-            const { email } = action.createItem.data;
-            localStorage.setItem('team_email', email);
+            localStorage.setItem('email', action.createItem.data.email);
             browserHistory.push('/team/step1');
-            return Object.assign({}, state, { email: email });
-
+            return Object.assign({}, state, { email: action.createItem.data.email });
             break;
 
         case "STEP_0_FAIL":
@@ -35,7 +33,7 @@ export default function(state = initialState, action) {
 
         case "STEP_1":
             browserHistory.push('/team/step2');
-            localStorage.setItem('team_id', payload._id);
+            localStorage.setItem('_id', payload._id);
             return Object.assign({}, state, { team: payload._id });
             break;
 
