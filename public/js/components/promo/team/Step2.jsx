@@ -1,6 +1,7 @@
 import React from 'react'
 import store from '../../../store'
 import { step2 } from '../../../actions/teams'
+import { connect } from 'react-redux'
 
 class Step2 extends React.Component {
     constructor(props) {
@@ -37,12 +38,14 @@ class Step2 extends React.Component {
                     </div>
                     <div className="row center-xs step__code">
                         <div className="col-md-6 col-sm-8 col-xs-10">
-                            <input className="input input_black" type="text" onChange={ this.handleChange.bind(this) } placeholder="User name"/>
+                            <input className="input input_black" type="text" onChange={ this.handleChange.bind(this) }
+                                   placeholder="User name"/>
                         </div>
                     </div>
                     <div className="row center-xs">
                         <div className="col-md-6 col-sm-8 col-xs-10">
-                            <button type="submit" className="btn btn_blue btn_lg team-create__create" disabled={!this.state.login ? "disabled" : "" }>Continue to
+                            <button type="submit" className="btn btn_blue btn_lg team-create__create"
+                                    disabled={ !this.state.login ? "disabled" : "" }>Continue to
                                 Password
                             </button>
                         </div>
@@ -53,5 +56,10 @@ class Step2 extends React.Component {
     }
 }
 
+function getParams(store) {
+    return {
+        login: localStorage.getItem("login")
+    }
+}
 
-export default Step2
+export default connect(getParams)(Step2)
