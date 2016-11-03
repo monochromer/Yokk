@@ -1,3 +1,7 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
 /* main page */
 
 .main-container {
@@ -9,7 +13,6 @@
     background-position: center center;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    font-family: 'Montserrat', sans-serif;
     height: 100vh;
 }
 
@@ -94,6 +97,21 @@
     font-size: 2rem;
     max-width: 80px;
 }
+
+/* top-panel */
+
+.top-panel {
+    height: 80px;
+    border-bottom: 1px solid #DBDBDB;
+}
+
+.top-panel_logo {
+    color: #4A77DA;
+    font-size: 25px;
+    text-decoration: none;
+}
+
+/* /top-panel */
 
 /* sm */
 
