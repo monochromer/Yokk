@@ -2,7 +2,9 @@ import React from 'react'
 import store from '../../../store'
 import _ from 'lodash'
 import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
 import { step1 } from '../../../actions/teams'
+import { getFromStateOrLocalStorage } from '../../../helpers'
 
 class Step1 extends React.Component {
     constructor(props) {
@@ -95,15 +97,10 @@ class Step1 extends React.Component {
 }
 
 function getProps(state) {
-    var email = "";
+    let email = getFromStateOrLocalStorage('email', state.teams);
 
-    if(state.teams.email) {
-        email = state.teams.email;
-    } else if (localStorage.getItem('team_email')) {
-        email = localStorage.getItem('team_email');
-    } else {
-        console.log("Can not get email. Redirecting...");
-        document.location.href = "/";
+    if(!email) {
+        browserHistory.push('/promo');
     }
 
     return {
