@@ -30,7 +30,7 @@ exports.create = function(req, res, next) {
                 res.status(500).send();
                 next(reason);
             });
-            break
+            break;
 
         case '1':
             checkConfirmationCode(code, email).then(team => {
@@ -39,7 +39,7 @@ exports.create = function(req, res, next) {
                 res.status(500).send();
                 next(reason);
             });
-            break
+            break;
 
         case '2':
             saveTeamLeadLogin(login, email).then(team => {
@@ -48,7 +48,7 @@ exports.create = function(req, res, next) {
                 res.status(500).send();
                 next(reason);
             });
-            break
+            break;
 
         case '4':
             saveTeamName(name, email).then(team => {
@@ -57,7 +57,7 @@ exports.create = function(req, res, next) {
                 res.status(500).send();
                 next(reason);
             });
-            break
+            break;
 
         default:
             createTeamWithGivenEmail(teamModel, email, sendEmail).then(team => {
@@ -66,7 +66,7 @@ exports.create = function(req, res, next) {
                 res.status(500).send();
                 next(reason);
             });
-            break
+            break;
     }
 
     function createTeamWithGivenEmail(teamDBModel, email, sendEmailFunc) {
