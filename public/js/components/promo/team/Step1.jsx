@@ -1,5 +1,6 @@
 import React from 'react'
 import store from '../../../store'
+import _ from 'lodash'
 import { connect } from 'react-redux'
 import { step1 } from '../../../actions/teams'
 
@@ -16,6 +17,7 @@ class Step1 extends React.Component {
         this.setState({
             code: this.state.code
         });
+
         if(parseInt(event.target.name) < 5) {
             this.refs[parseInt(event.target.name) + 1].focus();
         }
@@ -93,8 +95,19 @@ class Step1 extends React.Component {
 }
 
 function getProps(state) {
+    var email = "";
+
+    if(state.teams.email) {
+        email = state.teams.email;
+    } else if (localStorage.getItem('team_email')) {
+        email = localStorage.getItem('team_email');
+    } else {
+        console.log("Can not get email. Redirecting...");
+        document.location.href = "/";
+    }
+
     return {
-        email: state.teams.email
+        email: email
     }
 }
 
