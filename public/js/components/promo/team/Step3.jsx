@@ -1,8 +1,10 @@
 import React from 'react'
 import store from '../../../store'
-import {step3} from '../../../actions/teams'
-import {connect} from 'react-redux'
-import {addUser} from '../../../actions/users'
+import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
+import { step3 } from '../../../actions/teams'
+import { addUser } from '../../../actions/users'
+import { getFromStateOrLocalStorage } from '../../../helpers'
 
 class Step3 extends React.Component {
     constructor(props) {
@@ -19,8 +21,9 @@ class Step3 extends React.Component {
     }
 
     handleSubmit(event) {
+        let user = Object.assign({}, this.props.user, { password: this.state.password });
+        console.log(user);
         event.preventDefault();
-        var user = Object.assign({}, this.props.user, { password: this.state.password });
         store.dispatch(addUser(user));
         store.dispatch(step3(this.state.password));
     }
@@ -60,11 +63,19 @@ class Step3 extends React.Component {
 }
 
 function getProps(state) {
+    let login = getFromStateOrLocalStorage('login', state.teams);
+    let email= getFromStateOrLocalStorage('email', state.teams);
+    let _id = getFromStateOrLocalStorage('_id', state.teams);
+
+    if (!login || !email || !_id) {
+        browserHistory.push('/promo');
+    }
+
     return {
         user: {
-            login: state.teams.login,
-            email: state.teams.email,
-            team: state.teams._id
+            login: login,
+            email: email,
+            team: _id
         }
     }
 }
