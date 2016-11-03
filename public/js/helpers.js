@@ -26,16 +26,16 @@ export function durationBeatify(minutes) {
 }
 
 export function groupTimeEntriesByDay(timeEntries) {
-	var days = {};
+	let days = {};
 
-	var sorted = _.orderBy(timeEntries, ['dateCreated'], ['desc']);
+	let sorted = _.orderBy(timeEntries, ['dateCreated'], ['desc']);
 	sorted.map((timeEntry) => {
 		let day = dayBeatify(timeEntry.dateCreated);
 		if(!days[day]) {
 			days[day] = {
 				list: [timeEntry],
 				totalDuration: timeEntry.duration
-			};
+			}
 		} else {
 			days[day].list.push(timeEntry);
 			days[day].totalDuration += timeEntry.duration;
@@ -47,4 +47,14 @@ export function groupTimeEntriesByDay(timeEntries) {
 	}
 
 	return days;
+}
+
+export function getFromStateOrLocalStorage(name, state) {
+	if(state[name]) {
+		return state[name]
+	} else if(localStorage.getItem(name)) {
+		return localStorage.getItem(name)
+	} else {
+		return false;
+	}
 }
