@@ -102,6 +102,23 @@ h2 {
 .input_black:-moz-placeholder           {color:#919191;}
 .input_black:-ms-input-placeholder      {color:#919191;}
 
+.input__grey {
+    border-bottom: 2px solid #DBDBDB;
+    color: #000000;
+    font-weight: 300;
+    font-size: 16px;
+}
+
+.input__grey:focus {
+    border-bottom: 2px solid #000000;
+    color: #000000;
+}
+
+.input__grey::-webkit-input-placeholder {color:#919191;}
+.input__grey::-moz-placeholder          {color:#919191;}
+.input__grey:-moz-placeholder           {color:#919191;}
+.input__grey:-ms-input-placeholder      {color:#919191;}
+
 .input_error {
     border-bottom-color: #FFC7C7;
 }
