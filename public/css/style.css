@@ -185,6 +185,18 @@ body {
     padding-top: 35px;
 }
 
+.users-list_heading {
+    padding-top: 20px;
+    border-top: 1px solid #DBDBDB;
+    width: 100%;
+}
+
+.user-list_title {
+    font-weight: normal;
+    color: #919191;
+    font-size: 18px;
+    text-align: left;
+}
 /* / user-table */
 
 /* sm */

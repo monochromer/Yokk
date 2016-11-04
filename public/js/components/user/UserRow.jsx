@@ -4,24 +4,24 @@ import store from '../../store.js';
 import moment from 'moment';
 
 
-var UserRow = React.createClass({
+class UserRow extends React.Component {
 
-    handleRemove: function () {
-        store.dispatch({type: "MODAL_DELETE_SHOW", login: this.props.user.login});
-    },
+    handleRemove() {
+        store.dispatch({type: "MODAL_DELETE_SHOW", login: this.props.user.login})
+    }
 
-    dispatchUserToShow: function () {
-        store.dispatch({type: "SAVE_USER_TO_SHOW", user: this.props.user.login});
-    },
+    dispatchUserToShow() {
+        store.dispatch({type: "SAVE_USER_TO_SHOW", user: this.props.user.login})
+    }
 
-    render: function () {
+    render() {
 
-        let UserActivityPageLink = `/user/activityPage/${this.props.user.login}`;
-        var buttons = "";
-
-        var actionButtons = (
+        let userActivityPageLink = `/user/activityPage/${this.props.user.login}`;
+        let photo = typeof(this.props.user.profileImg) !== "undefined" ? this.props.user.profileImg.small : "";
+        let buttons = "";
+        let actionButtons = (
             <div className="btn-group" role="group">
-                <Link onClick={ this.dispatchUserToShow } to={ UserActivityPageLink } className="btn btn-primary">Show
+                <Link onClick={ this.dispatchUserToShow } to={ userActivityPageLink } className="btn btn-primary">Show
                     activities</Link>
                 <Link to={ '/user/edit/' + this.props.user.login } className="btn btn-warning">Edit</Link>
                 <button className="btn btn-danger" onClick={ this.handleRemove }>Remove</button>
@@ -33,12 +33,12 @@ var UserRow = React.createClass({
             buttons = actionButtons;
         }
 
-        var photo = typeof(this.props.user.profileImg) !== "undefined" ? this.props.user.profileImg.small : "";
 
         return (
-            <tr>
-                <td>
-                    <div className="row profile-row">
+            <div className="row">
+
+                <div className="col-md-4">
+                    <div className="row">
                         <div className="col-md-2">
                             <img src={ photo } width="50px" className="img-rounded"/>
                         </div>
@@ -47,17 +47,23 @@ var UserRow = React.createClass({
                             <span className="role profile-row__role">{ this.props.user.role }</span>
                         </div>
                     </div>
+                </div>
 
+                <div className="col-md-3">
+                    { this.props.user.position }
+                </div>
 
-                </td>
-                <td>{ this.props.user.position }</td>
-                <td>{ moment(this.props.user.joinedon).format("DD.MM.YYYY") }</td>
-                <td className="text-right">
+                <div className="col-md-2">
+                    { moment(this.props.user.joinedon).format("DD.MM.YYYY") }
+                </div>
+
+                <div className="col-md-2">
                     { buttons }
-                </td>
-            </tr>
+                </div>
+
+            </div>
         )
     }
-});
+}
 
 export default UserRow
