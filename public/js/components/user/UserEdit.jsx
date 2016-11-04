@@ -13,7 +13,8 @@ class UserEdit extends React.Component {
         super(props);
         this.state = {
             user: findUserByLogin(this.props.users, this.props.routeParams.login)
-        }
+        };
+        this.handleChange = this.handleChange.bind(this)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -22,15 +23,16 @@ class UserEdit extends React.Component {
         })
     }
 
+    handleChange(event) {
+        this.setState({
+            [event.target.name]: {
+                value: event.target.value
+            }
+        })
+    }
+
     handleSubmit(event) {
-        let fields = {};
         event.preventDefault();
-
-        for (let field in this.refs) {
-            fields[field] = this.refs[field].value;
-        }
-
-        fields.login = this.state.user.login;
         store.dispatch(updateUser(fields));
         browserHistory.push('/user/' + fields.login);
     }
@@ -42,7 +44,7 @@ class UserEdit extends React.Component {
     render() {
 
         if (this.state.user) {
-            const { profileImg, login, fullname, position, phone, skype, workhours, email, birthday, vk, aboutme, cv } = this.state.user;
+            const { profileImg, login, redmineApiKey, fullname, position, phone, skype, workhours, email, birthday, vk, aboutme, cv } = this.state.user;
             const photo = profileImg ? profileImg.medium : "";
             return (
                 <div className="container profile">
@@ -60,29 +62,28 @@ class UserEdit extends React.Component {
                                         <h3 className="profile_heading">General</h3>
                                     </div>
                                 </div>
-                                <div className="row">
+                                <div className="row profile_inputs-row">
                                     <div className="col-md-6">
-                                        <input type="text" className="input input__grey"
-                                               placeholder="FullName" defaultValue={ fullname }/>
+                                        <label htmlFor="" className="">Fullname</label>
+                                        <input type="text" className="input input__grey" name="fullname" onChange={ this.handleChange } placeholder="FullName" defaultValue={ fullname }/>
                                     </div>
                                     <div className="col-md-6">
                                         <input type="text" className="input input__grey"
                                                placeholder="Developer" defaultValue={ position }/>
                                     </div>
                                 </div>
-                                <div className="row">
+                                <div className="row profile_inputs-row">
                                     <div className="col-md-6">
 
                                         <input type="text" className="input input__grey"
                                                placeholder="+4 815 16 23 42" defaultValue={ phone }/>
-
                                     </div>
                                     <div className="col-md-6">
                                         <input type="text" className="input input__grey"
                                                placeholder="jackshephard" defaultValue={ skype }/>
                                     </div>
                                 </div>
-                                <div className="row">
+                                <div className="row profile_inputs-row">
                                     <div className="col-md-6">
                                         <input type="text" className="input input__grey" placeholder="07:00 - 17:00" defaultValue={ workhours }/>
                                     </div>
@@ -97,7 +98,7 @@ class UserEdit extends React.Component {
                                         <h3 className="profile_heading">Personal</h3>
                                     </div>
                                 </div>
-                                <div className="row">
+                                <div className="row profile_inputs-row">
                                     <div className="col-md-6">
                                         <input type="text" className="input input__grey"
                                                placeholder="01.11.1990" defaultValue={ this.state.user.birthday }/>
@@ -112,27 +113,21 @@ class UserEdit extends React.Component {
                                         <h3 className="profile_heading">About me</h3>
                                     </div>
                                 </div>
-                                <div className="row">
+                                <div className="row profile_inputs-row">
                                     <div className="col-md-12">
-                                        <textarea className="input input__grey" name="aboutme" rows="5"
-                                                  defaultValue={ this.state.user.aboutme }></textarea>
+                                        <input type="text" className="input input__grey" placeholder="cv"
+                                               defaultValue={ cv }/>
                                     </div>
                                 </div>
-                                <div className="row">
+                                <div className="row profile_inputs-row">
                                     <div className="col-md-12">
-                                        <input type="text" className="input input__grey"
-                                               defaultValue={this.state.user.cv}/>
+                                        <input type="text" className="input input__grey" placeholder="Redmine"
+                                               defaultValue={ redmineApiKey }/>
                                     </div>
                                 </div>
-                                <div className="row">
+                                <div className="row profile_inputs-row">
                                     <div className="col-md-12">
-                                        <input type="text" className="input input__grey"
-                                               defaultValue={this.state.user.redmineApiKey}/>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        <button type="submit" className="btn">Save</button>
+                                        <button type="submit" className="btn btn_blue btn_lg">Save</button>
                                     </div>
                                 </div>
                             </form>
