@@ -1,6 +1,4 @@
 import React from 'react'
-import Alert from './alert/Alert.jsx'
-import ModalUserDelete from './user/ModalUserDelete.jsx'
 import TopPanel from './navbar/TopPanel.jsx'
 import store from '../store.js'
 import { fetchTeamUsers } from '../actions/users.js'
@@ -17,11 +15,7 @@ class Layout extends React.Component {
         return (
             <div>
                 <TopPanel location={this.props.location.pathname}/>
-                <div className="container-fluid">
-                    <Alert/>
-                    <ModalUserDelete/>
-                    { this.props.children }
-                </div>
+                { this.props.children }
             </div>
         );
     }
