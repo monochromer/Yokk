@@ -2,6 +2,11 @@
 
 /* /forms */
 
+h2 {
+    font-size: 40px;
+    font-weight: normal;
+}
+
 .heading {
     font-weight: normal;
     font-size: 1.8rem;
@@ -11,8 +16,7 @@
 .btn {
     border: 0;
     box-shadow: 0;
-    height: 50px;
-    border-radius: 25px;
+    border-radius: 20px;
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     cursor: pointer;
@@ -51,6 +55,14 @@
     text-decoration: underline;
 }
 
+.btn_trans-blue {
+    background-color: #FFFFFF;
+    border: 1px solid #4A77DA;
+    color: #4A77DA;
+    font-weight: normal;
+    font-size: 16px;
+    padding: 8px 15px;
+}
 /* /buttons */
 
 /* inputs */
