@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nf start",
     "test": "mocha --no-timeouts test.js",
-    "dev-front": "webpack --watch & forever server.js",
+    "dev-front": "webpack-dev-server --content-base public/build/ & forever server.js",
     "dev-no-watch": "webpack & forever server.js",
     "dev-back": "webpack & forever -w server.js"
   },
@@ -89,6 +89,7 @@
     "react": "^15.3.1",
     "should": "^11.1.1",
     "style-loader": "^0.13.1",
-    "supertest": "^2.0.0"
+    "supertest": "^2.0.0",
+    "webpack-dev-server": "^1.16.2"
   }
 }
