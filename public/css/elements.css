@@ -122,6 +122,18 @@ h2 {
     color: #4A77DA;
 }
 
+/* images */
+
+
+.img-responsive {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.img-circle {
+    border-radius: 50%;
+}
 /* sm */
 
 @media only screen and (min-width: 48em) {
