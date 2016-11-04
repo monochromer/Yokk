@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="3717 -185 34 34">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        stroke: #4a77da;
+        stroke-width: 2px;
+      }
+
+      .cls-2 {
+        fill: #4a77da;
+      }
+
+      .cls-3 {
+        stroke: none;
+      }
+
+      .cls-4 {
+        fill: none;
+      }
+    </style>
+  </defs>
+  <g id="group-28" transform="translate(2722 -209)">
+    <g id="ellipse-2" class="cls-1" transform="translate(995 24)">
+      <circle class="cls-3" cx="17" cy="17" r="17"/>
+      <circle class="cls-4" cx="17" cy="17" r="16"/>
+    </g>
+    <g id="group-20" transform="translate(-1)">
+      <rect id="rectangle-13" class="cls-2" width="2" height="12" transform="translate(1011 31)"/>
+      <rect id="rectangle-13-2" data-name="rectangle-13" class="cls-2" width="2" height="10" transform="translate(1021 41) rotate(90)"/>
+    </g>
+  </g>
+</svg>
