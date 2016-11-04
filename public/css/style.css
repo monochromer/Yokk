@@ -178,6 +178,15 @@ body {
 }
 /* /top-panel */
 
+/* user-table */
+
+.user-table_header {
+    align-items: center;
+    padding-top: 35px;
+}
+
+/* / user-table */
+
 /* sm */
 
 @media only screen and (min-width: 48em) {
