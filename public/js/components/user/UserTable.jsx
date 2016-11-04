@@ -7,48 +7,47 @@ import UserRow from './UserRow.jsx'
 import ModalUserAdd from './ModalUserAdd.jsx'
 
 
-var UsersTable = React.createClass({
-    showModalUserAdd: function() {
-        store.dispatch({type: "MODAL_ADD_USER_SHOW"});
-    },
-    render: function() {
+class UsersTable extends React.Component{
+    showModalUserAdd() {
+        store.dispatch({ type: "MODAL_ADD_USER_SHOW" });
+    }
+
+    render() {
         return (
-            <div>
-                <div className="row">
-                    <div className="col-md-2">
-                        <h2>Team </h2>
+            <div className="container">
+                <div className="row user-table_header">
+                    <div className="col-md-8 col-md-offset-2 text-center">
+                        <h2>Team</h2>
                     </div>
-                    <div className="col-md-2 col-md-offset-8 text-right" style={{ "marginTop": "23px"}}>
-                        <button className="btn btn-default" onClick={this.showModalUserAdd}>
-                            <span className="glyphicon glyphicon-plus"></span> add new
-                        </button>
+                    <div className="col-md-2">
+                        <button className="btn btn_trans-blue" onClick={this.showModalUserAdd}>Add New</button>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-md-12">
                         <Table hover>
                             <thead className="users-table__thead">
-                                <tr>
-                                    <th className="users-table__title">User</th>
-                                    <th className="users-table__title">Position</th>
-                                    <th className="users-table__title">Joined on</th>
-                                </tr>
+                            <tr>
+                                <th className="users-table__title">User</th>
+                                <th className="users-table__title">Position</th>
+                                <th className="users-table__title">Joined on</th>
+                            </tr>
                             </thead>
                             <tbody>
                             {
-                                this.props.users.map( (user) => {
-                                    return <UserRow user={ user } currentUser={ this.props.currentUser } key={ user._id } />
+                                this.props.users.map((user) => {
+                                    return <UserRow user={ user } currentUser={ this.props.currentUser }
+                                                    key={ user._id }/>
                                 })
                             }
                             </tbody>
                         </Table>
                     </div>
                 </div>
-                <ModalUserAdd />
             </div>
         );
     }
-});
+}
 
 var fetchUsersStateToProps = function(state) {
     return {
