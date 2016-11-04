@@ -15,7 +15,7 @@ class UsersTable extends React.Component {
 
     render() {
         return (
-            <div className="container">
+            <div className="container container__flex1">
                 <div className="row user-table_header">
                     <div className="col-md-8 col-md-offset-2 text-center">
                         <h2>Team</h2>
@@ -25,9 +25,9 @@ class UsersTable extends React.Component {
                     </div>
                 </div>
                 <div className="row users-list_heading">
-                    <div className="col-md-4 user-list_title">User</div>
-                    <div className="col-md-3 user-list_title">Position</div>
-                    <div className="col-md-3 user-list_title">Joined On</div>
+                    <div className="col-md-4 user-list_title">Full name</div>
+                    <div className="col-md-4 user-list_title">Position</div>
+                    <div className="col-md-2 user-list_title">Joined On</div>
                     <div className="col-md-2 user-list_title">Actions</div>
                 </div>
                 {

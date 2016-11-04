@@ -15,51 +15,52 @@ class UserRow extends React.Component {
     }
 
     render() {
-
-        let userActivityPageLink = `/user/activityPage/${this.props.user.login}`;
-        let photo = typeof(this.props.user.profileImg) !== "undefined" ? this.props.user.profileImg.small : "";
+        let { login, role, position, joinedon, profileImg, fullname } = this.props.user;
+        let userActivityPageLink = `/user/activityPage/${ login }`;
+        let photo = profileImg ? profileImg.small : "";
+        let name = fullname ? fullname : login;
         let buttons = "";
+
         let actionButtons = (
             <div className="btn-group" role="group">
-                <Link onClick={ this.dispatchUserToShow } to={ userActivityPageLink } className="btn btn-primary">Show
-                    activities</Link>
-                <Link to={ '/user/edit/' + this.props.user.login } className="btn btn-warning">Edit</Link>
-                <button className="btn btn-danger" onClick={ this.handleRemove }>Remove</button>
+                <Link to={ '/user/edit/' + login } className="">
+                    <img src="/img/icon-user-edit.svg" alt="edit" width="20px" />
+                </Link>
+                <span className="users-list_edit" onClick={ this.handleRemove }>
+                    <img src="/img/icon-user-delete.svg" alt="delete" width="20px" />
+                </span>
             </div>
         );
 
 
-        if (this.props.currentUser.role == "admin" || this.props.currentUser.login == this.props.user.login) {
+        if (role == "admin" || this.props.currentUser.login == login) {
             buttons = actionButtons;
         }
 
+        position = position ? position : "No Information";
 
         return (
-            <div className="row">
+            <div className="row users-list_row">
 
                 <div className="col-md-4">
                     <div className="row">
                         <div className="col-md-2">
-                            <img src={ photo } width="50px" className="img-rounded"/>
+                            <img src={ photo } width="40px" className="img-circle" />
                         </div>
                         <div className="col-md-10">
-                            <Link to={ '/user/' + this.props.user.login } className="profile-row__name">{ this.props.user.fullname ? this.props.user.fullname : this.props.user.login }</Link><br/>
-                            <span className="role profile-row__role">{ this.props.user.role }</span>
+                            <Link to={ '/user/' + login } className="users-list_user-name">
+                                { name }
+                            </Link>
+                            <span className="users-list_user-role">{ role }</span>
                         </div>
                     </div>
                 </div>
 
-                <div className="col-md-3">
-                    { this.props.user.position }
-                </div>
+                <div className="col-md-4 users-list_position"> { position } </div>
 
-                <div className="col-md-2">
-                    { moment(this.props.user.joinedon).format("DD.MM.YYYY") }
-                </div>
+                <div className="col-md-2 users-list_joinedon"> { moment(joinedon).format("DD.MM.YYYY") } </div>
 
-                <div className="col-md-2">
-                    { buttons }
-                </div>
+                <div className="col-md-2"> { buttons } </div>
 
             </div>
         )
