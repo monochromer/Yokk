@@ -11,10 +11,8 @@ var DropPicture = React.createClass({
 
     render: function( ) {
         return (
-            <Dropzone onDrop={this.onDrop}>
-                <div className="profile__dropzone vertical-center">
-                    <img src={this.props.photo} height="180px" className="center-block"/>
-                </div>
+            <Dropzone className="profile_dropzone" onDrop={this.onDrop}>
+                    <img src={ this.props.photo } height="205px" className="img-circle"/>
             </Dropzone>
         );
     }
