@@ -30,6 +30,7 @@ h2 {
 .btn_blue {
     background-color: #4A77DA;
     color: #FFFFFF;
+    transition: all .1s ease-in-out;
 }
 
 .btn_blue:disabled {
@@ -38,6 +39,10 @@ h2 {
 }
 
 .btn_blue:active {
+    background-color: #2F5BBA;
+}
+
+.btn_blue:hover {
     background-color: #2F5BBA;
 }
 
@@ -177,6 +182,33 @@ h2 {
 .img-circle {
     border-radius: 50%;
 }
+
+/* /images */
+
+
+/* helper icons */
+
+.icon-saving-success {
+    background-position: left center;
+    background-image: url("/img/icon-saving-success.svg");
+    background-repeat: no-repeat;
+    padding-left: 52px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 20px;
+    font-weight: normal;
+}
+
+.saving-start {
+    font-size: 20px;
+    height: 40px;
+    line-height: 40px;
+    color: #95989A;
+}
+
+/* /helper icons */
+
+
 /* sm */
 
 @media only screen and (min-width: 48em) {
