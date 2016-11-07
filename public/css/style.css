@@ -15,6 +15,9 @@ body {
     flex: 1;
 }
 
+.container__fixed {
+    width: 1120px;
+}
 /* /index */
 
 /* top-panel */

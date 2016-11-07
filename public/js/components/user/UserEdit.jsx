@@ -74,7 +74,7 @@ class UserEdit extends React.Component {
             const { profileImg, login, redmineApiKey, fullname, position, phone, skype, workhours, email, birthday, vk, aboutme, cv } = this.state.user;
             const photo = profileImg ? profileImg.medium : "";
             return (
-                <div className="container profile">
+                <div className="container container__fixed profile">
                     <div className="row">
 
                         <div className="col-md-3 profile_photo">
