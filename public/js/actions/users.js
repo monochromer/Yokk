@@ -34,21 +34,14 @@ export function deleteUser(login) {
     }
 }
 
-export function updateUser(user) {
-    return function (dispatch) {
-        request.put(USER_CRUD + user.login).send(user).end((err, response) => {
-            dispatch({
-                type: "UPDATE_USER",
-                payload: response.body
-            });
-            dispatch({
-                type: "ALERT_SHOW",
-                class: "success",
-                text: updateUserSuccess(user.login)
-            });
-            dispatch({type: "MODAL_CHANGE_PASSWORD_CLOSE"});
-        });
-    }
+export function updateUser(id, fields) {
+    return {
+        type: "UPDATE_USER",
+        updateItem: {
+            url: USER_CRUD + id,
+            data: fields
+        }
+    };
 }
 
 export function addUser(user) {
