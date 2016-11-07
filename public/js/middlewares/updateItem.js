@@ -1,13 +1,13 @@
-import store from '../store'
 import axios from 'axios'
 
 export default(store) => (next) => (action) => {
-    const { updateItem } = action;
+    const { updateItem, type } = action;
     
-    if (!updateItem) return next(action);
+    if(!updateItem) return next(action);
+
+    next({ type: type + '_START' });
 
     axios.put(updateItem.url, updateItem.data).then((response) => {
-        action.payload = response.data;
-        return next(action);
+        return next({ type: type + '_SUCCESS', payload: response.data});
     });
 }
