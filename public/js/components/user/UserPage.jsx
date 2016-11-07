@@ -158,10 +158,10 @@ var UserPage = React.createClass({
 	}
 });
 
-var fetchUserStateToProps = function f(state) {
+function getParams(state) {
 	return {
-		users: state.users
+		users: state.users.list
 	}
 }
 
-export default connect(fetchUserStateToProps)(UserPage);
+export default connect(getParams)(UserPage);
