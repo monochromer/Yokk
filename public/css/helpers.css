@@ -10,6 +10,9 @@
     display:none;
 }
 
+.vertical-center {
+    align-items: center;
+}
 /* sm */
 @media only screen and (min-width: 48em) {
     .hide-xs {
