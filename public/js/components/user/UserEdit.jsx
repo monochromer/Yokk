@@ -12,9 +12,11 @@ class UserEdit extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: findUserByLogin(this.props.users, this.props.routeParams.login)
+            user: findUserByLogin(this.props.users, this.props.routeParams.login),
+            fields: {}
         };
         this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -24,18 +26,17 @@ class UserEdit extends React.Component {
     }
 
     handleChange(event) {
-        let elemObj = Object.assign({}, this.state[event.target.name], { value: event.target.value });
+        let fields = Object.assign({}, this.state.fields, { [event.target.name]: event.target.value });
         this.setState({
-            [event.target.name]: elemObj
-        })
+            fields: fields
+        });
     }
 
 
 
     handleSubmit(event) {
         event.preventDefault();
-        store.dispatch(updateUser(fields));
-        browserHistory.push('/user/' + fields.login);
+        store.dispatch(updateUser(this.state.user._id, this.state.fields));
     }
 
     openModalChangePassword() {
@@ -128,8 +129,8 @@ class UserEdit extends React.Component {
     }
 }
 
-function fetchUserStateToProps(state) {
+function getProps(state) {
     return { users: state.users }
 }
 
-export default connect(fetchUserStateToProps)(UserEdit);
+export default connect(getProps)(UserEdit);
