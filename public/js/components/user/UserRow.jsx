@@ -42,7 +42,7 @@ class UserRow extends React.Component {
         return (
             <div className="row users-list_row">
 
-                <div className="col-md-4">
+                <div className="col-md-3">
                     <div className="row">
                         <div className="col-md-2">
                             <img src={ photo } width="40px" className="img-circle" />
@@ -59,8 +59,8 @@ class UserRow extends React.Component {
                 <div className="col-md-4 users-list_position"> { position } </div>
 
                 <div className="col-md-2 users-list_joinedon"> { moment(joinedon).format("DD.MM.YYYY") } </div>
-
-                <div className="col-md-2"> { buttons } </div>
+                <div className="col-md-2"> </div>
+                <div className="col-md-1"> { buttons } </div>
 
             </div>
         )
