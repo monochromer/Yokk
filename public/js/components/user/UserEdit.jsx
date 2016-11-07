@@ -27,9 +27,12 @@ class UserEdit extends React.Component {
 
     handleChange(event) {
         let fields = Object.assign({}, this.state.fields, { [event.target.name]: event.target.value });
+
         this.setState({
             fields: fields
         });
+
+        store.dispatch({ type: "SET_READY_STATE" });
     }
 
 
@@ -46,7 +49,27 @@ class UserEdit extends React.Component {
 
 
     render() {
-        console.log(this.state);
+
+        let statusIcons = "";
+        switch (this.props.status) {
+
+            case "ready":
+                statusIcons = "";
+                break;
+
+            case "loading":
+                statusIcons = ( <div className="saving-start">Saving...</div> );
+                break;
+
+            case "success":
+                statusIcons = ( <div className="icon-saving-success">Saved</div> );
+                break;
+
+            default:
+                statusIcons = "";
+        }
+
+
         if (this.state.user) {
             const { profileImg, login, redmineApiKey, fullname, position, phone, skype, workhours, email, birthday, vk, aboutme, cv } = this.state.user;
             const photo = profileImg ? profileImg.medium : "";
@@ -113,9 +136,12 @@ class UserEdit extends React.Component {
                                         <Input handleChange={ this.handleChange } name="cv" label="CV" defaultValue={ cv } />
                                     </div>
                                 </div>
-                                <div className="row profile_inputs-row">
-                                    <div className="col-md-12">
+                                <div className="row profile_inputs-row vertical-center">
+                                    <div className="col-md-2">
                                         <button type="submit" className="btn btn_blue btn_lg">Save</button>
+                                    </div>
+                                    <div className="col-md-3">
+                                        { statusIcons }
                                     </div>
                                 </div>
                             </form>
@@ -130,7 +156,10 @@ class UserEdit extends React.Component {
 }
 
 function getProps(state) {
-    return { users: state.users }
+    return {
+        users: state.users.list,
+        status: state.users.status
+    }
 }
 
 export default connect(getProps)(UserEdit);
