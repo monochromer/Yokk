@@ -121,7 +121,7 @@ exports.showUser = function(req, res, next) {
 
 exports.updateUser = function(req, res, next) {
     const userModel = req.app.db.models.User;
-    const login = req.params.user_login;
+    const id = req.params.id;
     const update = req.body;
 
     if (req.body.password !== undefined) {
@@ -138,16 +138,9 @@ exports.updateUser = function(req, res, next) {
 
         });
     } else {
-        userModel.editUser(login, update, (err, user) => {
-            if (err) {
-                res.status(500).send();
-                const logMsq = 'There was some error while updating user data';
-                log(req, logMsq).err();
-            } else {
-                res.status(200).send(user);
-                const logMsq = `User (login: ${login}) is updated`;
-                log(req, logMsq).info();
-            }
+        userModel.editUser(id, update, (err, user) => {
+            if (err) next(err);
+            res.status(200).send(user);
         });
     }
 }

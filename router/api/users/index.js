@@ -9,7 +9,7 @@ module.exports = function(api) {
         .get(handle.getTeamUsers);
     api.route('/user/check_permissions')
         .get(handle.checkUserPermissions);
-    api.route('/user/:user_login')
+    api.route('/user/:id')
         .get(handle.showUser)
         .put(handle.updateUser)
         .delete(handle.deleteUser);

@@ -53,9 +53,9 @@ module.exports = function(schema) {
         return this.encryptPassword(password) === this.hashedPassword;
     };
 
-    schema.statics.editUser = function(login, updateObject, cb) {
+    schema.statics.editUser = function(id, updateObject, cb) {
         return this.findOneAndUpdate({
-            login: login
+            _id: id
         }, updateObject, {
             new: true
         }, cb);
