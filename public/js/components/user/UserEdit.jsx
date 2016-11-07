@@ -1,7 +1,7 @@
 import React from 'react'
-import store from '../../store.js'
 import DropPicture from './DropPicture.jsx'
-import ModalChangePassword from './ModalChangePassword.jsx'
+import store from '../../store.js'
+import { Input } from '../UI.jsx'
 import { findUserByLogin } from '../../helpers'
 import { updateUser } from '../../actions/users'
 import { browserHistory } from 'react-router'
@@ -14,7 +14,7 @@ class UserEdit extends React.Component {
         this.state = {
             user: findUserByLogin(this.props.users, this.props.routeParams.login)
         };
-        this.handleChange = this.handleChange.bind(this)
+        this.handleChange = this.handleChange.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -24,12 +24,13 @@ class UserEdit extends React.Component {
     }
 
     handleChange(event) {
+        let elemObj = Object.assign({}, this.state[event.target.name], { value: event.target.value });
         this.setState({
-            [event.target.name]: {
-                value: event.target.value
-            }
+            [event.target.name]: elemObj
         })
     }
+
+
 
     handleSubmit(event) {
         event.preventDefault();
@@ -41,8 +42,10 @@ class UserEdit extends React.Component {
         store.dispatch({ type: "MODAL_CHANGE_PASSWORD_SHOW", login: this.state.user.login });
     }
 
-    render() {
 
+
+    render() {
+        console.log(this.state);
         if (this.state.user) {
             const { profileImg, login, redmineApiKey, fullname, position, phone, skype, workhours, email, birthday, vk, aboutme, cv } = this.state.user;
             const photo = profileImg ? profileImg.medium : "";
@@ -64,33 +67,26 @@ class UserEdit extends React.Component {
                                 </div>
                                 <div className="row profile_inputs-row">
                                     <div className="col-md-6">
-                                        <label htmlFor="" className="">Fullname</label>
-                                        <input type="text" className="input input__grey" name="fullname" onChange={ this.handleChange } placeholder="FullName" defaultValue={ fullname }/>
+                                        <Input handleChange={ this.handleChange } name="fullname" label="Full Name" defaultValue={ fullname } />
                                     </div>
                                     <div className="col-md-6">
-                                        <input type="text" className="input input__grey"
-                                               placeholder="Developer" defaultValue={ position }/>
+                                        <Input handleChange={ this.handleChange } name="position" label="Position" defaultValue={ position } />
                                     </div>
                                 </div>
                                 <div className="row profile_inputs-row">
                                     <div className="col-md-6">
-
-                                        <input type="text" className="input input__grey"
-                                               placeholder="+4 815 16 23 42" defaultValue={ phone }/>
+                                        <Input handleChange={ this.handleChange } name="phone" label="Phone" defaultValue={ phone } />
                                     </div>
                                     <div className="col-md-6">
-                                        <input type="text" className="input input__grey"
-                                               placeholder="jackshephard" defaultValue={ skype }/>
+                                        <Input handleChange={ this.handleChange } name="skype" label="Skype" defaultValue={ skype } />
                                     </div>
                                 </div>
                                 <div className="row profile_inputs-row">
                                     <div className="col-md-6">
-                                        <input type="text" className="input input__grey" placeholder="07:00 - 17:00" defaultValue={ workhours }/>
+                                        <Input handleChange={ this.handleChange } name="workhours" label="Work Hours" defaultValue={ workhours } />
                                     </div>
                                     <div className="col-md-6">
-                                            <input type="email" className="input input__grey"
-                                                   placeholder="dr.shepard@gmail.com"
-                                                   defaultValue={ this.state.user.email }/>
+                                        <Input handleChange={ this.handleChange } name="email" label="E-mail" defaultValue={ email } />
                                     </div>
                                 </div>
                                 <div className="row profile_section">
@@ -100,12 +96,10 @@ class UserEdit extends React.Component {
                                 </div>
                                 <div className="row profile_inputs-row">
                                     <div className="col-md-6">
-                                        <input type="text" className="input input__grey"
-                                               placeholder="01.11.1990" defaultValue={ this.state.user.birthday }/>
+                                        <Input handleChange={ this.handleChange } name="birthday" label="Birthday" defaultValue={ birthday } />
                                     </div>
                                     <div className="col-md-6">
-                                        <input type="text" className="input input__grey"
-                                               placeholder="vk.com/jackshephard" defaultValue={ this.state.user.vk }/>
+                                        <Input handleChange={ this.handleChange } name="vk" label="VK" defaultValue={ vk } />
                                     </div>
                                 </div>
                                 <div className="row profile_section">
@@ -115,14 +109,7 @@ class UserEdit extends React.Component {
                                 </div>
                                 <div className="row profile_inputs-row">
                                     <div className="col-md-12">
-                                        <input type="text" className="input input__grey" placeholder="cv"
-                                               defaultValue={ cv }/>
-                                    </div>
-                                </div>
-                                <div className="row profile_inputs-row">
-                                    <div className="col-md-12">
-                                        <input type="text" className="input input__grey" placeholder="Redmine"
-                                               defaultValue={ redmineApiKey }/>
+                                        <Input handleChange={ this.handleChange } name="cv" label="CV" defaultValue={ cv } />
                                     </div>
                                 </div>
                                 <div className="row profile_inputs-row">
