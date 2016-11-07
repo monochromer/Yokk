@@ -29,7 +29,7 @@ export class Input extends React.Component {
     }
 
     handleBlur() {
-        if(!this.state.value) {
+        if(!this.state.value && !this.props.defaultValue) {
             this.setState({ focus: false })
         }
     }
