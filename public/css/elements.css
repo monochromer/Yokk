@@ -66,6 +66,31 @@ h2 {
 /* /buttons */
 
 /* inputs */
+
+.form-group {
+    height: 50px;
+    position: relative;
+}
+
+.form-group input {
+    position: absolute;
+    bottom: 0;
+}
+
+.form-group label {
+    font-size: 16px;
+    color: #919191;
+    font-weight: 300;
+    position: absolute;
+    top: 25px;
+    transition: all .1s ease-in-out;
+}
+
+.form-group__focus label {
+    font-size: 13px;
+    top: 0;
+}
+
 .input {
     background-color: inherit;
     border: 0;
