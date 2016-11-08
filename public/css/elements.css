@@ -9,7 +9,11 @@ h2 {
 
 .heading {
     font-weight: normal;
-    font-size: 1.8rem;
+    font-size: 40px;
+}
+
+.heading__white {
+    color: #ffffff;
 }
 
 /* buttons */
@@ -22,45 +26,47 @@ h2 {
     cursor: pointer;
 }
 
-.btn_white {
+.btn__white {
     background-color: #FFFFFF;
     color: #4A77DA;
 }
 
-.btn_blue {
+.btn__blue {
     background-color: #4A77DA;
     color: #FFFFFF;
     transition: all .1s ease-in-out;
 }
 
-.btn_blue:disabled {
+.btn__blue:disabled {
     background-color: #919191;
     cursor: not-allowed;
 }
 
-.btn_blue:active {
+.btn__blue:active {
     background-color: #2F5BBA;
 }
 
-.btn_blue:hover {
+.btn__blue:hover {
     background-color: #2F5BBA;
 }
 
-.btn_lg {
+.btn__lg {
     padding: 0 25px;
-    font-size: 0.9rem;
+    font-size: 25px;
+    line-height: 50px;
+    border-radius: 25px;
 }
 
-.link_white {
+.link__white {
     color: #FFFFFF;
     text-decoration: none;
 }
 
-.link_white:hover {
+.link__white:hover {
     text-decoration: underline;
 }
 
-.btn_trans-blue {
+.btn__trans-blue {
     background-color: #FFFFFF;
     border: 1px solid #4A77DA;
     color: #4A77DA;
@@ -80,6 +86,7 @@ h2 {
 .form-group input {
     position: absolute;
     bottom: 0;
+    left: 0;
 }
 
 .form-group label {
@@ -88,6 +95,7 @@ h2 {
     font-weight: 300;
     position: absolute;
     top: 25px;
+    left: 0;
     transition: all .1s ease-in-out;
 }
 
@@ -209,28 +217,20 @@ h2 {
 /* /helper icons */
 
 
-/* sm */
+/*---------------------------------------- modals --------------------------------------*/
 
-@media only screen and (min-width: 48em) {
-    .btn_lg {
-        padding: 0 25px;
-        font-size: 1.2rem;
-    }
-
-    .heading {
-        font-size: 2.4rem;
-    }
+.modal {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: 999999;
+    background-color: rgba(0, 0, 0, 0.9);
 }
 
-/* md */
-@media only screen and (min-width: 62em) {
-    .btn_lg {
-        padding: 0 30px;
-        font-size: 25px;
-        line-height: 50px;
-        border-radius: 25px;
-    }
-    .heading {
-        font-size: 2.8rem;
-    }
+.modal_row {
+    min-height: 100vh;
 }
+/*---------------------------------------- /modals --------------------------------------*/
