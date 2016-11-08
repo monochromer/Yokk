@@ -1,8 +1,13 @@
 import React from 'react'
 import TimeEntryRow from './TimeEntryRow.jsx'
 
-var TimeEntriesPerDay = React.createClass({
-    render: function() {
+class TimeEntriesPerDay extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
         var rows = [];
         this.props.timeEntries.map( (timeEntry) => {
             rows.push(<TimeEntryRow timeEntry={ timeEntry } key={ timeEntry._id } />);
@@ -40,6 +45,6 @@ var TimeEntriesPerDay = React.createClass({
             </div>
         )
     }
-})
+}
 
 export default TimeEntriesPerDay;

@@ -4,12 +4,15 @@ import store from '../../store.js'
 import moment from 'moment'
 import { createTimeEntry, fetchRedmineTimeEntries } from '../../actions/timeEntries.js'
 import { connect } from 'react-redux'
-import { refsToObject, findUserByLogin } from '../../helpers'
+import { findUserByLogin } from '../../helpers'
 import { validateDuration } from '../../utils/validators'
+import { Input } from '../UI.jsx'
 
-var NewTimeEntryForm = React.createClass({
-    getInitialState: function() {
-        return {
+class NewTimeEntryForm extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
             description: {
                 value: "",
                 valid: false,
@@ -25,19 +28,26 @@ var NewTimeEntryForm = React.createClass({
                 valid: true,
                 virgin: false,
             }
-        }
-    },
+        };
 
-    syncRedmine: function() {
+        this.syncRedmine = this.syncRedmine.bind(this);
+    }
+
+
+    syncRedmine() {
         const user = findUserByLogin(this.props.users, this.props.currentUser);
-        if(!user.redmineApiKey) {
-            store.dispatch({type: "ALERT_SHOW", text: 'Error! Check your Redmine API key! <a href="http://recordit.co/j15qHVOC9n" target="_blank">Instruction</a>', class: "danger" });
+        if (!user.redmineApiKey) {
+            store.dispatch({
+                type: "ALERT_SHOW",
+                text: 'Error! Check your Redmine API key! <a href="http://recordit.co/j15qHVOC9n" target="_blank">Instruction</a>',
+                class: "danger"
+            });
         } else {
             store.dispatch(fetchRedmineTimeEntries());
         }
-    },
+    }
 
-    blurDescription: function(event) {
+    blurDescription(event) {
         const { value } = event.target
         this.setState({
             description: {
@@ -46,9 +56,9 @@ var NewTimeEntryForm = React.createClass({
                 virgin: false,
             }
         });
-    },
+    }
 
-    blurDate: function(event) {
+    blurDate(event) {
         const { value } = event.target
         this.setState({
             dateCreated: {
@@ -57,9 +67,9 @@ var NewTimeEntryForm = React.createClass({
                 virgin: false,
             }
         });
-    },
+    }
 
-    blurDuration: function(event) {
+    blurDuration(event) {
         const { value } = event.target
         this.setState({
             duration: {
@@ -68,13 +78,13 @@ var NewTimeEntryForm = React.createClass({
                 virgin: false,
             }
         });
-    },
+    }
 
-    handleSubmit: function(event) {
+    handleSubmit(event) {
         event.preventDefault();
         const timeEntry = {}
-        for(let key in this.state) {
-            if(this.state[key].valid) {
+        for (let key in this.state) {
+            if (this.state[key].valid) {
                 timeEntry[key] = this.state[key].value;
             } else {
                 this.setState({
@@ -90,63 +100,68 @@ var NewTimeEntryForm = React.createClass({
 
         timeEntry.dateCreated = Date.now();
         store.dispatch(createTimeEntry(timeEntry));
-    },
+    }
 
-    render: function() {
-        let { description, dateCreated, duration } = this.state
+    render() {
+        let { description, dateCreated, duration } = this.state;
         return (
-            <div className="jumbotron">
-                <div className="row issues-heading">
+            <div className="container-fluid tracking-form">
+                <div className="row">
                     <div className="col-md-12 text-center">
-                        <h2>
-                            Track your time or <button className="btn btn-default" onClick={ this.syncRedmine }>sync redmine</button>
-                        </h2>
+                        <div className="flex flext__center vertical-center text-center ">
+                            <div>
+                                <h2 className="heading heading__white"> Track your time </h2>
+                            </div>
+                            <div>
+                                <span className="tracking-form_or">or</span>
+                            </div>
+                            <button className="btn btn__md btn__trans-white" onClick={ this.syncRedmine }>Sync Redmine
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div className="row">
-                    <form onSubmit={ this.handleSubmit }>
-                        <input type="hidden" ref="executor" value={ this.props.currentUser } />
-                        <input type="hidden" ref="taskSource" value="eop" />
-                        <div className="col-md-7">
-                            <div className={ (description.valid || description.virgin) ? "form-group" : "group has-error" }>
-                                <label htmlFor="date">Task</label>
-                                <input type="text" className="form-control" onBlur={ this.blurDescription } placeholder="What are you working on?"/>
+                <form onSubmit={ this.handleSubmit }>
+                    <div className="container">
+                        <div className="row">
+                            <input type="hidden" ref="executor" value={ this.props.currentUser }/>
+                            <input type="hidden" ref="taskSource" value="eop"/>
+                            <div className="col-md-6">
+                                <Input className="input-group input-group__light-blue"
+                                       handleChange={ this.handleChange }
+                                       name="description"
+                                       label="What you are working on?"/>
+                            </div>
+                            <div className="col-md-2">
+                                <Input className="input-group input-group__light-blue"
+                                       handleChange={ this.handleChange }
+                                       defaultValue={ moment().format("DD.MM.YYYY") }
+                                       name="date"
+                                       label="Date"/>
+                            </div>
+
+                            <div className="col-md-2">
+                                <Input className="input-group input-group__light-blue"
+                                       handleChange={ this.handleChange }
+                                       name="duration"
+                                       defaultValue="0:00"
+                                       label="Duration"/>
+                            </div>
+                            <div className="col-md-2">
+                                <button className="btn btn__lg btn__white">Save</button>
                             </div>
                         </div>
-                        <div className="col-md-2">
-                            <div className={ dateCreated.valid ? "form-group" : "form-group has-error" }>
-                                <label htmlFor="date">Date</label>
-                                <InputElement className="form-control" onBlur={ this.blurDate } mask="99.99.9999" id="date" defaultValue={ moment().format("DD.MM.YYYY") } />
-                            </div>
-                        </div>
-                        {/* DON'T WORK
-                          <div className="col-md-2">
-                          <datePicker />
-                          </div>
-                          */}
-                        <div className="col-md-2">
-                            <div className={ (duration.valid || duration.virgin) ? "form-group" : "group has-error" }>
-                                <label htmlFor="duration">Time</label>
-                                <InputElement className="form-control" onBlur={ this.blurDuration } mask="9:99" id="duration" placeholder="0:00"/>
-                            </div>
-                        </div>
-                        <div className="col-md-1">
-                            <button className="btn btn-success" style={{
-                                "marginTop": "24px"
-                            }}>Save</button>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         )
     }
-})
+}
 
-var getProps = function(store) {
+function getProps(store) {
     return {
         currentUser: store.currentUser.login,
         currentUserID: store.currentUser._id,
-        users: store.users
+        users: store.users.list
     }
 }
 

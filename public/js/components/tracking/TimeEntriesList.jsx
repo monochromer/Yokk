@@ -7,22 +7,23 @@ import {fetchNextTimeEntryBatch} from '../../actions/timeEntries.js'
 import {connect} from 'react-redux'
 import {dayBeatify, durationBeatify, groupTimeEntriesByDay} from '../../helpers'
 
-var TimeEntriesList = React.createClass({
-    getInitialState: function() {
-        return  {limit: 10}
-    },
+class TimeEntriesList extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { limit: 10 }
+    }
 
-    componentWillMount: function() {
+    componentWillMount() {
         let limit = this.state.limit;
         store.dispatch(fetchNextTimeEntryBatch(this.props.offset, limit));
-    },
+    }
 
-    loadMore: function() {
+    loadMore() {
         let limit = this.state.limit;
         store.dispatch(fetchNextTimeEntryBatch(this.props.offset, limit));
-    },
+    }
 
-    render: function() {
+    render() {
         const {days} = this.props;
         var rows = [];
         for (var day in days) {
@@ -31,7 +32,7 @@ var TimeEntriesList = React.createClass({
         }
         const loadMoreClasses = this.props.allBatches ? 'btn btn-success center-block loadmore disabled' : 'btn btn-success center-block loadmore' ;
         return (
-            <div>
+            <div className="container container__fixed">
                 {rows}
                 <button className={loadMoreClasses} onClick={this.loadMore}>
                     Load More
@@ -39,9 +40,9 @@ var TimeEntriesList = React.createClass({
             </div>
         )
     }
-});
+};
 
-var getProps = function(state) {
+function getProps(state) {
     return {
         days: groupTimeEntriesByDay(state.timeEntries.list),
         offset: state.timeEntries.list.length,

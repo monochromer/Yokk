@@ -58,8 +58,8 @@ class UserRow extends React.Component {
 
                 <div className="col-md-4 users-list_position"> { position } </div>
 
-                <div className="col-md-2 users-list_joinedon"> { moment(joinedon).format("DD.MM.YYYY") } </div>
-                <div className="col-md-2"> </div>
+                <div className="col-md-2"></div>
+                <div className="col-md-2"> <a href={ userActivityPageLink }> Show Activity </a> </div>
                 <div className="col-md-1"> { buttons } </div>
 
             </div>
