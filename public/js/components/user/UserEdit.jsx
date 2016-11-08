@@ -83,7 +83,16 @@ class UserEdit extends React.Component {
 
                         <div className="col-md-9">
                             <form onSubmit={ this.handleSubmit }>
-                                <h2>{ login }</h2>
+                                <div className="row middle-md">
+                                    <div className="col-md-6">
+                                        <h2>{ login }</h2>
+                                    </div>
+                                    <div className="col-md-6 text-right">
+                                        <a href="#" onClick={ this.openModalRedmine }>
+                                            <img src="/img/redmine-bw.svg" alt="Link with redmine"/>
+                                        </a>
+                                    </div>
+                                </div>
                                 <div className="row profile_section">
                                     <div className="col-md-12">
                                         <h3 className="profile_heading">General</h3>
@@ -138,7 +147,7 @@ class UserEdit extends React.Component {
                                 </div>
                                 <div className="row profile_inputs-row vertical-center">
                                     <div className="col-md-2">
-                                        <button type="submit" className="btn btn_blue btn_lg">Save</button>
+                                        <button type="submit" className="btn btn_blue btn_lg linkService_btn">Save</button>
                                     </div>
                                     <div className="col-md-3">
                                         { statusIcons }
