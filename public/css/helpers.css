@@ -6,6 +6,14 @@
     text-align: center;
 }
 
+.flex {
+   display: flex;
+}
+
+.flext__center {
+    justify-content: center;
+}
+
 .hide {
     display: none;
 }
