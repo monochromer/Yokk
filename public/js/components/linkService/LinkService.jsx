@@ -1,16 +1,36 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Input } from '../UI.jsx'
+import { linkService } from '../../actions/users'
+import classNames from 'classnames'
 import store from '../../store'
-
 class LinkService extends React.Component {
+
     constructor(props) {
-        super(props)
+        super(props);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleChange(event) {
+        this.setState({
+            [event.target.name]: event.target.value
+        });
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+        store.dispatch(linkService(this.props.userId, this.state))
     }
 
     render() {
+        let modalClasses = classNames({
+            modal: true,
+            hide: this.props.status == "hidden"
+        });
+
         return (
-            <div className="modal">
+            <div className={ modalClasses }>
                 <div className="container">
                     <div className="row center-md vertical-center modal_row">
                         <div className="col-md-6">
@@ -20,15 +40,15 @@ class LinkService extends React.Component {
                                     <h2 className="heading heading__white">Connect Upwork</h2>
                                 </div>
                             </div>
-                            <form action="">
+                            <form onSubmit={ this.handleSubmit }>
                                 <div className="row linkService_row">
                                     <div className="col-md-12">
-                                        <Input name="host" label="host"/>
+                                        <Input name="redmineHost" className="input input__light-grey" handleChange={ this.handleChange } label="Host"/>
                                     </div>
                                 </div>
                                 <div className="row linkService_row">
                                     <div className="col-md-12 text-center">
-                                        <Input name="key" label="API key"/>
+                                        <Input name="redmineApiKey" className="input input__light-grey" handleChange={ this.handleChange } label="API key"/>
                                     </div>
                                 </div>
                                 <div className="row">
