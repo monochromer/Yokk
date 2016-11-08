@@ -1,6 +1,4 @@
-/* forms */
-
-/* /forms */
+/*---------------------------------------- headings --------------------------------------*/
 
 h2 {
     font-size: 40px;
@@ -16,14 +14,33 @@ h2 {
     color: #ffffff;
 }
 
-/* buttons */
+/*---------------------------------------- /headings --------------------------------------*/
+
+
+
+/*---------------------------------------- buttons --------------------------------------*/
+
 .btn {
     border: 0;
     box-shadow: 0;
-    border-radius: 20px;
     font-family: 'Montserrat', sans-serif;
-    font-weight: bold;
     cursor: pointer;
+}
+
+.btn__lg {
+    padding: 0 25px;
+    font-size: 25px;
+    line-height: 50px;
+    border-radius: 25px;
+}
+
+.btn__md {
+    font-size: 16px;
+    line-height: 40px;
+    height: 40px;
+    font-weight: 400;
+    border-radius: 20px;
+    padding: 0 20px;
 }
 
 .btn__white {
@@ -50,46 +67,57 @@ h2 {
     background-color: #2F5BBA;
 }
 
-.btn__lg {
-    padding: 0 25px;
-    font-size: 25px;
-    line-height: 50px;
-    border-radius: 25px;
-}
 
 .link__white {
     color: #FFFFFF;
     text-decoration: none;
 }
 
-.link__white:hover {
-    text-decoration: underline;
-}
-
 .btn__trans-blue {
     background-color: #FFFFFF;
     border: 1px solid #4A77DA;
     color: #4A77DA;
-    font-weight: normal;
-    font-size: 16px;
-    padding: 8px 15px;
 }
-/* /buttons */
 
-/* inputs */
+.btn__trans-white {
+    background-color: transparent;
+    border: 1px solid #FFFFFF;
+    color: #FFFFFF;
+}
 
-.form-group {
+.link__white:hover {
+    text-decoration: underline;
+}
+
+/*---------------------------------------- /buttons --------------------------------------*/
+
+
+
+/*---------------------------------------- inputs --------------------------------------*/
+
+.input-group {
     height: 50px;
     position: relative;
 }
 
-.form-group input {
+.input-group input {
+    background: transparent;
     position: absolute;
     bottom: 0;
     left: 0;
+    border: 0;
+    width: 100%;
+    outline:0;
+    font-family: 'Montserrat', sans-serif;
+    padding-bottom: 6px;
+    transition: border .2s ease-in-out;
 }
 
-.form-group label {
+.input-group input:focus {
+    border-bottom: 2px solid #FFFFFF;
+}
+
+.input-group label {
     font-size: 16px;
     color: #919191;
     font-weight: 300;
@@ -99,80 +127,53 @@ h2 {
     transition: all .1s ease-in-out;
 }
 
-.form-group__focus label {
+.input-group__focus label {
     font-size: 13px;
     top: 0;
 }
 
-.input {
-    background-color: inherit;
-    border: 0;
+.input-group__light-blue input{
     border-bottom: 2px solid #B7CBF0;
     color: #FFFFFF;
-    width: 100%;
-    outline:0;
-    font-family: 'Montserrat', sans-serif;
-    padding-bottom: 6px;
-    transition: border .2s ease-in-out;
 }
 
-
-
-.input::-webkit-input-placeholder {color:#B7CBF0;}
-.input::-moz-placeholder          {color:#B7CBF0;}
-.input:-moz-placeholder           {color:#B7CBF0;}
-.input:-ms-input-placeholder      {color:#B7CBF0;}
-
-.input:focus {
-    border-bottom: 2px solid #FFFFFF;
+.input-group__light-blue label{
+    color: #B7CBF0;
 }
 
-.input__black {
+.input-group__black input{
     border-bottom: 2px solid #DBDBDB;
     color: #000000;
 }
 
-.input__black:focus {
+.input-group__black input:focus {
     border-bottom: 2px solid #000000;
 }
 
-.input__black::-webkit-input-placeholder {color:#919191;}
-.input__black::-moz-placeholder          {color:#919191;}
-.input__black:-moz-placeholder           {color:#919191;}
-.input__black:-ms-input-placeholder      {color:#919191;}
 
-.input__grey {
+.input-group__grey input {
     border-bottom: 2px solid #DBDBDB;
     color: #000000;
     font-weight: 300;
     font-size: 16px;
 }
 
-.input__grey:focus {
+.input-group__grey input {
     border-bottom: 2px solid #000000;
     color: #000000;
 }
 
-.input__grey::-webkit-input-placeholder {color:#919191;}
-.input__grey::-moz-placeholder          {color:#919191;}
-.input__grey:-moz-placeholder           {color:#919191;}
-.input__grey:-ms-input-placeholder      {color:#919191;}
-
-.input_error {
-    border-bottom-color: #FFC7C7;
-}
-
-.input_error:focus {
-    border-bottom-color: #FFC7C7;
-}
-
-.input__light-grey {
+.input-group__light-grey input {
     border-bottom-color: #919191;
 }
 
-.input__light-grey:focus {
+.input-group__light-grey input:focus {
     border-bottom-color: #FFFFFF;
 }
+
+/*---------------------------------------- /inputs --------------------------------------*/
+
+
 
 .error {
     color: #FFC7C7;
