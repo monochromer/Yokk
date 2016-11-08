@@ -44,6 +44,24 @@ export function updateUser(id, fields) {
     };
 }
 
+export function linkServiceOpen(userId, service) {
+    return {
+        type: "LINK_SERVICE_OPEN",
+        service: service,
+        userId: userId
+    }
+}
+
+export function linkService(id, fields) {
+    return {
+        type: "LINK_SERVICE",
+        updateItem: {
+            url: USER_CRUD + id,
+            data: fields
+        }
+    }
+}
+
 export function addUser(user) {
     return function (dispatch) {
         request.post(USER_CRUD).send(user).end((err, response) => {
