@@ -49,6 +49,7 @@ module.exports = function(app, mongoose) {
             default: 'user'
         },
         team: mongoose.Schema.Types.ObjectId,
+        redmineHost: String,
         redmineApiKey: String
     });
 
