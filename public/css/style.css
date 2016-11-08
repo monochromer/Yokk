@@ -18,6 +18,10 @@ body {
 .container__fixed {
     width: 1120px;
 }
+
+.container-fluid {
+    width: 100%;
+}
 /* /index */
 
 /* top-panel */
@@ -239,3 +243,18 @@ body {
 }
 
 /*---------------------------------------- /linkService --------------------------------------*/
+
+
+
+/*---------------------------------------- tracking-form --------------------------------------*/
+
+.tracking-form {
+    background-color: #4A77DA;
+    padding: 60px 0;
+}
+
+.tracking-form_or {
+    color: #B7CBF0;
+    font-size: 25px;
+}
+/*---------------------------------------- /tracking-form --------------------------------------*/
