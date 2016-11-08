@@ -35,8 +35,8 @@ export class Input extends React.Component {
     }
 
     handleChange(event) {
-        this.props.handleChange(event);
         this.state.value = event.target.value;
+        this.props.handleChange(event);
     }
 
     render() {
@@ -44,7 +44,7 @@ export class Input extends React.Component {
             <div className={ this.getInputClasses() } onFocus={ this.handleFocus } onBlur={ this.handleBlur }>
                 <label htmlFor={ this.props.name }>{ this.props.label }</label>
                 <input type="text"
-                       className="input input__grey"
+                       className={ this.props.className }
                        id={ this.props.name }
                        name={ this.props.name }
                        onChange={ this.handleChange }
