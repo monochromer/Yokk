@@ -24,7 +24,7 @@ class TopPanel extends React.Component {
                             </ul>
                         </div>
                         <div className="col-md-2 col-md-offset-1 tracking-item">
-                            <Link className="tracking-block_link" to="/tracking">
+                            <Link className="tracking-block_link" to="/">
                                 <div className="tracking-block">
                                     <span>Tracking</span>
                                 </div>
