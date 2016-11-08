@@ -15,3 +15,8 @@ export const TEAM_CRUD = '/api/teams/';
 export function COMBINE_USER_ADDPHOTO_URI(login) {
     return '/api/user/' + login + '/upload_profile_picture';
 }
+
+export const REDMINE = {
+    name: "Redmine",
+    logo: "/img/upwork-logo.svg"
+};
