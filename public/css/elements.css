@@ -166,6 +166,14 @@ h2 {
     border-bottom-color: #FFC7C7;
 }
 
+.input__light-grey {
+    border-bottom-color: #919191;
+}
+
+.input__light-grey:focus {
+    border-bottom-color: #FFFFFF;
+}
+
 .error {
     color: #FFC7C7;
     font-weight: lighter;
