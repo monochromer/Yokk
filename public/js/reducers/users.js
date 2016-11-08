@@ -45,7 +45,7 @@ export default function(state = defaultState, action) {
             return Object.assign({}, state, { list: payload });
             break;
 
-        case "LINK_SERVICE":
+        case "LINK_SERVICE_OPEN":
             linkService = {
                 status: 'ready',
                 service: action.service,
