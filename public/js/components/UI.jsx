@@ -18,8 +18,8 @@ export class Input extends React.Component {
 
     getInputClasses() {
         let classes = classNames({
-            'form-group': true,
-            'form-group__focus': this.state.focus
+            [this.props.className]: true,
+            'input-group__focus': this.state.focus
         });
         return classes;
     }
@@ -44,12 +44,10 @@ export class Input extends React.Component {
             <div className={ this.getInputClasses() } onFocus={ this.handleFocus } onBlur={ this.handleBlur }>
                 <label htmlFor={ this.props.name }>{ this.props.label }</label>
                 <input type="text"
-                       className={ this.props.className }
                        id={ this.props.name }
                        name={ this.props.name }
                        onChange={ this.handleChange }
-                       defaultValue={ this.props.defaultValue }
-                />
+                       defaultValue={ this.props.defaultValue }/>
             </div>
         )
     }
