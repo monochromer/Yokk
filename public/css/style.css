@@ -222,20 +222,20 @@ body {
 }
 /* /user edit */
 
-/* sm */
 
-@media only screen and (min-width: 48em) {
-    .team-create__create {
-        marin-top: 0;
-    }
+
+/*---------------------------------------- linkService --------------------------------------*/
+
+.linkService_logo {
+    height: 60px;
 }
 
-/* md */
-@media only screen and (min-width: 62em) {
-
+.linkService_row {
+    margin-bottom: 15px;
 }
 
-/* lg */
-@media only screen and (min-width: 75em) {
-
+.linkService_btn {
+    margin-top: 50px;
 }
+
+/*---------------------------------------- /linkService --------------------------------------*/
