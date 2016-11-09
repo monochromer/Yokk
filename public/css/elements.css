@@ -1,8 +1,24 @@
 /*---------------------------------------- headings --------------------------------------*/
 
+
 h2 {
     font-size: 40px;
     font-weight: normal;
+}
+
+h3 {
+    font-size: 25px;
+    font-weight: 400;
+}
+
+a {
+    color: #4A77DA;
+    font-weight: 300;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
 }
 
 .heading {
@@ -77,12 +93,49 @@ h2 {
     background-color: #FFFFFF;
     border: 1px solid #4A77DA;
     color: #4A77DA;
+    transition: all .1s ease-in-out;
 }
 
+.btn__trans-blue:hover {
+    background-color: #4A77DA;
+    color: #FFFFFF;
+}
+
+.btn__trans-blue:active {
+    background-color: #2F5BBA;
+    color: #FFFFFF;
+}
+
+.btn__trans-blue.btn__disabled, .btn__trans-blue:disabled {
+    border-color: #919191;
+    color: #919191;
+    background-color: #FFFFFF;
+    cursor: not-allowed;
+}
 .btn__trans-white {
     background-color: transparent;
     border: 1px solid #FFFFFF;
     color: #FFFFFF;
+}
+
+.btn__icon {
+    width: 22px;
+    height: 22px;
+    background-repeat: no-repeat !important;
+    background-position: center center;
+    margin-right: 15px;
+}
+
+.btn__icon:last-child {
+    margin-right: 0;
+}
+
+.btn__edit {
+    background: url('/img/icon-editing.svg');
+}
+
+.btn__delete {
+    background: url('/img/icon-delete.svg');
 }
 
 .link__white:hover {
@@ -158,9 +211,8 @@ h2 {
     font-size: 16px;
 }
 
-.input-group__grey input {
+.input-group__grey input:focus {
     border-bottom: 2px solid #000000;
-    color: #000000;
 }
 
 .input-group__light-grey input {
