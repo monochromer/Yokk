@@ -31,79 +31,43 @@ class NewTimeEntryForm extends React.Component {
         };
 
         this.syncRedmine = this.syncRedmine.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
 
     syncRedmine() {
         const user = findUserByLogin(this.props.users, this.props.currentUser);
-        if (!user.redmineApiKey) {
+        if (user.redmineApiKey) {
+            store.dispatch(fetchRedmineTimeEntries());
+        } else {
             store.dispatch({
                 type: "ALERT_SHOW",
                 text: 'Error! Check your Redmine API key! <a href="http://recordit.co/j15qHVOC9n" target="_blank">Instruction</a>',
                 class: "danger"
             });
-        } else {
-            store.dispatch(fetchRedmineTimeEntries());
         }
     }
 
-    blurDescription(event) {
-        const { value } = event.target
+    handleChange(event) {
         this.setState({
-            description: {
-                value: value,
-                valid: value ? true : false,
-                virgin: false,
-            }
-        });
-    }
-
-    blurDate(event) {
-        const { value } = event.target
-        this.setState({
-            dateCreated: {
-                value: value,
-                valid: moment(value, "DD.MM.YYYY").isValid(),
-                virgin: false,
-            }
-        });
-    }
-
-    blurDuration(event) {
-        const { value } = event.target
-        this.setState({
-            duration: {
-                value: value,
-                valid: validateDuration(value),
-                virgin: false,
-            }
-        });
+            [event.target.name]: event.target.value
+        })
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        const timeEntry = {}
-        for (let key in this.state) {
-            if (this.state[key].valid) {
-                timeEntry[key] = this.state[key].value;
-            } else {
-                this.setState({
-                    [key]: {
-                        virgin: false
-                    }
-                })
-                return false;
-            }
-        }
-        timeEntry.entrySource = "eop";
-        timeEntry.executor = this.props.currentUserID;
 
-        timeEntry.dateCreated = Date.now();
+        const timeEntry = Object.assign({}, this.state, {
+            entrySource: "eop",
+            executor: this.props.currentUserID,
+            dateCreated: Date.now()
+        });
+
         store.dispatch(createTimeEntry(timeEntry));
     }
 
     render() {
-        let { description, dateCreated, duration } = this.state;
         return (
             <div className="container-fluid tracking-form">
                 <div className="row">
@@ -123,8 +87,6 @@ class NewTimeEntryForm extends React.Component {
                 <form onSubmit={ this.handleSubmit }>
                     <div className="container">
                         <div className="row">
-                            <input type="hidden" ref="executor" value={ this.props.currentUser }/>
-                            <input type="hidden" ref="taskSource" value="eop"/>
                             <div className="col-md-6">
                                 <Input className="input-group input-group__light-blue"
                                        handleChange={ this.handleChange }
