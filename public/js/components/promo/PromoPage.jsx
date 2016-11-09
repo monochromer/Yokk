@@ -1,16 +1,24 @@
 import React from 'react'
 import store from '../../store'
 import validator from 'validator'
+import classNames from 'classnames'
 import { step0 } from '../../actions/teams'
 import { connect } from 'react-redux'
+import { Input } from '../UI.jsx'
 
 
 class PromoPage extends React.Component {
+
     constructor() {
         super();
         this.state = {
-            email: ""
-        }
+            email: "",
+            rightPanelOpened: false
+        };
+
+        this.handleClickCreate = this.handleClickCreate.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     handleSubmit(event) {
@@ -22,58 +30,115 @@ class PromoPage extends React.Component {
         }
     }
 
+    handleClickCreate() {
+        this.setState({
+            rightPanelOpened: true
+        })
+    }
+
     handleChange(event) {
         this.state.email = event.target.value;
-
         store.dispatch({type: "REMOVE_ERRORS"});
     }
 
     render() {
+
+        const signInClasses = classNames({
+            'signin': true,
+            hide: this.state.rightPanelOpened
+        });
+
+        const centerClasses = classNames({
+            'row promo-heading_wrapper': true,
+            'text-center': !this.state.rightPanelOpened
+        });
+
+        const rightPanelClasses = classNames({
+            'right-panel': true,
+            'right-panel___hidden': !this.state.rightPanelOpened
+        });
+
+        const createTeamButtonClasses = classNames({
+            'btn btn__lg btn__blue': true,
+            'hide': this.state.rightPanelOpened
+        });
+
+        const soshaceLinkClasses = classNames({
+            'hide': this.state.rightPanelOpened
+        });
+
         return (
+
             <div className="container-fluid main-container">
+
                 <div className="container top">
                     <div className="row">
-                        <div className="col-md-3 col-sm-6 col-xs-6">Eye of providence</div>
+                        <div className="col-md-3 col-sm-6 col-xs-6 logo">Eye of providence</div>
                         <div className="col-md-offset-6 col-md-3 col-sm-6 col-xs-6 text-right">
-                            <a href="/login" className="link_white">Sign In</a>
+                            <a href="/login" className={ signInClasses }>Sign In</a>
                         </div>
                     </div>
                 </div>
+
                 <div className="container center">
-                    <div className="promo__heading text-center">
-                        <h1 className="heading">Eye of Providence <br /> helps to manage your team</h1>
-                    </div>
-                    <div className="container team-create">
-                        <form onSubmit={ this.handleSubmit.bind(this) }>
-                            <div className="row middle-md">
-                                <div
-                                    className="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-7 col-sm-6 col-xs-10">
-                                    <input type="email" onChange={ this.handleChange.bind(this) }
-                                           className={ (this.props.error) ? "input input_white input_error" : "input input_white" }
-                                           placeholder="E-mail address" required/>
-                                    <span
-                                        className={ (this.props.error) ? "error" : "error hide" }>{ this.props.error }</span>
-                                </div>
-                                <div className="col-md-3 col-sm-4 col-xs-12 hide-xs">
-                                    <button className="btn btn_white btn_lg">Create New Team</button>
-                                </div>
-                            </div>
-                            <div className="row hide-sm hide-lg hide-md">
-                                <div className="col-xs-12 center-xs">
-                                    <button className="btn btn_white btn_lg team-create__create">Create New Team
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+                    <div className={ centerClasses }>
+                        <div className="col-md-12">
+                            <h1 className="heading promo__heading">Eye of Providence <br /> helps to manage your team</h1>
+                            <button className={ createTeamButtonClasses } onClick={ this.handleClickCreate }>Create New Team</button>
+                        </div>
                     </div>
                 </div>
+
                 <div className="container footer">
                     <div className="span2">
-                        <a href="http://soshace.com" target="_blank">
+                        <a href="http://soshace.com" target="_blank" className={ soshaceLinkClasses }>
                             <img src="/img/logo.png" alt="soshace" title="soshace" height="36px"/>
                         </a>
                     </div>
                 </div>
+
+                <div className={ rightPanelClasses }>
+
+                    <header>
+                        <div className="row">
+                            <div className="col-md-10 text-right">
+                                <a href="/login" className="signin right-panel_signin">Sign In</a>
+                            </div>
+                        </div>
+                    </header>
+
+                    <section>
+                        <form onSubmit={ this.handleSubmit }>
+                            <div className="row center-md">
+                                <div className="col-md-8">
+                                    <Input handleChange={ this.handleChange }
+                                           className="input-group input-group__light-blue"
+                                           name="email"
+                                           label="E-mail address"/>
+                                    <button type="submit" className="btn btn__lg btn__white right-panel_btn">Create New Team</button>
+                                </div>
+                            </div>
+                            <div className="row center-md right-panel_login">
+                                <div className="col-md-8">
+                                    <p>
+                                        Already have a team? &nbsp;
+                                        <a href="/login">Sign In</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </form>
+                    </section>
+
+                    <footer>
+                        <div className="row center-md">
+                            <a href="http://soshace.com" target="_blank">
+                                <img src="/img/logo.png" alt="soshace" title="soshace" height="36px"/>
+                            </a>
+                        </div>
+                    </footer>
+
+                </div>
+
             </div>
         )
     }

@@ -1,5 +1,7 @@
 /* main page */
-
+* {
+    font-family: 'Montserrat', sans-serif;
+}
 .main-container {
     display: flex;
     flex-direction: column;
@@ -19,6 +21,15 @@
     padding-top:2.5rem;
 }
 
+.logo {
+    font-size: 25px;
+}
+
+.signin {
+    font-weight: bold;
+    font-size: 18px;
+    color: #FFFFFF;
+}
 /* center */
 
 .center {
@@ -26,8 +37,14 @@
     align-items: center;
 }
 
+.promo-heading_wrapper {
+    transition: all .2s ease-in;
+}
+
 .promo__heading {
     margin-bottom: 50px;
+    font-size: 50px;
+    color: #FFFFFF;
 }
 
 .team-create {
@@ -46,6 +63,47 @@
     padding-bottom: 20px;
 }
 
+.right-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 480px;
+    background-color: rgba(74, 119, 218, 0.85);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all .2s ease-in;
+}
+
+.right-panel___hidden {
+    right: -480px;
+}
+.right-panel header {
+    padding-top: 33px;
+}
+
+.right-panel footer {
+    padding-bottom: 44px;
+}
+
+.right-panel_btn {
+    margin-top: 50px;
+}
+
+.right-panel_login {
+    margin-top: 110px;
+}
+
+.right-panel_login p {
+    font-size: 16px;
+    color: #FFFFFF;
+}
+
+.right-panel_login a {
+    color: #FFFFFF;
+    font-weight: 400;
+}
 /* steps layout */
 
 .steps-container {
