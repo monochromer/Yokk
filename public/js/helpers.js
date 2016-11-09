@@ -19,10 +19,19 @@ export function dayBeatify(date, format) {
 	return moment(date, format).format("ddd, D MMM")
 }
 
-export function durationBeatify(minutes) {
+export function durationBeatify(minutes, type) {
 	let duration = moment.duration(minutes, 'minutes');
 	let min = duration.get('minutes') < 10 ? "0" + duration.get('minutes') : duration.get('minutes');
-	return duration.get('hours') + ":" + min;
+	switch (type) {
+		case 'short':
+			return `${duration.get('hours')}:${min}`;
+			break;
+
+		default:
+			return `${duration.get('hours')} h ${min} min`;
+			break;
+	}
+
 }
 
 export function groupTimeEntriesByDay(timeEntries) {
