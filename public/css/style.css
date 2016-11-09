@@ -257,4 +257,46 @@ body {
     color: #B7CBF0;
     font-size: 25px;
 }
+
+.tracking-day {
+    margin-bottom: 60px;
+}
+
+.tracking-day:last-child {
+    margin-bottom: 25px;
+}
+
+.tracking-day_row {
+    padding: 0 20px;
+}
+.tracking-day_duration {
+    color: #919191;
+    font-size: 16px;
+    margin-left: 15px;
+    vertical-align: middle;
+}
+
+.tracking-table_head {
+    margin-bottom: 10px;
+    padding: 0 20px;
+}
+
+.tracking-table_heading {
+    font-size: 18px;
+    color: #919191;
+}
+
+.entry-row {
+    padding: 5px 20px;
+    font-weight: 300;
+    min-height: 70px;
+}
+
+.entry-row:nth-child(2n + 1) {
+    background-color: #F7F9FC;
+}
+
+.loadmore {
+    margin-bottom: 120px;
+}
 /*---------------------------------------- /tracking-form --------------------------------------*/
