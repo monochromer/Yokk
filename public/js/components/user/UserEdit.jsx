@@ -105,26 +105,26 @@ class UserEdit extends React.Component {
                                 </div>
                                 <div className="row profile_inputs-row">
                                     <div className="col-md-6">
-                                        <Input className="input input__grey" handleChange={ this.handleChange } name="fullname" label="Full Name" defaultValue={ fullname } />
+                                        <Input className="input-group input-group__grey" handleChange={ this.handleChange } name="fullname" label="Full Name" defaultValue={ fullname } />
                                     </div>
                                     <div className="col-md-6">
-                                        <Input className="input input__grey" handleChange={ this.handleChange } name="position" label="Position" defaultValue={ position } />
-                                    </div>
-                                </div>
-                                <div className="row profile_inputs-row">
-                                    <div className="col-md-6">
-                                        <Input className="input input__grey" handleChange={ this.handleChange } name="phone" label="Phone" defaultValue={ phone } />
-                                    </div>
-                                    <div className="col-md-6">
-                                        <Input className="input input__grey" handleChange={ this.handleChange } name="skype" label="Skype" defaultValue={ skype } />
+                                        <Input className="input-group input-group__grey" handleChange={ this.handleChange } name="position" label="Position" defaultValue={ position } />
                                     </div>
                                 </div>
                                 <div className="row profile_inputs-row">
                                     <div className="col-md-6">
-                                        <Input className="input input__grey" handleChange={ this.handleChange } name="workhours" label="Work Hours" defaultValue={ workhours } />
+                                        <Input className="input-group input-group__grey" handleChange={ this.handleChange } name="phone" label="Phone" defaultValue={ phone } />
                                     </div>
                                     <div className="col-md-6">
-                                        <Input className="input input__grey" handleChange={ this.handleChange } name="email" label="E-mail" defaultValue={ email } />
+                                        <Input className="input-group input-group__grey" handleChange={ this.handleChange } name="skype" label="Skype" defaultValue={ skype } />
+                                    </div>
+                                </div>
+                                <div className="row profile_inputs-row">
+                                    <div className="col-md-6">
+                                        <Input className="input-group input-group__grey" handleChange={ this.handleChange } name="workhours" label="Work Hours" defaultValue={ workhours } />
+                                    </div>
+                                    <div className="col-md-6">
+                                        <Input className="input-group input-group__grey" handleChange={ this.handleChange } name="email" label="E-mail" defaultValue={ email } />
                                     </div>
                                 </div>
                                 <div className="row profile_section">
@@ -134,10 +134,10 @@ class UserEdit extends React.Component {
                                 </div>
                                 <div className="row profile_inputs-row">
                                     <div className="col-md-6">
-                                        <Input className="input input__grey" handleChange={ this.handleChange } name="birthday" label="Birthday" defaultValue={ birthday } />
+                                        <Input className="input-group input-group__grey" handleChange={ this.handleChange } name="birthday" label="Birthday" defaultValue={ birthday } />
                                     </div>
                                     <div className="col-md-6">
-                                        <Input className="input input__grey" handleChange={ this.handleChange } name="vk" label="VK" defaultValue={ vk } />
+                                        <Input className="input-group input-group__grey" handleChange={ this.handleChange } name="vk" label="VK" defaultValue={ vk } />
                                     </div>
                                 </div>
                                 <div className="row profile_section">
@@ -147,7 +147,7 @@ class UserEdit extends React.Component {
                                 </div>
                                 <div className="row profile_inputs-row">
                                     <div className="col-md-12">
-                                        <Input className="input input__grey" handleChange={ this.handleChange } name="cv" label="CV" defaultValue={ cv } />
+                                        <Input className="input-group input-group__grey" handleChange={ this.handleChange } name="cv" label="CV" defaultValue={ cv } />
                                     </div>
                                 </div>
                                 <div className="row profile_inputs-row vertical-center">

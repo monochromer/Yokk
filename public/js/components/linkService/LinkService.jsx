@@ -10,6 +10,7 @@ class LinkService extends React.Component {
         super(props);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleClose = this.handleClose.bind(this);
     }
 
     handleChange(event) {
@@ -23,7 +24,12 @@ class LinkService extends React.Component {
         store.dispatch(linkService(this.props.userId, this.state))
     }
 
+    handleClose() {
+        store.dispatch({ type: "LINK_SERVICE_CLOSE" });
+    }
+
     render() {
+
         let modalClasses = classNames({
             modal: true,
             hide: this.props.status == "hidden"
@@ -31,6 +37,7 @@ class LinkService extends React.Component {
 
         return (
             <div className={ modalClasses }>
+                <div className="modal_close" onClick={ this.handleClose }></div>
                 <div className="container">
                     <div className="row center-md vertical-center modal_row">
                         <div className="col-md-6">
@@ -43,12 +50,12 @@ class LinkService extends React.Component {
                             <form onSubmit={ this.handleSubmit }>
                                 <div className="row linkService_row">
                                     <div className="col-md-12">
-                                        <Input name="redmineHost" className="input input__light-grey" handleChange={ this.handleChange } label="Host"/>
+                                        <Input name="redmineHost" className="input-group input-group__light-grey" handleChange={ this.handleChange } label="Host"/>
                                     </div>
                                 </div>
                                 <div className="row linkService_row">
                                     <div className="col-md-12 text-center">
-                                        <Input name="redmineApiKey" className="input input__light-grey" handleChange={ this.handleChange } label="API key"/>
+                                        <Input name="redmineApiKey" className="input-group input-group__light-grey" Change={ this.handleChange } label="API key"/>
                                     </div>
                                 </div>
                                 <div className="row">
