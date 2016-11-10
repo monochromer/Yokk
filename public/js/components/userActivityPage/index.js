@@ -2,7 +2,7 @@ import React from 'react';
 import UserActivityTable from './UserActivityTable.jsx';
 import { connect } from 'react-redux';
 import { findUserByLogin } from '../../helpers.js';
-import DRPicker from '../dateRangePicker';
+import { Input } from '../UI.jsx'
 
 class UserActivityPage extends React.Component {
     constructor(props) {
@@ -18,26 +18,26 @@ class UserActivityPage extends React.Component {
         const login = this.props.routeParams.login;
 
         function findUserActivity(login, usersActivities) {
-          if (usersActivities) {
-            return usersActivities[login];
-          }
-          return;
+            if (usersActivities) {
+                return usersActivities[login];
+            }
         }
 
         const userActivity = findUserActivity(login, this.props.usersActivities);
 
         let period, oldestLoadedRecorDate;
+
         if (userActivity) {
-          period = {
-            startDate: userActivity.startDate,
-            endDate: userActivity.endDate
-          };
-          oldestLoadedRecorDate = userActivity.list[userActivity.list.length-1].dateCreated;
+            period = {
+                startDate: userActivity.startDate,
+                endDate: userActivity.endDate
+            };
+            oldestLoadedRecorDate = userActivity.list[userActivity.list.length - 1].dateCreated;
         }
 
         const user = findUserByLogin(this.props.users, login);
 
-        if(user) {
+        if (user) {
             this.state.userHeading = user.fullname ? user.fullname : user.login;
             if (user.profileImg) {
                 this.state.photo = user.profileImg.medium;
@@ -46,31 +46,45 @@ class UserActivityPage extends React.Component {
         }
 
         return (
-            <div>
-                <div className="row">
-                    <div className="col-md-12">
-                        <div className="page-header">
-                            <div className="jumbotron">
+            <div className="activity-page">
+                <div className="activity-page__header">
+                    <div className="container container__fixed">
+                        <div className="row center-md vertical-center">
+                            <div className="col-md-8">
                                 <div className="row">
-                                    <div className="col-md-2">
-                                        <img src={ this.state.photo } width="200px" className="img-thumbnail"/>
+                                    <div className="col-md-4 flex vertical-center">
+                                        <div className="profile-photo center-block">
+                                            <img src={ this.state.photo } width="135px" className="img-circle"/>
+                                        </div>
                                     </div>
-                                    <div className="col-md-8">
-                                        <h2>
-                                            { this.state.userHeading } <br />
-                                            <small>  { this.state.position } </small>
-                                        </h2>
-
+                                    <div className="col-md-8 text-left">
+                                        <h2 className="heading heading__white">{ this.state.userHeading }</h2>
+                                        <div className="activity-page__filter">
+                                            <div className="activity-page__choose">Choose period</div>
+                                            <div className="row">
+                                                <div className="col-md-4">
+                                                    <Input className="input-group input-group__light-blue"
+                                                           label="from"
+                                                           name="from"/>
+                                                </div>
+                                                <div className="col-md-4">
+                                                    <Input className="input-group input-group__light-blue"
+                                                           label="to"
+                                                           name="to"/>
+                                                </div>
+                                                <div className="col-md-4"></div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <DRPicker period={period} oldestLoadedRecorDate={oldestLoadedRecorDate} parentComponent="UserActivityPage" width = "100px" login={login} />
+
                 <div className="row">
                     <div className="col-md-12">
-                        <UserActivityTable login={ login } userActivity={userActivity} />
+                        <UserActivityTable login={ login } userActivity={userActivity}/>
                     </div>
                 </div>
             </div>
@@ -80,7 +94,7 @@ class UserActivityPage extends React.Component {
 
 let getProps = function(state) {
     return {
-        users: state.users,
+        users: state.users.list,
         usersActivities: state.usersActivities
     };
 };

@@ -307,4 +307,19 @@ body {
 .loadmore {
     margin-bottom: 120px;
 }
+
 /*---------------------------------------- /tracking-form --------------------------------------*/
+
+
+
+/*---------------------------------------- activity-page --------------------------------------*/
+
+.activity-page__header {
+    background-color: #4A77DA;
+    padding: 60px 0;
+}
+
+.activity-page__choose {
+    color: #FFFFFF;
+    font-size: 20px;
+}

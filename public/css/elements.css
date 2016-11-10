@@ -337,3 +337,19 @@ a:hover {
 }
 
 /*---------------------------------------- /form-data --------------------------------------*/
+
+
+
+/*---------------------------------------- profile-photo --------------------------------------*/
+
+.profile-photo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #DBDBDB;
+    border-radius: 50%;
+    text-align: center;
+    width: 160px;
+    height: 160px;
+    transition: border 0.2s ease-in-out;
+}

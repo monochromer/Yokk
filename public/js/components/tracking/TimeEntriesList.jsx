@@ -37,7 +37,9 @@ class TimeEntriesList extends React.Component {
             'btn btn__md btn__trans-blue loadmore' : true,
             'btn__disabled': this.props.allBatches
         });
+
         const disabled = this.props.allBatches ? 'disabled' : "";
+
         return (
             <div className="container container__fixed">
                 { rows }
