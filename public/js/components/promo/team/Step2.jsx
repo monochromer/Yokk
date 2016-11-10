@@ -2,6 +2,7 @@ import React from 'react'
 import store from '../../../store'
 import { step2 } from '../../../actions/teams'
 import { connect } from 'react-redux'
+import { Input } from '../../UI.jsx'
 
 class Step2 extends React.Component {
     constructor(props) {
@@ -38,13 +39,15 @@ class Step2 extends React.Component {
                     </div>
                     <div className="row center-xs step__code">
                         <div className="col-md-6 col-sm-8 col-xs-10">
-                            <input className="input input_black" type="text" onChange={ this.handleChange.bind(this) }
-                                   placeholder="User name"/>
+                            <Input handleChange={ this.handleChange.bind(this) }
+                                   className="input-group input-group__grey"
+                                   name="username"
+                                   label="User name"/>
                         </div>
                     </div>
                     <div className="row center-xs">
                         <div className="col-md-6 col-sm-8 col-xs-10">
-                            <button type="submit" className="btn btn_blue btn_lg team-create__create"
+                            <button type="submit" className="btn  btn__lg btn__blue team-create__create"
                                     disabled={ !this.state.login ? "disabled" : "" }>Continue to
                                 Password
                             </button>

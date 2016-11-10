@@ -14,8 +14,9 @@ exports.create = function(req, res, next) {
 
     const email = req.body.email;
     if (!valid(email)) {
-        res.status(500).send();
-        return next(new Error());
+        var error = new Error();
+        error.name = "Email is not valid";
+        return next(error.name);
     }
 
     const code = req.body.code;

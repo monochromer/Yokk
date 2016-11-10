@@ -31,7 +31,7 @@ class Step1 extends React.Component {
     }
 
     render() {
-        const inputClass = "input input_black step1__confirmation-input text-center";
+        const inputClass = "step1__confirmation-input text-center";
         return (
             <div className="container">
                 <form onSubmit={ this.handleSubmit.bind(this) }>
@@ -83,7 +83,7 @@ class Step1 extends React.Component {
                     <div className="row center-xs">
                         <div className="col-md-6 col-sm-8 col-xs-10">
                             <button type="submit"
-                                    className="btn btn_blue btn_lg team-create__create" disabled={ this.state.code.length != 6 ? "disabled" : "" } >
+                                    className="btn btn__lg btn__blue team-create__create" disabled={ this.state.code.length != 6 ? "disabled" : "" } >
                                 Continue to
                                 Name
                             </button>

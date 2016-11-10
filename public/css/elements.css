@@ -71,10 +71,6 @@ a:hover {
     transition: all .1s ease-in-out;
 }
 
-.btn__blue:disabled {
-    background-color: #919191;
-    cursor: not-allowed;
-}
 
 .btn__blue:active {
     background-color: #2F5BBA;
@@ -84,6 +80,10 @@ a:hover {
     background-color: #2F5BBA;
 }
 
+.btn__blue:disabled {
+    background-color: #919191;
+    cursor: not-allowed;
+}
 
 .link__white {
     color: #FFFFFF;

@@ -41,14 +41,16 @@ export class Input extends React.Component {
 
     render() {
 
-        if(this.props.error)
+        if(this.props.error) {
             var error = ( <span className="error"> { this.props.error } </span> );
+        }
 
+        const type = this.props.type ? this.props.type : "text";
 
         return (
             <div className={ this.getInputClasses() } onFocus={ this.handleFocus } onBlur={ this.handleBlur }>
                 <label htmlFor={ this.props.name }>{ this.props.label }</label>
-                <input type="text"
+                <input type={ type }
                        id={ this.props.name }
                        name={ this.props.name }
                        onChange={ this.handleChange }

@@ -1,10 +1,11 @@
 import React from 'react'
 import store from '../../../store';
-import {step4} from '../../../actions/teams'
-import {connect} from 'react-redux'
-
+import { step4 } from '../../../actions/teams'
+import { connect } from 'react-redux'
+import { Input } from '../../UI.jsx'
 
 class Step4 extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -40,13 +41,16 @@ class Step4 extends React.Component {
                     </div>
                     <div className="row center-xs step__code">
                         <div className="col-md-6 col-sm-8 col-xs-10">
-                            <input className="input input_black" type="text" onChange={ this.handleChange.bind(this) }
-                                   placeholder="Company name"/>
+                            <Input className="input-group input-group__grey"
+                                   type="text"
+                                   handleChange={ this.handleChange.bind(this) }
+                                   name="name"
+                                   label="Company name"/>
                         </div>
                     </div>
                     <div className="row center-xs">
                         <div className="col-md-6 col-sm-8 col-xs-10">
-                            <button className="btn btn_blue btn_lg team-create__create"
+                            <button className="btn btn__blue btn__lg team-create__create"
                                     disabled={ !this.state.teamName ? "disabled" : "" }>Continue to Sending Invitation
                             </button>
                         </div>

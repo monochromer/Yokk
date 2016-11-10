@@ -1,8 +1,9 @@
 import React from 'react'
 import _ from 'lodash'
-import {connect} from 'react-redux'
-import {step5} from '../../../actions/teams'
-import {authUser} from '../../../actions/teams'
+import { connect } from 'react-redux'
+import { step5 } from '../../../actions/teams'
+import { Input } from '../../UI.jsx'
+import { authUser } from '../../../actions/teams'
 import store from '../../../store'
 
 class Step5 extends React.Component {
@@ -36,11 +37,13 @@ class Step5 extends React.Component {
 
         for (var i = 0; i < this.state.rows; i++) {
             invitationRows.push(
-                <div className="row center-xs step__code" key={ _.uniqueId() }>
+                <div className="row center-xs invintations_row" key={ _.uniqueId() }>
                     <div className="col-md-6 col-sm-8 col-xs-10">
-                        <input className="input input_black" type="email" name={ i }
-                               defaultValue={ this.state.invitations[i] } onChange={ this.handleChange.bind(this) }
-                               placeholder="E-mail"/>
+                        <Input handleChange={ this.handleChange.bind(this) }
+                               defaultValue={ this.state.invitations[i] }
+                               className="input-group input-group__grey" type="email"
+                               name={ i }
+                               label="E-mail"/>
                     </div>
                 </div>
             );
@@ -76,7 +79,7 @@ class Step5 extends React.Component {
 
                     <div className="row center-xs">
                         <div className="col-md-6 col-sm-8 col-xs-10">
-                            <button className="btn btn_blue btn_lg team-create__create">Send
+                            <button className="btn btn__lg btn__blue team-create__create">Send
                                 Invitations
                             </button>
                         </div>

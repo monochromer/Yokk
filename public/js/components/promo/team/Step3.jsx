@@ -5,6 +5,7 @@ import { browserHistory } from 'react-router'
 import { step3 } from '../../../actions/teams'
 import { addUser } from '../../../actions/users'
 import { getFromStateOrLocalStorage } from '../../../helpers'
+import { Input } from '../../UI.jsx'
 
 class Step3 extends React.Component {
     constructor(props) {
@@ -45,13 +46,16 @@ class Step3 extends React.Component {
                     </div>
                     <div className="row center-xs step__code">
                         <div className="col-md-6 col-sm-8 col-xs-10">
-                            <input className="input input_black" type="password"
-                                   onChange={ this.handleChange.bind(this) } placeholder="Password"/>
+                            <Input handleChange={ this.handleChange.bind(this) }
+                                   className="input-group input-group__grey"
+                                   type="password"
+                                   name="password"
+                                   label="Password"/>
                         </div>
                     </div>
                     <div className="row center-xs">
                         <div className="col-md-6 col-sm-8 col-xs-10">
-                            <button className="btn btn_blue btn_lg team-create__create"
+                            <button className="btn btn__lg btn__blue team-create__create"
                                     disabled={ this.state.password.length <= 6 ? "disabled" : "" }>Continue to Team
                             </button>
                         </div>
