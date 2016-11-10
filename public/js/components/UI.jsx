@@ -40,6 +40,11 @@ export class Input extends React.Component {
     }
 
     render() {
+
+        if(this.props.error)
+            var error = ( <span className="error"> { this.props.error } </span> );
+
+
         return (
             <div className={ this.getInputClasses() } onFocus={ this.handleFocus } onBlur={ this.handleBlur }>
                 <label htmlFor={ this.props.name }>{ this.props.label }</label>
@@ -48,6 +53,7 @@ export class Input extends React.Component {
                        name={ this.props.name }
                        onChange={ this.handleChange }
                        defaultValue={ this.props.defaultValue }/>
+                { error }
             </div>
         )
     }

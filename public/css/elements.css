@@ -150,21 +150,21 @@ a:hover {
 /*---------------------------------------- inputs --------------------------------------*/
 
 .input-group {
-    height: 50px;
+    height: 60px;
     position: relative;
 }
 
 .input-group input {
     background: transparent;
     position: absolute;
-    bottom: 0;
+    bottom: 15px;
     left: 0;
     border: 0;
     width: 100%;
     outline:0;
     font-family: 'Montserrat', sans-serif;
-    padding-bottom: 6px;
-    transition: border .2s ease-in-out;
+    padding-bottom: 4px;
+    transition: all .2s ease-in-out;
 }
 
 .input-group input:focus {
@@ -176,7 +176,7 @@ a:hover {
     color: #919191;
     font-weight: 300;
     position: absolute;
-    top: 25px;
+    top: 14px;
     left: 0;
     transition: all .1s ease-in-out;
 }
@@ -224,15 +224,23 @@ a:hover {
     border-bottom-color: #FFFFFF;
 }
 
-/*---------------------------------------- /inputs --------------------------------------*/
-
-
+.input-group__error input {
+    border-bottom: 2px solid #FFC7C7;
+    color: #FFC7C7;
+}
 
 .error {
     color: #FFC7C7;
     font-weight: lighter;
     font-size: 0.7rem;
+    position: absolute;
+    left: 0;
+    bottom: 0;
 }
+
+/*---------------------------------------- /inputs --------------------------------------*/
+
+
 
 .blue-active-logo {
     text-decoration: none;

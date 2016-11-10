@@ -77,7 +77,11 @@ exports.create = function(req, res, next) {
                 teamLeadEmail: email
             };
             teamDBModel.findOne(teamInitialData, (err, team) => {
-                if (team && team.confirmed) return reject(new Error());
+                if(team && team.confirmed) {
+                    let error = new Error();
+                    error.name = "This team is already created and confirmed";
+                    return next(error.name);
+                }
 
                 teamInitialData.confirmationCode = "111111";
                 // teamInitialData.confirmationCode = Math.random().toString().slice(2, 8);

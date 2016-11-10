@@ -67,6 +67,11 @@ class PromoPage extends React.Component {
             'hide': this.state.rightPanelOpened
         });
 
+        const inputClassNames = classNames({
+           'input-group input-group__light-blue': true,
+            'input-group__error': this.props.error
+        });
+
         return (
 
             <div className="container-fluid main-container">
@@ -112,9 +117,11 @@ class PromoPage extends React.Component {
                             <div className="row center-md">
                                 <div className="col-md-8">
                                     <Input handleChange={ this.handleChange }
-                                           className="input-group input-group__light-blue"
+                                           className={ inputClassNames }
                                            name="email"
-                                           label="E-mail address"/>
+                                           label="E-mail address"
+                                           error={ this.props.error }
+                                    />
                                     <button type="submit" className="btn btn__lg btn__white right-panel_btn">Create New Team</button>
                                 </div>
                             </div>
