@@ -4,164 +4,147 @@ import store from '../../store.js';
 import { connect } from 'react-redux';
 import { findUserByLogin } from '../../helpers.js'
 import { Link } from 'react-router'
+import { Input } from '../UI.jsx'
 
-var UserPage = React.createClass({
+class UserPage extends React.Component {
 
-	getInitialState: function() {
-		return {
-			user: findUserByLogin(this.props.users, this.props.routeParams.login)
-		}
-	},
+    constructor(props) {
+        super(props);
 
-	componentWillReceiveProps: function(nextProps) {
-		this.setState({
-			user: findUserByLogin(nextProps.users, this.props.routeParams.login)
-		})
-	},
+        this.state = {
+            user: findUserByLogin(this.props.users, this.props.routeParams.login)
+        };
 
-	render: function() {
-		if(this.state.user == undefined) {
-			return ( <p> Wait a moment please...</p> );
-		} else {
-			const photo = this.state.user.profileImg ? this.state.user.profileImg.original : "";
-			return (
-			    <div className="container-fluid">
-			        <div className="row">
-			        	<div className="col-md-3 text-center center-block profile__photo">
-		        			<div className="profile__dropzone vertical-center">
-                    			<img src={ photo } className="img-thumbnail center-block"/>
-                			</div>
-		        		</div>
-			        	<div className="col-md-9 profile">
-							<h2>{ this.state.user.login } <Link  to={ '/user/edit/' + this.state.user.login } className="btn btn-sm btn-warning">Edit</Link></h2>
-							<div className="row">
-								<div className="col-md-12">
-									<h2>General</h2>
-								</div>
-							</div>
-							<div className="row">
-								<div className="col-md-6 profile__fields">
-									<div className="profile__field-name">
-										<span>Fullname</span>
-									</div>
-									<div className="profile__field-value">
-										<span>{ this.state.user.fullname }</span>
-									</div>
-								</div>
-								<div className="col-md-6 profile__fields">
-									<div className="profile__field-name">
-										<span>Email</span>
-									</div>
-									<div className="profile__field-value">
-										<span>{ this.state.user.email }</span>
-									</div>
-								</div>
-							</div>
-							<div className="row">
-								<div className="col-md-6 profile__fields">
-									<div className="profile__field-name">
-										<span>Phone Number</span>
-									</div>
-									<div className="profile__field-value">
-										<span>{ this.state.user.phone }</span>
-									</div>
-								</div>
-								<div className="col-md-6 profile__fields">
-									<div className="profile__field-name">
-										<span>Skype</span>
-									</div>
-									<div className="profile__field-value">
-										<span>{ this.state.user.skype }</span>
-									</div>
-								</div>
-							</div>
-							<div className="row">
-								<div className="col-md-6 profile__fields">
-									<div className="profile__field-name">
-										<span>Work Hourse GMT+3</span>
-									</div>
-									<div className="profile__field-value">
-										<span>{ this.state.user.workhours }</span>
-									</div>
-								</div>
-							</div>
-							<div className="row">
-								<div className="col-md-12">
-									<h2>Personal</h2>
-								</div>
-							</div>
-							<div className="row">
-								<div className="col-md-6 profile__fields">
-									<div className="profile__field-name">
-										<span>Day of birth</span>
-									</div>
-									<div className="profile__field-value">
-										<span>{ this.state.user.birthday }</span>
-									</div>
-								</div>
-								<div className="col-md-6 profile__fields">
-									<div className="profile__field-name">
-										<span>VK</span>
-									</div>
-									<div className="profile__field-value">
-										<span>{ this.state.user.vk }</span>
-									</div>
-								</div>
-							</div>
-							<div className="row">
-								<div className="col-md-6 profile__fields">
-									<div className="profile__field-name">
-										<span>Twitter</span>
-									</div>
-									<div className="profile__field-value">
-										<span>{ this.state.user.twitter }</span>
-									</div>
-								</div>
-							</div>
-							<div className="row">
-								<div className="col-md-12">
-									<h2>About me</h2>
-								</div>
-							</div>
-							<div className="row">
-								<div className="col-md-12 profile__fields">
-									<div className="profile__field-value">
-										<span>{ this.state.user.aboutme }</span>
-									</div>
-								</div>
-							</div>
-							<div className="row">
-								<div className="col-md-12 profile__fields">
-									<div className="profile__field-name">
-										<span>CV</span>
-									</div>
-									<div className="profile__field-value">
-										<span>{ this.state.user.cv }</span>
-									</div>
-								</div>
-							</div>
-							<div className="row">
-								<div className="col-md-12 profile__fields">
-									<div className="profile__field-name">
-										<span>Redmine API key</span>
-									</div>
-									<div className="profile__field-value">
-										<span>{ this.state.user.redmineApiKey }</span>
-									</div>
-								</div>
-							</div>
-						</div>
-			        </div>
-			    </div>
-			);
-		}
-	}
-});
+        this.showField = this.showField.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            user: findUserByLogin(nextProps.users, this.props.routeParams.login)
+        })
+    }
+
+    showField(field) {
+        return field ? field : "–";
+    }
+
+    render() {
+        if (this.state.user) {
+            const { profileImg, login, redmineApiKey, fullname, position, phone, skype, workhours, email, birthday, vk, aboutme, cv } = this.state.user;
+            const photo = profileImg ? profileImg.medium : "";
+            return (
+                <div className="container container__fixed profile">
+                    <div className="row">
+
+                        <div className="col-md-3 profile_photo">
+                            <div className="profile_dropzone profile_dropzone__view">
+                                <img src={ photo } height="205px" className="img-circle"/>
+                            </div>
+                        </div>
+
+                        <div className="col-md-9">
+                            <div className="row middle-md">
+                                <div className="col-md-6">
+                                    <h2>{ login }</h2>
+                                </div>
+                                <div className="col-md-6 text-right">
+                                    <img src="/img/redmine-bw.svg" alt="Link with redmine"/>
+                                </div>
+                            </div>
+                            <div className="row profile_section">
+                                <div className="col-md-12">
+                                    <h3 className="profile_heading">General</h3>
+                                </div>
+                            </div>
+                            <div className="row profile_inputs-row">
+                                <div className="col-md-6">
+                                    <div className="form-data">
+                                        <span className="form-data__name">Full Name</span>
+                                        <span className="form-data__value"> { this.showField(fullname) }</span>
+                                    </div>
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="form-data">
+                                        <span className="form-data__name">Position</span>
+                                        <span className="form-data__value"> { this.showField(position) }</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row profile_inputs-row">
+                                <div className="col-md-6">
+                                    <div className="form-data">
+                                        <span className="form-data__name">Phone</span>
+                                        <span className="form-data__value"> { this.showField(phone) }</span>
+                                    </div>
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="form-data">
+                                        <span className="form-data__name">Skype</span>
+                                        <span className="form-data__value"> { this.showField(skype) }</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row profile_inputs-row">
+                                <div className="col-md-6">
+                                    <div className="form-data">
+                                        <span className="form-data__name">Work Hours</span>
+                                        <span className="form-data__value"> { this.showField(workhours) }</span>
+                                    </div>
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="form-data">
+                                        <span className="form-data__name">E-mail</span>
+                                        <span className="form-data__value"> { this.showField(email) }</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row profile_section">
+                                <div className="col-md-12">
+                                    <h3 className="profile_heading">Personal</h3>
+                                </div>
+                            </div>
+                            <div className="row profile_inputs-row">
+                                <div className="col-md-6">
+                                    <div className="form-data">
+                                        <span className="form-data__name">Birthday</span>
+                                        <span className="form-data__value"> { this.showField(birthday) }</span>
+                                    </div>
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="form-data">
+                                        <span className="form-data__name">VK Profile</span>
+                                        <span className="form-data__value"> { this.showField(vk) }</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row profile_section">
+                                <div className="col-md-12">
+                                    <h3 className="profile_heading">About me</h3>
+                                </div>
+                            </div>
+                            <div className="row profile_inputs-row">
+                                <div className="col-md-12">
+                                    <div className="form-data">
+                                        <span className="form-data__name">About</span>
+                                        <span className="form-data__value"> { this.showField(aboutme) }</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        } else {
+            return ( <p> Wait a moment please...</p> );
+        }
+    }
+}
+;
 
 function getParams(state) {
-	return {
-		users: state.users.list
-	}
+    return {
+        users: state.users.list
+    }
 }
 
 export default connect(getParams)(UserPage);

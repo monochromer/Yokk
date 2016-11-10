@@ -208,6 +208,14 @@ body {
     border: 1px solid #4A77DA;
 }
 
+.profile_dropzone__view {
+    cursor: default;
+}
+
+.profile_dropzone__view:hover {
+    border: 1px solid #DBDBDB;
+}
+
 .profile_section {
     background-color: #F7F9FC;
     padding-left: 32px;
