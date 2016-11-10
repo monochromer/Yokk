@@ -45,10 +45,9 @@ class TimeEntriesList extends React.Component {
                 { rows }
                 <div className="row center-md">
                     <div className="col-md-4 text-center">
-                        <button className={ loadMoreClasses } onClick={this.loadMore} disabled={ disabled }> Load More </button>
+                        <button className={ loadMoreClasses } onClick={ this.loadMore } disabled={ disabled }> Load More </button>
                     </div>
                 </div>
-
             </div>
         )
     }

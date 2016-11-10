@@ -60,20 +60,20 @@ class UserActivityPage extends React.Component {
                                     <div className="col-md-8 text-left">
                                         <h2 className="heading heading__white">{ this.state.userHeading }</h2>
                                         <div className="activity-page__filter">
-                                            <div className="activity-page__choose">Choose period</div>
-                                            <div className="row">
-                                                <div className="col-md-4">
-                                                    <Input className="input-group input-group__light-blue"
-                                                           label="from"
-                                                           name="from"/>
-                                                </div>
-                                                <div className="col-md-4">
-                                                    <Input className="input-group input-group__light-blue"
-                                                           label="to"
-                                                           name="to"/>
-                                                </div>
-                                                <div className="col-md-4"></div>
-                                            </div>
+                                            {/*<div className="activity-page__choose">Choose period</div>*/}
+                                            {/*<div className="row">*/}
+                                                {/*<div className="col-md-4">*/}
+                                                    {/*<Input className="input-group input-group__light-blue"*/}
+                                                           {/*label="from"*/}
+                                                           {/*name="from"/>*/}
+                                                {/*</div>*/}
+                                                {/*<div className="col-md-4">*/}
+                                                    {/*<Input className="input-group input-group__light-blue"*/}
+                                                           {/*label="to"*/}
+                                                           {/*name="to"/>*/}
+                                                {/*</div>*/}
+                                                {/*<div className="col-md-4"></div>*/}
+                                            {/*</div>*/}
                                         </div>
                                     </div>
                                 </div>

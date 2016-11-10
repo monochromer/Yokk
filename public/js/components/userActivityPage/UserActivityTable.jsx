@@ -1,13 +1,13 @@
 import React from 'react';
-import store from '../../store';
-import {connect} from 'react-redux';
-import {durationBeatify} from '../../helpers';
-import {initializeUserActivity, fetchCustomUserNextTimeEntryBatch} from '../../actions/timeEntries.js';
 import DailyActivity from './DailyActivity.jsx';
-import {filterPeriod} from './helpers.js';
-import {groupTimeEntriesByDay} from '../../helpers';
+import classNames from 'classnames'
+import store from '../../store';
+import { durationBeatify, groupTimeEntriesByDay } from '../../helpers';
+import { initializeUserActivity, fetchCustomUserNextTimeEntryBatch } from '../../actions/timeEntries.js';
+import { filterPeriod } from './helpers';
 
 class UserActivityTable extends React.Component {
+
     constructor(props) {
         super(props);
         this.loadMore = this.loadMore.bind(this);
@@ -45,12 +45,23 @@ class UserActivityTable extends React.Component {
             var duration = durationBeatify(days[day].totalDuration);
             rows.push(<DailyActivity day={day} duration={duration} timeEntries={days[day].list} key={day}/>)
         }
-        const loadMoreClasses = this.props.allBatches ? 'btn btn-success center-block loadmore disabled' : 'btn btn-success center-block loadmore';
+
+        const loadMoreClasses = classNames({
+            'btn btn__md btn__trans-blue loadmore' : true,
+            'btn__disabled': this.props.allBatches
+        });
+
+        const disabled = this.props.allBatches ? 'disabled' : "";
+
 
         return (
             <div>
-                {rows}
-                <button className={loadMoreClasses} onClick={this.loadMore}>Load More</button>
+                { rows }
+                <div className="row center-md">
+                    <div className="col-md-4">
+                        <button className={ loadMoreClasses } onClick={ this.loadMore } disabled={ disabled }>Load More</button>
+                    </div>
+                </div>
             </div>
         );
     }

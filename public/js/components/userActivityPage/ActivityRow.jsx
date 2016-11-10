@@ -1,8 +1,5 @@
 import React from 'react';
-import store from '../../store';
-import InputElement from 'react-input-mask';
-import moment from 'moment';
-import {durationBeatify} from '../../helpers';
+import { durationBeatify } from '../../helpers';
 
 class ActivityRow extends React.Component {
     constructor(props) {
@@ -14,29 +11,29 @@ class ActivityRow extends React.Component {
     }
 
     render() {
-        let {entrySource, description, duration, number} = this.props.timeEntry;
+        let { entrySource, description, duration, number } = this.props.timeEntry;
+        duration = durationBeatify(duration, 'short');
         if (entrySource == "redmine") {
-            description = '<a href="http://redmine.soshace.com/issues/' + number + '">issue ' + number + '</a> ' + description;
+            let link = `http://redmine.soshace.com/issues/number${number}`;
+
+            description = (
+                <span>
+                    <a href={ link }>issue { number }</a> &nbsp;
+                    { description }
+                </span>
+            );
         }
 
-        const sourceIcon = entrySource == "redmine"
-            ? '<span><img src="/img/redmine_fluid_icon.png" width="20px"/></span>'
-            : '';
+        const sourceIcon = entrySource == "redmine" ? (<img src="/img/redmine-active.svg" width="40px"/>) : '';
+
         return (
-            <tr>
-                <td dangerouslySetInnerHTML={{ __html: sourceIcon }}></td>
-                <td>
-                    {
-                      !this.state.editing ? <span dangerouslySetInnerHTML={{ __html:description }}></span> : <input className="form-control" defaultValue={description} ref="description"/>
-                    }
-                </td>
-                <td>
-                    {
-                      !this.state.editing ? durationBeatify(duration) : <InputElement className="form-control" mask="9:99" defaultValue={durationBeatify(duration)} ref="duration"/>
-                    }
-                </td>
-            </tr>
-        );
+            <div className="row entry-row vertical-center">
+                <div className="col-md-1 text-center">{ sourceIcon }</div>
+                <div className="col-md-9 entry-row_description">{ description }</div>
+                <div className="col-md-1">{ duration }</div>
+                <div className="col-md-1"></div>
+            </div>
+        )
     }
 }
 
