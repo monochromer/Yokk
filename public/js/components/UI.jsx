@@ -71,7 +71,6 @@ export class Checkbox extends React.Component {
 
     handleChange(event) {
         this.props.onChange(event);
-        console.log(event);
         this.setState({ active: !this.state.active })
     }
 
@@ -79,7 +78,7 @@ export class Checkbox extends React.Component {
         const { name, label, value } = this.props;
         const checkboxClasses = classNames({
             "checkbox-group": true,
-            "active": this.props.active
+            "checkbox-group__checked": this.state.active
         });
 
         return (

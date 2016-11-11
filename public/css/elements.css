@@ -242,6 +242,35 @@ a:hover {
 
 
 
+/*---------------------------------------- checkboxes  --------------------------------------*/
+
+.checkbox-group {
+
+}
+
+.checkbox-group input {
+    display: none;
+}
+
+.checkbox-group label {
+    padding-left: 35px;
+    background-image: url('/img/checkbox.svg');
+    background-repeat: no-repeat;
+    background-position: left center;
+    font-size: 16px;
+    font-weight: 300;
+    cursor: pointer;
+    transition: all .1s ease;
+}
+
+.checkbox-group__checked label {
+    background-image: url('/img/checkbox-active.svg');
+}
+/*---------------------------------------- /checkboxes --------------------------------------*/
+
+
+
+
 .blue-active-logo {
     text-decoration: none;
     font-size: 1.5rem;
