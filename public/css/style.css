@@ -341,3 +341,28 @@ body {
 .filter_row {
     padding: 30px 0;
 }
+
+.custom-periods {
+    margin-top: 30px;
+}
+
+.custom-periods_period {
+    display: block;
+    color: #4A77DA;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 25px;
+}
+
+.reports_heading {
+    margin-top: 0px;
+}
+
+.reports-table__heading {
+    color: #919191;
+}
+
+.reports_duration {
+    font-weight: 300;
+    font-size: 16px;
+}

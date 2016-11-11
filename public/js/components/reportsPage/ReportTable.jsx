@@ -1,7 +1,7 @@
 import React from 'react';
-import store from '../../store.js';
-import {Table} from 'react-bootstrap';
 import ReportTableRow from './ReportTableRow.jsx'
+import connect from 'react-redux'
+
 
 class ReportTable extends React.Component {
     render() {
@@ -12,42 +12,30 @@ class ReportTable extends React.Component {
 
         let tableToRender;
         if (typeof propsToPass !== 'undefined') {
-          tableToRender =
-          <tbody>
-            {
-              Object.keys(propsToPass).map(function(user) {
-                return <ReportTableRow userName={user} responseData={propsToPass[user]} key={user} />;
-              })
-            }
-          </tbody>;
+            tableToRender = Object.keys(propsToPass).map(function(user) {
+                return <ReportTableRow user={ user } responseData={ propsToPass[user] } key={ user }/>;
+            });
         }
 
         return (
             <div className="col-md-12">
                 <div className="row">
                     <div className="col-md-12">
-                        <h2>Activity report</h2>
+                        <h2 className="heading reports_heading">Reports</h2>
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-md-12">
-                        <Table striped hover>
-                            <thead>
-                                <tr>
-                                    <th>User</th>
-                                    <th>Total</th>
-                                    <th>Redmine</th>
-                                    <th>Upwork</th>
-                                    <th>Direct</th>
-                                </tr>
-                            </thead>
-                            {tableToRender}
-                        </Table>
-                    </div>
+                    <div className="col-md-6 reports-table__heading">User</div>
+                    <div className="col-md-2 reports-table__heading">Redmine</div>
+                    <div className="col-md-2 reports-table__heading">Direct</div>
+                    <div className="col-md-2 reports-table__heading">Total</div>
                 </div>
+                { tableToRender }
             </div>
         );
     }
 }
+
+
 
 export default ReportTable;

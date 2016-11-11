@@ -56,7 +56,7 @@ exports.createReport = function(req, res, next) {
                         duration
                     } = entry;
 
-                    executor = _.find( users, user => user._id.toString() === entry.executor.toString() ).login;
+                    var executor = _.find( users, user => user._id.toString() === entry.executor.toString() ).login;
                     if (!data[executor]) {
                         data[executor] = {
                             total: duration,

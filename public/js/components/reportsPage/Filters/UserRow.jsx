@@ -30,7 +30,10 @@ class UserRow extends React.Component {
         return (
             <div className="row filter_row">
                 <div className="col-md-12">
-                    <Checkbox label={ fullNameOrLogin } value={ this.props.user.login }onChange={ this.handleChange } name=""/>
+                    <Checkbox onChange={ this.handleChange }
+                              label={ fullNameOrLogin }
+                              value={ this.props.user.login }
+                              name={ this.props.user._id }/>
                 </div>
             </div>
         );

@@ -1,1 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="2819 7227 21 21"><defs><style>.a{fill:#4a77da;}</style></defs><rect class="a" width="21" height="21" transform="translate(2819 7227)"/></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="21px" height="21px" viewBox="0 0 21 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.3 (33839) - http://www.bohemiancoding.com/sketch -->
+    <title>Untitled</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="rectangle-4" fill="#4A77DA">
+            <rect x="0" y="0" width="21" height="21"></rect>
+        </g>
+        <g id="Group" transform="translate(6.000000, 6.000000)" fill="#FFFFFF">
+            <polygon id="Rectangle" transform="translate(6.137251, 4.474720) rotate(45.000000) translate(-6.137251, -4.474720) " points="5.13725052 0.47472 7.13725052 0.47472 7.13725052 8.47472 5.13725052 8.47472"></polygon>
+            <polygon id="Rectangle-Copy" transform="translate(2.952707, 5.503886) rotate(-45.000000) translate(-2.952707, -5.503886) " points="1.95270653 3.00388603 3.95270653 3.00388603 3.95270653 8.00388603 1.95270653 8.00388603"></polygon>
+        </g>
+    </g>
+</svg>

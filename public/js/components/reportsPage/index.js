@@ -22,7 +22,7 @@ class UserActivityPage extends React.Component {
     render() {
         return (
             <div className="container container__fixed">
-                <div className="row">
+                <div className="row reports-page">
                     <div className="col-md-3">
                         <div className="row">
                             <div className="col-md-12">
@@ -34,8 +34,8 @@ class UserActivityPage extends React.Component {
                         </div>
                         <div className="row">
                             <div className="col-md-12">
-                                <button onClick={ this.getTheReport } className="btn btn-success">
-                                    Calculate
+                                <button onClick={ this.getTheReport } className="btn btn__lg btn__blue">
+                                    Go
                                 </button>
                             </div>
                         </div>
