@@ -60,3 +60,33 @@ export class Input extends React.Component {
         )
     }
 }
+
+export class Checkbox extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = { active: false };
+        this.handleChange = this.handleChange.bind(this)
+    }
+
+    handleChange(event) {
+        this.props.onChange(event);
+        console.log(event);
+        this.setState({ active: !this.state.active })
+    }
+
+    render() {
+        const { name, label, value } = this.props;
+        const checkboxClasses = classNames({
+            "checkbox-group": true,
+            "active": this.props.active
+        });
+
+        return (
+            <div className={ checkboxClasses }>
+                <input type="checkbox" id={ name } name={ name } value={ value } onChange={ this.handleChange }/>
+                <label htmlFor={ name }>{ label }</label>
+            </div>
+        )
+    }
+}

@@ -1,16 +1,8 @@
 import _ from 'lodash';
-import moment from 'moment';
-
 const defaultState = {};
 
 export default function(state = defaultState, action) {
-    const {
-        type,
-        payload,
-        startDate,
-        endDate,
-        user
-    } = action;
+    const { type, payload, startDate, endDate, user } = action;
 
     switch (type) {
         case "SAVE_USER_FOR_REPORT_TO_STORE":

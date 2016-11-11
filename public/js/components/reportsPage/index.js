@@ -1,11 +1,12 @@
 import React from 'react';
-import store from '../../store.js';
-import {connect} from 'react-redux';
 import ReportTable from './ReportTable.jsx';
 import Filters from './Filters';
-import {fetchReportData} from '../../actions/statistics';
+import store from '../../store.js';
+import { connect } from 'react-redux';
+import { fetchReportData } from '../../actions/statistics';
 
 class UserActivityPage extends React.Component {
+
     constructor(props) {
         super(props);
         this.getTheReport = this.getTheReport.bind(this);
@@ -20,35 +21,44 @@ class UserActivityPage extends React.Component {
 
     render() {
         return (
-            <div className='row'>
-                <div className="col-md-3">
-                    <div className="row">
-                        <div className="col-md-12">
-                            <Filters users={this.props.users} period={this.props.period} usersForReport={this.props.usersForReport}/>
+            <div className="container container__fixed">
+                <div className="row">
+                    <div className="col-md-3">
+                        <div className="row">
+                            <div className="col-md-12">
+                                <Filters
+                                    users={ this.props.users }
+                                    period={ this.props.period }
+                                    usersForReport={ this.props.usersForReport} />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-md-12">
+                                <button onClick={ this.getTheReport } className="btn btn-success">
+                                    Calculate
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div className="row">
-                        <div className="col-md-12">
-                            <button onClick={this.getTheReport} className="btn btn-success" style={{ "marginTop": "3vh" }}>
-                                Calculate
-                            </button>
-                        </div>
+                    <div className="col-md-9">
+                        <ReportTable responseData={ this.props.responseData }/>
                     </div>
-                </div>
-                <div className="col-md-9">
-                    <ReportTable responseData={this.props.responseData}/>
                 </div>
             </div>
         );
     }
 }
 
-const fetchProps = function(state) {
-    const period = {
-        startDate: state.reportRequest.startDate,
-        endDate: state.reportRequest.endDate
+function fetchProps(state) {
+    return {
+        usersForReport: state.reportRequest.users,
+        users: state.users.list,
+        responseData: state.reportRequest.responseData,
+        period: {
+            startDate: state.reportRequest.startDate,
+            endDate: state.reportRequest.endDate
+        }
     }
-    return {usersForReport: state.reportRequest.users, users: state.users, responseData: state.reportRequest.responseData, period: period};
-};
+}
 
 export default connect(fetchProps)(UserActivityPage);

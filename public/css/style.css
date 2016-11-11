@@ -323,3 +323,21 @@ body {
     color: #FFFFFF;
     font-size: 20px;
 }
+
+/*---------------------------------------- /activity-page --------------------------------------*/
+
+
+
+/*---------------------------------------- /activity-page --------------------------------------*/
+
+.filter_heading {
+    background-color: #F7F9FC;
+    font-size: 25px;
+    padding-left: 20px;
+    height: 50px;
+    line-height: 50px;
+}
+
+.filter_row {
+    padding: 30px 0;
+}

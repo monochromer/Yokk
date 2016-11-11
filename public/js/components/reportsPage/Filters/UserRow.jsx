@@ -1,15 +1,16 @@
 import React from 'react';
 import store from '../../../store.js';
 
+import { Checkbox } from '../../UI.jsx';
+
 class UserRow extends React.Component {
     constructor(props) {
-        super();
-        this.state = {
-            checked: false
-        };
+        super(props);
+        this.handleChange = this.handleChange.bind(this);
     }
 
-    handleClick(event) {
+    handleChange(event) {
+        console.log(event);
         let action = {
             user: event.target.value
         };
@@ -25,12 +26,11 @@ class UserRow extends React.Component {
 
     render() {
         const fullNameOrLogin = this.props.user.fullname ? this.props.user.fullname : `(login:) ${this.props.user.login}`;
-        const text = this.state.checked ? <b>{fullNameOrLogin}</b> : fullNameOrLogin;
 
         return (
-            <div className="row">
+            <div className="row filter_row">
                 <div className="col-md-12">
-                    <input type="checkbox" onChange={this.handleClick} value={this.props.user.login} checked={this.props.checkStatus} />&nbsp;{text}
+                    <Checkbox label={ fullNameOrLogin } value={ this.props.user.login }onChange={ this.handleChange } name=""/>
                 </div>
             </div>
         );
