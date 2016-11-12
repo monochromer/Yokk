@@ -76,14 +76,15 @@ class UserEdit extends React.Component {
 
 
         if (this.state.user) {
-            const { profileImg, login, redmineApiKey, fullname, position, phone, skype, workhours, email, birthday, vk, aboutme, cv } = this.state.user;
+            const { _id, profileImg, login, redmineApiKey, fullname, position, phone, skype, workhours, email, birthday, vk, aboutme, cv } = this.state.user;
             const photo = profileImg ? profileImg.medium : "";
+            const redmine = redmineApiKey ? "/img/redmine-active.svg" : "/img/redmine-bw.svg";
             return (
                 <div className="container container__fixed profile">
                     <div className="row">
 
                         <div className="col-md-3 profile_photo">
-                            <DropPicture login={ login } photo={ photo }/>
+                            <DropPicture _id={ _id } photo={ photo }/>
                         </div>
 
                         <div className="col-md-9">
@@ -94,7 +95,7 @@ class UserEdit extends React.Component {
                                     </div>
                                     <div className="col-md-6 text-right">
                                         <span onClick={ this.linkRedmine }>
-                                            <img src="/img/redmine-bw.svg" alt="Link with redmine"/>
+                                            <img src={ redmine  } alt="Link with redmine"/>
                                         </span>
                                     </div>
                                 </div>

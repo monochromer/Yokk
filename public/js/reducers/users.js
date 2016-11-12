@@ -12,6 +12,7 @@ const defaultState = {
 
 export default function(state = defaultState, action) {
     const { type, payload } = action;
+    var newState = "";
     switch (type) {
         case "ADD_USER":
             return Object.assign({}, state, { list: [...state.list, payload] });
@@ -25,8 +26,18 @@ export default function(state = defaultState, action) {
             return Object.assign({}, state, { status: "ready" });
             break;
 
+        case "UPDATE_USER":
+            newState = _.filter(state.list, (o) => o._id != payload._id);
+            console.log(newState);
+            return Object.assign({}, state, {
+                status: "success",
+                list: [...newState, payload]
+            });
+            break;
+
         case "UPDATE_USER_SUCCESS":
-            const newState = _.filter(state.list, (o) => o._id != payload._id);
+            newState = _.filter(state.list, (o) => o._id != payload._id);
+            console.log(newState);
             return Object.assign({}, state, {
                 status: "success",
                 list: [...newState, payload]

@@ -141,7 +141,7 @@ body {
 }
 
 .users-list_heading {
-    padding: 20px 15px 0 15px;
+    padding: 20px 15px 20px 15px;
     border-top: 1px solid #DBDBDB;
 }
 
@@ -154,6 +154,10 @@ body {
 
 .users-list_row {
     padding: 15px;
+}
+
+.users-list_row:nth-child(2n+1) {
+    background-color: #F7F9FC;
 }
 
 .users-list_user-name {

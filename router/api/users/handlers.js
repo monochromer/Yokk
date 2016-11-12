@@ -188,12 +188,12 @@ exports.uploadUserAvatar = function(req, res, next) {
 
             userModel.editUser(login, update, (err, user) => {
                 if (err) next(err);
-                res.status(200).send(user);
-                callback(null);
+                callback(null, user);
             });
         }
-    ], (err) => {
+    ], (err, user) => {
         if (err) next(err);
+        res.status(200).send(user);
     });
 
 };

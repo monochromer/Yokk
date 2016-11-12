@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 
 class TopPanel extends React.Component {
     render() {
+        const photo = this.props.user.profileImg ? this.props.user.profileImg.small : "";
         return (
             <div className="top-panel">
                 <div className="container top-panel_container">
@@ -23,20 +24,27 @@ class TopPanel extends React.Component {
                                 </li>
                             </ul>
                         </div>
-                        <div className="col-md-2 col-md-offset-1 tracking-item">
-                            <Link className="tracking-block_link" to="/">
-                                <div className="tracking-block">
-                                    <span>Tracking</span>
+                        <div className="col-md-4 text-right tracking-item">
+                            <div className="row vertical-center">
+                                <div className="col-md-5">
+                                    <Link className="tracking-block_link" to="/">
+                                        <div className="tracking-block">
+                                            <span>Tracking</span>
+                                        </div>
+                                    </Link>
                                 </div>
-                            </Link>
-                        </div>
-                        <div className="col-md-1">
-                            <div className="profile-block">
-                                <img src="/img/max@3x.png" alt="maxim"/>
-                                <div className="dropdown">
-                                    <div className="dropdown-title ">
-                                        { this.props.login }
+                                <div className="col-md-5">
+                                    <div className="profile-block">
+                                        <img src={ photo } alt="maxim" className="img-circle" width="34px" height="34px"/>
+                                        <div className="dropdown">
+                                            <div className="dropdown-title ">
+                                                <Link to={ "/user/edit/" + this.props.user.login }>{ this.props.user.login }</Link>
+                                            </div>
+                                        </div>
                                     </div>
+                                </div>
+                                <div className="col-md-2">
+                                    <a href="/logout">Logout</a>
                                 </div>
                             </div>
                         </div>
@@ -47,9 +55,9 @@ class TopPanel extends React.Component {
     }
 }
 
-const getProps = function (store) {
+const getProps = function(store) {
     return {
-        login: store.currentUser.login
+        user: store.currentUser
     }
 };
 

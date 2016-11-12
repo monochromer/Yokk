@@ -31,7 +31,8 @@ module.exports = function(schema) {
             _id: 1,
             login: 1,
             team: 1,
-            role: 1
+            role: 1,
+            profileImg: 1
         }
         return this.findOne({
             login: login

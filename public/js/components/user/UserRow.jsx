@@ -22,7 +22,7 @@ class UserRow extends React.Component {
     }
 
     render() {
-        let { login, role, position, joinedon, profileImg, fullname } = this.props.user;
+        let { login, role, position, joinedon, profileImg, fullname, redmineApiKey } = this.props.user;
         let userActivityPageLink = `/user/activityPage/${ login }`;
         let photo = profileImg ? profileImg.small : "";
         let name = fullname ? fullname : login;
@@ -44,10 +44,11 @@ class UserRow extends React.Component {
             buttons = actionButtons;
         }
 
+        const redmine = redmineApiKey ? <img src="/img/redmine-active.svg" width="52px" height="52px" /> : "Nothing";
         position = position ? position : "No Information";
 
         return (
-            <div className="row users-list_row">
+            <div className="row users-list_row vertical-center">
 
                 <div className="col-md-3">
                     <div className="row">
@@ -65,7 +66,7 @@ class UserRow extends React.Component {
 
                 <div className="col-md-4 users-list_position"> { position } </div>
 
-                <div className="col-md-2"></div>
+                <div className="col-md-2">{ redmine }</div>
                 <div className="col-md-2"> <a href={ userActivityPageLink }> Show Activity </a> </div>
                 <div className="col-md-1"> { buttons } </div>
 

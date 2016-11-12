@@ -6,7 +6,7 @@ import { uploadUserPhoto } from '../../actions/users.js';
 var DropPicture = React.createClass({
 
     onDrop: function( files ) {
-        store.dispatch(uploadUserPhoto( files, this.props.login ));
+        store.dispatch(uploadUserPhoto( files, this.props._id ));
     },
 
     render: function( ) {
