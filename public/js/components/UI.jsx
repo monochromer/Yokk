@@ -36,7 +36,9 @@ export class Input extends React.Component {
 
     handleChange(event) {
         this.state.value = event.target.value;
-        this.props.handleChange(event);
+        if(this.props.hasOwnProperty('handleChange')) {
+            this.props.handleChange(event);
+        }
     }
 
     render() {
@@ -70,7 +72,10 @@ export class Checkbox extends React.Component {
     }
 
     handleChange(event) {
-        this.props.onChange(event);
+
+        if(this.props.hasOwnProperty('onChange')) {
+            this.props.onChange(event);
+        }
         this.setState({ active: !this.state.active })
     }
 
