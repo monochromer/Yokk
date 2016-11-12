@@ -50,12 +50,12 @@ class LinkService extends React.Component {
                             <form onSubmit={ this.handleSubmit }>
                                 <div className="row linkService_row">
                                     <div className="col-md-12">
-                                        <Input name="redmineHost" className="input-group input-group__light-grey" handleChange={ this.handleChange } label="Host"/>
+                                        <Input name="redmineHost" className="input-group input-group__grey-white" handleChange={ this.handleChange } label="Host"/>
                                     </div>
                                 </div>
                                 <div className="row linkService_row">
                                     <div className="col-md-12 text-center">
-                                        <Input name="redmineApiKey" className="input-group input-group__light-grey" Change={ this.handleChange } label="API key"/>
+                                        <Input name="redmineApiKey" className="input-group input-group__grey-white" Change={ this.handleChange } label="API key"/>
                                     </div>
                                 </div>
                                 <div className="row">

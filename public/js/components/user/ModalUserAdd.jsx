@@ -1,97 +1,113 @@
 import React from 'react'
 import store from '../../store'
+import classNames from 'classnames'
 import { connect } from 'react-redux'
-import { refsToObject } from '../../helpers'
-import { addUser } from '../../actions/users'
+import { Input } from '../UI.jsx'
+import { step5 } from '../../actions/teams'
+import { findUserByLogin } from '../../helpers'
 
-const ModalUserAdd = React.createClass({
-    getInitialState: function() {
-        return {login: '', password: '', repeatPassword: ''};
-    },
 
-    validation: function(user) {
+class ModalUserAdd extends React.Component {
 
-        if (_.find(this.props.users, (o) => o.login == user.login) != undefined) {
-            var text = "Login " + user.login + " is already used! Try another login."
-            store.dispatch({type: "ALERT_SHOW", class: "danger", text: text});
-            return false;
-        }
+    constructor(props) {
+        super(props);
+        this.state = { rows: 1, invitations: [] };
 
-        if (user.password <= 5) {
-            var text = "Password requires more then 5 symbols!";
-            store.dispatch({type: "ALERT_SHOW", class: "danger", text: text});
-            return false;
-        }
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.addInvitation = this.addInvitation.bind(this);
+    }
 
-        if (user.password != user.repeatPassword) {
-            var text = "Password and Repeat Password don't match!";
-            store.dispatch({type: "ALERT_SHOW", class: "danger", text: text});
-            return false;
-        }
-
-        return true;
-    },
-
-    handleSubmit: function(event) {
+    handleSubmit(event) {
         event.preventDefault();
+    }
 
-        var user = refsToObject(this.refs);
-
-        if (this.validation(user)) {
-            store.dispatch(addUser(user));
-        }
-    },
-
-    handleClose: function() {
+    handleClose() {
         store.dispatch({type: "MODAL_ADD_USER_CLOSE"});
-    },
+    }
 
-    render: function() {
+    handleChange(event) {
+        this.state.invitations[event.target.name] = event.target.value;
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+        let teamId = findUserByLogin(this.props.users, this.props.login).team;
+        store.dispatch(step5(teamId, this.state.invitations));
+    }
+
+    addInvitation() {
+        this.setState({
+            rows: this.state.rows + 1
+        });
+    }
+
+    render() {
+
+        const modalClasses = classNames({
+            modal: true,
+            hide: !this.props.status
+        });
+
+        var invitationRows = [];
+        for (let i = 0; i < this.state.rows; i++) {
+            invitationRows.push(
+                <div className="row center-xs invintations_row" key={ _.uniqueId() }>
+                    <div className="col-md-8 col-sm-8 col-xs-10">
+                        <Input handleChange={ this.handleChange.bind(this) }
+                               defaultValue={ this.state.invitations[i] }
+                               className="input-group input-group__grey-white" type="email"
+                               name={ i }
+                               label="E-mail"/>
+                    </div>
+                </div>
+            );
+        }
+
         return (
-            <div className={ this.props.visible ? "modal fade in visible" : "modal fade in" } tabIndex="-1" role="dialog">
-				<div className="modal-dialog" role="document">
-			    	<div className="modal-content">
-                        <form onSubmit={this.handleSubmit}>
-    			      		<div className="modal-header">
-    			        		<button type="button" className="close" onClick={ this.handleClose } aria-label="Close">
-    			        			<span aria-hidden="true">&times;</span>
-    			        		</button>
-    			        		<h4 className="modal-title">Send invitation.</h4>
-    			      		</div>
-    			      		<div className="modal-body">
-                                    <div className="form-group">
-                                        <label htmlFor="email">Email</label>
-                                        <input type="email" className="form-control" id="email" ref="email" placeholder="email"/>
+            <div className={ modalClasses }>
+                <div className="modal_close" onClick={ this.handleClose }></div>
+                <div className="container">
+                    <div className="row center-md vertical-center modal_row">
+                        <div className="col-md-6">
+                            <div className="row text-center">
+                                <div className="col-md-12 text-center">
+                                    <h2 className="heading heading__white">Send Invitations</h2>
+                                </div>
+                            </div>
+                            <form onSubmit={ this.handleSubmit }>
+
+                                { invitationRows }
+
+                                <div className="row center-xs">
+                                    <div className="col-md-12">
+                                        <div className="btn link__white" onClick={ this.addInvitation.bind(this) }>+ Add
+                                            another invitations
+                                        </div>
                                     </div>
-                                    <div className="form-group">
-                                        <label htmlFor="login">Login</label>
-                                        <input type="text" className="form-control" id="login" ref="login" placeholder="username"/>
+                                </div>
+
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <button type="submit" className="btn btn__blue btn__lg linkService_btn">Send</button>
                                     </div>
-                                    <div className="form-group">
-                                        <label htmlFor="password">Password</label>
-                                        <input type="password" className="form-control" id="password" ref="password"/>
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="repeatPassword">Repeat password</label>
-                                        <input type="password" className="form-control" id="repeatPassword" ref="repeatPassword"/>
-                                    </div>
-    			      		</div>
-    			      		<div className="modal-footer">
-    			        		<button type="submit" className="btn btn-success">Send</button>
-    			        		<button type="button" className="btn btn-default" onClick={ this.handleClose }>Cancel</button>
-    			      		</div>
-                        </form>
-			    	</div>
-			  	</div>
-			</div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         )
     }
-})
+}
 
-const getProps = function(store) {
+function getProps(store) {
     return {
-        visible: store.modals.userAdd.visible,
-        users: store.users
+        status: store.modals.userAdd.visible,
+        users: store.users.list,
+        login: store.currentUser.login
     }
 }
 

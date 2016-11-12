@@ -21,7 +21,7 @@ class UsersTable extends React.Component {
                         <h2>Team</h2>
                     </div>
                     <div className="col-md-2 text-right">
-                        <button className="btn btn_trans-blue" onClick={this.showModalUserAdd}>+ Add New</button>
+                        <button className="btn btn__md btn__trans-blue" onClick={ this.showModalUserAdd }>+ Add New</button>
                     </div>
                 </div>
                 <div className="row users-list_heading">
@@ -37,6 +37,7 @@ class UsersTable extends React.Component {
                                         key={ user._id }/>
                     })
                 }
+                <ModalUserAdd />
             </div>
         );
     }
