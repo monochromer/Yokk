@@ -216,7 +216,7 @@ exports.update = function(req, res, next) {
 
     const addMembers = req.body.addMembers;
     const teamName = req.params.teamName;
-
+    
     if (!teamName) return res.status(500).send();
 
     // const emailsToAdd = addMembers;

@@ -29,7 +29,8 @@ module.exports = function(schema) {
     schema.statics.findByLogin = function(login, cb) {
         var fieldsToReturn = {
             _id: 1,
-            login: 1
+            login: 1,
+            team: 1
         }
         return this.findOne({
             login: login

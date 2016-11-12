@@ -9,10 +9,14 @@ module.exports = function(schema) {
     };
 
     schema.statics.read = function(name, cb) {
-        if (name) {
+        if (name.length == 24) {
           return this.findOne({
-              name: name
+              _id: name
           }, cb);
+        } else {
+            return this.findOne({
+                name: name
+            }, cb);
         }
         return this.find({}, cb);
     };
