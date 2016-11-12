@@ -106,8 +106,8 @@ class TimeEntryRow extends React.Component {
         return (
             <div className="row entry-row vertical-center">
                 <div className="col-md-1 text-center">{ sourceIcon }</div>
-                <div className="col-md-9 entry-row_description">{ description }</div>
-                <div className="col-md-1">{ duration }</div>
+                <div className="col-md-9 entry-row_description" onClick={ this.handleEdit }>{ description }</div>
+                <div className="col-md-1" onClick={ this.handleEdit }>{ duration }</div>
                 <div className="col-md-1"> { buttonsBlock } </div>
             </div>
         )

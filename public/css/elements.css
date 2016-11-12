@@ -139,6 +139,14 @@ a:hover {
     background: url('/img/icon-delete.svg');
 }
 
+.btn__save {
+    background: url('/img/save.svg');
+}
+
+.btn__cancel {
+    background: url('/img/cancel.svg');
+}
+
 .link__white:hover {
     text-decoration: underline;
 }
