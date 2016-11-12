@@ -37,7 +37,6 @@ class TimeEntryRow extends React.Component {
     handleSave(event) {
         event.preventDefault();
         let editedTimeEntry = Object.assign({}, this.props.timeEntry, this.state.fields);
-        editedTimeEntry.duration = moment.duration(editedTimeEntry.duration).asMinutes() || this.props.timeEntry.duration;
         store.dispatch(updateTimeEntry(editedTimeEntry));
         this.setState({ editing: false });
     }

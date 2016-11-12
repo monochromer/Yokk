@@ -33,7 +33,7 @@ export default function(state = defaultState, action) {
             return Object.assign({}, state, { list: withoutDeleted });
             break;
 
-        case "UPDATE_TIME_ENTRY":
+        case "UPDATE_TIME_ENTRY_SUCCESS":
             let withoutUpdated = _.filter(state.list, (o) => o._id != payload._id);
             return Object.assign({}, state, { list: withoutUpdated.concat(payload) });
 

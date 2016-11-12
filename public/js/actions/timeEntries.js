@@ -61,7 +61,6 @@ export function deleteTimeEntry(id) {
 }
 
 export function updateTimeEntry(timeEntry) {
-    console.log(timeEntry);
     return {
         type: "UPDATE_TIME_ENTRY",
         updateItem: {

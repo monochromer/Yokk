@@ -75,10 +75,10 @@ class NewTimeEntryForm extends React.Component {
                         <div className="flex flext__center vertical-center text-center ">
                             <div>
                                 <h2 className="heading heading__white"> Track your time </h2>
-                            </div>
+                            </div>&nbsp;
                             <div>
                                 <span className="tracking-form_or">or</span>
-                            </div>
+                            </div>&nbsp;
                             <button className="btn btn__md btn__trans-white" onClick={ this.syncRedmine }>Sync Redmine
                             </button>
                         </div>

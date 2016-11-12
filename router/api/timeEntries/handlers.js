@@ -93,7 +93,7 @@ exports.saveTimeEntry = function(req, res, next) {
 
 };
 
-exports.deleteTimeEntry = function(req, res) {
+exports.deleteTimeEntry = function(req, res, next) {
     const TimeEntryModel = req.app.db.models.timeEntry;
     const timeEntryId = req.params.timeEntryId;
 
@@ -103,11 +103,15 @@ exports.deleteTimeEntry = function(req, res) {
     });
 };
 
-exports.updateTimeEntry = function(req, res) {
+exports.updateTimeEntry = function(req, res, next) {
     const TimeEntryModel = req.app.db.models.timeEntry;
     const timeEntryId = req.params.timeEntryId;
     const update = req.body;
+    if(typeof(update.duration) != 'number') {
+        update.duration = moment.duration(update.duration).asMinutes();
+    }
 
+    console.log(req.body);
     TimeEntryModel.findByIdAndUpdate(timeEntryId, update, {
         new: true
     }, (err, timeEntry) => {
