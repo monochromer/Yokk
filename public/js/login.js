@@ -66,7 +66,7 @@ class LoginForm extends React.Component {
                                    type="password"
                                    label="Repeat Password"
                                    required="true"
-                                   name="password"/>
+                                   name="password-repeat"/>
 
                             <button className="btn btn__lg btn__blue signup_btn" type="submit">Sign up</button>
                         </form>

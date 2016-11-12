@@ -1,13 +1,20 @@
 import React from 'react';
-import {Link} from 'react-router';
+import { Link } from 'react-router';
 import store from '../../store.js';
-import moment from 'moment';
+import { connect } from 'react-redux'
+import { deleteUser } from '../../actions/users'
 
 
 class UserRow extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.dispatchUserToShow = this.dispatchUserToShow.bind(this);
+        this.handleRemove = this.handleRemove.bind(this);
+    }
+
     handleRemove() {
-        store.dispatch({type: "MODAL_DELETE_SHOW", login: this.props.user.login})
+        store.dispatch( deleteUser(this.props.user._id) );
     }
 
     dispatchUserToShow() {
@@ -33,7 +40,7 @@ class UserRow extends React.Component {
         );
 
 
-        if (role == "admin" || this.props.currentUser.login == login) {
+        if (this.props.currentUser.role == "admin" || this.props.currentUser.login == login) {
             buttons = actionButtons;
         }
 
@@ -67,4 +74,10 @@ class UserRow extends React.Component {
     }
 }
 
-export default UserRow
+function getParams(store) {
+    return {
+        currentUser: store.currentUser
+    }
+}
+
+export default connect(getParams)(UserRow)

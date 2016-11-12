@@ -147,16 +147,10 @@ exports.updateUser = function(req, res, next) {
 
 exports.deleteUser = function(req, res, next) {
     const userModel = req.app.db.models.User;
-    const login = req.params.user_login;
-    const rmdir = require('../helpers/rmdir');
-    const path = require('path');
 
-    userModel.deleteUser(login, (err) => {
+    userModel.deleteUser(req.params.id, (err) => {
         if (err) next(err);
-        res.status(200).send(login);
-        rmdir(path.join(__dirname, '../uploads/users/', login));
-        const logMsq = `User ${login} succesfully deleted`;
-        log(req, logMsq).info()
+        res.status(200).send(req.params.id);
     });
 
 }

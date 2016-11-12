@@ -216,7 +216,7 @@ exports.update = function(req, res, next) {
 
     const addMembers = req.body.addMembers;
     const teamName = req.params.teamName;
-    
+
     if (!teamName) return res.status(500).send();
 
     // const emailsToAdd = addMembers;
@@ -244,7 +244,7 @@ exports.update = function(req, res, next) {
                 }
             });
 
-            sendInvitations(emails.toInvite, teamName, teamId, sendEmail);
+            sendInvitations(emails.toInvite, team.name, teamId, sendEmail);
 
             team.members = _.unionBy(team.members, emailsToConfirm, obj => obj.email);
 

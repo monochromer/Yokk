@@ -43,8 +43,8 @@ class LinkService extends React.Component {
                         <div className="col-md-6">
                             <div className="row text-center">
                                 <div className="col-md-12 text-center">
-                                    <img src="/img/upwork-logo.svg" className="linkService_logo" alt="upwork"/>
-                                    <h2 className="heading heading__white">Connect Upwork</h2>
+                                    <img src="/img/redmine-active.svg" className="linkService_logo" alt="upwork"/>
+                                    <h2 className="heading heading__white">Connect Redmine</h2>
                                 </div>
                             </div>
                             <form onSubmit={ this.handleSubmit }>
@@ -55,7 +55,7 @@ class LinkService extends React.Component {
                                 </div>
                                 <div className="row linkService_row">
                                     <div className="col-md-12 text-center">
-                                        <Input name="redmineApiKey" className="input-group input-group__grey-white" Change={ this.handleChange } label="API key"/>
+                                        <Input name="redmineApiKey" className="input-group input-group__grey-white" handleChange={ this.handleChange } label="API key"/>
                                     </div>
                                 </div>
                                 <div className="row">

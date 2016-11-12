@@ -30,7 +30,8 @@ module.exports = function(schema) {
         var fieldsToReturn = {
             _id: 1,
             login: 1,
-            team: 1
+            team: 1,
+            role: 1
         }
         return this.findOne({
             login: login
@@ -70,9 +71,9 @@ module.exports = function(schema) {
         }, cb);
     };
 
-    schema.statics.deleteUser = function(login, cb) {
+    schema.statics.deleteUser = function(id, cb) {
         return this.remove({
-            login: login
+            _id: id
         }, cb);
     };
 }

@@ -18,7 +18,7 @@ export default function(state = defaultState, action) {
             break;
 
         case "DELETE_USER":
-            return Object.assign({}, state, { list: [...state.list, _.filter(state, (o) => o.login != payload)] });
+            return Object.assign({}, state, { list: [...state.list, _.filter(state, (o) => o._id != payload)] });
             break;
 
         case "SET_READY_STATE":
@@ -60,7 +60,7 @@ export default function(state = defaultState, action) {
             break;
 
         case "LINK_SERVICE_SUCCESS":
-            linkService = { status: 'success' };
+            linkService = { status: 'hidden' };
             const newList = _.filter(state.list, (o) => o._id != payload._id);
             return Object.assign({}, state, {
                 linkService: linkService,
