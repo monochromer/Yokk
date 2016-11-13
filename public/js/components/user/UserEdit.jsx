@@ -80,18 +80,18 @@ class UserEdit extends React.Component {
             const photo = profileImg ? profileImg.medium : "";
             const redmine = redmineApiKey ? "/img/redmine-active.svg" : "/img/redmine-bw.svg";
             return (
-                <div className="container container__fixed profile">
-                    <div className="row">
+                <div className="container container__fixed">
+                    <div className="row profile">
 
                         <div className="col-md-3 profile_photo">
                             <DropPicture _id={ _id } photo={ photo }/>
                         </div>
 
-                        <div className="col-md-9">
+                        <div className="col-md-9 prodile_inputs">
                             <form onSubmit={ this.handleSubmit }>
                                 <div className="row middle-md">
                                     <div className="col-md-6">
-                                        <h2>{ login }</h2>
+                                        <h2 className="heading profile_login">{ login }</h2>
                                     </div>
                                     <div className="col-md-6 text-right">
                                         <span onClick={ this.linkRedmine }>

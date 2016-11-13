@@ -1,10 +1,8 @@
 import React from 'react';
-import _ from 'lodash';
-import store from '../../store.js';
 import { connect } from 'react-redux';
 import { findUserByLogin } from '../../helpers.js'
 import { Link } from 'react-router'
-import { Input } from '../UI.jsx'
+
 
 class UserPage extends React.Component {
 
@@ -32,9 +30,10 @@ class UserPage extends React.Component {
         if (this.state.user) {
             const { profileImg, login, redmineApiKey, fullname, position, phone, skype, workhours, email, birthday, vk, aboutme, cv } = this.state.user;
             const photo = profileImg ? profileImg.medium : "";
+            const redmine = redmineApiKey ? "/img/redmine-active.svg" : "/img/redmine-bw.svg";
             return (
                 <div className="container container__fixed profile">
-                    <div className="row">
+                    <div className="row profile">
 
                         <div className="col-md-3 profile_photo">
                             <div className="profile_dropzone profile_dropzone__view">
@@ -42,13 +41,13 @@ class UserPage extends React.Component {
                             </div>
                         </div>
 
-                        <div className="col-md-9">
+                        <div className="col-md-9 prodile_inputs">
                             <div className="row middle-md">
                                 <div className="col-md-6">
-                                    <h2>{ login }</h2>
+                                    <h2 className="heading profile_login">{ login }</h2>
                                 </div>
                                 <div className="col-md-6 text-right">
-                                    <img src="/img/redmine-bw.svg" alt="Link with redmine"/>
+                                    <img src={ redmine  } alt="Link with redmine"/>
                                 </div>
                             </div>
                             <div className="row profile_section">

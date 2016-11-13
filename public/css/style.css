@@ -209,7 +209,12 @@ body {
 
 /* user edit */
 .profile {
-    padding-top: 80px;
+    padding-top: 65px;
+    justify-content: space-between;
+}
+
+.prodile_inputs {
+    max-width: 800px;
 }
 
 .profile_dropzone {
@@ -225,6 +230,15 @@ body {
     transition: border 0.2s ease-in-out;
 }
 
+.profile_login {
+    margin: 0px;
+    padding: 5px;
+    text-transform: capitalize;
+}
+
+.profile_photo {
+    padding-top: 15px;
+}
 .profile_dropzone:hover {
     border: 1px solid #4A77DA;
 }
@@ -240,7 +254,7 @@ body {
 .profile_section {
     background-color: #F7F9FC;
     padding-left: 32px;
-    margin: 50px 0 42px 0;
+    margin: 25px 0 42px 0;
 }
 
 .profile_heading {
@@ -251,7 +265,12 @@ body {
 }
 
 .profile_inputs-row {
-    margin-bottom: 50px;
+    margin-bottom: 30px;
+    justify-content: space-between;
+}
+
+.profile_inputs-row .col-md-6 {
+    max-width: 374px;
 }
 /* /user edit */
 

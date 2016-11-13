@@ -37,9 +37,9 @@ export function durationBeatify(minutes, type) {
 export function groupTimeEntriesByDay(timeEntries) {
 	let days = {};
 
-	let sorted = _.orderBy(timeEntries, ['dateCreated'], ['desc']);
+	let sorted = _.orderBy(timeEntries, ['date'], ['desc']);
 	sorted.map((timeEntry) => {
-		let day = dayBeatify(timeEntry.dateCreated);
+		let day = dayBeatify(timeEntry.date);
 		if(!days[day]) {
 			days[day] = {
 				list: [timeEntry],
@@ -52,7 +52,7 @@ export function groupTimeEntriesByDay(timeEntries) {
 	});
 
 	for(let day in days) {
-		days[day].list = _.orderBy(days[day].list, ['dateCreated'], ['desc']);
+		days[day].list = _.orderBy(days[day].list, ['date'], ['desc']);
 	}
 
 	return days;
