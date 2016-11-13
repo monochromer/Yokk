@@ -170,8 +170,7 @@ exports.uploadUserAvatar = function(req, res, next) {
 
     async.waterfall([
         (callback) => {
-            resize(imageInfo, requiredSizes);
-            callback(null);
+            resize(imageInfo, requiredSizes, callback);
         },
         (callback) => {
             const originalImg = ('/' + req.file.path.split('/').slice(1).slice(-4).join('/')).split(':').join('-');
@@ -188,12 +187,12 @@ exports.uploadUserAvatar = function(req, res, next) {
 
             userModel.editUser(login, update, (err, user) => {
                 if (err) next(err);
-                callback(null, user);
+                res.status(200).send(user);
+                callback(null);
             });
         }
     ], (err, user) => {
         if (err) next(err);
-        res.status(200).send(user);
     });
 
 };
