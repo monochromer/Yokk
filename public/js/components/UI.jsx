@@ -1,4 +1,5 @@
 import React from 'react'
+import InputElement from 'react-input-mask'
 import classNames from 'classnames'
 
 export class Input extends React.Component {
@@ -52,11 +53,12 @@ export class Input extends React.Component {
         return (
             <div className={ this.getInputClasses() } onFocus={ this.handleFocus } onBlur={ this.handleBlur }>
                 <label htmlFor={ this.props.name }>{ this.props.label }</label>
-                <input type={ type }
+                <InputElement type={ type }
                        id={ this.props.name }
                        name={ this.props.name }
                        onChange={ this.handleChange }
-                       defaultValue={ this.props.defaultValue }/>
+                       defaultValue={ this.props.defaultValue }
+                       mask={ this.props.mask }/>
                 { error }
             </div>
         )

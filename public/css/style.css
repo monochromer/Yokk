@@ -282,9 +282,41 @@ body {
     padding: 60px 0;
 }
 
+.tracking-form_heading {
+    max-width: 540px;
+    justify-content: space-between;
+    margin: 0 auto;
+    margin-bottom: 10px;
+}
+
 .tracking-form_or {
     color: #B7CBF0;
     font-size: 25px;
+}
+
+.tracking-form_row {
+    justify-content: space-between;
+}
+
+.tracking-form_description {
+    max-width: 750px;
+    padding: 0;
+}
+
+.tracking-form_date {
+    padding: 0;
+    max-width: 108px;
+}
+
+.tracking-form_duration {
+    padding: 0;
+    max-width: 77px;
+}
+
+.tracking-form_add {
+    text-align: right;
+    max-width: 119px;
+    padding: 0;
 }
 
 .tracking-day {

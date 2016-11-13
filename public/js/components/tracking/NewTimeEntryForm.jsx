@@ -68,43 +68,45 @@ class NewTimeEntryForm extends React.Component {
             <div className="container-fluid tracking-form">
                 <div className="row">
                     <div className="col-md-12 text-center">
-                        <div className="flex flext__center vertical-center text-center ">
+                        <div className="flex vertical-center text-center tracking-form_heading">
                             <div>
                                 <h2 className="heading heading__white"> Track your time </h2>
-                            </div>&nbsp;
+                            </div>
                             <div>
                                 <span className="tracking-form_or">or</span>
-                            </div>&nbsp;
+                            </div>
                             <button className="btn btn__md btn__trans-white" onClick={ this.syncRedmine }>Sync Redmine
                             </button>
                         </div>
                     </div>
                 </div>
                 <form onSubmit={ this.handleSubmit }>
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-md-6">
+                    <div className="container container__fixed">
+                        <div className="row tracking-form_row">
+                            <div className="col-md-8 tracking-form_description">
                                 <Input className="input-group input-group__light-blue"
                                        handleChange={ this.handleChange }
                                        name="description"
                                        label="What you are working on?"/>
                             </div>
-                            <div className="col-md-2">
+                            <div className="col-md-2 tracking-form_date">
                                 <Input className="input-group input-group__light-blue"
                                        handleChange={ this.handleChange }
                                        defaultValue={ moment().format("DD.MM.YYYY") }
                                        name="date"
-                                       label="Date"/>
+                                       label="Date"
+                                       mask="99.99.9999"/>
                             </div>
 
-                            <div className="col-md-2">
+                            <div className="col-md-1 tracking-form_duration">
                                 <Input className="input-group input-group__light-blue"
                                        handleChange={ this.handleChange }
                                        name="duration"
                                        defaultValue="0:00"
-                                       label="Duration"/>
+                                       label="Duration"
+                                        mask="9:99"/>
                             </div>
-                            <div className="col-md-2">
+                            <div className="col-md-1 tracking-form_add">
                                 <button className="btn btn__lg btn__white">Save</button>
                             </div>
                         </div>
