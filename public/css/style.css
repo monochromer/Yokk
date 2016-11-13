@@ -177,11 +177,16 @@ body {
     background-color: #F7F9FC;
 }
 
+.users-list_photo {
+    max-width: 55px;
+}
+
 .users-list_user-name {
     font-size: 18px;
     color: #4A77DA;
     text-decoration: none;
     text-transform: capitalize;
+    font-weight: 400;
 }
 
 .users-list_user-role {

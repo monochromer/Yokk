@@ -52,10 +52,10 @@ class UserRow extends React.Component {
 
                 <div className="col-md-3">
                     <div className="row">
-                        <div className="col-md-2">
-                            <img src={ photo } width="40px" className="img-circle" />
+                        <div className="col-md-3 users-list_photo">
+                            <img src={ photo } width="40px" className="img-circle " />
                         </div>
-                        <div className="col-md-10">
+                        <div className="col-md-9">
                             <Link to={ '/user/' + login } className="users-list_user-name">
                                 { name }
                             </Link>
