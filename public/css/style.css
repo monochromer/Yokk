@@ -28,6 +28,7 @@ body {
 .top-panel {
     height: 80px;
     border-bottom: 1px solid #DBDBDB;
+    padding: 0 80px 0 80px;
 }
 
 .top-panel_container {
@@ -43,6 +44,7 @@ body {
     color: #4A77DA;
     font-size: 25px;
     text-decoration: none;
+    font-weight: 400;
 }
 
 .top-panel_menu {
@@ -59,6 +61,7 @@ body {
     text-decoration: none;
     font-size: 16px;
     color: #000000;
+    font-weight: 400;
 }
 
 .top-panel_menu-link:hover {
@@ -79,28 +82,43 @@ body {
     background-image: url("/img/tracking-icon.svg");
     background-repeat: no-repeat;
     background-size: 34px;
-    padding-left: 45px;
-    height:34px;
+    padding-left: 42px;
+    height: 34px;
     line-height: 34px;
+    width: 72px;
+    font-weight: 400;
 }
 
 .tracking-block_link {
     text-decoration: none;
-    color: #000000
+    color: #000000;
+    margin-right: 25px;
 }
 
 .profile-block {
+    vertical-align: middle;
     display: flex;
-    justify-content: flex-end;
+
 }
 
-.dropdown-title {
+.profile-block a {
+    display: block;
+    font-size: 16px;
+    color: #919191;
     height: 34px;
     line-height: 34px;
+    font-weight: 400;
+    padding-left: 10px;
+    text-transform: capitalize;
+    margin-right: 25px;
 }
 
-.dropdown {
-    margin-left: 12px;
+.top-panel_logout {
+    font-size: 16px;
+    color: #919191;
+    height: 34px;
+    line-height: 34px;
+    font-weight: 400;
 }
 /* /top-panel */
 
