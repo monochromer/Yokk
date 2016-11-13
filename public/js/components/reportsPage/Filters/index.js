@@ -1,6 +1,7 @@
 import React from 'react';
 import UsersFilter from './UsersFilter.jsx';
 import store from '../../../store'
+import classNames from 'classnames'
 import { RANGES } from '../../../constants'
 import { Input } from '../../UI.jsx'
 
@@ -10,6 +11,9 @@ class Filters extends React.Component {
         super(props);
         this.handleChange = this.handleChange.bind(this);
         this.setCustomPeriod = this.setCustomPeriod.bind(this);
+        this.state = {
+            activePeriod: ""
+        }
     }
 
     handleChange(event) {
@@ -20,8 +24,10 @@ class Filters extends React.Component {
     }
 
     setCustomPeriod(range) {
-
         return () => {
+            this.setState({
+                activePeriod: range
+            });
             store.dispatch({
                 type: "STORE_REPORT_PERIOD",
                 startDate: RANGES[range][0].format("DD.MM.YYYY"),
@@ -31,6 +37,27 @@ class Filters extends React.Component {
     }
 
     render() {
+        const lasd7DaysClasses = classNames({
+            'custom-periods_period': true,
+            'custom-periods_period__active': this.state.activePeriod == 'Last 7 Days'
+        });
+
+        const yesterdayClasses = classNames({
+            'custom-periods_period': true,
+            'custom-periods_period__active': this.state.activePeriod == 'Yesterday'
+        });
+
+        const thisMonthClasses = classNames({
+            'custom-periods_period': true,
+            'custom-periods_period__active': this.state.activePeriod == 'This Month'
+        });
+
+        const LastMonthClasses = classNames({
+            'custom-periods_period': true,
+            'custom-periods_period__active': this.state.activePeriod == 'Last Month'
+        });
+
+
         return (
             <form>
                 <div className="filter_heading">Users</div>
@@ -39,18 +66,18 @@ class Filters extends React.Component {
                 <div className="custom-periods">
                     <div className="row">
                         <div className="col-md-6">
-                            <span className="custom-periods_period" onClick={ this.setCustomPeriod('Last 7 Days') }>Last 7 Days</span>
+                            <span className={ lasd7DaysClasses } onClick={ this.setCustomPeriod('Last 7 Days') }>Last 7 Days</span>
                         </div>
                         <div className="col-md-6">
-                            <span className="custom-periods_period" onClick={ this.setCustomPeriod('Yesterday') }>Yesterday</span>
+                            <span className={ yesterdayClasses } onClick={ this.setCustomPeriod('Yesterday') }>Yesterday</span>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-md-6">
-                            <span className="custom-periods_period" onClick={ this.setCustomPeriod('This Month') }>This Month</span>
+                            <span className={ thisMonthClasses } onClick={ this.setCustomPeriod('This Month') }>This Month</span>
                         </div>
                         <div className="col-md-6">
-                            <span className="custom-periods_period" onClick={ this.setCustomPeriod('Last Month') }>Last Month</span>
+                            <span className={ LastMonthClasses } onClick={ this.setCustomPeriod('Last Month') }>Last Month</span>
                         </div>
                     </div>
                 </div>

@@ -28,7 +28,7 @@ class UserRow extends React.Component {
         const fullNameOrLogin = this.props.user.fullname ? this.props.user.fullname : `(login:) ${this.props.user.login}`;
 
         return (
-            <div className="row filter_row">
+            <div className="row filter_row vertical-center">
                 <div className="col-md-12">
                     <Checkbox onChange={ this.handleChange }
                               label={ fullNameOrLogin }

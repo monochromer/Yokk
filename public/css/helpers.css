@@ -22,6 +22,10 @@
     margin: 0 auto;
 }
 
+.marginTop {
+    margin-top: 20px;
+}
+
 .hide {
     display: none;
 }

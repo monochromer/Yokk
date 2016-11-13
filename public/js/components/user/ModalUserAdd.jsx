@@ -19,9 +19,6 @@ class ModalUserAdd extends React.Component {
         this.addInvitation = this.addInvitation.bind(this);
     }
 
-    handleSubmit(event) {
-        event.preventDefault();
-    }
 
     handleClose() {
         store.dispatch({type: "MODAL_ADD_USER_CLOSE"});
@@ -35,6 +32,7 @@ class ModalUserAdd extends React.Component {
         event.preventDefault();
         let teamId = findUserByLogin(this.props.users, this.props.login).team;
         store.dispatch(step5(teamId, this.state.invitations));
+        store.dispatch({type: "MODAL_ADD_USER_CLOSE"});
     }
 
     addInvitation() {
@@ -88,7 +86,7 @@ class ModalUserAdd extends React.Component {
                                     </div>
                                 </div>
 
-                                <div className="row">
+                                <div className="row marginTop">
                                     <div className="col-md-12">
                                         <button type="submit" className="btn btn__blue btn__lg linkService_btn">Send</button>
                                     </div>

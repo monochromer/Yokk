@@ -39,13 +39,22 @@ class TimeEntriesList extends React.Component {
         });
 
         const disabled = this.props.allBatches ? 'disabled' : "";
-
+        const message = (
+            <div className="row center-md">
+                <h4>You don't have any entries yet!</h4>
+            </div>
+        )
         return (
             <div className="container container__fixed">
                 { rows }
                 <div className="row center-md">
                     <div className="col-md-4 text-center">
-                        <button className={ loadMoreClasses } onClick={ this.loadMore } disabled={ disabled }> Load More </button>
+                        {
+                            rows.length > 0
+                                ? <button className={ loadMoreClasses } onClick={ this.loadMore } disabled={ disabled }> Load More </button>
+                                : message
+                        }
+
                     </div>
                 </div>
             </div>

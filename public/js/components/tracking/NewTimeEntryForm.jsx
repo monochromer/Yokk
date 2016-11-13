@@ -41,11 +41,7 @@ class NewTimeEntryForm extends React.Component {
         if (user.redmineApiKey) {
             store.dispatch(fetchRedmineTimeEntries());
         } else {
-            store.dispatch({
-                type: "ALERT_SHOW",
-                text: 'Error! Check your Redmine API key! <a href="http://recordit.co/j15qHVOC9n" target="_blank">Instruction</a>',
-                class: "danger"
-            });
+            alert("Check Redmine integration at your profile!");
         }
     }
 

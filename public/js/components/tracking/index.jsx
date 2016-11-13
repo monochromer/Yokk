@@ -7,7 +7,7 @@ var Tracking = React.createClass({
     render: function() {
 
         return (
-            <div>
+            <div style={{"flex": "1 0 auto"}}>
                 <NewTimeEntryForm />
                 <TimeEntriesList/>
             </div>

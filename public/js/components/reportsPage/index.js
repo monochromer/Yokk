@@ -21,7 +21,7 @@ class UserActivityPage extends React.Component {
 
     render() {
         return (
-            <div className="container container__fixed">
+            <div className="container container__fixed" style={{"flex": "1 0 auto"}}>
                 <div className="row reports-page">
                     <div className="col-md-3">
                         <div className="row">
