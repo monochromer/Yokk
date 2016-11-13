@@ -86,11 +86,7 @@ export function uploadUserPhoto(files, login) {
                 type: "UPDATE_USER",
                 payload: response.body
             });
-            dispatch({
-                type: "ALERT_SHOW",
-                class: "success",
-                text: addPhotoSuccess(login)
-            });
+            location.reload()
         });
     }
 }

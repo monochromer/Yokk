@@ -4,6 +4,7 @@ const resize = require('../helpers/image_resize');
 const log = require('../../../helpers/logger');
 const sendEmail = require('../../helpers/sendEmail');
 const async = require('async');
+const easyimg = require('easyimage');
 
 exports.getAllUsers = function(req, res, next) {
     const userModel = req.app.db.models.User;
@@ -170,7 +171,24 @@ exports.uploadUserAvatar = function(req, res, next) {
 
     async.waterfall([
         (callback) => {
-            resize(imageInfo, requiredSizes, callback);
+            requiredSizes.forEach((size) => {
+                const width = +size.split('-')[0];
+                const height = +size.split('-')[1];
+
+                easyimg.thumbnail({
+                    src: imageInfo.dir + imageInfo.name,
+                    dst: imageInfo.dir + size + '-' + imageInfo.name,
+                    width: width,
+                    height: height,
+                    cropwidth: width,
+                    cropheight: height,
+                    x: 0,
+                    y: 0
+                }).then((err) => {
+                    console.log(err);
+                    callback(null);
+                });
+            })
         },
         (callback) => {
             const originalImg = ('/' + req.file.path.split('/').slice(1).slice(-4).join('/')).split(':').join('-');
