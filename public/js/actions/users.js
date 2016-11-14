@@ -63,7 +63,7 @@ export function linkService(id, fields) {
 }
 
 export function addUser(user) {
-    return function (dispatch) {
+    return function(dispatch) {
         request.post(USER_CRUD).send(user).end((err, response) => {
             dispatch({
                 type: "ADD_USER",
@@ -74,19 +74,19 @@ export function addUser(user) {
                 text: addUserSuccess(user.login),
                 class: "success"
             });
-            dispatch({type: "MODAL_ADD_USER_CLOSE"});
+            dispatch({ type: "MODAL_ADD_USER_CLOSE" });
         });
     }
 }
 
 export function uploadUserPhoto(files, login) {
-    return function (dispatch) {
-        request.post(COMBINE_USER_ADDPHOTO_URI(login)).attach('pic', files[0]).end(function (err, response) {
+    return function(dispatch) {
+        request.post(COMBINE_USER_ADDPHOTO_URI(login)).attach('pic', files[0]).end(function(err, response) {
+
             dispatch({
                 type: "UPDATE_USER",
                 payload: response.body
-            });
-            location.reload()
+            })
         });
     }
 }

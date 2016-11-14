@@ -1,10 +1,11 @@
 'use strict';
 
-const resize = require('../helpers/image_resize');
+const lwip = require('lwip');
 const log = require('../../../helpers/logger');
 const sendEmail = require('../../helpers/sendEmail');
 const async = require('async');
 const easyimg = require('easyimage');
+const moment = require('moment');
 
 exports.getAllUsers = function(req, res, next) {
     const userModel = req.app.db.models.User;
@@ -168,51 +169,58 @@ exports.uploadUserAvatar = function(req, res, next) {
     let imageInfo = {};
     imageInfo.dir = req.file.destination;
     imageInfo.name = req.file.filename.split(':').join('-');
+    imageInfo.ext = req.file.mimetype.split('/')[1];
+    imageInfo.date = moment().format("x");
 
-    async.waterfall([
-        (callback) => {
-            requiredSizes.forEach((size) => {
-                const width = +size.split('-')[0];
-                const height = +size.split('-')[1];
+    async.series([
+            (callback) => {
+                lwip.open(imageInfo.dir + imageInfo.name, (err, image) => {
+                    image.batch().cover(200, 200).writeFile(imageInfo.dir + imageInfo.date + '200-200.' + imageInfo.ext, (err) => {
+                        if (err) {
+                            callback(err);
+                        } else {
+                            console.log("resizer");
+                            callback(null);
+                        }
+                    })
+                })
+            },
+            (callback) => {
+                lwip.open(imageInfo.dir + imageInfo.name, (err, image) => {
+                    image.batch().cover(400, 400).writeFile(imageInfo.dir + imageInfo.date + '400-400.' + imageInfo.ext, (err) => {
+                        if (err) {
+                            callback(err);
+                        } else {
+                            console.log("resizer2");
+                            callback(null);
+                        }
+                    })
+                })
+            },
+            (callback) => {
+                const originalImg = ('/' + req.file.path.split('/').slice(1).slice(-4).join('/')).split(':').join('-');
+                const smallImg = '/users/' + login + '/avatars/' + imageInfo.date + '200-200.' + imageInfo.ext;
+                const mediumImg = '/users/' + login + '/avatars/' + imageInfo.date + '400-400.' + imageInfo.ext;
 
-                easyimg.thumbnail({
-                    src: imageInfo.dir + imageInfo.name,
-                    dst: imageInfo.dir + size + '-' + imageInfo.name,
-                    width: width,
-                    height: height,
-                    cropwidth: width,
-                    cropheight: height,
-                    x: 0,
-                    y: 0
-                }).then((err) => {
-                    console.log(err);
-                    callback(null);
+                const update = {
+                    profileImg: {
+                        original: originalImg,
+                        small: smallImg,
+                        medium: mediumImg,
+                    }
+                };
+
+                userModel.editUser(login, update, (err, user) => {
+                    if (err) next(err);
+                    res.status(200).send(user);
+                    callback(null, user);
                 });
-            })
-        },
-        (callback) => {
-            const originalImg = ('/' + req.file.path.split('/').slice(1).slice(-4).join('/')).split(':').join('-');
-            const smallImg = ('/' + req.file.destination.split('/').slice(1).slice(-4).join('/') + requiredSizes[0] + '-' + req.file.filename).split(':').join('-');
-            const mediumImg = ('/' + req.file.destination.split('/').slice(1).slice(-4).join('/') + requiredSizes[1] + '-' + req.file.filename).split(':').join('-');
-
-            const update = {
-                profileImg: {
-                    original: originalImg,
-                    small: smallImg,
-                    medium: mediumImg,
-                }
-            };
-
-            userModel.editUser(login, update, (err, user) => {
-                if (err) next(err);
-                res.status(200).send(user);
-                callback(null);
-            });
+            }
+        ],
+        (err, user) => {
+            if (err) next(err);
         }
-    ], (err, user) => {
-        if (err) next(err);
-    });
-
+    )
 };
 
 exports.checkUserPermissions = function(req, res, next) {
