@@ -179,7 +179,6 @@ exports.uploadUserAvatar = function(req, res, next) {
                         if (err) {
                             callback(err);
                         } else {
-                            console.log("resizer");
                             callback(null);
                         }
                     })
@@ -191,7 +190,6 @@ exports.uploadUserAvatar = function(req, res, next) {
                         if (err) {
                             callback(err);
                         } else {
-                            console.log("resizer2");
                             callback(null);
                         }
                     })
