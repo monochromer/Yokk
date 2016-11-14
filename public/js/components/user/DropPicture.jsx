@@ -10,9 +10,10 @@ var DropPicture = React.createClass({
     },
 
     render: function( ) {
+        const uploadingPhoto = (<i className="demo-icon icon-spin3 animate-spin">&#xe832;</i>);
         return (
             <Dropzone className="profile_dropzone" onDrop={this.onDrop}>
-                    <img src={ this.props.photo } height="205px" className="img-circle"/>
+                { this.props.uploading ? uploadingPhoto : <img src={ this.props.photo } height="205px" className="img-circle"/>}
             </Dropzone>
         );
     }

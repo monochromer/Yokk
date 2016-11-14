@@ -81,8 +81,8 @@ export function addUser(user) {
 
 export function uploadUserPhoto(files, login) {
     return function(dispatch) {
+        dispatch({type: "PHOTO_UPLOADING_START"});
         request.post(COMBINE_USER_ADDPHOTO_URI(login)).attach('pic', files[0]).end(function(err, response) {
-
             dispatch({
                 type: "UPDATE_USER",
                 payload: response.body

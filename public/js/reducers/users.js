@@ -7,6 +7,7 @@ var linkService = {
 const defaultState = {
     list: [],
     status: "ready",
+    uploadingPhoto: false,
     linkService: linkService
 };
 
@@ -31,7 +32,8 @@ export default function(state = defaultState, action) {
             console.log(newState);
             return Object.assign({}, state, {
                 status: "success",
-                list: [...newState, payload]
+                list: [...newState, payload],
+                uploadingPhoto: false
             });
             break;
 
@@ -81,6 +83,10 @@ export default function(state = defaultState, action) {
         case "LINK_SERVICE_CLOSE":
             linkService = { status: 'hidden' };
             return Object.assign({}, state, { linkService: linkService });
+            break;
+
+        case "PHOTO_UPLOADING_START":
+            return Object.assign({}, state, { uploadingPhoto: true });
             break;
 
         default:

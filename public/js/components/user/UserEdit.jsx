@@ -79,12 +79,13 @@ class UserEdit extends React.Component {
             const { _id, profileImg, login, redmineApiKey, fullname, position, phone, skype, workhours, email, birthday, vk, aboutme, cv } = this.state.user;
             const photo = profileImg ? profileImg.medium : "";
             const redmine = redmineApiKey ? "/img/redmine-active.svg" : "/img/redmine-bw.svg";
+
             return (
                 <div className="container container__fixed">
                     <div className="row profile">
 
                         <div className="col-md-3 profile_photo">
-                            <DropPicture _id={ _id } photo={ photo }/>
+                            <DropPicture _id={ _id } photo={ photo } uploading={ this.props.uploadingPhoto }/>
                         </div>
 
                         <div className="col-md-9 prodile_inputs">
@@ -173,7 +174,8 @@ class UserEdit extends React.Component {
 function getProps(state) {
     return {
         users: state.users.list,
-        status: state.users.status
+        status: state.users.status,
+        uploadingPhoto: state.users.uploadingPhoto
     }
 }
 
