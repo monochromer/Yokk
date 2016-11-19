@@ -113,10 +113,17 @@ a:hover {
     background-color: #FFFFFF;
     cursor: not-allowed;
 }
+
 .btn__trans-white {
     background-color: transparent;
     border: 1px solid #FFFFFF;
     color: #FFFFFF;
+    transition: all .2s ease;
+}
+
+.btn__trans-white:hover {
+    background-color: #FFFFFF;
+    color: #4A77DA;
 }
 
 .btn__icon {
