@@ -4,7 +4,11 @@ import { connect } from 'react-redux'
 
 class TopPanel extends React.Component {
     render() {
-        const photo = this.props.user.profileImg ? this.props.user.profileImg.small : "";
+        let photo = "";
+
+        if(this.props.user.profileImg) {
+            photo = <img src={ this.props.user.profileImg.small } className="img-circle" width="34px" height="34px"/>
+        }
         return (
             <div className="top-panel">
                 <div className="row top-panel_row">
@@ -31,7 +35,7 @@ class TopPanel extends React.Component {
                         </Link>
 
                         <div className="profile-block">
-                            <img src={ photo } alt="maxim" className="img-circle" width="34px" height="34px"/>
+                            { photo }
                             <Link to={ "/user/edit/" + this.props.user.login }>{ this.props.user.login }</Link>
                         </div>
 

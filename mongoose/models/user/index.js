@@ -3,7 +3,7 @@
 var methods = require('./methods');
 var statics = require('./statics');
 
-module.exports = function(app, mongoose) {
+module.exports = function (app, mongoose) {
     var userSchema = new mongoose.Schema({
         login: {
             type: String,
@@ -36,9 +36,18 @@ module.exports = function(app, mongoose) {
         aboutme: String,
         cv: String,
         profileImg: {
-          original: String,
-          small: String,
-          medium: String
+            original: {
+                type: String,
+                default: '/users/default/avatars/full.jpg'
+            },
+            small: {
+                type: String,
+                default: '/users/default/avatars/small-200.jpeg'
+            },
+            medium: {
+                type: String,
+                default: '/users/default/avatars/medium-400.jpeg'
+            }
         },
         joinedon: {
             type: Date,
