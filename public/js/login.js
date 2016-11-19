@@ -30,7 +30,7 @@ class LoginForm extends React.Component {
 
     handleSubmit(ev) {
         ev.preventDefault();
-        request.post('/login', this.state).end((err, response) => {
+        request.post(this.state.auth ? '/login' : '/register', this.state).end((err, response) => {
             if(response.status != 200) {
                 this.setState({
                     error: true
@@ -79,22 +79,25 @@ class LoginForm extends React.Component {
             <div className="container container__fixed">
                 <div className="row center-md">
                     <div className="col-md-5">
-                        <form className="form-signup" method="POST" action="/register">
+                        <form className="form-signup" onSubmit={this.handleSubmit}>
                             <h2 className="form-signin-heading">Signing Up to { this.state.teamName } </h2>
                             <input type="hidden" name="email" defaultValue={ this.state.email }/>
                             <input type="hidden" name="teamId" defaultValue={ this.state.teamId }/>
 
-                            <Input className="input-group input-group__grey"
+                            <Input handleChange={this.handleChange}
+                                   className="input-group input-group__grey"
                                    label="Login"
                                    required="true"
                                    name="login"/>
-                            <Input className="input-group input-group__grey"
+                            <Input handleChange={this.handleChange}
+                                   className="input-group input-group__grey"
                                    type="password"
                                    label="Password"
                                    required="true"
                                    name="password"/>
 
-                            <Input className="input-group input-group__grey"
+                            <Input handleChange={this.handleChange}
+                                   className="input-group input-group__grey"
                                    type="password"
                                    label="Repeat Password"
                                    required="true"
