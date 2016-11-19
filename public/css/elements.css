@@ -246,6 +246,10 @@ a:hover {
     color: #FFC7C7;
 }
 
+.input-group__error label {
+    color: #FFC7C7;
+}
+
 .error {
     color: #FFC7C7;
     font-weight: lighter;

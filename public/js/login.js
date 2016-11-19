@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import getParameter from 'get-parameter';
 import { Input, Checkbox } from './components/UI.jsx'
+import request from 'superagent'
 
 class LoginForm extends React.Component {
 
@@ -12,23 +13,54 @@ class LoginForm extends React.Component {
             auth: getParameter('teamName') ? false : true,
             teamName: getParameter('teamName'),
             teamId: getParameter('teamId'),
-            email: getParameter('email')
+            email: getParameter('email'),
+            error: false
         };
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleChange(ev) {
+        this.setState({
+            [ev.target.name]: ev.target.value,
+            error: false
+        })
+    }
+
+    handleSubmit(ev) {
+        ev.preventDefault();
+        request.post('/login', this.state).end((err, response) => {
+            if(response.status != 200) {
+                this.setState({
+                    error: true
+                })
+            } else {
+                window.location = "/";
+            }
+        })
     }
 
     render() {
+        const loginError = this.state.error ? "Check your login" : null;
+        const passwordError = this.state.error ? "Check your password" : null;
+
         const auth = (
             <div className="container container__fixed">
                 <div className="row center-md">
                     <div className="col-md-5">
-                        <form className="form-signin" method="POST" action="/login">
+                        <form className="form-signin" onSubmit={this.handleSubmit}>
                             <h2 className="heading">Sign In</h2>
-                            <Input className="input-group input-group__grey"
+                            <Input handleChange={this.handleChange}
+                                   className="input-group input-group__grey"
                                    label="Username"
+                                   error={loginError}
                                    required="true"
                                    name="username"/>
 
-                            <Input type="password"
+                            <Input handleChange={this.handleChange}
+                                   type="password"
+                                   error={passwordError}
                                    className="input-group input-group__grey"
                                    label="Password"
                                    required="true"

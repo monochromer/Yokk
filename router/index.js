@@ -12,9 +12,7 @@ module.exports = function(app, passport) {
 
     app.get('/', checkAuthStatus, authorization.index);
     app.get('/login', authorization.login);
-    app.post('/login', passport.authenticate('local', {
-        failureRedirect: '/login'
-    }), authorization.auth);
+    app.post('/login', passport.authenticate('local'), authorization.auth);
 
     app.get('/logout', authorization.logout);
 

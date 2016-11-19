@@ -18,11 +18,11 @@ export class Input extends React.Component {
     }
 
     getInputClasses() {
-        let classes = classNames({
+        return classNames({
             [this.props.className]: true,
-            'input-group__focus': this.state.focus
+            'input-group__focus': this.state.focus,
+            'input-group__error': (this.props.error)
         });
-        return classes;
     }
 
     handleFocus() {
@@ -59,7 +59,7 @@ export class Input extends React.Component {
                        onChange={ this.handleChange }
                        defaultValue={ this.props.defaultValue }
                        mask={ this.props.mask }/>
-                { error }
+                { this.state.focus ? null : error }
             </div>
         )
     }

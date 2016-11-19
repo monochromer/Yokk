@@ -12,9 +12,8 @@ exports.login = function(req, res) {
 };
 
 exports.auth = function(req, res) {
-    const logMsq = `User (login: ${req.user.login}) is authorized and redirected to /`;
-    log(req, logMsq).info();
-    res.redirect('/');
+    //const logMsq = `User (login: ${req.user.login}) is authorized and redirected to /`;
+    res.sendStatus(200);
 };
 
 exports.logout = function(req, res) {
