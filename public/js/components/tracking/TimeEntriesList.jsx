@@ -6,12 +6,21 @@ import classNames from 'classnames'
 import { fetchNextTimeEntryBatch } from '../../actions/timeEntries.js'
 import { connect } from 'react-redux'
 import { dayBeatify, durationBeatify, groupTimeEntriesByDay } from '../../helpers'
+import moment from 'moment';
+import DateRangePicker from 'react-bootstrap-daterangepicker';
+import '../../../../node_modules/react-bootstrap-daterangepicker/css/daterangepicker.css'
 
 class TimeEntriesList extends React.Component {
     constructor(props) {
         super(props);
         this.state = { limit: 10 };
         this.loadMore = this.loadMore.bind(this);
+        this.handlePickerEvent = this.handlePickerEvent.bind(this);
+
+        this.state = {
+          startDate: moment(),
+          endDate: moment()
+        }
     }
 
     componentWillMount() {
@@ -24,7 +33,13 @@ class TimeEntriesList extends React.Component {
         store.dispatch(fetchNextTimeEntryBatch(this.props.offset, limit));
     }
 
+    handlePickerEvent() {
+      console.log('date picker event');
+    }
+
     render() {
+        const { handlePickerEvent } = this;
+        const { startDate, endDate } = this.state;
         const { days } = this.props;
 
         let rows = [];
@@ -45,6 +60,13 @@ class TimeEntriesList extends React.Component {
             </div>
         )
         return (
+          <div>
+            <DateRangePicker
+              startDate={ startDate }
+              endDate={ endDate }
+              onEvent={handlePickerEvent}>
+                <div>Picker is opened here</div>
+            </DateRangePicker>
             <div className="container container__fixed">
                 { rows }
                 <div className="row center-md">
@@ -58,6 +80,7 @@ class TimeEntriesList extends React.Component {
                     </div>
                 </div>
             </div>
+          </div>
         )
     }
 }
