@@ -56,12 +56,15 @@ class Filters extends React.Component {
             'custom-periods_period': true,
             'custom-periods_period__active': this.state.activePeriod == 'Last Month'
         });
-
+        const usersFilter = classNames({
+            'filter_heading': true,
+            'heading_highlight': this.props.usersHighlight
+        });
 
         return (
             <form>
-                <div className="filter_heading">Users</div>
-                <UsersFilter users={ this.props.users } usersForReport={ this.props.usersForReport }/>
+                <div className= { usersFilter }>Users</div>
+                <UsersFilter users={ this.props.users } usersForReport={ this.props.usersForReport } />
                 <div className="filter_heading">Period</div>
                 <div className="custom-periods">
                     <div className="row">

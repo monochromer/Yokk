@@ -10,9 +10,18 @@ class UserActivityPage extends React.Component {
     constructor(props) {
         super(props);
         this.getTheReport = this.getTheReport.bind(this);
+
+        this.state = {
+          usersHighlight: false
+        }
     }
 
     getTheReport() {
+        if (!this.props.usersForReport || this.props.usersForReport.length === 0) {
+          this.setState({usersHighlight: true});
+          setTimeout(() => {this.setState({usersHighlight: false})}, 1000);
+          return;
+        }
         const users = this.props.usersForReport;
         const startDate = this.props.period.startDate;
         const endDate = this.props.period.endDate;
@@ -28,6 +37,7 @@ class UserActivityPage extends React.Component {
                             <div className="col-md-12">
                                 <Filters
                                     users={ this.props.users }
+                                    usersHighlight = {this.state.usersHighlight}
                                     period={ this.props.period }
                                     usersForReport={ this.props.usersForReport} />
                             </div>
