@@ -1,14 +1,14 @@
-import React from 'react'
+import React, { Component } from 'react'
 import InputElement from 'react-input-mask'
 import store from '../../store.js'
 import moment from 'moment'
-import { createTimeEntry, fetchRedmineTimeEntries } from '../../actions/timeEntries.js'
+import { createTimeEntry, fetchRedmineTimeEntries, fetchUpworkTimeEntries } from '../../actions/timeEntries.js'
 import { connect } from 'react-redux'
 import { findUserByLogin } from '../../helpers'
 import { validateDuration } from '../../utils/validators'
 import { Input } from '../UI.jsx'
 
-class NewTimeEntryForm extends React.Component {
+class NewTimeEntryForm extends Component {
     constructor(props) {
         super(props);
 
@@ -31,6 +31,7 @@ class NewTimeEntryForm extends React.Component {
         };
 
         this.syncRedmine = this.syncRedmine.bind(this);
+        this.syncUpwork = this.syncUpwork.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -43,6 +44,15 @@ class NewTimeEntryForm extends React.Component {
         } else {
             alert("Check Redmine integration at your profile!");
         }
+    }
+
+  syncUpwork() {
+    const user = findUserByLogin(this.props.users, this.props.currentUser);
+    // if (user.upworkApiKey) {
+        store.dispatch(fetchUpworkTimeEntries());
+    // } else {
+    //     alert("Check Upwork integration at your profile!");
+    // }
     }
 
     handleChange(event) {
@@ -76,6 +86,8 @@ class NewTimeEntryForm extends React.Component {
                                 <span className="tracking-form_or">or</span>
                             </div>
                             <button className="btn btn__md btn__trans-white" onClick={ this.syncRedmine }>Sync Redmine
+                            </button>
+                            <button className="btn btn__md btn__trans-white" onClick={ this.syncUpwork }>Sync Upwork
                             </button>
                         </div>
                     </div>

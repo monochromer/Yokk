@@ -4,7 +4,7 @@
   "description": "Team Management Tool",
   "main": "index.js",
   "scripts": {
-    "start": "nf start",
+    "start": "webpack-dev-server --content-base public/build/ & nf start",
     "test": "mocha --no-timeouts test.js",
     "dev-front": "webpack-dev-server --content-base public/build/ & forever server.js",
     "dev-no-watch": "webpack & forever server.js",
@@ -71,6 +71,7 @@
     "request": "^2.74.0",
     "style-loader": "^0.13.1",
     "superagent": "^2.3.0",
+    "upwork-api": "^1.2.1",
     "valid-email": "0.0.2",
     "validate.js": "^0.10.0",
     "validator": "^6.1.0",

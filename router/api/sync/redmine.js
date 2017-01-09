@@ -6,7 +6,7 @@ const moment = require('moment');
 module.exports = function(req, res, next) {
     const userModel = req.app.db.models.User;
     const _id = req.user._id;
-    
+
     userModel.findOne({
         _id: _id
     }, {

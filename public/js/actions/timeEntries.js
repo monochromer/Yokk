@@ -1,5 +1,6 @@
 import {
     FETCH_REDMINE_TIME_ENTRIES_URI,
+    FETCH_UPWORK_TIME_ENTRIES_URI,
     TIME_ENTRY_CRUD
 } from '../constants'
 
@@ -38,6 +39,13 @@ export function fetchRedmineTimeEntries() {
     return {
         type: "FETCH_REDMINE_TIME_ENTRIES",
         loadItems: FETCH_REDMINE_TIME_ENTRIES_URI
+    }
+}
+
+export function fetchUpworkTimeEntries() {
+    return {
+        type: "FETCH_UPWORK_TIME_ENTRIES",
+        loadItems: FETCH_UPWORK_TIME_ENTRIES_URI
     }
 }
 

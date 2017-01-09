@@ -9,6 +9,7 @@ export const USER_TEAM = '/api/user/get/team';
 export const TIME_ENTRY_CRUD = '/api/timeEntry/';
 
 export const FETCH_REDMINE_TIME_ENTRIES_URI = '/api/sync/redmine';
+export const FETCH_UPWORK_TIME_ENTRIES_URI = '/api/sync/upwork';
 
 export const REPORT_API_URI = '/api/report/';
 
