@@ -19,6 +19,15 @@ export function initializeUserActivity(skip, limit, user, from, to) {
     }
 }
 
+export function fetchUserActivityFilteredByDate(range, dateStrings) {
+    const {from, to} = range;
+    return {
+        type: "FETCH_USER_ACTIVITY",
+        loadItems: TIME_ENTRY_CRUD + '?from=' + from + '&to=' + to + '&dateStrings=' + dateStrings
+    }
+}
+
+
 export function fetchCustomUserNextTimeEntryBatch(skip, limit, user, from, to) {
     return {
         type: "FETCH_USER_ACTIVITY",

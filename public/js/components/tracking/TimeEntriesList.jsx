@@ -3,23 +3,27 @@ import { browserHistory } from 'react-router'
 import TimeEntriesPerDay from './TimeEntriesPerDay.jsx'
 import store from '../../store'
 import classNames from 'classnames'
-import { fetchNextTimeEntryBatch } from '../../actions/timeEntries.js'
+import {
+  fetchNextTimeEntryBatch,
+  fetchUserActivityFilteredByDate
+} from '../../actions/timeEntries.js'
 import { connect } from 'react-redux'
 import { dayBeatify, durationBeatify, groupTimeEntriesByDay } from '../../helpers'
 import moment from 'moment';
-import DateRangePicker from 'react-bootstrap-daterangepicker';
-import '../../../../node_modules/react-bootstrap-daterangepicker/css/daterangepicker.css'
+import DayPicker, { DateUtils } from 'react-day-picker';
+import 'react-day-picker/lib/style.css';
 
 class TimeEntriesList extends React.Component {
     constructor(props) {
         super(props);
         this.state = { limit: 10 };
         this.loadMore = this.loadMore.bind(this);
-        this.handlePickerEvent = this.handlePickerEvent.bind(this);
+        this.handleDayClick = this.handleDayClick.bind(this);
+        this.handleResetClick = this.handleResetClick.bind(this);
 
         this.state = {
-          startDate: moment(),
-          endDate: moment()
+          from: null,
+          to: null
         }
     }
 
@@ -33,14 +37,42 @@ class TimeEntriesList extends React.Component {
         store.dispatch(fetchNextTimeEntryBatch(this.props.offset, limit));
     }
 
-    handlePickerEvent() {
-      console.log('date picker event');
+    handleDayClick(e, day) {
+      const range = DateUtils.addDayToRange(day, this.state);
+      const dateStrings = true;
+      // console.log(fetchUserActivityFilteredByDate(range));
+      // store.dispatch(fetchUserActivityFilteredByDate(range, dateStrings))
+      this.setState(range);
+    }
+
+    handleResetClick(e) {
+      e.preventDefault();
+      this.setState({
+        from: null,
+        to: null
+      });
     }
 
     render() {
-        const { handlePickerEvent } = this;
-        const { startDate, endDate } = this.state;
-        const { days } = this.props;
+        const { handlePickerEvent, handleResetClick } = this;
+        const { from, to } = this.state;
+        // const { days } = this.props;
+        const { list } = this.props;
+        // console.log(list);
+
+        const filteredList = list.filter(timeEntry => {
+          const isSameOrAfter = from ? moment(timeEntry.date).isSameOrAfter(from, 'day') : true;
+          const isSameOrBefore = to ? moment(timeEntry.date).isSameOrBefore(to, 'day') : true;
+          return isSameOrAfter && isSameOrBefore;
+        })
+
+        const days = groupTimeEntriesByDay(filteredList)
+
+        const styles = {
+          dateRangeHeaderDiv: {
+            textAlign: "center"
+          }
+        };
 
         let rows = [];
         for (let day in days) {
@@ -61,12 +93,16 @@ class TimeEntriesList extends React.Component {
         )
         return (
           <div>
-            <DateRangePicker
-              startDate={ startDate }
-              endDate={ endDate }
-              onEvent={handlePickerEvent}>
-                <div>Picker is opened here</div>
-            </DateRangePicker>
+            <div className="date-range">
+                  <div style={styles.dateRangeHeaderDiv}>
+                    {getDateRangeHeader(from, to, handleResetClick)}
+                  </div>
+                  <DayPicker
+                      numberOfMonths={ 3 }
+                      selectedDays={ day => DateUtils.isDayInRange(day, { from, to }) }
+                      onDayClick={ this.handleDayClick }
+                  />
+              </div>
             <div className="container container__fixed">
                 { rows }
                 <div className="row center-md">
@@ -85,10 +121,21 @@ class TimeEntriesList extends React.Component {
     }
 }
 
+function getDateRangeHeader( from, to, onClickFunc ) {
+  if (!from) return <p>Please select the <strong>first day</strong>.</p>;
+  if (!to) return <p>Please select the <strong>last day</strong>.</p>;
+  return (
+    <p>
+    You chose from { moment(from).format('L') } to { moment(to).format('L') }.
+    { ' ' }<a href="." onClick={ onClickFunc }>Reset</a>
+    </p>
+  )
+}
 
 function getProps(state) {
     return {
-        days: groupTimeEntriesByDay(state.timeEntries.list),
+        list: state.timeEntries.list,
+        // days: groupTimeEntriesByDay(state.timeEntries.list),
         offset: state.timeEntries.list.length,
         allBatches: state.timeEntries.helpers.allBatches
     }

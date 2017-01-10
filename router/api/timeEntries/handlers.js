@@ -5,6 +5,8 @@ const stringToMinutes = require('../../../helpers/issues').stringToMinutes;
 const queryFiller = require('../helpers/queryFiller');
 
 exports.timeEntryBatch = function(req, res, next) {
+    const {from, to} = req.query;
+
     if (req.query.from === 'undefined') {
         delete req.query.from;
     }
@@ -13,6 +15,19 @@ exports.timeEntryBatch = function(req, res, next) {
     }
 
     const query = queryFiller(req.query); //CHECK!
+
+    // if (req.query.dateStrings) {
+    //   if (from !== 'null') {
+    //     query.date['$gte'] = from;
+    //   } else {
+    //     delete query.date['$gte']
+    //   }
+    //   if (to !== 'null') {
+    //     query.date['$lte'] = to;
+    //   } else {
+    //     delete query.date['$lte']
+    //   }
+    // }
 
     const TimeEntryModel = req.app.db.models.timeEntry;
     const numberOfDocsToSkip = +req.query.skip || 0;
@@ -72,7 +87,6 @@ exports.timeEntryBatch = function(req, res, next) {
 };
 
 exports.saveTimeEntry = function(req, res, next) {
-    console.log(req.body);
     const TimeEntryModel = req.app.db.models.timeEntry;
     const timeEntry = new TimeEntryModel(req.body);
 
@@ -111,7 +125,6 @@ exports.updateTimeEntry = function(req, res, next) {
         update.duration = moment.duration(update.duration).asMinutes();
     }
 
-    console.log(req.body);
     TimeEntryModel.findByIdAndUpdate(timeEntryId, update, {
         new: true
     }, (err, timeEntry) => {
