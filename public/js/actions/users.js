@@ -90,3 +90,9 @@ export function uploadUserPhoto(files, login) {
         });
     }
 }
+
+export function deleteUserPhoto(photoId) {
+  return {
+    type: ""
+  }
+}

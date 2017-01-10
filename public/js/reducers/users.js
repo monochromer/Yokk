@@ -29,7 +29,7 @@ export default function(state = defaultState, action) {
 
         case "UPDATE_USER":
             newState = _.filter(state.list, (o) => o._id != payload._id);
-            console.log(newState);
+            
             return Object.assign({}, state, {
                 status: "success",
                 list: [...newState, payload],
