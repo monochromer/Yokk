@@ -5,7 +5,7 @@ import store from '../../store.js';
 import { connect } from 'react-redux';
 import { fetchReportData } from '../../actions/statistics';
 
-class UserActivityPage extends React.Component {
+class ReportsPage extends React.Component {
 
     constructor(props) {
         super(props);
@@ -71,4 +71,4 @@ function fetchProps(state) {
     }
 }
 
-export default connect(fetchProps)(UserActivityPage);
+export default connect(fetchProps)(ReportsPage);
