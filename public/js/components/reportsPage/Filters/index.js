@@ -110,7 +110,7 @@ class Filters extends React.Component {
 
         return (
             <form>
-                <div className= { usersFilter }>Users</div>
+                <div className={usersFilter}>Users</div>
                 <UsersFilter users={ this.props.users } usersForReport={ this.props.usersForReport } />
                 <div className="filter_heading">Period</div>
                 <div className="custom-periods">
@@ -143,19 +143,6 @@ class Filters extends React.Component {
                       */}
                   </div>
                 </div>
-
-                {/*
-                  <Input value={ this.props.period.startDate }
-                         className="input-group input-group__grey"
-                         label="from" name="startDate"
-                         handleChange={ this.handleChange }/>
-
-                  <Input handleChange={ this.handleChange }
-                         value={ this.props.period.endDate }
-                         className="input-group input-group__grey"
-                         label="to"
-                         name="endDate"/>
-                */}
             </form>
         );
     }

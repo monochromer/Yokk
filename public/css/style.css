@@ -430,6 +430,12 @@ body {
     height: 50px;
     line-height: 50px;
     margin: 15px 0;
+    transition: all 0.2s ease 0s;
+}
+.heading_highlight {
+  background-color: rgb(74,119, 218);
+  color: white;
+  transition: all 0.2s ease 0s;
 }
 
 .filter_row {
@@ -464,10 +470,6 @@ body {
     font-weight: 300;
     font-size: 16px;
     line-height: 44px;
-}
-
-.heading_highlight {
-  background-color: rgb(249,181, 177);
 }
 
 /*---------------------------------------- /reports --------------------------------------*/
