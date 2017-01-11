@@ -88,8 +88,8 @@ class PromoPage extends React.Component {
                 <div className="container center">
                     <div className={ centerClasses }>
                         <div className="col-md-12">
-                            <h1 className="heading promo__heading">Eye of Providence <br /> helps to manage your team</h1>
-                            <button className={ createTeamButtonClasses } onClick={ this.handleClickCreate }>Create New Team</button>
+                            <h1 className="heading promo__heading">Eye of Providence <br /> helps to manage your teams</h1>
+                            <button className={ createTeamButtonClasses } onClick={ this.handleClickCreate }>Register Company</button>
                         </div>
                     </div>
                 </div>
@@ -122,13 +122,13 @@ class PromoPage extends React.Component {
                                            label="E-mail address"
                                            error={ this.props.error }
                                     />
-                                    <button type="submit" className="btn btn__lg btn__white right-panel_btn">Create New Team</button>
+                                  <button type="submit" className="btn btn__lg btn__white right-panel_btn">Register Company</button>
                                 </div>
                             </div>
                             <div className="row center-md right-panel_login">
                                 <div className="col-md-8">
                                     <p>
-                                        Already have a team? &nbsp;
+                                        Already registered? &nbsp;
                                         <a href="/login">Sign In</a>
                                     </p>
                                 </div>

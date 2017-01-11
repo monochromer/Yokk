@@ -29,7 +29,6 @@ class Step5 extends React.Component {
         e.preventDefault();
         store.dispatch(step5(this.props.teamName,this.state.invitations));
         setTimeout(() => { document.location.href = '/login'} , 1000); // wtf !?
-
     }
 
     render() {

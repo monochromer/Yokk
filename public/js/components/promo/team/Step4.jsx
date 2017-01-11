@@ -35,8 +35,8 @@ class Step4 extends React.Component {
                     </div>
                     <div className="row center-xs step__message">
                         <div className="col-md-6 col-sm-8 col-xs-10">
-                            <p>We’ll use this to name your team,<br/>
-                                which you can always change later.</p>
+                            <p>You’ll be able to change the name later,<br/>
+                                but it should be unique within our system.</p>
                         </div>
                     </div>
                     <div className="row center-xs step__code">
@@ -51,7 +51,7 @@ class Step4 extends React.Component {
                     <div className="row center-xs">
                         <div className="col-md-6 col-sm-8 col-xs-10">
                             <button className="btn btn__blue btn__lg team-create__create"
-                                    disabled={ !this.state.teamName ? "disabled" : "" }>Continue to Sending Invitation
+                                    disabled={ !this.state.teamName ? "disabled" : "" }>Go to Sign In
                             </button>
                         </div>
                     </div>
