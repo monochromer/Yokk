@@ -158,6 +158,43 @@ a:hover {
     text-decoration: underline;
 }
 
+.avatar_delete_btn_container {
+  width: 100%;
+  text-align: center;
+}
+.btn__delete_profile_img_div {
+  width: 60%;
+  display: inline-block;
+  margin-right: 30px;
+}
+.btn__delete_profile_img_a {
+  display: block;
+  text-align: center;
+  color: rgb(74,119,218);
+  text-decoration: none;
+  background-color: #fff;
+  padding: 10px 5px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 0px;
+  box-shadow: 5px 5px 0px 0px rgba(0, 0, 0, 0.15);
+  transition: all 0.15s ease 0s;
+}
+.btn__delete_profile_img_a:active{
+  position: relative;
+  top:3px;
+  left:2px;
+  box-shadow: 0px 0px;
+}
+.btn__delete_profile_img_a:hover{
+  background-color: rgb(74,119,218);
+  color: #fff;
+}
+
 /*---------------------------------------- /buttons --------------------------------------*/
 
 

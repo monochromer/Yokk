@@ -94,7 +94,7 @@ export function uploadUserPhoto(files, login) {
 export function deleteUserPhoto(userId) {
   const reqUrl = `/api/user/${userId}/upload_profile_picture`
   request.del(reqUrl).end(() => {
-    console.log('sent');
+    console.log('profile img updated');
   })
   return {
     type: "DELETE_PROFILE_IMG",

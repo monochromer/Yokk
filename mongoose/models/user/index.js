@@ -38,15 +38,15 @@ module.exports = function (app, mongoose) {
         profileImg: {
             original: {
                 type: String,
-                default: '/users/default/avatars/full.jpg'
+                default: '/img/dummy/960-720.png'
             },
             small: {
                 type: String,
-                default: '/users/default/avatars/small-200.jpeg'
+                default: '/img/dummy/960-720.png'
             },
             medium: {
                 type: String,
-                default: '/users/default/avatars/medium-400.jpeg'
+                default: '/img/dummy/960-720.png'
             }
         },
         joinedon: {

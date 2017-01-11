@@ -21,12 +21,12 @@ export default class DropPicture extends Component {
     store.dispatch(uploadUserPhoto(files, this.props._id));
   }
 
-  deletePicture() {
+  deletePicture(e) {
+    e.preventDefault()
     store.dispatch( deleteUserPhoto(this.props._id) );
   }
 
   render() {
-    console.log(this.props);
     const {onDrop, deletePicture} = this;
 
     const uploadingPhoto = (
@@ -34,13 +34,17 @@ export default class DropPicture extends Component {
     );
 
     return (
-      <div>
+      <div className="profile_photo_container">
         <Dropzone className="profile_dropzone" onDrop={this.onDrop}>
           {this.props.uploading
             ? uploadingPhoto
             : <img src={this.props.photo} height="205px" className="img-circle"/>}
         </Dropzone>
-        <button onClick={this.deletePicture}>Delete picture</button>
+        <div className="avatar_delete_btn_container">
+          <div className="btn__delete_profile_img_div">
+            <a onClick={this.deletePicture} href="#" className="btn__delete_profile_img_a">Delete picture</a>
+          </div>
+        </div>
       </div>
     );
   }
