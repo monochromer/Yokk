@@ -13,7 +13,7 @@ export default class DropPicture extends Component {
 
   // static propTypes = {
   //   _id: React.PropTypes.string.isRequired,
-  //   photo: React.PropTypes.string,
+  //   photo: React.PropTypes.string, //
   //   uploading: React.PropTypes.bool
   // }
 
@@ -22,7 +22,7 @@ export default class DropPicture extends Component {
   }
 
   deletePicture() {
-    // store.dispatch( deleteUserPhoto(photoId) );
+    store.dispatch( deleteUserPhoto(this.props._id) );
   }
 
   render() {

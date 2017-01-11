@@ -54,6 +54,11 @@ class UserEdit extends React.Component {
 
 
     render() {
+      // const user = findUserByLogin(this.props.users, this.props.routeParams.login);
+      // if (user) {
+      //   console.log(user._id);
+      //   console.log( user.profileImg );
+      // }
 
         let statusIcons = "";
         switch (this.props.status) {
@@ -76,7 +81,22 @@ class UserEdit extends React.Component {
 
 
         if (this.state.user) {
-            const { _id, profileImg, login, redmineApiKey, fullname, position, phone, skype, workhours, email, birthday, vk, aboutme, cv } = this.state.user;
+          const {
+            _id,
+            profileImg,
+            login,
+            redmineApiKey,
+            fullname,
+            position,
+            phone,
+            skype,
+            workhours,
+            email,
+            birthday,
+            vk,
+            aboutme,
+            cv
+          } = this.state.user;
             const photo = profileImg ? profileImg.medium : "";
             const redmine = redmineApiKey ? "/img/redmine-active.svg" : "/img/redmine-bw.svg";
 

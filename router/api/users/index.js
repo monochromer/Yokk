@@ -14,5 +14,6 @@ module.exports = function(api) {
         .put(handle.updateUser)
         .delete(handle.deleteUser);
     api.route('/user/:user_login/upload_profile_picture')
-        .post(upload.single('pic'), handle.uploadUserAvatar);
+        .post(upload.single('pic'), handle.uploadUserAvatar)
+        .delete(handle.deleteUserAvatar);
 };

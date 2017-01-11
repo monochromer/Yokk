@@ -6,6 +6,8 @@ const sendEmail = require('../../helpers/sendEmail');
 const async = require('async');
 const easyimg = require('easyimage');
 const moment = require('moment');
+const fs = require('fs')
+const path = require('path')
 
 exports.getAllUsers = function(req, res, next) {
     const userModel = req.app.db.models.User;
@@ -220,6 +222,43 @@ exports.uploadUserAvatar = function(req, res, next) {
         }
     )
 };
+
+exports.deleteUserAvatar = function(req, res, next) {
+  const userModel = req.app.db.models.User
+  const userId = req.params.user_login
+  const baseDir = path.join(__dirname, '../../../uploads/users/')
+  const dirToDelete = `${baseDir}/${userId}/avatars`
+
+  deleteFolderRecursive(dirToDelete);
+
+  const update = {
+    profileImg: {
+      small: '/img/dummy/960-720.png',
+      medium: '/img/dummy/960-720.png',
+      original: 'public/img/dummy/960-720.png'
+    }
+  }
+
+  userModel.editUser(userId, update, (err, user) => {
+      if (err) next(err);
+      res.status(200).send(user);
+  });
+
+  function deleteFolderRecursive(path) {
+    if (fs.existsSync(path)) {
+      fs.readdirSync(path).forEach(function (file, index) {
+        var curPath = path + "/" + file;
+        if (fs.lstatSync(curPath).isDirectory()) { // recurse
+          deleteFolderRecursive(curPath);
+        } else { // delete file
+          fs.unlinkSync(curPath);
+        }
+      });
+      fs.rmdirSync(path);
+    }
+  }
+
+}
 
 exports.checkUserPermissions = function(req, res, next) {
     // as of now, returned fields can be adjusted in userpassport.js

@@ -13,6 +13,7 @@ const defaultState = {
 
 export default function(state = defaultState, action) {
     const { type, payload } = action;
+
     var newState = "";
     switch (type) {
         case "ADD_USER":
@@ -29,12 +30,25 @@ export default function(state = defaultState, action) {
 
         case "UPDATE_USER":
             newState = _.filter(state.list, (o) => o._id != payload._id);
-            
+
             return Object.assign({}, state, {
                 status: "success",
                 list: [...newState, payload],
                 uploadingPhoto: false
             });
+            break;
+
+        case "DELETE_PROFILE_IMG":
+            newState = Object.assign({}, state)
+
+            const dummy = {
+              small: "/img/dummy/960-720.png",
+              medium: "/img/dummy/960-720.png",
+              original: "/img/dummy/960-720.png"
+            }
+            _.find(newState.list, userObject => userObject._id === payload.userId).profileImg = dummy
+
+            return newState
             break;
 
         case "UPDATE_USER_SUCCESS":
