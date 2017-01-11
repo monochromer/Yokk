@@ -2,11 +2,12 @@ const path = require('path');
 
 module.exports = {
   devtool: 'source-map',
-  entry: {
-    index: './public/js/app.js',
-    login: './public/js/login.js',
-    team: './public/js/team.js',
-  },
+  entry: [
+    'babel-polyfill',
+    './public/js/app.js',
+    './public/js/login.js',
+    './public/js/team.js'
+  ],
   output: {
     path: path.join(__dirname, 'public/build/'),
     filename: '[name].bundle.js',
@@ -14,17 +15,17 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.js/,
-        loader: 'babel-loader',
-        include: path.join(__dirname, 'src')
-      },
-      {
-        test: /\.jsx?/,
-        loader: 'babel-loader',
-        exclude: /node_modules/,
+        test: /\.jsx?$/,
+        loader: "babel-loader",
+
+        // Skip any files outside of your project's `src` directory
+        include: [
+          path.resolve(__dirname, "public"),
+        ],
+        // Options to configure babel with
         query: {
-          presets: ['es2015', 'react'],
-          plugins: ['transform-decorators-legacy'],
+          presets: ['es2015', 'react', 'stage-0'],
+          plugins: ['transform-runtime', 'transform-decorators-legacy']
         }
       },
       {
