@@ -9,162 +9,178 @@ const valid = require("valid-email");
 
 // POST
 exports.create = function(req, res, next) {
-    const teamModel = req.app.db.models.Team;
-    const step = req.body.step;
+    const {Team, User} = req.app.db.models
+    const {teamName} = req.body
 
-    const email = req.body.email;
-    if (!valid(email)) {
-        var error = new Error();
-        error.name = "Email is not valid";
-        return next(error.name);
-    }
+    User.findByLogin(req.user.login, (err, user) => {
+        console.log(user);
+    })
 
-    const code = req.body.code;
-    const login = req.body.login;
-    const name = req.body.name;
-
-    switch (step) {
-        case '0':
-            createTeamWithGivenEmail(teamModel, email, sendEmail).then(team => {
-                res.status(200).send(team);
-            }).catch(reason => {
-                res.status(500).send();
-                next(reason);
-            });
-            break;
-
-        case '1':
-            checkConfirmationCode(code, email).then(team => {
-                res.status(200).send(team);
-            }).catch(reason => {
-                res.status(500).send();
-                next(reason);
-            });
-            break;
-
-        case '2':
-            saveTeamLeadLogin(login, email).then(team => {
-                res.status(200).send(team);
-            }).catch(reason => {
-                res.status(500).send();
-                next(reason);
-            });
-            break;
-
-        case '4':
-            saveTeamName(name, email).then(team => {
-                res.status(200).send(team);
-            }).catch(reason => {
-                res.status(500).send();
-                next(reason);
-            });
-            break;
-
-        default:
-            createTeamWithGivenEmail(teamModel, email, sendEmail).then(team => {
-                res.status(200).send(team);
-            }).catch(reason => {
-                res.status(500).send();
-                next(reason);
-            });
-            break;
-    }
-
-    function createTeamWithGivenEmail(teamDBModel, email, sendEmailFunc) {
-        return new Promise((resolve, reject) => {
-            if (!email) return reject(new Error());
-            // TODO email validation
-            const teamInitialData = {
-                teamLeadEmail: email
-            };
-            teamDBModel.findOne(teamInitialData, (err, team) => {
-                if(team && team.confirmed) {
-                    let error = new Error();
-                    error.name = "This team is already created and confirmed";
-                    return next(error.name);
-                }
-
-                teamInitialData.confirmationCode = "111111";
-                // teamInitialData.confirmationCode = Math.random().toString().slice(2, 8);
-
-                const htmlToSend = `<div>Confirmation code ${teamInitialData.confirmationCode}</div>`;
-
-                const mailOptions = {
-                    from: '"Soshace team 👥" <bot@izst.ru>',
-                    to: email,
-                    subject: 'Your team is being processed. Please follow the instructions',
-                    html: htmlToSend
-                };
-
-                if (!team) {
-                    const newTeam = new teamDBModel(teamInitialData);
-                    newTeam.save((err, team) => {
-                        if (err) next(err);
-                        resolve(team);
-                        sendEmailFunc(mailOptions);
-                    })
-                } else {
-                    resolve(team);
-                    sendEmailFunc(mailOptions);
-                }
-            })
-        })
-    }
-
-    function checkConfirmationCode(confirmationCode, email) {
-        return new Promise((resolve, reject) => {
-            teamModel.findOne({
-                teamLeadEmail: email
-            }, (err, team) => {
-                if (err) return reject(err);
-                if (!team) return reject(new Error());
-                if (team.confirmationCode !== confirmationCode) return reject(new Error());
-                if (team.confirmed === true) return reject(new Error());
-
-                team.confirmed = true;
-                team.save();
-
-                resolve(team);
-            })
-        })
-    }
-
-    function saveTeamLeadLogin(login, teamLeadEmail) {
-        return new Promise((resolve, reject) => {
-            if (!login) reject('!login');
-            teamModel.findOne({
-                teamLeadEmail: teamLeadEmail
-            }, (err, team) => {
-                if (err) next(err);
-                if (team === null) return reject(new Error());
-                if (team.confirmed === false) return reject(new Error());
-                if (team.teamLead) return reject(new Error());
-                if (typeof login !== 'string' || login.length > 30) return reject(new Error());
-
-                team.teamLead = login;
-                team.save();
-                resolve(team);
-            })
-        })
-    }
-
-    function saveTeamName(name, teamLeadEmail) {
-        return new Promise((resolve, reject) => {
-            teamModel.findOne({
-                teamLeadEmail: email
-            }, (err, team) => {
-                if (err) next(err);
-                if (team === null) return reject(new Error());
-                if (team.name) return reject(new Error());
-                if (typeof name !== 'string' || name.length > 30) return reject(new Error());
-
-                team.name = name;
-                team.save();
-                resolve(team);
-            })
-        })
-    }
-
+    // const teamInitialData = {
+    //   name: teamName,
+    //   teamLeadEmail: 'foo'
+    // }
+    //
+    // Team.findOne(teamInitialData, (err, team) => {
+    //   if (team) return res.send('team already exists')
+    //   const newTeam = new Team(teamInitialData)
+    //   newTeam.save()
+    // })
+    // const step = req.body.step;
+//
+//     const email = req.body.email;
+//     if (!valid(email)) {
+//         var error = new Error();
+//         error.name = "Email is not valid";
+//         return next(error.name);
+//     }
+//
+//     const code = req.body.code;
+//     const login = req.body.login;
+//     const name = req.body.name;
+//
+//     switch (step) {
+//         case '0':
+//             createTeamWithGivenEmail(teamModel, email, sendEmail).then(team => {
+//                 res.status(200).send(team);
+//             }).catch(reason => {
+//                 res.status(500).send();
+//                 next(reason);
+//             });
+//             break;
+//
+//         case '1':
+//             checkConfirmationCode(code, email).then(team => {
+//                 res.status(200).send(team);
+//             }).catch(reason => {
+//                 res.status(500).send();
+//                 next(reason);
+//             });
+//             break;
+//
+//         case '2':
+//             saveTeamLeadLogin(login, email).then(team => {
+//                 res.status(200).send(team);
+//             }).catch(reason => {
+//                 res.status(500).send();
+//                 next(reason);
+//             });
+//             break;
+//
+//         case '4':
+//             saveTeamName(name, email).then(team => {
+//                 res.status(200).send(team);
+//             }).catch(reason => {
+//                 res.status(500).send();
+//                 next(reason);
+//             });
+//             break;
+//
+//         default:
+//             createTeamWithGivenEmail(teamModel, email, sendEmail).then(team => {
+//                 res.status(200).send(team);
+//             }).catch(reason => {
+//                 res.status(500).send();
+//                 next(reason);
+//             });
+//             break;
+//     }
+//
+//     function createTeamWithGivenEmail(teamDBModel, email, sendEmailFunc) {
+//         return new Promise((resolve, reject) => {
+//             if (!email) return reject(new Error());
+//             // TODO email validation
+//             const teamInitialData = {
+//                 teamLeadEmail: email
+//             };
+//             teamDBModel.findOne(teamInitialData, (err, team) => {
+//                 if(team && team.confirmed) {
+//                     let error = new Error();
+//                     error.name = "This team is already created and confirmed";
+//                     return next(error.name);
+//                 }
+//
+//                 teamInitialData.confirmationCode = "111111";
+//                 // teamInitialData.confirmationCode = Math.random().toString().slice(2, 8);
+//
+//                 const htmlToSend = `<div>Confirmation code ${teamInitialData.confirmationCode}</div>`;
+//
+//                 const mailOptions = {
+//                     from: '"Soshace team 👥" <bot@izst.ru>',
+//                     to: email,
+//                     subject: 'Your team is being processed. Please follow the instructions',
+//                     html: htmlToSend
+//                 };
+//
+//                 if (!team) {
+//                     const newTeam = new teamDBModel(teamInitialData);
+//                     newTeam.save((err, team) => {
+//                         if (err) next(err);
+//                         resolve(team);
+//                         sendEmailFunc(mailOptions);
+//                     })
+//                 } else {
+//                     resolve(team);
+//                     sendEmailFunc(mailOptions);
+//                 }
+//             })
+//         })
+//     }
+//
+//     function checkConfirmationCode(confirmationCode, email) {
+//         return new Promise((resolve, reject) => {
+//             teamModel.findOne({
+//                 teamLeadEmail: email
+//             }, (err, team) => {
+//                 if (err) return reject(err);
+//                 if (!team) return reject(new Error());
+//                 if (team.confirmationCode !== confirmationCode) return reject(new Error());
+//                 if (team.confirmed === true) return reject(new Error());
+//
+//                 team.confirmed = true;
+//                 team.save();
+//
+//                 resolve(team);
+//             })
+//         })
+//     }
+//
+//     function saveTeamLeadLogin(login, teamLeadEmail) {
+//         return new Promise((resolve, reject) => {
+//             if (!login) reject('!login');
+//             teamModel.findOne({
+//                 teamLeadEmail: teamLeadEmail
+//             }, (err, team) => {
+//                 if (err) next(err);
+//                 if (team === null) return reject(new Error());
+//                 if (team.confirmed === false) return reject(new Error());
+//                 if (team.teamLead) return reject(new Error());
+//                 if (typeof login !== 'string' || login.length > 30) return reject(new Error());
+//
+//                 team.teamLead = login;
+//                 team.save();
+//                 resolve(team);
+//             })
+//         })
+//     }
+//
+//     function saveTeamName(name, teamLeadEmail) {
+//         return new Promise((resolve, reject) => {
+//             teamModel.findOne({
+//                 teamLeadEmail: email
+//             }, (err, team) => {
+//                 if (err) next(err);
+//                 if (team === null) return reject(new Error());
+//                 if (team.name) return reject(new Error());
+//                 if (typeof name !== 'string' || name.length > 30) return reject(new Error());
+//
+//                 team.name = name;
+//                 team.save();
+//                 resolve(team);
+//             })
+//         })
+//     }
+//
 };
 
 exports.resendCode = function(req, res, next) {

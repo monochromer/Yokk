@@ -8,6 +8,8 @@ import UserEdit from './components/user/UserEdit.jsx'
 import Tracking from './components/tracking/index.jsx'
 import ReportsPage from './components/reportsPage'
 import UserActivityPage from './components/userActivityPage'
+import Teams from './components/Teams'
+import Step5 from './components/promo/team/Step5.jsx'
 
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 import { Provider } from 'react-redux'
@@ -17,6 +19,8 @@ const router = (
 		<Router history={ browserHistory }>
 			<Route path="/" component={ Layout }>
 				<IndexRoute component={ Tracking }></IndexRoute>
+				<Route path="/teams" component={ Teams }></Route>
+				<Route path="/test" component={ Step5 }></Route>
 				<Route path="/users" component={ UserTable }></Route>
 				<Route path="user/:login" component={ UserPage }></Route>
 				<Route path="user/edit/:login" component={ UserEdit }></Route>

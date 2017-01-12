@@ -25,6 +25,10 @@ class TopPanel extends React.Component {
                                 <Link className="top-panel_menu-link" activeClassName="top-panel_menu-link__active"
                                       to="/reports">Reports</Link>
                             </li>
+                            <li className="top-panel_menu-item">
+                                <Link className="top-panel_menu-link" activeClassName="top-panel_menu-link__active"
+                                      to="/teams">Teams list</Link>
+                            </li>
                         </ul>
                     </div>
                     <div className="col-md-4 text-right tracking-item">

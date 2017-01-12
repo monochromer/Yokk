@@ -1,6 +1,16 @@
 import { TEAM_CRUD } from '../constants'
 import request from 'superagent'
 
+export function saveTeam(teamName) {
+  request
+    .post('/api/teams')
+    .send({ some: 'some' })
+    .end((err, res) => {
+      if (err) console.log(err)
+      // console.log(res)
+    })
+}
+
 export function step0(email) {
     return {
         type: "STEP_0",
