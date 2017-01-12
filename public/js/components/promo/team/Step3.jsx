@@ -2,7 +2,8 @@ import React from 'react'
 import store from '../../../store'
 import {connect} from 'react-redux'
 import {browserHistory} from 'react-router'
-import {step3} from '../../../actions/teams'
+import {step3} from '../../../actions/companies'
+// import {step3} from '../../../actions/teams'
 import {addUser} from '../../../actions/users'
 import {getFromStateOrLocalStorage} from '../../../helpers'
 import {Input} from '../../UI.jsx'
@@ -56,7 +57,7 @@ class Step3 extends React.Component {
                 className="btn btn__lg btn__blue team-create__create"
                 disabled={this.state.password.length <= 6
                 ? "disabled"
-                : ""}>Continue to Team
+                : ""}>Continue to Company
               </button>
             </div>
           </div>

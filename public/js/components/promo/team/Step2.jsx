@@ -1,6 +1,7 @@
 import React from 'react'
 import store from '../../../store'
-import { step2 } from '../../../actions/teams'
+import { step2 } from '../../../actions/companies'
+// import { step2 } from '../../../actions/teams'
 import { connect } from 'react-redux'
 import { Input } from '../../UI.jsx'
 
@@ -34,7 +35,7 @@ class Step2 extends React.Component {
                     </div>
                     <div className="row center-xs step__message">
                         <div className="col-md-6 col-sm-8 col-xs-10">
-                            <p>You name will be used for auth. You won't be able to change it.</p>
+                            <p>You name will be used for auth. You will not be able to change it.</p>
                         </div>
                     </div>
                     <div className="row center-xs step__code">

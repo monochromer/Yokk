@@ -6,5 +6,6 @@ require('./timeEntries')(api);
 require('./reports')(api);
 require('./sync')(api);
 require('./teams')(api);
+require('./company')(api);
 
 module.exports = api;

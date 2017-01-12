@@ -2,7 +2,8 @@ import React from 'react'
 import store from '../../store'
 import validator from 'validator'
 import classNames from 'classnames'
-import { step0 } from '../../actions/teams'
+import { step0 } from '../../actions/companies'
+// import { step0 } from '../../actions/teams'
 import { connect } from 'react-redux'
 import { Input } from '../UI.jsx'
 
@@ -24,7 +25,7 @@ class PromoPage extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         if (validator.isEmail(this.state.email)) {
-            store.dispatch(step0(this.state.email));
+            store.dispatch(step0(this.state.email))
         } else {
             store.dispatch({type: "CREATE_ERROR", step: "step0", text: "It is not valid email!"})
         }

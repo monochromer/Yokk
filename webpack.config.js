@@ -2,12 +2,17 @@ const path = require('path');
 
 module.exports = {
   devtool: 'source-map',
-  entry: [
-    'babel-polyfill',
-    './public/js/app.js',
-    './public/js/login.js',
-    './public/js/team.js'
-  ],
+  // entry: [
+  //   'babel-polyfill',
+  //   './public/js/app.js',
+  //   './public/js/login.js',
+  //   './public/js/team.js'
+  // ],
+  entry: {
+    index: './public/js/app.js',
+    login: './public/js/login.js',
+    team: './public/js/team.js',
+  },
   output: {
     path: path.join(__dirname, 'public/build/'),
     filename: '[name].bundle.js',

@@ -57,6 +57,7 @@ module.exports = function (app, mongoose) {
             type: String,
             default: 'user'
         },
+        companies: [mongoose.Schema.Types.ObjectId],
         team: mongoose.Schema.Types.ObjectId,
         redmineHost: String,
         redmineApiKey: String

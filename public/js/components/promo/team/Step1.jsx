@@ -1,24 +1,23 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
 import store from '../../../store'
 import _ from 'lodash'
 import {connect} from 'react-redux'
 import {browserHistory} from 'react-router'
-import {step1} from '../../../actions/teams'
+import {step1} from '../../../actions/companies'
+// import {step1} from '../../../actions/teams'
 import {getFromStateOrLocalStorage} from '../../../helpers'
 
-class Step1 extends React.Component {
-  constructor(props) {
-    super(props)
+class Step1 extends Component {
 
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-
-    this.state = {
-      code: []
-    }
+  state = {
+    code: []
   }
 
-  handleChange = (event) => {
+  static propTypes = {
+    email: PropTypes.string.isRequired
+  }
+
+  handleChange = event => {
     this.state.code[event.target.name] = event.target.value;
     this.setState({code: this.state.code});
 
@@ -27,9 +26,9 @@ class Step1 extends React.Component {
     }
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
-    store.dispatch(step1(_.join(this.state.code, ""), this.props.email));
+  handleSubmit = event => {
+    event.preventDefault()
+    store.dispatch(step1(_.join(this.state.code, ""), this.props.email))
   }
 
   render() {
@@ -95,9 +94,9 @@ class Step1 extends React.Component {
   }
 }
 
-Step1.propTypes = {
-  email: React.PropTypes.string.isRequired
-}
+// Step1.propTypes = {
+//   email: React.PropTypes.string.isRequired
+// }
 
 function getProps(state) {
   let email = getFromStateOrLocalStorage('email', state.teams);

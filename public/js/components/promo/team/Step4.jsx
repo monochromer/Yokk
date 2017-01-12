@@ -1,6 +1,7 @@
 import React from 'react'
 import store from '../../../store';
-import { step4 } from '../../../actions/teams'
+import { step4 } from '../../../actions/companies'
+// import { step4 } from '../../../actions/teams'
 import { connect } from 'react-redux'
 import { Input } from '../../UI.jsx'
 
