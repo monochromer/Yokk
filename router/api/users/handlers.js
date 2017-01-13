@@ -262,11 +262,14 @@ exports.deleteUserAvatar = function(req, res, next) {
 
 }
 
-exports.checkUserPermissions = function(req, res, next) {
-    // as of now, returned fields can be adjusted in userpassport.js
-    const userModel = req.app.db.models.User;
-    userModel.findByLogin(req.user.login, (err, user) => {
-        res.send(user);
-    })
+exports.checkUserPermissions = function (req, res, next) {
+  // as of now, returned fields can be adjusted in userpassport.js
+  const { User, Company } = req.app.db.models
 
-};
+  User.findByLogin(req.user.login, (err, user) => {
+    Company.find( {_id: {$in: user.companies} }, (err, companies) => {
+      const userToReturn = Object.assign({}, user, {companies: companies})
+      res.status(200).send(userToReturn)
+    });
+  })
+}

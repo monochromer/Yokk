@@ -1,19 +1,24 @@
 import React from 'react'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
+import CompaniesDropdown from './CompaniesDropdown'
 
 class TopPanel extends React.Component {
     render() {
-        let photo = "";
+      const {user} = this.props
+        let photo = ""
 
-        if(this.props.user.profileImg) {
+        if(user.profileImg) {
             photo = <img src={ this.props.user.profileImg.small } className="img-circle" width="34px" height="34px"/>
         }
         return (
             <div className="top-panel">
                 <div className="row top-panel_row">
-                    <div className="col-md-4">
+                    <div className="col-md-2">
                         <a href="/" className="top-panel_logo">Eye of Providence</a>
+                    </div>
+                    <div className="col-md-2">
+                      <CompaniesDropdown companies={user.companies}/>
                     </div>
                     <div className="col-md-4">
                         <ul className="top-panel_menu">
@@ -49,9 +54,9 @@ class TopPanel extends React.Component {
     }
 }
 
-const getProps = function(store) {
+const getProps = function({currentUser}) {
     return {
-        user: store.currentUser
+        user: currentUser
     }
 };
 

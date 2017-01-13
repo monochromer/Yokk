@@ -1,10 +1,10 @@
 import { TEAM_CRUD } from '../constants'
 import request from 'superagent'
 
-export function saveTeam(teamName) {
+export function saveTeam(teamName, companyId) {
   request
-    .post('/api/teams')
-    .send({ some: 'some' })
+    .post(`/api/teams/${teamName}`)
+    .send({ companyId: companyId })
     .end((err, res) => {
       if (err) console.log(err)
       // console.log(res)

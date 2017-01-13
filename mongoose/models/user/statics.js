@@ -32,7 +32,9 @@ module.exports = function(schema) {
             login: 1,
             team: 1,
             role: 1,
-            profileImg: 1
+            profileImg: 1,
+            companies: 1,
+            teams: 1
         }
         return this.findOne({
             login: login

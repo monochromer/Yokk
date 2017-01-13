@@ -59,6 +59,7 @@ module.exports = function (app, mongoose) {
         },
         companies: [mongoose.Schema.Types.ObjectId],
         team: mongoose.Schema.Types.ObjectId,
+        teams: [mongoose.Schema.Types.ObjectId],
         redmineHost: String,
         redmineApiKey: String
     });

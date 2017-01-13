@@ -33,7 +33,7 @@ const router = (
 )
 
 
-var render = () => { ReactDOM.render(router, document.getElementById("content")); }
+var render = () => { ReactDOM.render(router, document.getElementById("content")) }
 
 render();
 

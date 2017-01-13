@@ -1,11 +1,12 @@
 import React, {Component, PropTypes} from 'react'
 import classNames from 'classnames'
+import { connect } from 'react-redux'
 import {saveTeam} from '../../actions/teams'
 import {Input} from '../UI.jsx'
 import InviteToTeam from './InviteToTeam'
 import Team from './Team'
 
-export default class Teams extends Component {
+class Teams extends Component {
 
   state = {
     teamName: "",
@@ -24,8 +25,8 @@ export default class Teams extends Component {
 
   addNewTeam = () => {
     const {teamName} = this.state
-    // saveTeam(teamName)
-    console.log('save team handler')
+    // saveTeam(teamName, this.props.companyId)
+    saveTeam(teamName, 'this.props.companyId')
   }
 
   addMembers = teamId => e => {
@@ -46,7 +47,13 @@ export default class Teams extends Component {
   render() {
     const {teamChangeHandler, addNewTeam, addMembers} = this
     const { teamExists, modalIsOpen } = this.state
+    const { user } = this.props
+
+    // company should be dynaming (depending on current chosen company)
+    const teams = getTeams(user.companies)
+
     // console.log(this.props.teams) const {teams} = this.props
+    // const {}
     //PROTOTYPING
     const teamListArray = [
       {
@@ -156,3 +163,10 @@ export default class Teams extends Component {
     )
   }
 }
+
+function getTeams(companies) {
+  if (!companies || !companies[0]) return
+  return companies[0].teams
+}
+
+export default connect(({currentUser}) => ({user: currentUser}))(Teams)

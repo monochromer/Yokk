@@ -167,10 +167,10 @@ exports.create = function (req, res, next) {
 // GET
 exports.read = function (req, res, next) {
   const { Company } = req.app.db.models
-  const { companyName } = req.params
+  const { companyId } = req.query
 
   // change name to _id as searchable field
-  Company.read(companyName, (err, company) => {
+  Company.read(companyId, (err, company) => {
     if (err) next(err);
     if (company) {
       return res.status(200).send(company);

@@ -9,16 +9,7 @@ module.exports = function(app, mongoose) {
             type: String,
             uniq: true
         },
-        teamLead: String,
-        teamLeadEmail: {
-            type: String,
-            required: true
-        },
-        confirmationCode: String,
-        confirmed: {
-            type: Boolean,
-            default: false
-        },
+        teamOriginator: mongoose.Schema.Types.ObjectId,
         teamLogoURL: String,
         created: {
             type: Date,
