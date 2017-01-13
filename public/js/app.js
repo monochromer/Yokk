@@ -20,7 +20,6 @@ const router = (
 			<Route path="/" component={ Layout }>
 				<IndexRoute component={ Tracking }></IndexRoute>
 				<Route path="/teams" component={ Teams }></Route>
-				<Route path="/test" component={ Step5 }></Route>
 				<Route path="/users" component={ UserTable }></Route>
 				<Route path="user/:login" component={ UserPage }></Route>
 				<Route path="user/edit/:login" component={ UserEdit }></Route>

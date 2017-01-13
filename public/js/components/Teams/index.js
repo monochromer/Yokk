@@ -3,13 +3,15 @@ import classNames from 'classnames'
 import Team from './Team'
 import {saveTeam} from '../../actions/teams'
 import {Input} from '../UI.jsx'
+import InviteToTeam from './InviteToTeam'
 
 export default class Teams extends Component {
 
   state = {
     teamName: "",
     teamMembersVisible: [],
-    teamExists: true
+    teamExists: true,
+    modalIsOpen: false
   }
 
   static PropTypes = {
@@ -28,23 +30,55 @@ export default class Teams extends Component {
 
   addMembers = teamId => e => {
     e.preventDefault()
-    // check /test path to see the view
-    console.log('addMembersHandler')
+    const { modalIsOpen } = this.state
+
+    console.log(modalIsOpen);
+
+    modalIsOpen ?
+    this.setState({
+      modalIsOpen: false
+    }) :
+    this.setState({
+      modalIsOpen: true
+    })
   }
 
   render() {
     const {teamChangeHandler, addNewTeam, addMembers} = this
-    const {teamExists} = this.state
-    // console.log(this.props.teams) const {teams} = this.props PROTOTYPING
+    const { teamExists, modalIsOpen } = this.state
+    // console.log(this.props.teams) const {teams} = this.props
+    //PROTOTYPING
     const teamListArray = [
       {
         _id: "1",
         name: "team 1",
-        members: ['1', '2']
+        members: [
+          {
+            _id: '1',
+            name: 'Oleg',
+            profileImg: '1'
+          },
+          {
+            _id: '2',
+            name: 'Konstantin',
+            profileImg: '2'
+          },
+        ]
       }, {
         _id: "2",
         name: "team 2",
-        members: ['3', '4']
+        members: [
+          {
+            _id: '3',
+            name: 'Natalia',
+            profileImg: '3'
+          },
+          {
+            _id: '4',
+            name: 'Sophia',
+            profileImg: '4'
+          },
+        ]
       }
     ]
     //PROTOTYPING
@@ -60,7 +94,7 @@ export default class Teams extends Component {
       )
       : (teamListArray.map((team) => (
         <div key={team._id}>
-          <div>{team.name}</div>
+          <h3>{team.name}</h3>
           <Team members={team.members}/>
           <a href="#" onClick={addMembers(team._id)}>Add members</a>
         </div>
@@ -77,7 +111,12 @@ export default class Teams extends Component {
     const inputClassNames = classNames({'input-group input-group__black': true, 'input-group__error': this.props.error});
 
     return (
-      <div>
+      <div className="container container__flex1 container__fixed">
+
+        <InviteToTeam
+          modalIsOpen = { modalIsOpen }
+          addMembers = { addMembers }
+        />
 
         <div style={styles.inputGroup}>
           <div className="row center-xs">
