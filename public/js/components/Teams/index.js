@@ -1,9 +1,9 @@
 import React, {Component, PropTypes} from 'react'
 import classNames from 'classnames'
-import Team from './Team'
 import {saveTeam} from '../../actions/teams'
 import {Input} from '../UI.jsx'
 import InviteToTeam from './InviteToTeam'
+import Team from './Team'
 
 export default class Teams extends Component {
 
@@ -94,9 +94,7 @@ export default class Teams extends Component {
       )
       : (teamListArray.map((team) => (
         <div key={team._id}>
-          <h3>{team.name}</h3>
-          <Team members={team.members}/>
-          <a href="#" onClick={addMembers(team._id)}>Add members</a>
+          <Team team={team}/>
         </div>
       )))
 
@@ -113,10 +111,12 @@ export default class Teams extends Component {
     return (
       <div className="container container__flex1 container__fixed">
 
-        <InviteToTeam
-          modalIsOpen = { modalIsOpen }
-          addMembers = { addMembers }
-        />
+        {/*
+          <InviteToTeam
+            modalIsOpen = { modalIsOpen }
+            addMembers = { addMembers }
+          />
+          */}
 
         <div style={styles.inputGroup}>
           <div className="row center-xs">
@@ -141,12 +141,16 @@ export default class Teams extends Component {
             </div>
           </div>
         </div>
+        {teamList}
 
-        <div className="row" style={styles.teamsList}>
-          <div className="col-md-6 col-sm-8 col-xs-10 col-md-offset-3">
-            {teamList}
+
+        {/*
+          <div className="row" style={styles.teamsList}>
+            <div className="col-md-6 col-sm-8 col-xs-10 col-md-offset-3">
+              {teamList}
+            </div>
           </div>
-        </div>
+          */}
 
       </div>
     )
