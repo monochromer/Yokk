@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-export const FETCH_CURRENT_USER_URI = '/api/user/check_permissions';
+export const FETCH_CURRENT_USER_URI = '/api/user/logged_in_user';
 
 export const USER_CRUD = '/api/user/';
 

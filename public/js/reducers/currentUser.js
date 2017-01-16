@@ -1,15 +1,24 @@
 const defaultState = {
-    role: "",
-    login: ""
+  role: "",
+  login: "",
+  companyId: ""
 }
 
-export default function( state = defaultState, action ) {
-    switch ( action.type ) {
-        case "FETCH_CURRENT_USER":
-            return action.payload;
-            break;
+export default function (state = defaultState, action) {
+  const { type, payload } = action
 
-        default:
-            return state;
-    }
+  switch (type) {
+    case "FETCH_CURRENT_USER":
+      const currentUser = Object.assign({}, state, action.payload)
+      return currentUser
+      break
+
+    case "CHANGE_CURRENT_COMPANY":
+      const { companyId } = payload
+      return Object.assign({}, state, {companyId: companyId})
+      break
+
+    default:
+      return state
+  }
 }

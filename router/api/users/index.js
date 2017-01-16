@@ -7,8 +7,8 @@ module.exports = function(api) {
         .post(handle.saveUserToDb);
     api.route('/user/get/team')
         .get(handle.getTeamUsers);
-    api.route('/user/check_permissions')
-        .get(handle.checkUserPermissions);
+    api.route('/user/logged_in_user')
+        .get(handle.getLoggedInUser);
     api.route('/user/:id')
         .get(handle.showUser)
         .put(handle.updateUser)

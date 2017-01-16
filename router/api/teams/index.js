@@ -1,6 +1,8 @@
 const handle = require('./handlers');
 
 module.exports = function(api) {
+    api.route('/teams/addTeamMembers')
+        .post(handle.addTeamMembers)
     api.route('/teams(/:teamName)?')
         .post(handle.create)
         .get(handle.read)

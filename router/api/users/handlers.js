@@ -262,14 +262,17 @@ exports.deleteUserAvatar = function(req, res, next) {
 
 }
 
-exports.checkUserPermissions = function (req, res, next) {
+exports.getLoggedInUser = function (req, res, next) {
   // as of now, returned fields can be adjusted in userpassport.js
-  const { User, Company } = req.app.db.models
+  const { User, Company, Team } = req.app.db.models
 
   User.findByLogin(req.user.login, (err, user) => {
     Company.find( {_id: {$in: user.companies} }, (err, companies) => {
       const userToReturn = Object.assign({}, user, {companies: companies})
-      res.status(200).send(userToReturn)
+      Team.find( {_id: {$in: user.teams} }, (err, teams) => {
+        userToReturn.teams = teams
+        res.status(200).send(userToReturn)
+      })
     });
   })
 }

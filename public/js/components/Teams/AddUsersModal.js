@@ -1,112 +1,103 @@
-import React from 'react'
+import React, {Component, PropTypes} from 'react'
 import store from '../../store'
 import classNames from 'classnames'
-import { connect } from 'react-redux'
-import { Input } from '../UI.jsx'
-import { step5 } from '../../actions/teams'
-import { findUserByLogin } from '../../helpers'
+import {connect} from 'react-redux'
+import {Input} from '../UI.jsx'
+import {addTeamMembers, closeAddTeamMembersModal} from '../../actions/teams'
+import {findUserByLogin} from '../../helpers'
 
+console.log(closeAddTeamMembersModal);
 
-class AddUsersModal extends React.Component {
+class AddUsersModal extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = { rows: 1, invitations: [] };
+  state = {
+    rows: 1,
+    invitations: []
+  }
 
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleClose = this.handleClose.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.addInvitation = this.addInvitation.bind(this);
+  handleClose = () => {
+    this.props.closeAddTeamMembersModal()
+  }
+
+  handleChange = e => {
+    this.state.invitations[e.target.name] = e.target.value;
+  }
+
+  handleSubmit = e => {
+    e.preventDefault()
+    const {invitations} = this.state
+    const {teamId} = this.props
+    addTeamMembers(teamId, invitations)
+    this.props.closeAddTeamMembersModal()
+  }
+
+  addInvitation = () => {
+    this.setState({
+      rows: this.state.rows + 1
+    });
+  }
+
+  render() {
+
+    const modalClasses = classNames({
+      modal: true,
+      hide: !this.props.status
+    });
+
+    var invitationRows = [];
+    for (let i = 0; i < this.state.rows; i++) {
+      invitationRows.push(
+        <div className="row center-xs invintations_row" key={_.uniqueId()}>
+          <div className="col-md-8 col-sm-8 col-xs-10">
+            <Input
+              handleChange={this.handleChange}
+              defaultValue={this.state.invitations[i]}
+              className="input-group input-group__grey-white"
+              type="email"
+              name={i}
+              label="E-mail"/>
+          </div>
+        </div>
+      );
     }
 
-
-    handleClose() {
-        store.dispatch({type: "MODAL_ADD_USER_CLOSE"});
-    }
-
-    handleChange(event) {
-        this.state.invitations[event.target.name] = event.target.value;
-    }
-
-    handleSubmit(event) {
-        event.preventDefault();
-        let teamId = findUserByLogin(this.props.users, this.props.login).team;
-        store.dispatch(step5(teamId, this.state.invitations));
-        store.dispatch({type: "MODAL_ADD_USER_CLOSE"});
-    }
-
-    addInvitation() {
-        this.setState({
-            rows: this.state.rows + 1
-        });
-    }
-
-    render() {
-
-        const modalClasses = classNames({
-            modal: true,
-            hide: !this.props.status
-        });
-
-        var invitationRows = [];
-        for (let i = 0; i < this.state.rows; i++) {
-            invitationRows.push(
-                <div className="row center-xs invintations_row" key={ _.uniqueId() }>
-                    <div className="col-md-8 col-sm-8 col-xs-10">
-                        <Input handleChange={ this.handleChange.bind(this) }
-                               defaultValue={ this.state.invitations[i] }
-                               className="input-group input-group__grey-white" type="email"
-                               name={ i }
-                               label="E-mail"/>
-                    </div>
+    return (
+      <div className={modalClasses}>
+        <div className="modal_close" onClick={this.handleClose}></div>
+        <div className="container">
+          <div className="row center-md vertical-center modal_row">
+            <div className="col-md-6">
+              <div className="row text-center">
+                <div className="col-md-12 text-center">
+                  <h2 className="heading heading__white">Send Invitations</h2>
                 </div>
-            );
-        }
+              </div>
+              <form onSubmit={this.handleSubmit}>
 
-        return (
-            <div className={ modalClasses }>
-                <div className="modal_close" onClick={ this.handleClose }></div>
-                <div className="container">
-                    <div className="row center-md vertical-center modal_row">
-                        <div className="col-md-6">
-                            <div className="row text-center">
-                                <div className="col-md-12 text-center">
-                                    <h2 className="heading heading__white">Send Invitations</h2>
-                                </div>
-                            </div>
-                            <form onSubmit={ this.handleSubmit }>
+                {invitationRows}
 
-                                { invitationRows }
-
-                                <div className="row center-xs">
-                                    <div className="col-md-12">
-                                        <div className="btn link__white" onClick={ this.addInvitation.bind(this) }>+ Add
-                                            another invitations
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="row marginTop">
-                                    <div className="col-md-12">
-                                        <button type="submit" className="btn btn__blue btn__lg linkService_btn">Send</button>
-                                    </div>
-                                </div>
-
-                            </form>
-                        </div>
+                <div className="row center-xs">
+                  <div className="col-md-12">
+                    <div className="btn link__white" onClick={this.addInvitation}>+ Add another invitations
                     </div>
+                  </div>
                 </div>
+
+                <div className="row marginTop">
+                  <div className="col-md-12">
+                    <button type="submit" className="btn btn__blue btn__lg linkService_btn">Send</button>
+                  </div>
+                </div>
+
+              </form>
             </div>
-        )
-    }
+          </div>
+        </div>
+      </div>
+    )
+  }
 }
 
-function getProps(store) {
-    return {
-        status: store.modals.userAdd.visible,
-        users: store.users.list,
-        login: store.currentUser.login
-    }
-}
-
-export default connect(getProps)(AddUsersModal)
+export default connect(({modals, users, currentUser}) => ({
+  status: modals.userAdd.visible, users: users.list, login: currentUser.login
+}), {addTeamMembers, closeAddTeamMembersModal})(AddUsersModal)

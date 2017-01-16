@@ -5,6 +5,7 @@ import {saveTeam} from '../../actions/teams'
 import {Input} from '../UI.jsx'
 import InviteToTeam from './InviteToTeam'
 import Team from './Team'
+import { fetchCurrentUser } from '../../actions/currentUser.js'
 
 class Teams extends Component {
 
@@ -25,15 +26,17 @@ class Teams extends Component {
 
   addNewTeam = () => {
     const {teamName} = this.state
+    const {user} = this.props
+    // change user.companies[0] to right companyId (should be fetched from props)
     // saveTeam(teamName, this.props.companyId)
-    saveTeam(teamName, 'this.props.companyId')
+    saveTeam(teamName, user.companies[0])
+    // save team should add new team to current user instead of fetching current user
+    store.dispatch(fetchCurrentUser())
   }
 
   addMembers = teamId => e => {
     e.preventDefault()
     const { modalIsOpen } = this.state
-
-    console.log(modalIsOpen);
 
     modalIsOpen ?
     this.setState({
@@ -49,13 +52,14 @@ class Teams extends Component {
     const { teamExists, modalIsOpen } = this.state
     const { user } = this.props
 
-    // company should be dynaming (depending on current chosen company)
-    const teams = getTeams(user.companies)
+    // change this!!!
+    let companyId
+    if (user.companies) {
+      companyId = user.companyId ? user.companyId : user.companies[0]
+    }
 
-    // console.log(this.props.teams) const {teams} = this.props
-    // const {}
     //PROTOTYPING
-    const teamListArray = [
+    const teamListArrayProto = [
       {
         _id: "1",
         name: "team 1",
@@ -90,18 +94,14 @@ class Teams extends Component {
     ]
     //PROTOTYPING
 
-    const teamList = (teamListArray.length === 0)
+    const teamListArray = getTeams(user)
+    const teamList = (!teamListArray || teamListArray.length === 0)
       ? (
-        <div>
-          <div>Here will be your teams</div>
-          <div>Add your first team right now</div>
-          <input type="text" onChange={onTeamNameChange}/>
-          <button onClick={saveTeam}>Save Team</button>
-        </div>
+        <div style={{marginTop: "40px", textAlign: "center"}}>Here will be your teams. You can add your first team right now by typing its name in the field above and clicking "Add the team"</div>
       )
       : (teamListArray.map((team) => (
         <div key={team._id}>
-          <Team team={team}/>
+          <Team companyId={companyId} team={team}/>
         </div>
       )))
 
@@ -164,9 +164,12 @@ class Teams extends Component {
   }
 }
 
-function getTeams(companies) {
-  if (!companies || !companies[0]) return
-  return companies[0].teams
+function getTeams(user) {
+  if (!user || !user.teams) return
+  return user.teams
 }
 
-export default connect(({currentUser}) => ({user: currentUser}))(Teams)
+export default connect(({currentUser}) => {
+  // change to 'right' companyId
+  return {user: currentUser}
+})(Teams)

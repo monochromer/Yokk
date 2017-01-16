@@ -11,6 +11,25 @@ export function saveTeam(teamName, companyId) {
     })
 }
 
+export function addTeamMembers(teamId, newMembers) {
+  request
+    .post(`/api/teams/addTeamMembers`)
+    .send({
+      teamId: teamId,
+      membersEmails: newMembers
+    })
+    .end((err, res) => {
+      if (err) console.log(err)
+      // console.log(res)
+    })
+}
+
+export function closeAddTeamMembersModal() {
+  return {
+    type: "MODAL_ADD_USER_CLOSE"
+  }
+}
+
 export function step0(email) {
     return {
         type: "STEP_0",

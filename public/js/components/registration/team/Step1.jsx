@@ -102,7 +102,7 @@ function getProps(state) {
   let email = getFromStateOrLocalStorage('email', state.teams);
 
   if (!email) {
-    browserHistory.push('/promo');
+    browserHistory.push('/registration');
   }
 
   return {email: email}

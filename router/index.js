@@ -1,7 +1,7 @@
 'use strict'
 
 const authorization = require('./authorization');
-const checkAuthStatus = require('connect-ensure-login').ensureLoggedIn('/promo');
+const checkAuthStatus = require('connect-ensure-login').ensureLoggedIn('/registration');
 const helperRoutes = require('./helperRoutes');
 const checkFrontPath = require('./frontPaths.js');
 const path = require('path');
@@ -22,8 +22,8 @@ module.exports = function(app, passport) {
 
     app.use('/api', api);
 
-    app.get('/promo/', (req, res, next) => res.sendFile(path.resolve(__dirname, '../views', 'promo.html')));
-    app.get('/team/*', (req, res, next) => res.sendFile(path.resolve(__dirname, '../views', 'promo.html')));
+    app.get('/registration/', (req, res, next) => res.sendFile(path.resolve(__dirname, '../views', 'registration.html')));
+    app.get('/team/*', (req, res, next) => res.sendFile(path.resolve(__dirname, '../views', 'registration.html')));
 
     app.get('*', checkAuthStatus, checkFrontPath, helperRoutes.redirectUndefinedRoutes);
 

@@ -20,7 +20,7 @@ class Team extends Component {
 
   render() {
     const {showModalUserAdd} = this
-    const {team} = this.props
+    const {team, companyId} = this.props
 
     // {/*this.props.users.map((user) => {   return <UserRow user={user}
     // currentUser={this.props.currentUser} key={user._id}/> */}
@@ -45,14 +45,18 @@ class Team extends Component {
           <div className="col-md-1 user-list_title"></div>
         </div>
         {teamMembers}
-        <AddUsersModal/>
+        <AddUsersModal companyId={companyId} teamId={team._id}/>
       </div>
     )
   }
 }
 
 function getMembersList(teamMembers) {
-  return teamMembers.map(teamMember => ( <UserRow key={teamMember._id} user={teamMember}/> ))
+  if (teamMembers.length === 0)
+    return <div style={{ textAlign: "center" }}>
+      <div>There is no team members yet. Add them by clicking "+ Add Users" button on the right of a team's name.</div>
+    </div>
+  return teamMembers.map((teamMember,index) => (<UserRow key={index} user={teamMember}/>))
 }
 
 export default connect(({users, currentUser}) => {

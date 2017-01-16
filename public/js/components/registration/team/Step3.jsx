@@ -73,7 +73,7 @@ function getProps(state) {
   let _id = getFromStateOrLocalStorage('_id', state.teams);
 
   if (!login || !email || !_id) {
-    browserHistory.push('/promo');
+    browserHistory.push('/registration');
   }
 
   return {

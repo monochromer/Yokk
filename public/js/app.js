@@ -9,7 +9,7 @@ import Tracking from './components/tracking/index.jsx'
 import ReportsPage from './components/reportsPage'
 import UserActivityPage from './components/userActivityPage'
 import Teams from './components/Teams'
-import Step5 from './components/promo/team/Step5.jsx'
+import Step5 from './components/registration/team/Step5.jsx'
 
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 import { Provider } from 'react-redux'

@@ -1,40 +1,53 @@
 import React, {Component, PropTypes} from 'react'
 import Dropdown from 'react-dropdown'
 
-export default function CompaniesDropdown(props) {
-  const {companies} = props
+export default class CompaniesDropdown extends Component {
 
-  //PROTOTYPING
-  const fakeCompanies = [
-    {
-      name: 'Fake 1'
-    },
-    {
-      name: 'Fake 2'
-    },
-  ].concat(companies)
-  //PROTOTYPING
-
-
-  const companiesList = getUserCompaniesList(fakeCompanies)
-  const defaultOption = companiesList[companiesList.length-1]
-
-  const style = {
-    pofition: 'static'
+  _onSelect = option => {
+    this.props.onCompanyChange(option.value)()
   }
 
-  return (
-    <Dropdown
-      options={companiesList}
-      onChange={console.log('change')}
-      value={defaultOption}
-      style={style}
-    />
-  )
+  render() {
+    const { companies, onCompanyChange } = this.props
+
+    //PROTOTYPING
+    const fakeCompanies = [
+      {
+        id: 'Fake 1',
+        name: 'Fake 1'
+      },
+      {
+        id: 'Fake 2',
+        name: 'Fake 2'
+      },
+    ].concat(companies)
+    //PROTOTYPING
+
+
+    const companiesList = getUserCompaniesList(fakeCompanies)
+    const defaultOption = companiesList[companiesList.length-1]
+
+    const style = {
+      pofition: 'static'
+    }
+
+    return (
+      <Dropdown
+        options={companiesList}
+        onChange={this._onSelect}
+        value={defaultOption}
+        style={style}
+      />
+    )
+  }
+
 }
 
 function getUserCompaniesList(companies) {
   // if (!companies) return []
   if (!companies[companies.length-1]) return [] //delete when there's now fake companies
-  return companies.map(company => company.name)
+  return companies.map(company => ({
+    value: company._id,
+    label: company.name
+  }))
 }
