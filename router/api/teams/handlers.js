@@ -50,20 +50,25 @@ exports.create = function (req, res, next) {
 };
 
 exports.addTeamMembers = function (req, res, next) {
-  const { User, Team } = req.app.db.models
+  const { unconfirmedUser, Team } = req.app.db.models
   const { teamId, membersEmails } = req.body
 
   Team.findOne({ _id: teamId }, (err, team) => {
     membersEmails.forEach(email => {
-      team.members.push({
-        type: 'email',
-        value: email
+      const unconfirmedUserInitData = {
+        email: email,
+        teamId: teamId
+      }
+      const newUnconfirmedUser = new unconfirmedUser(unconfirmedUserInitData)
+      newUnconfirmedUser.save(user => {
+        // send token = user._id and when registering check the token
+        // token should expire (DB should be cleaned) at some intervals
+        sendInvitation(team.name, teamId, sendEmail, email)
+        res.status(200).send()
       })
-      team.save()
-
-      sendInvitation(team.name, teamId, sendEmail, email);
     })
   })
+
 }
 
 exports.resendCode = function (req, res, next) {
