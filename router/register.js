@@ -4,132 +4,75 @@ const log = require('../helpers/logger')
 const sendEmail = require('./helpers/sendEmail')
 
 module.exports = function (req, res, next) {
-  const { User, Team } = req.app.db.models
+  const { User, Team, unconfirmedUser } = req.app.db.models
 
-  req.body.team = req.body.teamId
+  const { login, password, email, teamId } = req.body
 
-  const user = new User(req.body)
-  const {teamId} = req.body
+  findUserByEmail(email)
+    .then(() => {
+      const newUser = new User({
+        login: login,
+        password: password,
+        email: email,
+        teams: [teamId],
+        joinedon: Date.now()
+      })
+      return createNewUser(User, newUser)
+    })
+    .then(user => {
+      return saveUserToTeamMembers(teamId, user._id, Team)
+    })
+    .then(() => {
+      return deleteUserEmailFromUnconfirmedEmails(email, unconfirmedUser)
+    })
+    .then(result => {
+      res.status(200).send()
+    })
+    .catch(reason => {
+      next(reason)
+    })
 
-  user.joinedon = Date.now()
-  req.body.username = req.body.login; //needed for passport JS middleware, change everywhere to login instead of username
-
-  if (!user.login) {
-    const logMsg = 'User login not specified';
-    res.send({
-      message: logMsg
-    });
-    return log(req, logMsg).err();
+  function saveUserToTeamMembers(teamId, userId, teamModel) {
+    return new Promise((resolve, reject) => {
+      teamModel.findOne({ _id: teamId }, (err, team) => {
+        if (err) return reject('Something went wrong while finding corresponding team')
+        if (!team) return reject('The team should exist')
+        team.members.push(userId)
+        team.save((err, team) => {
+          if (err) return reject('Something went wrong while saving user to team')
+          resolve()
+        })
+      })
+    })
   }
 
-Team.findOne({ _id: teamId }, (err, team) => {
-  if (err) next(err)
+  function deleteUserEmailFromUnconfirmedEmails(email, unconfirmedUserModel) {
+    return new Promise((resolve, reject) => {
+      unconfirmedUserModel.find({ email: email }).remove((err, result) => {
+        if (err) return reject(err)
+        resolve('User succesfully created, added to team and email removed from unconfirmed')
+      })
+    })
+  }
 
-  if (!team) return new Error()
+  function findUserByEmail(email) {
+    return new Promise((resolve, reject) => {
+      User.findOne({ email: email }, (err, user) => {
+        if (err) return reject('Some error occured while searching for user by email')
+        if (user) return reject('User already in the system. If it\'s you, login and accept invite')
+        resolve()
+      })
+    })
+  }
 
-  let objectToChangeIndex = -1
-  const isEmailPresent = team.members.some((object, index) => {
-    objectToChangeIndex = index
-    return object.value === req.body.email
-  })
-
-  if (!isEmailPresent) return new Error()
-
-  user.save((err, user) => {
-    team.members[objectToChangeIndex] = {
-      type: 'userId',
-      value: user._id
-    }
-    // TODO team is not saved with the object above. RESOLVE
-    console.log(team.members);
-    team.save()
-  })
-})
-
-  // function confirmEmail(teamId, email) {
-  //   return new Promise((resolve, reject) => {
-  //     Team.findOne({
-  //       _id: teamId
-  //     }, (err, team) => {
-  //       if (err) next(err);
-  //
-  //       if (!team) return reject(new Error());
-  //
-  //       let emailNotPresent = true;
-  //       const mappedEmails = team.members.map(emailObject => {
-  //         if (emailObject.email === req.body.email && !emailObject.confirmed) {
-  //           emailNotPresent = false;
-  //           emailObject.confirmed = true;
-  //         };
-  //         return emailObject;
-  //       });
-  //
-  //       // let objectToChangeIndex = -1
-  //       // const isEmailPresent = team.members.some((object, index) => {
-  //       //   objectToChangeIndex = index
-  //       //   return object.value === req.body.email
-  //       // })
-  //       //
-  //       if (emailNotPresent) return reject(new Error());
-  //
-  //       team.members = [];
-  //       team.save();
-  //       team.members = mappedEmails; //doesn't work without clearning team.members first
-  //       team.save();
-  //
-  //       resolve(team);
-  //     })
-  //   })
-  // }
-
-  // confirmEmail(teamId).then(team => {
-  //   console.log('team:');
-  //   console.log(team);
-  //   // User.findByLogin(user.login, (err, dbUser) => {
-  //   //   if (err) {
-  //   //     res.status(500).send();
-  //   //     return log(req, err).err();
-  //   //   }
-  //   //   if (!dbUser) {
-  //   //     user.save((err, user) => {
-  //   //       if (err) {
-  //   //         log(req, err).err();
-  //   //         return res.status(500).send();
-  //   //       };
-  //   //       if (typeof req.body.email !== 'undefined') {
-  //   //         let credentials = {
-  //   //           login: req.body.login,
-  //   //           password: req.body.password,
-  //   //           email: req.body.email
-  //   //         };
-  //   //         let text;
-  //   //         let htmlToSend =
-  //   //           `<div>Login: <b>${credentials.login}</b></div>
-  //   //                 <div>Password: <b>${credentials.password}</b></div>
-  //   //                 <div><a href='http://eop.soshace.com/'>eop.soshace.com</a></div>`;
-  //   //
-  //   //         let mailOptions = {
-  //   //           from: '"Soshace team 👥" <bot@izst.ru>', // sender address
-  //   //           to: credentials.email, // list of receivers
-  //   //           subject: 'Congratulations! You\'re now registered user', // Subject line
-  //   //           text: text,
-  //   //           html: htmlToSend // html body
-  //   //         };
-  //   //         sendEmail(mailOptions);
-  //   //       };
-  //   //       const logMsq = `User (login: ${user.login}) is saved to DB`;
-  //   //       log(req, logMsq).info();
-  //   //       next();
-  //   //     });
-  //   //   } else {
-  //   //     const logMsq = `Sorry! User (login: ${user.login}) is already in DB. Please, <a href='/api/user/register'>try again</a>`;
-  //   //     log(req, logMsq).info();
-  //   //     res.status(200).send(logMsq);
-  //   //   }
-  //   // });
-  // }).catch(reason => {
-  //   res.status(500).send();
-  //   next(reason);
-  // })
+  function createNewUser(userModel, initialData) {
+    return new Promise((resolve, reject) => {
+      const newUser = new userModel(initialData)
+      newUser.save((err, user) => {
+        if (err) return reject('Some error occured while saving user')
+        resolve(user)
+      })
+    })
+  }
 
 }

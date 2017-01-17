@@ -9,79 +9,93 @@ const moment = require('moment');
 const fs = require('fs')
 const path = require('path')
 
-exports.getAllUsers = function(req, res, next) {
-    const userModel = req.app.db.models.User;
-    const team = req.query.team;
+exports.getAllUsers = function (req, res, next) {
+  const userModel = req.app.db.models.User;
+  const team = req.query.team;
 
-    userModel.allUsers((err, user) => {
-        if (err) next(err);
-        res.send(user);
-    });
+  userModel.allUsers((err, user) => {
+    if (err) next(err);
+    res.send(user);
+  });
 };
 
-exports.getTeamUsers = function(req, res, next) {
-    const userModel = req.app.db.models.User;
-    const currentUser = req.user;
+exports.getTeamUsers = function (req, res, next) {
+  const userModel = req.app.db.models.User;
+  const currentUser = req.user;
 
-    getCurrentUserTeam(currentUser, userModel)
-        .then(teamId => {
-            return getTeamUsers(teamId, userModel);
-        })
-        .then(teamUsers => {
-            res.status(200).send(teamUsers);
-        })
-        .catch(reason => {
-            next(reason);
-        })
+  getCurrentUserTeam(currentUser, userModel)
+    .then(teamId => {
+      return getTeamUsers(teamId, userModel);
+    })
+    .then(teamUsers => {
+      res.status(200).send(teamUsers);
+    })
+    .catch(reason => {
+      next(reason);
+    })
 
-    function getCurrentUserTeam(currentUserId, model) {
-        return new Promise((resolve, reject) => {
-            model.findOne({
-                _id: currentUserId
-            }, {
-                _id: 0,
-                team: 1
-            }, (err, user) => {
-                if (err) return reject(err);
-                resolve(user.team);
-            })
-        })
-    }
+  function getCurrentUserTeam(currentUserId, model) {
+    return new Promise((resolve, reject) => {
+      model.findOne({
+        _id: currentUserId
+      }, {
+        _id: 0,
+        team: 1
+      }, (err, user) => {
+        if (err) return reject(err);
+        resolve(user.team);
+      })
+    })
+  }
 
-    function getTeamUsers(teamId, model) {
-        return new Promise((resolve, reject) => {
-            model.find({
-                team: teamId
-            }, (err, teamUsers) => {
-                if (err) return reject(err);
-                resolve(teamUsers);
-            })
-        })
-    }
+  function getTeamUsers(teamId, model) {
+    return new Promise((resolve, reject) => {
+      model.find({
+        team: teamId
+      }, (err, teamUsers) => {
+        if (err) return reject(err);
+        resolve(teamUsers);
+      })
+    })
+  }
 };
 
 exports.saveUserToDb = function (req, res, next) {
-  const userModel = req.app.db.models.User;
-  const user = new userModel(req.body);
-  user.joinedon = Date.now();
+  const {User, Company, Team} = req.app.db.models
+  const user = new User(req.body)
+  user.joinedon = Date.now()
 
-  // const teamModel = req.app.db.models.Team;
-  const companyModel = req.app.db.models.Company;
-  const companyName = req.body.teamName;
+  const companyName = req.body.teamName
 
-  companyModel.findOne({
+  Company.findOne({
     originatorEmail: req.body.email
   }, (err, company) => {
 
     user.companies = [company._id]
 
-    userModel.findByLogin(user.login, (err, dbUser) => {
+    User.findByLogin(user.login, (err, dbUser) => {
       if (err) next(err);
 
       if (!dbUser) {
         user.save((err, user) => {
-          if (err) next(err);
-          res.status(200).send(user);
+          if (err) next(err)
+
+          res.status(200).send(user)
+
+          const teamInitData = {
+            created: Date.now(),
+            members: [user._id]
+          }
+
+          const newTeam = new Team(teamInitData)
+          newTeam.save((err, team) => {
+            company.teams.push(team._id)
+            company.save()
+
+            user.teams.push(team._id)
+            user.save()
+          })
+
           if (typeof req.body.email !== 'undefined') {
             let credentials = {
               login: req.body.login,
@@ -113,119 +127,120 @@ exports.saveUserToDb = function (req, res, next) {
       }
     });
   })
+
 }
 
-exports.showUser = function(req, res, next) {
-    const userModel = req.app.db.models.User;
-    const login = req.params.user_login;
+exports.showUser = function (req, res, next) {
+  const userModel = req.app.db.models.User;
+  const login = req.params.user_login;
+  userModel.findByLogin(login, (err, user) => {
+    if (err) next(err);
+    res.send(user);
+    log(req).info();
+  });
+};
+
+exports.updateUser = function (req, res, next) {
+  const userModel = req.app.db.models.User;
+  const id = req.params.id;
+  const update = req.body;
+
+  if (req.body.password !== undefined) {
     userModel.findByLogin(login, (err, user) => {
-        if (err) next(err);
-        res.send(user);
-        log(req).info();
+      if (err) next(err);
+      user.updatePassword(req.body.password);
+      user.save((err, user) => {
+        // seding passwords BAD
+        res.status(200).send(user);
+      });
+      const logMsq = `User's password (login: ${user.login}) is updated`;
+
+      return log(req, logMsq).info();
+
     });
-};
-
-exports.updateUser = function(req, res, next) {
-    const userModel = req.app.db.models.User;
-    const id = req.params.id;
-    const update = req.body;
-
-    if (req.body.password !== undefined) {
-        userModel.findByLogin(login, (err, user) => {
-            if (err) next(err);
-            user.updatePassword(req.body.password);
-            user.save((err, user) => {
-                // seding passwords BAD
-                res.status(200).send(user);
-            });
-            const logMsq = `User's password (login: ${user.login}) is updated`;
-
-            return log(req, logMsq).info();
-
-        });
-    } else {
-        userModel.editUser(id, update, (err, user) => {
-            if (err) next(err);
-            res.status(200).send(user);
-        });
-    }
+  } else {
+    userModel.editUser(id, update, (err, user) => {
+      if (err) next(err);
+      res.status(200).send(user);
+    });
+  }
 }
 
-exports.deleteUser = function(req, res, next) {
-    const userModel = req.app.db.models.User;
+exports.deleteUser = function (req, res, next) {
+  const userModel = req.app.db.models.User;
 
-    userModel.deleteUser(req.params.id, (err) => {
-        if (err) next(err);
-        res.status(200).send(req.params.id);
-    });
+  userModel.deleteUser(req.params.id, (err) => {
+    if (err) next(err);
+    res.status(200).send(req.params.id);
+  });
 
 }
 
-exports.uploadUserAvatar = function(req, res, next) {
-    const userModel = req.app.db.models.User;
-    const login = req.params.user_login;
+exports.uploadUserAvatar = function (req, res, next) {
+  const userModel = req.app.db.models.User;
+  const login = req.params.user_login;
 
-    const requiredSizes = [
-        '200-200',
-        '400-400'
-    ];
+  const requiredSizes = [
+    '200-200',
+    '400-400'
+  ];
 
-    let imageInfo = {};
-    imageInfo.dir = req.file.destination;
-    imageInfo.name = req.file.filename.split(':').join('-');
-    imageInfo.ext = req.file.mimetype.split('/')[1];
-    imageInfo.date = moment().format("x");
+  let imageInfo = {};
+  imageInfo.dir = req.file.destination;
+  imageInfo.name = req.file.filename.split(':').join('-');
+  imageInfo.ext = req.file.mimetype.split('/')[1];
+  imageInfo.date = moment().format("x");
 
-    async.series([
-            (callback) => {
-                lwip.open(imageInfo.dir + imageInfo.name, (err, image) => {
-                    image.batch().cover(200, 200).writeFile(imageInfo.dir + imageInfo.date + '200-200.' + imageInfo.ext, (err) => {
-                        if (err) {
-                            callback(err);
-                        } else {
-                            callback(null);
-                        }
-                    })
-                })
-            },
-            (callback) => {
-                lwip.open(imageInfo.dir + imageInfo.name, (err, image) => {
-                    image.batch().cover(400, 400).writeFile(imageInfo.dir + imageInfo.date + '400-400.' + imageInfo.ext, (err) => {
-                        if (err) {
-                            callback(err);
-                        } else {
-                            callback(null);
-                        }
-                    })
-                })
-            },
-            (callback) => {
-                const originalImg = ('/' + req.file.path.split('/').slice(1).slice(-4).join('/')).split(':').join('-');
-                const smallImg = '/users/' + login + '/avatars/' + imageInfo.date + '200-200.' + imageInfo.ext;
-                const mediumImg = '/users/' + login + '/avatars/' + imageInfo.date + '400-400.' + imageInfo.ext;
-
-                const update = {
-                    profileImg: {
-                        original: originalImg,
-                        small: smallImg,
-                        medium: mediumImg,
-                    }
-                };
-
-                userModel.editUser(login, update, (err, user) => {
-                    if (err) next(err);
-                    res.status(200).send(user);
-                    callback(null, user);
-                });
+  async.series([
+      (callback) => {
+        lwip.open(imageInfo.dir + imageInfo.name, (err, image) => {
+          image.batch().cover(200, 200).writeFile(imageInfo.dir + imageInfo.date + '200-200.' + imageInfo.ext, (err) => {
+            if (err) {
+              callback(err);
+            } else {
+              callback(null);
             }
-        ],
-        (err, user) => {
-            if (err) next(err);
-        }
-    )
+          })
+        })
+      },
+      (callback) => {
+        lwip.open(imageInfo.dir + imageInfo.name, (err, image) => {
+          image.batch().cover(400, 400).writeFile(imageInfo.dir + imageInfo.date + '400-400.' + imageInfo.ext, (err) => {
+            if (err) {
+              callback(err);
+            } else {
+              callback(null);
+            }
+          })
+        })
+      },
+      (callback) => {
+        const originalImg = ('/' + req.file.path.split('/').slice(1).slice(-4).join('/')).split(':').join('-');
+        const smallImg = '/users/' + login + '/avatars/' + imageInfo.date + '200-200.' + imageInfo.ext;
+        const mediumImg = '/users/' + login + '/avatars/' + imageInfo.date + '400-400.' + imageInfo.ext;
+
+        const update = {
+          profileImg: {
+            original: originalImg,
+            small: smallImg,
+            medium: mediumImg,
+          }
+        };
+
+        userModel.editUser(login, update, (err, user) => {
+          if (err) next(err);
+          res.status(200).send(user);
+          callback(null, user);
+        });
+      }
+    ],
+    (err, user) => {
+      if (err) next(err);
+    }
+  )
 };
 
-exports.deleteUserAvatar = function(req, res, next) {
+exports.deleteUserAvatar = function (req, res, next) {
   const userModel = req.app.db.models.User
   const userId = req.params.user_login
   const baseDir = path.join(__dirname, '../../../uploads/users/')
@@ -242,8 +257,8 @@ exports.deleteUserAvatar = function(req, res, next) {
   }
 
   userModel.editUser(userId, update, (err, user) => {
-      if (err) next(err);
-      res.status(200).send(user);
+    if (err) next(err);
+    res.status(200).send(user);
   });
 
   function deleteFolderRecursive(path) {
@@ -267,9 +282,9 @@ exports.getLoggedInUser = function (req, res, next) {
   const { User, Company, Team } = req.app.db.models
 
   User.findByLogin(req.user.login, (err, user) => {
-    Company.find( {_id: {$in: user.companies} }, (err, companies) => {
-      const userToReturn = Object.assign({}, user, {companies: companies})
-      Team.find( {_id: {$in: user.teams} }, (err, teams) => {
+    Company.find({ _id: { $in: user.companies } }, (err, companies) => {
+      const userToReturn = Object.assign({}, user, { companies: companies })
+      Team.find({ _id: { $in: user.teams } }, (err, teams) => {
         userToReturn.teams = teams
         res.status(200).send(userToReturn)
       })
