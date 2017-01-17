@@ -7,8 +7,9 @@ const models = [
     'timeEntry',
     'statistics',
     'team',
-    'company'
-];
+    'company',
+    'unconfirmedUser'
+]
 
 // previously was in models.js in root
 module.exports = function(app, mongoose) {

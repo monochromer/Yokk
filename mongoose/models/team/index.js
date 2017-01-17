@@ -5,10 +5,7 @@ var statics = require('./statics');
 
 module.exports = function(app, mongoose) {
     var teamSchema = new mongoose.Schema({
-        name: {
-            type: String,
-            uniq: true
-        },
+        name: String,
         teamOriginator: mongoose.Schema.Types.ObjectId,
         teamLogoURL: String,
         created: {
