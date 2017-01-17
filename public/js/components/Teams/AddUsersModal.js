@@ -6,8 +6,6 @@ import {Input} from '../UI.jsx'
 import {addTeamMembers, closeAddTeamMembersModal} from '../../actions/teams'
 import {findUserByLogin} from '../../helpers'
 
-console.log(closeAddTeamMembersModal);
-
 class AddUsersModal extends Component {
 
   state = {

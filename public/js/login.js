@@ -6,10 +6,6 @@ import request from 'superagent'
 
 class LoginForm extends Component {
 
-  constructor(props) {
-    super(props);
-  }
-
   state = {
     auth: getParameter('teamName') ? false : true,
     teamId: getParameter('teamId'),
@@ -30,9 +26,11 @@ class LoginForm extends Component {
     const urlToPost = this.state.auth ? '/login' : '/register'
     request.post(urlToPost, this.state).end((err, response) => {
       if (response.status != 200) {
+        // console.log(reponse.status);
         this.setState({error: true})
       } else {
-        window.location = "/";
+        // console.log(reponse.status);
+        window.location = "/"
       }
     })
   }

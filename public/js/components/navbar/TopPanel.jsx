@@ -2,15 +2,19 @@ import React, {Component, PropTypes} from 'react'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
 import CompaniesDropdown from './CompaniesDropdown'
-import { changeCurrentCompany } from '../../actions/currentUser'
+import {changeCurrentCompany} from '../../actions/currentUser'
 
 class TopPanel extends Component {
   onCompanyChange = companyId => e => {
     this.props.changeCurrentCompany(companyId)
   }
 
+  static PropTypes = {
+    user: PropTypes.object.isRequired
+  }
+
   render() {
-    const { user } = this.props
+    const {user} = this.props
     let photo = ""
 
     if (user.profileImg) {
@@ -23,7 +27,7 @@ class TopPanel extends Component {
             <a href="/" className="top-panel_logo">Eye of Providence</a>
           </div>
           <div className="col-md-2">
-            <CompaniesDropdown companies={user.companies} onCompanyChange={this.onCompanyChange} />
+            <CompaniesDropdown companies={user.companies} onCompanyChange={this.onCompanyChange}/>
           </div>
           <div className="col-md-4">
             <ul className="top-panel_menu">
@@ -57,8 +61,4 @@ class TopPanel extends Component {
   }
 }
 
-const getProps = function ({currentUser}) {
-  return {user: currentUser}
-}
-
-export default connect(getProps, {changeCurrentCompany})(TopPanel)
+export default connect(({currentUser}) => ({user: currentUser}), {changeCurrentCompany})(TopPanel)

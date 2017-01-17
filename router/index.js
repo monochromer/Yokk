@@ -18,7 +18,7 @@ module.exports = function(app, passport) {
 
     app.post('/register', registration, passport.authenticate('local', {
         failureRedirect: '/login'
-    }), authorization.auth);
+    }), authorization.auth)
 
     app.use('/api', api);
 
