@@ -5,6 +5,7 @@ import CompaniesDropdown from './CompaniesDropdown'
 import {changeCurrentCompany} from '../../actions/currentUser'
 
 class TopPanel extends Component {
+
   onCompanyChange = companyId => e => {
     this.props.changeCurrentCompany(companyId)
   }
@@ -15,10 +16,11 @@ class TopPanel extends Component {
 
   render() {
     const {user} = this.props
+    console.log(user);
     let photo = ""
 
     if (user.profileImg) {
-      photo = <img src={this.props.user.profileImg.small} className="img-circle" width="34px" height="34px"/>
+      photo = <img src={user.profileImg.small} className="img-circle" width="34px" height="34px"/>
     }
     return (
       <div className="top-panel">

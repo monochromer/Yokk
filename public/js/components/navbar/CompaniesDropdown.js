@@ -3,6 +3,10 @@ import Dropdown from 'react-dropdown'
 
 export default class CompaniesDropdown extends Component {
 
+  state = {
+    currentCompany: ""
+  }
+
   _onSelect = option => {
     this.props.onCompanyChange(option.value)()
   }
@@ -14,34 +18,35 @@ export default class CompaniesDropdown extends Component {
 
   render() {
     const { companies, onCompanyChange } = this.props
+    console.log(companies);
 
-    //PROTOTYPING
-    const fakeCompanies = [
-      {
-        _id: 'Fake 1',
-        name: 'Fake 1'
-      },
-      {
-        _id: 'Fake 2',
-        name: 'Fake 2'
-      },
-      {
-        _id: 'Fake 3',
-        name: 'Fake 3'
-      },
-      {
-        _id: 'Fake 4',
-        name: 'Fake 4'
-      },
-      {
-        _id: 'Fake 5',
-        name: 'Fake 5'
-      },]
-    // ].concat(companies)
-    //PROTOTYPING
+    // //PROTOTYPING
+    // const fakeCompanies = [
+    //   {
+    //     _id: 'Fake 1',
+    //     name: 'Fake 1'
+    //   },
+    //   {
+    //     _id: 'Fake 2',
+    //     name: 'Fake 2'
+    //   },
+    //   {
+    //     _id: 'Fake 3',
+    //     name: 'Fake 3'
+    //   },
+    //   {
+    //     _id: 'Fake 4',
+    //     name: 'Fake 4'
+    //   },
+    //   {
+    //     _id: 'Fake 5',
+    //     name: 'Fake 5'
+    //   },]
+    // // ].concat(companies)
+    // //PROTOTYPING
 
 
-    const companiesList = getUserCompaniesList(fakeCompanies)
+    const companiesList = getUserCompaniesList(companies)
     let defaultOption = companiesList[0] ? companiesList[0] : 'select'
 
     const style = {
