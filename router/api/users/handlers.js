@@ -61,7 +61,7 @@ exports.getTeamUsers = function (req, res, next) {
 };
 
 exports.saveUserToDb = function (req, res, next) {
-  const {User, Company, Team} = req.app.db.models
+  const { User, Company, Team } = req.app.db.models
   const user = new User(req.body)
   user.joinedon = Date.now()
 
@@ -167,12 +167,31 @@ exports.updateUser = function (req, res, next) {
 }
 
 exports.deleteUser = function (req, res, next) {
-  const userModel = req.app.db.models.User;
+  const { User, unconfirmedUser, Team } = req.app.db.models
+  const { id } = req.params
+  const ObjectId = require('mongodb').ObjectID
 
-  userModel.deleteUser(req.params.id, (err) => {
-    if (err) next(err);
-    res.status(200).send(req.params.id);
-  });
+  User.findOne({ _id: id }, (err, user) => {
+    if (!user) {
+      unconfirmedUser.findOne({ _id: id }, (err, user) => {
+        user.remove()
+      })
+    } else {
+      user.remove()
+      Team.find({members: ObjectId(id)}, (err, teams) => {
+        teams.forEach(team => {
+          team.members = team.members.filter(member => `${member}` !== id )
+          team.save()
+        })
+      })
+    }
+  })
+
+  // User.deleteUser(req.params.id, (err, result) => {
+  //   if (err) next(err);
+  //   console.log(result);
+  //   res.status(200).send(req.params.id);
+  // });
 
 }
 
@@ -284,8 +303,12 @@ exports.getLoggedInUser = function (req, res, next) {
   User.findByLogin(req.user.login, (err, user) => {
     Company.find({ _id: { $in: user.companies } }, (err, companies) => {
       const userToReturn = Object.assign({}, user, { companies: companies })
+      user.companies = companies
       Team.find({ _id: { $in: user.teams } }, (err, teams) => {
-        userToReturn.teams = teams
+        user.teams = teams
+        const userToReturn = JSON.parse(JSON.stringify(user))
+        userToReturn.companyId = companies[0]._id
+        userToReturn.companies = companies
         res.status(200).send(userToReturn)
       })
     });
