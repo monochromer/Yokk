@@ -1,4 +1,4 @@
-import { TEAM_CRUD } from '../constants'
+import { TEAM_CRUD, FETCH_TEAMS, ADD_TEAM_MEMBERS } from '../constants'
 import request from 'superagent'
 
 export function saveTeam(teamName, companyId) {
@@ -22,6 +22,13 @@ export function addTeamMembers(teamId, newMembers) {
       if (err) console.log(err)
       // console.log(res)
     })
+  return {
+    type: ADD_TEAM_MEMBERS,
+    addToState: {
+      teamId: teamId,
+      newMembers: newMembers
+    }
+  }
 }
 
 export function closeAddTeamMembersModal() {
@@ -105,5 +112,12 @@ export function authUser(login, password) {
     return function(dispatch) {
         request.post('/login').send({username: login, password: password});
         console.log(login + password);
+    }
+}
+
+export function fetchTEams(companyId) {
+    return {
+      type: FETCH_TEAMS,
+      callAPI: `${TEAM_CRUD}/getTeamsFor/${companyId}`
     }
 }

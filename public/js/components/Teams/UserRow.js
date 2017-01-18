@@ -7,7 +7,7 @@ import { deleteUser } from '../../actions/users'
 class UserRow extends React.Component {
 
     handleRemove = () => {
-        store.dispatch( deleteUser(this.props.user._id) );
+        store.dispatch( deleteUser(this.props.user._id) )
     }
 
     dispatchUserToShow = () => {
@@ -17,32 +17,47 @@ class UserRow extends React.Component {
     render() {
       const {handleRemove, dispatchUserToShow} = this
       const {user} = this.props
-      const {name} = user
+      const {login, name, email} = user
+
+      const style = {
+        unconfirmedUsers: {backgroundColor:'rgb(255,192,129)', color:'white'}
+      }
+
+      let buttons = "";
+
+      const actionButtons = (
+          <div className="btn-group" role="group">
+              <Link to={ '/user/edit/' + login } className="">
+                  <img src="/img/icon-user-edit.svg" alt="edit" width="20px" />
+              </Link>
+              <span className="users-list_edit" onClick={ handleRemove }>
+                  <img src="/img/icon-user-delete.svg" alt="delete" width="20px" />
+              </span>
+          </div>
+      )
+
+
+    // if (this.props.currentUser.role == "admin" || this.props.currentUser.login == login)
+        buttons = actionButtons
+
+      if (!login) return (
+        <div className="row users-list_row vertical-center" style={style.unconfirmedUsers}>
+            <div className="col-md-3">User is not confirmed yet</div>
+            <div className="col-md-3">{email}</div>
+            <div className="col-md-2 users-list_position"></div>
+            <div className="col-md-1"></div>
+            <div className="col-md-2"></div>
+            <div className="col-md-1">{buttons}</div>
+        </div>
+      )
 
         let { role, position, joinedon, profileImg, fullname, redmineApiKey } = this.props.user;
-        const login = "foo"
 
         const userActivityPageLink = `/user/activityPage/${name}`;
         // let photo = profileImg ? profileImg.small : "";
         let photo = "";
         // let name = fullname ? fullname : login;
-        let buttons = "";
 
-        const actionButtons = (
-            <div className="btn-group" role="group">
-                <Link to={ '/user/edit/' + login } className="">
-                    <img src="/img/icon-user-edit.svg" alt="edit" width="20px" />
-                </Link>
-                <span className="users-list_edit" onClick={ handleRemove }>
-                    <img src="/img/icon-user-delete.svg" alt="delete" width="20px" />
-                </span>
-            </div>
-        )
-
-
-        // if (this.props.currentUser.role == "admin" || this.props.currentUser.login == login) {
-            buttons = actionButtons;
-        // }
 
         const redmine = redmineApiKey ? <img src="/img/redmine-active.svg" width="52px" height="52px" /> : "Nothing";
         position = position ? position : "No Information";
@@ -63,12 +78,11 @@ class UserRow extends React.Component {
                         </div>
                     </div>
                 </div>
-
-                <div className="col-md-4 users-list_position"> { position } </div>
-
-                <div className="col-md-2">{ redmine }</div>
-                <div className="col-md-2"> <a href={ userActivityPageLink }> Show Activity </a> </div>
-                <div className="col-md-1"> { buttons } </div>
+                <div className="col-md-3">{email}</div>
+                <div className="col-md-2 users-list_position"> { position } </div>
+                <div className="col-md-1">{ redmine }</div>
+                <div className="col-md-2"> <a href={ userActivityPageLink }>Show Activity</a></div>
+                <div className="col-md-1">{ buttons }</div>
 
             </div>
         )

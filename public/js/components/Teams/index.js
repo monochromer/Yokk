@@ -6,6 +6,7 @@ import {Input} from '../UI.jsx'
 import InviteToTeam from './InviteToTeam'
 import Team from './Team'
 import { fetchCurrentUser } from '../../actions/currentUser.js'
+import { fetchTEams } from '../../actions/teams.js'
 
 class Teams extends Component {
 
@@ -14,6 +15,16 @@ class Teams extends Component {
     teamMembersVisible: [],
     teamExists: true,
     modalIsOpen: false
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const {companyId} = nextProps.user
+    if (companyId.length !== 0 && this.props.user.companyId !== companyId) this.props.fetchTEams(companyId)
+  }
+
+  componentWillMount() {
+    const {companyId} = this.props.user
+    if (companyId.length !== 0) this.props.fetchTEams(companyId)
   }
 
   static PropTypes = {
@@ -27,10 +38,7 @@ class Teams extends Component {
   addNewTeam = () => {
     const {teamName} = this.state
     const {user} = this.props
-    // change user.companies[0] to right companyId (should be fetched from props)
-    // saveTeam(teamName, this.props.companyId)
     saveTeam(teamName, user.companies[0])
-    // save team should add new team to current user instead of fetching current user
     store.dispatch(fetchCurrentUser())
   }
 
@@ -50,56 +58,18 @@ class Teams extends Component {
   render() {
     const {teamChangeHandler, addNewTeam, addMembers} = this
     const { teamExists, modalIsOpen } = this.state
-    const { user } = this.props
+    const { user, teams } = this.props
 
-    // change this!!!
     let companyId
     if (user.companies) {
       companyId = user.companyId ? user.companyId : user.companies[0]
     }
 
-    //PROTOTYPING
-    const teamListArrayProto = [
-      {
-        _id: "1",
-        name: "team 1",
-        members: [
-          {
-            _id: '1',
-            name: 'Oleg',
-            profileImg: '1'
-          },
-          {
-            _id: '2',
-            name: 'Konstantin',
-            profileImg: '2'
-          },
-        ]
-      }, {
-        _id: "2",
-        name: "team 2",
-        members: [
-          {
-            _id: '3',
-            name: 'Natalia',
-            profileImg: '3'
-          },
-          {
-            _id: '4',
-            name: 'Sophia',
-            profileImg: '4'
-          },
-        ]
-      }
-    ]
-    //PROTOTYPING
-
-    const teamListArray = getTeams(user)
-    const teamList = (!teamListArray || teamListArray.length === 0)
+    const teamList = (!teams || teams.length === 0)
       ? (
         <div style={{marginTop: "40px", textAlign: "center"}}>Here will be your teams. You can add your first team right now by typing its name in the field above and clicking "Add the team"</div>
       )
-      : (teamListArray.map((team) => (
+      : (teams.map((team) => (
         <div key={team._id}>
           <Team companyId={companyId} team={team}/>
         </div>
@@ -117,17 +87,9 @@ class Teams extends Component {
 
     return (
       <div className="container container__flex1 container__fixed">
-
-        {/*
-          <InviteToTeam
-            modalIsOpen = { modalIsOpen }
-            addMembers = { addMembers }
-          />
-          */}
-
         <div style={styles.inputGroup}>
           <div className="row center-xs">
-            <div className="col-md-6 col-sm-8 col-xs-10">
+            <div className="col-md-8 col-sm-8 col-xs-10">
               <Input
                 handleChange={teamChangeHandler}
                 className={inputClassNames}
@@ -137,7 +99,7 @@ class Teams extends Component {
             </div>
           </div>
           <div className="row center-xs">
-            <div className="col-md-6 col-sm-8 col-xs-10">
+            <div className="col-md-8 col-sm-8 col-xs-10">
               <button
                 onClick={addNewTeam}
                 className="btn  btn__lg btn__blue team-create__create"
@@ -149,16 +111,6 @@ class Teams extends Component {
           </div>
         </div>
         {teamList}
-
-
-        {/*
-          <div className="row" style={styles.teamsList}>
-            <div className="col-md-6 col-sm-8 col-xs-10 col-md-offset-3">
-              {teamList}
-            </div>
-          </div>
-          */}
-
       </div>
     )
   }
@@ -169,7 +121,6 @@ function getTeams(user) {
   return user.teams
 }
 
-export default connect(({currentUser}) => {
-  // change to 'right' companyId
-  return {user: currentUser}
-})(Teams)
+export default connect(({currentUser, currentUserTeams}) => {
+  return {user: currentUser, teams: currentUserTeams}
+}, { fetchTEams })(Teams)
