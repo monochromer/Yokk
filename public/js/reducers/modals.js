@@ -8,7 +8,8 @@ const defaultState = {
     },
     userChangePassword: {
         visible: false
-    }
+    },
+    teamId: ""
 }
 
 export default function( state = defaultState, action ) {
@@ -34,7 +35,8 @@ export default function( state = defaultState, action ) {
             return Object.assign({}, state, {
                 userAdd: {
                     visible: true
-                }
+                },
+                teamId: action.teamId
             })
             break;
         case "MODAL_ADD_USER_CLOSE":

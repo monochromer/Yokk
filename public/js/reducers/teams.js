@@ -1,4 +1,5 @@
 import { browserHistory } from 'react-router'
+import {FETCH_TEAMS} from  '../constants'
 
 var initialState = {
     email: "",

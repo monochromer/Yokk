@@ -10,7 +10,8 @@ class AddUsersModal extends Component {
 
   state = {
     rows: 1,
-    invitations: []
+    invitations: [],
+    teamId: ""
   }
 
   handleClose = () => {
@@ -21,11 +22,11 @@ class AddUsersModal extends Component {
     this.state.invitations[e.target.name] = e.target.value;
   }
 
-  handleSubmit = e => {
+  handleSubmit = teamId => e => {
     e.preventDefault()
     const {invitations} = this.state
     const {teamId} = this.props
-    addTeamMembers(teamId, invitations)
+    this.props.addTeamMembers(teamId, invitations)
     this.props.closeAddTeamMembersModal()
   }
 
@@ -36,7 +37,7 @@ class AddUsersModal extends Component {
   }
 
   render() {
-
+    const {teamId} = this.props
     const modalClasses = classNames({
       modal: true,
       hide: !this.props.status
@@ -70,7 +71,7 @@ class AddUsersModal extends Component {
                   <h2 className="heading heading__white">Send Invitations</h2>
                 </div>
               </div>
-              <form onSubmit={this.handleSubmit}>
+              <form onSubmit={this.handleSubmit(teamId)}>
 
                 {invitationRows}
 
@@ -97,5 +98,5 @@ class AddUsersModal extends Component {
 }
 
 export default connect(({modals, users, currentUser}) => ({
-  status: modals.userAdd.visible, users: users.list, login: currentUser.login
+  status: modals.userAdd.visible, users: users.list, login: currentUser.login, teamId: modals.teamId
 }), {addTeamMembers, closeAddTeamMembersModal})(AddUsersModal)
