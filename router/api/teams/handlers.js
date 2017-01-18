@@ -240,7 +240,7 @@ exports.update = function (req, res, next) {
       team.save();
       res.status(200).send();
     }).catch(reason => {
-      console.log(reason);
+      // console.log(reason);
     });
   })
 
@@ -329,10 +329,8 @@ function sendInvitation(teamName, teamId, sendEmailFunc, email) {
   let confirmationLinkBase = 'eop.soshace.com'
   if (process.env.NODE_ENV == 'development') {
     confirmationLinkBase = 'localhost:5000'
-    console.log(confirmationLinkBase);
   }
   const confirmationLink = `http://${confirmationLinkBase}/login?teamId=${teamId}&email=${email}&teamName=${teamName}`
-  console.log(confirmationLink);
 
   const htmlToSend = `
               <div>You invited to be a part of team ${teamName}</div>
