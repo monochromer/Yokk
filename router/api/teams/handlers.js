@@ -113,6 +113,91 @@ exports.read = function (req, res, next) {
 
 };
 
+exports.getTeamsForCompany = function(req, res, next) {
+  const { Team, Company, User, unconfirmedUser } = req.app.db.models
+  const {companyId} = req.params
+  // console.log('in getTeamsForCompany');
+  // console.log(companyId);
+
+  // Company.findOne({ _id: companyId }, (err, company) => {
+  //   if (!company) return res.status(500).send() //company must exist
+  //   console.log(company);
+  //   res.send(company)
+  //   // Team.find( { _id: { $in: company.teams } }, (err, teamsArray) => {
+  //   //   const teamsToReturn = teamsArray.map(team => {
+  //   //     const teamToReturn = {}
+  //   //     teamToReturn.id = team._id
+  //   //     teamToReturn.name = team.name
+  //   //     User.find( {_id: {$in: team.members}}, (err, users) => {
+  //   //       teamToReturn.members = users
+  //   //       res.status(200).send(teamToReturn)
+  //   //     })
+  //   //
+  //   //   })
+  //   // })
+  // })
+
+  findCompanyBy(companyId)
+  .then(company => {
+    // console.log(company);
+    return findTeamsBy(company.teams)
+  })
+  .then(teams => {
+    // console.log(teams);
+    // res.send(teams)
+    return getUsers(teams)
+  })
+  .then(teamsWithUsers => {
+    // console.log(teamsWithUsers);
+    return getUnconfirmedUsers(teamsWithUsers)
+  })
+  .then(teams => {
+    res.send(teams)
+  })
+
+  function findCompanyBy(companyId) {
+    return new Promise((resolve,reject) => {
+      Company.findOne({_id: companyId}, (err, company) => {
+        resolve(company)
+      })
+    })
+  }
+
+  function findTeamsBy(teamsIds) {
+    return new Promise((resolve, reject) => {
+      Team.find({_id:{$in: teamsIds}}, (err, teamsArray) => {
+        resolve(teamsArray)
+      })
+    })
+  }
+
+  function getUsers(teams) {
+    return new Promise((resolve, reject) => {
+      User.find({}, (err, users) => {
+        teams.map(team => {
+          team.members = team.members.map(id => {
+            return _.find(users, o =>  `${o._id}` === `${id}`)
+          })
+          return team
+        })
+        resolve(teams)
+      })
+    })
+  }
+
+  function getUnconfirmedUsers(teams) {
+    return new Promise((resolve, reject) => {
+      unconfirmedUser.find({}, (err, users) => {
+        teams.map(team => {
+          team.members = team.members.concat(users.filter(user => `${user.teamId}` === `${team._id}`))
+        })
+        resolve(teams)
+      })
+    })
+  }
+
+}
+
 // PUT
 exports.update = function (req, res, next) {
   const teamModel = req.app.db.models.Team;
