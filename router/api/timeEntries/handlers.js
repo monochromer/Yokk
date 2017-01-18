@@ -87,8 +87,20 @@ exports.timeEntryBatch = function(req, res, next) {
 };
 
 exports.saveTimeEntry = function(req, res, next) {
-    const TimeEntryModel = req.app.db.models.timeEntry;
-    const timeEntry = new TimeEntryModel(req.body);
+    const TimeEntryModel = req.app.db.models.timeEntry
+
+    const {description, duration, dateCreated, entrySource} = req.body
+    const {_id} = req.user
+
+    const timeEntryInitData = {
+      description,
+      duration,
+      dateCreated,
+      entrySource,
+      executor: _id
+    }
+
+    const timeEntry = new TimeEntryModel(timeEntryInitData);
 
     if (req.body.date) {
         timeEntry.date = moment(req.body.date, 'DD.MM.YYYY').toDate();
