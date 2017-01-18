@@ -9,6 +9,7 @@ export default function (state = defaultState, action) {
 
   switch (type) {
     case "FETCH_CURRENT_USER":
+    console.log(action.payload);
       const currentUser = Object.assign({}, state, action.payload)
       return currentUser
       break
