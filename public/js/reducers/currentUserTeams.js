@@ -1,11 +1,25 @@
 import { browserHistory } from 'react-router'
-import { FETCH_TEAMS, ADD_TEAM_MEMBERS } from '../constants'
+import {
+  FETCH_TEAMS,
+  ADD_TEAM_MEMBERS,
+  DELETE_TEAM_MEMBERS,
+  DELETE_TEAM,
+  CHANGE_TEAM_NAME
+} from '../constants'
 import _ from 'lodash'
 
 const initialState = []
 
 export default function (state = initialState, action) {
-  const { type, data, addToState } = action;
+  const {
+    type,
+    data,
+    addToState,
+    payload,
+    teamId,
+    userId,
+    newName
+  } = action
 
   switch (type) {
 
@@ -14,11 +28,57 @@ export default function (state = initialState, action) {
       break;
 
     case ADD_TEAM_MEMBERS:
-      // console.log(state);
-      // console.log(addToState);
-      // const newStateItem = _.find(state => o._id === addToState.teamId)
-      return state
+      const { newMembers } = addToState
+      const newState = state.slice(0)
+
+      let indexToChange = 0
+      let oldMembers = []
+      const newStateItem = Object.assign({}, _.find(state, (o, i) => {
+        indexToChange = i
+        oldMembers = o.members
+        return o._id === teamId
+      }), { members: oldMembers.concat(newMembers.map(o => ({ email: o }))) })
+
+      newState[indexToChange] = newStateItem
+
+      return newState
       break;
+
+    case DELETE_TEAM_MEMBERS:
+      const stateAfterDeleted = state.slice(0)
+
+      indexToChange = 0
+      oldMembers = []
+      const newStateItem2 = Object.assign({}, _.find(state, (o, i) => {
+        indexToChange = i
+        oldMembers = o.members
+        return o._id === teamId
+      }), { members: oldMembers.filter(o => o._id !== userId) })
+
+      stateAfterDeleted[indexToChange] = newStateItem2
+
+      return stateAfterDeleted
+      break;
+
+    case DELETE_TEAM:
+      return state.filter(team => team._id !== teamId)
+      break
+
+    case CHANGE_TEAM_NAME:
+      const stateAfterChangingName = state.slice(0)
+
+      indexToChange = 0
+      oldMembers = []
+
+      const newStateItem3 = Object.assign({}, _.find(state, (o, i) => {
+        indexToChange = i
+        return o._id === teamId
+      }), { name: newName })
+
+      stateAfterChangingName[indexToChange] = newStateItem3
+
+      return stateAfterChangingName
+      break
 
     default:
       return state;

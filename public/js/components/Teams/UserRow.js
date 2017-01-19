@@ -3,11 +3,14 @@ import { Link } from 'react-router';
 import store from '../../store.js';
 import { connect } from 'react-redux'
 import { deleteUser } from '../../actions/users'
+import { deleteTeamMembers } from '../../actions/teams'
 
 class UserRow extends React.Component {
 
     handleRemove = () => {
-        store.dispatch( deleteUser(this.props.user._id) )
+        const {teamId, user} = this.props
+        store.dispatch( deleteUser(user._id) )
+        this.props.deleteTeamMembers(teamId, user._id)
     }
 
     dispatchUserToShow = () => {
@@ -17,7 +20,12 @@ class UserRow extends React.Component {
     render() {
       const {handleRemove, dispatchUserToShow} = this
       const {user} = this.props
-      const {login, name, email} = user
+      const {login, email, fullname, joinedon, profileImg, redmineApiKey, role} = user
+      let position = user.position ? user.position : "No Information";
+
+      const name = fullname ? fullname : `(login:) ${login}`
+      const photo = profileImg ? profileImg.small : ""
+      // let name = fullname ? fullname : login;
 
       const style = {
         unconfirmedUsers: {backgroundColor:'rgb(255,192,129)', color:'white'}
@@ -51,16 +59,10 @@ class UserRow extends React.Component {
         </div>
       )
 
-        let { role, position, joinedon, profileImg, fullname, redmineApiKey } = this.props.user;
-
         const userActivityPageLink = `/user/activityPage/${name}`;
-        // let photo = profileImg ? profileImg.small : "";
-        let photo = "";
-        // let name = fullname ? fullname : login;
 
 
         const redmine = redmineApiKey ? <img src="/img/redmine-active.svg" width="52px" height="52px" /> : "Nothing";
-        position = position ? position : "No Information";
 
         return (
             <div className="row users-list_row vertical-center">
@@ -95,4 +97,4 @@ function getParams(store) {
     }
 }
 
-export default connect(getParams)(UserRow)
+export default connect(getParams, {deleteTeamMembers})(UserRow)
