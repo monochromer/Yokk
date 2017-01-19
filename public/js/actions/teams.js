@@ -51,7 +51,9 @@ export function deleteTeamMembers(teamId, userId) {
 export function deleteTeam(teamId, userId) {
   return {
     type: DELETE_TEAM,
-    teamId: teamId
+    teamId: teamId,
+    callAPI: `/api/teams/${teamId}`,
+    reqType: 'delete'
   }
 }
 
@@ -59,7 +61,9 @@ export function changeTeamName(teamId, newName) {
   return {
     type: CHANGE_TEAM_NAME,
     teamId: teamId,
-    newName: newName
+    newName: newName,
+    callAPI: `/api/teams/changeName/${teamId}`,
+    reqType: 'put'
   }
 }
 

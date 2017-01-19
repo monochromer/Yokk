@@ -14,6 +14,7 @@ exports.create = function (req, res, next) {
   const { companyId } = req.body
   const { _id: originatorId } = req.user;
 
+
   const teamInitData = {
     name: teamName,
     teamOriginator: originatorId,
@@ -24,6 +25,7 @@ exports.create = function (req, res, next) {
 
   createTeam(newTeam)
     .then(team => {
+      res.status(200).send(team)
       // find user from request
       User.findOne({ _id: originatorId }, (err, user) => {
         const newTeamsArray = user.teams.concat([team._id])
@@ -289,18 +291,27 @@ exports.update = function (req, res, next) {
 
 };
 
+exports.changeName = function(req, res, next) {
+  const {Team} = req.app.db.models
+  const {teamId} = req.params
+  const {newName} = req.body
+
+  Team.findOne({_id: teamId}, (err, team) => {
+    team.name = newName
+    team.save()
+    res.status(200).send()
+  })
+}
+
 // DELETE
 exports.delete = function (req, res, next) {
-  const teamModel = req.app.db.models.Team;
-  const teamName = req.params.teamName;
+  const {Team} = req.app.db.models
+  const {teamName} = req.params
 
-  if (!teamName) return res.status(500).send();
-
-  teamModel.delete(teamName, (err, result) => {
-    if (err) next(err);
-    res.status(200).send(result);
+  Team.find({_id: teamName}).remove(() => {
+    res.status(200).send()
   })
-};
+}
 
 exports.deleteMeberFromTeam = function (req, res, next) {
   const teamModel = req.app.db.models.Team;

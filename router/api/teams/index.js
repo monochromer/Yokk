@@ -5,6 +5,8 @@ module.exports = function(api) {
         .get(handle.getTeamsForCompany)
     api.route('/teams/addTeamMembers')
         .post(handle.addTeamMembers)
+    api.route('/teams/changeName/:teamId')
+        .put(handle.changeName)
     api.route('/teams(/:teamName)?')
         .post(handle.create)
         .get(handle.read)
