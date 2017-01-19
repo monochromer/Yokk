@@ -1,12 +1,11 @@
 import React, {Component, PropTypes} from 'react'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
-import {saveTeam} from '../../actions/teams'
 import {Input} from '../UI.jsx'
 import InviteToTeam from './InviteToTeam'
 import Team from './Team'
 import { fetchCurrentUser } from '../../actions/currentUser.js'
-import { fetchTEams } from '../../actions/teams.js'
+import { saveTeam, fetchTEams } from '../../actions/teams.js'
 
 class Teams extends Component {
 
@@ -38,8 +37,8 @@ class Teams extends Component {
   addNewTeam = () => {
     const {teamName} = this.state
     const {user} = this.props
-    saveTeam(teamName, user.companies[0])
-    store.dispatch(fetchCurrentUser())
+    this.props.saveTeam(teamName, user.companyId)
+    // store.dispatch(fetchCurrentUser())
   }
 
   addMembers = teamId => e => {
@@ -123,4 +122,4 @@ function getTeams(user) {
 
 export default connect(({currentUser, currentUserTeams}) => {
   return {user: currentUser, teams: currentUserTeams}
-}, { fetchTEams })(Teams)
+}, { fetchTEams, saveTeam })(Teams)

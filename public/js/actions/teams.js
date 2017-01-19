@@ -1,5 +1,6 @@
 import {
   TEAM_CRUD,
+  ADD_TEAM,
   FETCH_TEAMS,
   ADD_TEAM_MEMBERS,
   DELETE_TEAM_MEMBERS,
@@ -9,13 +10,13 @@ import {
 import request from 'superagent'
 
 export function saveTeam(teamName, companyId) {
-  request
-    .post(`/api/teams/${teamName}`)
-    .send({ companyId: companyId })
-    .end((err, res) => {
-      if (err) console.log(err)
-      // console.log(res)
-    })
+  return {
+    type: ADD_TEAM,
+    teamName: teamName,
+    companyId: companyId,
+    callAPI: `/api/teams/${teamName}`,
+    reqType: 'post'
+  }
 }
 
 export function addTeamMembers(teamId, newMembers, companyId) {
