@@ -51,7 +51,7 @@ exports.create = function (req, res, next) {
 
 exports.addTeamMembers = function (req, res, next) {
   const { unconfirmedUser, Team } = req.app.db.models
-  const { teamId, membersEmails } = req.body
+  const { teamId, companyId, membersEmails } = req.body
 
   Team.findOne({ _id: teamId }, (err, team) => {
     membersEmails.forEach(email => {
@@ -63,7 +63,7 @@ exports.addTeamMembers = function (req, res, next) {
       newUnconfirmedUser.save(user => {
         // send token = user._id and when registering check the token
         // token should expire (DB should be cleaned) at some intervals
-        sendInvitation(team.name, teamId, sendEmail, email)
+        sendInvitation(team.name, teamId, sendEmail, email, companyId)
         res.status(200).send()
       })
     })
@@ -325,12 +325,12 @@ exports.deleteMeberFromTeam = function (req, res, next) {
   })
 }
 
-function sendInvitation(teamName, teamId, sendEmailFunc, email) {
+function sendInvitation(teamName, teamId, sendEmailFunc, email, companyId) {
   let confirmationLinkBase = 'eop.soshace.com'
   if (process.env.NODE_ENV == 'development') {
     confirmationLinkBase = 'localhost:5000'
   }
-  const confirmationLink = `http://${confirmationLinkBase}/login?teamId=${teamId}&email=${email}&teamName=${teamName}`
+  const confirmationLink = `http://${confirmationLinkBase}/login?teamId=${teamId}&email=${email}&teamName=${teamName}&companyId=${companyId}`
 
   const htmlToSend = `
               <div>You invited to be a part of team ${teamName}</div>

@@ -6,7 +6,7 @@ const sendEmail = require('./helpers/sendEmail')
 module.exports = function (req, res, next) {
   const { User, Team, unconfirmedUser } = req.app.db.models
 
-  const { login, password, email, teamId } = req.body
+  const { login, password, email, teamId, companyId } = req.body
 
   findUserByEmail(email)
     .then(() => {
@@ -15,7 +15,8 @@ module.exports = function (req, res, next) {
         password: password,
         email: email,
         teams: [teamId],
-        joinedon: Date.now()
+        joinedon: Date.now(),
+        companies: [companyId]
       })
       return createNewUser(User, newUser)
     })
