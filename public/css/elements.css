@@ -107,6 +107,18 @@ a:hover {
     color: #FFFFFF;
 }
 
+.btn__trans-red {
+    background-color: #FFFFFF;
+    border: 1px solid rgb(255, 96, 64);
+    color: rgb(255, 96, 64);
+    transition: all .1s ease-in-out;
+}
+
+.btn__trans-red:hover {
+    background-color: rgb(255, 49, 32);
+    color: #FFFFFF;
+}
+
 .btn__trans-blue.btn__disabled, .btn__trans-blue:disabled {
     border-color: #919191;
     color: #919191;

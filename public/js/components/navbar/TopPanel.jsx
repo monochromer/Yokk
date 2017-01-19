@@ -16,7 +16,6 @@ class TopPanel extends Component {
 
   render() {
     const {user} = this.props
-    console.log(user);
     let photo = ""
 
     if (user.profileImg) {

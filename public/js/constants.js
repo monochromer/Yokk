@@ -19,6 +19,10 @@ export const TEAM_CRUD = '/api/teams'
 export const FETCH_TEAMS = 'FETCH_TEAMS'
 
 export const ADD_TEAM_MEMBERS = 'ADD_TEAM_MEMBERS'
+export const DELETE_TEAM_MEMBERS = 'DELETE_TEAM_MEMBERS'
+
+export const DELETE_TEAM = 'DELETE_TEAM'
+export const CHANGE_TEAM_NAME = 'CHANGE_TEAM_NAME'
 
 export function COMBINE_USER_ADDPHOTO_URI(login) {
     return '/api/user/' + login + '/upload_profile_picture';
