@@ -4,7 +4,8 @@ import {
   ADD_TEAM_MEMBERS,
   DELETE_TEAM_MEMBERS,
   DELETE_TEAM,
-  CHANGE_TEAM_NAME
+  CHANGE_TEAM_NAME,
+  ADD_TEAM
 } from '../constants'
 import _ from 'lodash'
 
@@ -18,7 +19,8 @@ export default function (state = initialState, action) {
     payload,
     teamId,
     userId,
-    newName
+    newName,
+    response
   } = action
 
   switch (type) {
@@ -26,6 +28,12 @@ export default function (state = initialState, action) {
     case FETCH_TEAMS:
       return data
       break;
+
+    case ADD_TEAM:
+      const stateAfterTeamAdded = state.slice(0)
+      stateAfterTeamAdded.push(JSON.parse(response.text))
+      return stateAfterTeamAdded
+      break
 
     case ADD_TEAM_MEMBERS:
       const { newMembers } = addToState
