@@ -80,8 +80,8 @@ exports.create = function (req, res, next) {
           return next(error.name);
         }
 
-        companyInitialData.confirmationCode = "111111";
-        // companyInitialData.confirmationCode = Math.random().toString().slice(2, 8);
+        // companyInitialData.confirmationCode = "111111";
+        companyInitialData.confirmationCode = Math.random().toString().slice(2, 8);
 
         const htmlToSend = `<div>Confirmation code ${companyInitialData.confirmationCode}</div>`;
 
