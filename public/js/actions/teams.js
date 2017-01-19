@@ -18,12 +18,13 @@ export function saveTeam(teamName, companyId) {
     })
 }
 
-export function addTeamMembers(teamId, newMembers) {
+export function addTeamMembers(teamId, newMembers, companyId) {
   request
     .post(`/api/teams/addTeamMembers`)
     .send({
       teamId: teamId,
-      membersEmails: newMembers
+      membersEmails: newMembers,
+      companyId: companyId
     })
     .end((err, res) => {
       if (err) console.log(err)

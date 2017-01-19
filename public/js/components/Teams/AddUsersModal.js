@@ -25,8 +25,8 @@ class AddUsersModal extends Component {
   handleSubmit = teamId => e => {
     e.preventDefault()
     const {invitations} = this.state
-    const {teamId} = this.props
-    this.props.addTeamMembers(teamId, invitations)
+    const {teamId, companyId} = this.props
+    this.props.addTeamMembers(teamId, invitations, companyId)
     this.props.closeAddTeamMembersModal()
   }
 

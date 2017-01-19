@@ -9,6 +9,7 @@ class LoginForm extends Component {
   state = {
     auth: getParameter('teamName') ? false : true,
     teamId: getParameter('teamId'),
+    companyId: getParameter('companyId'),
     email: getParameter('email'),
     teamName: getParameter('teamName'),
     error: false
