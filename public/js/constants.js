@@ -19,6 +19,7 @@ export const TEAM_CRUD = '/api/teams'
 export const FETCH_TEAMS = 'FETCH_TEAMS'
 
 export const ADD_TEAM_MEMBERS = 'ADD_TEAM_MEMBERS'
+export const ADD_TEAM = 'ADD_TEAM'
 export const DELETE_TEAM_MEMBERS = 'DELETE_TEAM_MEMBERS'
 
 export const DELETE_TEAM = 'DELETE_TEAM'
