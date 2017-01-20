@@ -12,18 +12,26 @@ class LoginForm extends Component {
     companyId: getParameter('companyId'),
     email: getParameter('email'),
     teamName: getParameter('teamName'),
-    error: false
+    error: false,
+    wrongConfirmPass:false
   }
 
   handleChange = ev => {
     this.setState({
       [ev.target.name]: ev.target.value,
+      wrongConfirmPass: false,
       error: false
     })
   }
 
   handleSubmit = ev => {
     ev.preventDefault()
+    const {password, passwordRepeat} = this.state
+    if (password !== passwordRepeat) {
+      this.setState({wrongConfirmPass: true})
+      setTimeout(() => {this.setState({wrongConfirmPass: false})},500)
+      return
+    }
     const urlToPost = this.state.auth ? '/login' : '/register'
     request.post(urlToPost, this.state).end((err, response) => {
       if (response.status != 200) {
@@ -38,6 +46,14 @@ class LoginForm extends Component {
 
   render() {
     const {handleChange} = this
+    const {wrongConfirmPass} = this.state
+    const style = {}
+
+    if (wrongConfirmPass) {
+      style.confirmPassStyle = {backgroundColor: 'rgb(245,138,71)'}
+    } else {
+      style.confirmPassStyle = null
+    }
 
     const loginError = this.state.error
       ? "Check your login"
@@ -102,15 +118,16 @@ class LoginForm extends Component {
                 label="Password"
                 required="true"
                 name="password"/>
-
-              <Input
-                handleChange={handleChange}
-                className="input-group input-group__grey"
-                type="password"
-                label="Repeat Password"
-                required="true"
-                name="password-repeat"/>
-
+              <div style={style.confirmPassStyle}>
+                <Input
+                  handleChange={handleChange}
+                  className="input-group input-group__grey"
+                  type="password"
+                  label="Repeat Password"
+                  required="true"
+                  name="passwordRepeat"
+                  />
+              </div>
               <button className="btn btn__lg btn__blue signup_btn" type="submit">Sign up</button>
             </form>
           </div>
