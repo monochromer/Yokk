@@ -65,11 +65,11 @@ exports.addTeamMembers = function (req, res, next) {
         teamId: teamId
       }
       const newUnconfirmedUser = new unconfirmedUser(unconfirmedUserInitData)
-      newUnconfirmedUser.save(user => {
+      newUnconfirmedUser.save((err, user) => {
         // send token = user._id and when registering check the token
         // token should expire (DB should be cleaned) at some intervals
         sendInvitation(team.name, teamId, sendEmail, email, companyId)
-        res.status(200).send()
+        res.status(200).send(user)
       })
     })
   })

@@ -36,7 +36,8 @@ export default function (state = initialState, action) {
       break
 
     case ADD_TEAM_MEMBERS:
-      const { newMembers } = addToState
+      // const { newMembers } = addToState
+      const newMembers = [response.body]
       const newState = state.slice(0)
 
       let indexToChange = 0
@@ -45,7 +46,8 @@ export default function (state = initialState, action) {
         indexToChange = i
         oldMembers = o.members
         return o._id === teamId
-      }), { members: oldMembers.concat(newMembers.map(o => ({ email: o }))) })
+      // }), { members: oldMembers.concat(newMembers.map(o => ({ email: o }))) })
+      }), { members: oldMembers.concat(newMembers) })
 
       newState[indexToChange] = newStateItem
 

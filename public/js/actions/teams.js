@@ -15,27 +15,26 @@ export function saveTeam(teamName, companyId) {
     teamName: teamName,
     companyId: companyId,
     callAPI: `/api/teams/${teamName}`,
-    reqType: 'post'
+    reqType: 'post',
+    body: {
+      companyId: companyId
+    }
   }
 }
 
 export function addTeamMembers(teamId, newMembers, companyId) {
-  request
-    .post(`/api/teams/addTeamMembers`)
-    .send({
-      teamId: teamId,
-      membersEmails: newMembers,
-      companyId: companyId
-    })
-    .end((err, res) => {
-      if (err) console.log(err)
-    })
   return {
     type: ADD_TEAM_MEMBERS,
     teamId: teamId,
     addToState: {
-
       newMembers: newMembers
+    },
+    callAPI: `/api/teams/addTeamMembers`,
+    reqType: 'post',
+    body: {
+      teamId: teamId,
+      membersEmails: newMembers,
+      companyId: companyId
     }
   }
 }

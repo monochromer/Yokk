@@ -3,7 +3,7 @@ import axios from 'axios'
 import request from 'superagent'
 
 export default (store) => (next) => (action) => {
-    const {callAPI, reqType, companyId, newName, ...rest} = action
+    const {callAPI, reqType, companyId, newName, body, ...rest} = action
 
     if(!callAPI) return next(action)
 
@@ -11,7 +11,7 @@ export default (store) => (next) => (action) => {
       case "post":
         request
             .post(callAPI)
-            .send({ companyId: companyId })
+            .send(body)
             .end((error, response) => {
               if (error) console.log(error)
 
