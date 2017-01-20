@@ -349,14 +349,28 @@ exports.update = function (req, res, next) {
 };
 
 exports.changeName = function(req, res, next) {
-  const {Team} = req.app.db.models
-  const {teamId} = req.params
-  const {newName} = req.body
+  const {Team, Company} = req.app.db.models
+  const {teamId, newName, companyId} = req.body
 
-  Team.findOne({_id: teamId}, (err, team) => {
-    team.name = newName
-    team.save()
-    res.status(200).send()
+  Company.findOne({_id: companyId}, (err, company) => {
+    if (err) next(err)
+
+    Team.find({_id: {$in: company.teams}}, (err, teams) => {
+      if (err) next(err)
+      // const nameExist = teams.some(team => !newName && team._id !== teamId && team.name === newName)
+      const nameExist = teams.some(team => {
+        return newName && `${team._id}` !== `${teamId}` && team.name === newName
+      })
+
+      if (nameExist) return res.status(200).send({nameExist: true})
+
+      Team.findOne({_id: teamId}, (err, team) => {
+        team.name = newName
+        team.save()
+        res.status(200).send({newName: newName})
+      })
+
+    })
   })
 }
 

@@ -56,13 +56,13 @@ export function deleteTeam(teamId, userId) {
   }
 }
 
-export function changeTeamName(teamId, newName) {
+export function changeTeamName(teamId, newName, companyId) {
   return {
     type: CHANGE_TEAM_NAME,
+    callAPI: `/api/teams/changeName`,
+    reqType: 'put',
     teamId: teamId,
-    newName: newName,
-    callAPI: `/api/teams/changeName/${teamId}`,
-    reqType: 'put'
+    body: {newName, companyId, teamId}
   }
 }
 

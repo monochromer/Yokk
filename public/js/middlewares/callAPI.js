@@ -32,11 +32,12 @@ export default (store) => (next) => (action) => {
       case "put":
         request
             .put(callAPI)
-            .send({newName: newName})
+            .send(body)
             .end((error, response) => {
               if (error) console.log(error)
-
-              next({ ...rest, newName, response })
+              const dontChange = true
+              if (response.body.nameExist) return next({... rest, dontChange})
+              next({ ...rest, response })
             })
         break
 

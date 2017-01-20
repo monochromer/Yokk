@@ -26,17 +26,13 @@ class Team extends Component {
   }
 
   changeTeamName = () => {
-    if (!this.state.changingName) {
-      this.setState({changingName: true})
-    }
+    if (!this.state.changingName) this.setState({changingName: true})
   }
 
-  onNameChange = e => {
-    this.setState({newTeamName: e.target.value})
-  }
+  onNameChange = e => this.setState({newTeamName: e.target.value})
 
   saveNewName = () => {
-    this.props.changeTeamName(this.props.team._id, this.state.newTeamName)
+    this.props.changeTeamName(this.props.team._id, this.state.newTeamName, this.props.companyId)
     this.setState({newTeamName: "", changingName: false})
   }
 

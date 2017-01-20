@@ -20,7 +20,8 @@ export default function (state = initialState, action) {
     teamId,
     userId,
     newName,
-    response
+    response,
+    dontChange
   } = action
 
   switch (type) {
@@ -75,6 +76,8 @@ export default function (state = initialState, action) {
       break
 
     case CHANGE_TEAM_NAME:
+      if (dontChange) return state
+      const {newName} = response.body
       const stateAfterChangingName = state.slice(0)
 
       indexToChange = 0
