@@ -55,26 +55,76 @@ exports.create = function (req, res, next) {
 };
 
 exports.addTeamMembers = function (req, res, next) {
-  const { unconfirmedUser, Team } = req.app.db.models
+  const { unconfirmedUser, Team, User } = req.app.db.models
   const { teamId, companyId, membersEmails } = req.body
+  // const { teamId, companyId, changeInProd } = req.body
+  // const membersEmails = [changeInProd]
 
-  Team.findOne({ _id: teamId }, (err, team) => {
-    membersEmails.forEach(email => {
-      const unconfirmedUserInitData = {
-        email: email,
-        teamId: teamId
-      }
-      const newUnconfirmedUser = new unconfirmedUser(unconfirmedUserInitData)
-      newUnconfirmedUser.save((err, user) => {
-        // send token = user._id and when registering check the token
-        // token should expire (DB should be cleaned) at some intervals
-        const {DEFAULT_TEAM_NAME} = process.env
-        const teamName = team.name ? team.name : DEFAULT_TEAM_NAME
-        sendInvitation(teamName, teamId, sendEmail, email, companyId)
-        res.status(200).send(user)
-      })
+  let usersExist = []
+  let usersToSave = []
+
+  User.find( {teams: teamId}, (err,users) => {
+    const userEmails = users.map(o => o.email)
+
+    checkIfEmailInArray(userEmails)
+    _.remove(membersEmails, o => usersExist.includes(o))
+
+    unconfirmedUser.find( {teamId}, (err, unconfirmedUsers) => {
+      const unconfirmedUsersEmails = unconfirmedUsers.map(o => o.email)
+
+      checkIfEmailInArray(unconfirmedUsersEmails)
+      _.remove(membersEmails, o => usersExist.includes(o))
+      usersToSave = usersToSave.concat(membersEmails)
+
+      saveUsersToDb(usersToSave)
+      //
+      // res.send({saved: usersToSave, exist: usersExist});
     })
   })
+
+  function checkIfEmailInArray(arrayToFind) {
+    membersEmails.forEach(email => {
+      if (arrayToFind.includes(email)) usersExist.push(email)
+    })
+  }
+
+  function saveUsersToDb(emailsList, existentUsers) {
+    const sendBack = {}
+    if (existentUsers && existentUsers.length !== 0) sendBack.exist = existentUsers
+
+    Team.findOne({ _id: teamId }, (err, team) => {
+      const allUsersAreSaved = []
+
+      emailsList.forEach(email => {
+        const unconfirmedUserInitData = {
+          email: email,
+          teamId: teamId
+        }
+
+        let newPromise = new Promise((resolve, reject) => {
+          const newUnconfirmedUser = new unconfirmedUser(unconfirmedUserInitData)
+          newUnconfirmedUser.save((err, user) => {
+            // send token = user._id and when registering check the token
+            // token should expire (DB should be cleaned) at some intervals
+            const {DEFAULT_TEAM_NAME} = process.env
+            const teamName = team.name ? team.name : DEFAULT_TEAM_NAME
+            sendInvitation(teamName, teamId, sendEmail, email, companyId)
+
+
+            resolve(user)
+          })
+        })
+
+        allUsersAreSaved.push(newPromise)
+
+      })
+
+      Promise.all(allUsersAreSaved).then(savedMembers => {
+        sendBack.saved = savedMembers
+        res.status(200).send(sendBack)
+      })
+    })
+  }
 
 }
 

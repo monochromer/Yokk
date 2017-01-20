@@ -36,8 +36,8 @@ export default function (state = initialState, action) {
       break
 
     case ADD_TEAM_MEMBERS:
-      // const { newMembers } = addToState
-      const newMembers = [response.body]
+      // exist
+      const newMembers = response.body.saved
       const newState = state.slice(0)
 
       let indexToChange = 0
