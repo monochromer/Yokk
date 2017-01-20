@@ -5,6 +5,9 @@ const sendEmail = require('../../helpers/sendEmail');
 const path = require('path');
 const valid = require("valid-email");
 
+const {NODE_ENV, LINK_BASE_DEV, LINK_BASE_PROD} = process.env
+const linkBase = (NODE_ENV === 'development' ? LINK_BASE_DEV : LINK_BASE_PROD)
+
 // CRUD API for teams
 
 // POST
@@ -272,7 +275,7 @@ exports.update = function (req, res, next) {
 
   function sendInvitations(emails, teamName, teamId, sendEmailFunc) {
     emails.forEach(email => {
-      const confirmationLink = `http://eop.soshace.com/login?teamId=${teamId}&email=${email}&teamName=${teamName}`;
+      const confirmationLink = `${linkBase}login?teamId=${teamId}&email=${email}&teamName=${teamName}`;
 
       const htmlToSend = `
                 <div>You invited to be a part of team ${teamName}</div>
@@ -337,11 +340,8 @@ exports.deleteMeberFromTeam = function (req, res, next) {
 }
 
 function sendInvitation(teamName, teamId, sendEmailFunc, email, companyId) {
-  let confirmationLinkBase = 'eop.soshace.com'
-  if (process.env.NODE_ENV == 'development') {
-    confirmationLinkBase = 'localhost:5000'
-  }
-  const confirmationLink = `http://${confirmationLinkBase}/login?teamId=${teamId}&email=${email}&teamName=${teamName}&companyId=${companyId}`
+
+  const confirmationLink = `${linkBase}/login?teamId=${teamId}&email=${email}&teamName=${teamName}&companyId=${companyId}`
 
   const htmlToSend = `
               <div>You invited to be a part of team ${teamName}</div>

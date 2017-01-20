@@ -80,10 +80,11 @@ exports.create = function (req, res, next) {
           return next(error.name);
         }
 
-        // companyInitialData.confirmationCode = "111111";
-        companyInitialData.confirmationCode = Math.random().toString().slice(2, 8);
+        const {NODE_ENV} = process.env
+        const confCode = (NODE_ENV === 'development') ? '111111' : Math.random().toString().slice(2, 8)
+        companyInitialData.confirmationCode = confCode
 
-        const htmlToSend = `<div>Confirmation code ${companyInitialData.confirmationCode}</div>`;
+        const htmlToSend = `<div>Confirmation code ${confCode}</div>`;
 
         const mailOptions = {
           from: '"Soshace team 👥" <bot@izst.ru>',
