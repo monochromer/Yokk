@@ -68,7 +68,9 @@ exports.addTeamMembers = function (req, res, next) {
       newUnconfirmedUser.save((err, user) => {
         // send token = user._id and when registering check the token
         // token should expire (DB should be cleaned) at some intervals
-        sendInvitation(team.name, teamId, sendEmail, email, companyId)
+        const {DEFAULT_TEAM_NAME} = process.env
+        const teamName = team.name ? team.name : DEFAULT_TEAM_NAME
+        sendInvitation(teamName, teamId, sendEmail, email, companyId)
         res.status(200).send(user)
       })
     })
@@ -238,6 +240,8 @@ exports.update = function (req, res, next) {
         }
       });
 
+      const {DEFAULT_TEAM_NAME} = process.env
+      const teamName = team.name ? team.name : DEFAULT_TEAM_NAME
       sendInvitations(emails.toInvite, team.name, teamId, sendEmail);
 
       team.members = _.unionBy(team.members, emailsToConfirm, obj => obj.email);
@@ -341,7 +345,7 @@ exports.deleteMeberFromTeam = function (req, res, next) {
 
 function sendInvitation(teamName, teamId, sendEmailFunc, email, companyId) {
 
-  const confirmationLink = `${linkBase}/login?teamId=${teamId}&email=${email}&teamName=${teamName}&companyId=${companyId}`
+  const confirmationLink = `${linkBase}login?teamId=${teamId}&email=${email}&teamName=${teamName}&companyId=${companyId}`
 
   const htmlToSend = `
               <div>You invited to be a part of team ${teamName}</div>
