@@ -123,7 +123,7 @@ class PromoPage extends React.Component {
                                            label="E-mail address"
                                            error={ this.props.error }
                                     />
-                                  <button type="submit" className="btn btn__lg btn__white right-panel_btn">Register Company</button>
+                                    <button type="submit" className="btn btn__lg btn__white right-panel_btn">Register Company</button>
                                 </div>
                             </div>
                             <div className="row center-md right-panel_login">

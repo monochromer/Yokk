@@ -74,7 +74,7 @@ exports.create = function (req, res, next) {
       }
 
       companyModel.findOne(companyInitialData, (err, company) => {
-        if (company && company.confirmed) {
+        if (company && company.emailConfirmed) {
           let error = new Error();
           error.name = "This company is already created and confirmed";
           return next(error.name);

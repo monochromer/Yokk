@@ -59,7 +59,7 @@ export class Input extends React.Component {
                        onChange={ this.handleChange }
                        defaultValue={ this.props.defaultValue }
                        mask={ this.props.mask }/>
-                { this.state.focus ? null : error }
+                { error }
             </div>
         )
     }
