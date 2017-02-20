@@ -18,6 +18,24 @@ export default function (state = defaultState, action) {
       return Object.assign({}, state, {companyId: companyId})
       break
 
+    case "UPDATE_USER":
+      if (payload._id === state._id) {
+        return Object.assign({}, state, payload);
+      }
+
+      return Object.assign({}, state);
+
+    case "DELETE_PROFILE_IMG":
+      const dummy = {
+        small: "/img/dummy/960-720.png",
+        medium: "/img/dummy/960-720.png",
+        original: "/img/dummy/960-720.png"
+      };
+
+      return Object.assign({}, state, {
+        profileImg: dummy
+      });
+
     default:
       return state
   }

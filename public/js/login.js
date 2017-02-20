@@ -27,7 +27,7 @@ class LoginForm extends Component {
   handleSubmit = ev => {
     ev.preventDefault()
     const {password, passwordRepeat} = this.state
-    if (password !== passwordRepeat) {
+    if (password !== passwordRepeat && !this.state.auth) {
       this.setState({wrongConfirmPass: true})
       setTimeout(() => {this.setState({wrongConfirmPass: false})},500)
       return
