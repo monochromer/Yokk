@@ -2,7 +2,7 @@ import React from 'react'
 import moment from 'moment'
 import store from '../../store'
 import { deleteTimeEntry, updateTimeEntry } from '../../actions/timeEntries.js'
-import { durationBeatify, refsToObject } from '../../helpers'
+import { durationBeatify, timeToDuration, refsToObject } from '../../helpers'
 import { Input } from '../UI.jsx'
 
 
@@ -36,7 +36,13 @@ class TimeEntryRow extends React.Component {
 
     handleSave(event) {
         event.preventDefault();
+
         let editedTimeEntry = Object.assign({}, this.props.timeEntry, this.state.fields);
+
+        if (editedTimeEntry.duration) {
+            editedTimeEntry.duration = timeToDuration(editedTimeEntry.duration);
+        }
+
         store.dispatch(updateTimeEntry(editedTimeEntry));
         this.setState({ editing: false });
     }

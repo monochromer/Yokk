@@ -67,3 +67,14 @@ export function getFromStateOrLocalStorage(name, state) {
 		return false;
 	}
 }
+
+export function timeToDuration(str) {
+	const timeMatch = str.match(/^(\d+):(\d+)$/);
+	if (timeMatch.length < 2) return 0;
+
+	const hours = +timeMatch[1];
+	const mins = +timeMatch[2];
+	const duration = hours * 60 + mins;
+
+	return duration;
+}
