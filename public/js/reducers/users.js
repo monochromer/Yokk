@@ -1,6 +1,7 @@
+import { dummy } from '../constants';
 import _ from 'lodash'
 
-var linkService = {
+let linkService = {
     status: "hidden"
 };
 
@@ -41,12 +42,6 @@ export default function(state = defaultState, action) {
         case "DELETE_PROFILE_IMG":
             newState = cloneObject(state)
 
-            const dummy = {
-              small: "/img/dummy/960-720.png",
-              medium: "/img/dummy/960-720.png",
-              original: "/img/dummy/960-720.png"
-            }
-            
              _.find(newState.list, o => o._id === userId).profileImg = dummy
 
             return newState

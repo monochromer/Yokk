@@ -26,35 +26,41 @@ export const DELETE_TEAM = 'DELETE_TEAM'
 export const CHANGE_TEAM_NAME = 'CHANGE_TEAM_NAME'
 
 export function COMBINE_USER_ADDPHOTO_URI(login) {
-    return '/api/user/' + login + '/upload_profile_picture';
+  return '/api/user/' + login + '/upload_profile_picture';
 }
 
 export const REDMINE = {
-    name: "Redmine",
-    logo: "/img/upwork-logo.svg"
+  name: 'Redmine',
+  logo: '/img/upwork-logo.svg'
 };
 
 export const RANGES = {
-    'Today': [
-        moment(), moment()
-    ],
-    'Yesterday': [
-        moment().subtract(1, 'days'),
-        moment().subtract(1, 'days')
-    ],
-    'Last 7 Days': [
-        moment().subtract(6, 'days'),
-        moment()
-    ],
-    'Last 30 Days': [
-        moment().subtract(29, 'days'),
-        moment()
-    ],
-    'This Month': [
-        moment().startOf('month'), moment().endOf('month')
-    ],
-    'Last Month': [
-        moment().subtract(1, 'month').startOf('month'),
-        moment().subtract(1, 'month').endOf('month')
-    ]
+  'Today': [
+    moment(), moment()
+  ],
+  'Yesterday': [
+    moment().subtract(1, 'days'),
+    moment().subtract(1, 'days')
+  ],
+  'Last 7 Days': [
+    moment().subtract(6, 'days'),
+    moment()
+  ],
+  'Last 30 Days': [
+    moment().subtract(29, 'days'),
+    moment()
+  ],
+  'This Month': [
+    moment().startOf('month'), moment().endOf('month')
+  ],
+  'Last Month': [
+    moment().subtract(1, 'month').startOf('month'),
+    moment().subtract(1, 'month').endOf('month')
+  ]
+};
+
+export const dummy = {
+  small: '/img/dummy/960-720.png',
+  medium: '/img/dummy/960-720.png',
+  original: '/img/dummy/960-720.png'
 };

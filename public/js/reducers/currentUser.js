@@ -1,42 +1,33 @@
+import { dummy } from '../constants';
+
 const defaultState = {
-  role: "",
-  login: "",
-  companyId: ""
-}
+  role: '',
+  login: '',
+  companyId: ''
+};
 
 export default function (state = defaultState, action) {
-  const { type, payload } = action
+  const newCurrentUser = Object.assign({}, state);
+  const { type, payload } = action;
 
   switch (type) {
-    case "FETCH_CURRENT_USER":
-      const currentUser = Object.assign({}, state, action.payload)
-      return currentUser
-      break
+    case 'FETCH_CURRENT_USER':
+      return Object.assign(newCurrentUser, payload);
 
-    case "CHANGE_CURRENT_COMPANY":
-      const { companyId } = payload
-      return Object.assign({}, state, {companyId: companyId})
-      break
 
-    case "UPDATE_USER":
-      if (payload._id === state._id) {
-        return Object.assign({}, state, payload);
-      }
+    case 'CHANGE_CURRENT_COMPANY':
+      return Object.assign(newCurrentUser, { companyId: payload.companyId });
 
-      return Object.assign({}, state);
 
-    case "DELETE_PROFILE_IMG":
-      const dummy = {
-        small: "/img/dummy/960-720.png",
-        medium: "/img/dummy/960-720.png",
-        original: "/img/dummy/960-720.png"
-      };
+    case 'UPDATE_USER': 
+      if (newCurrentUser._id === payload._id) Object.assign(newCurrentUser, payload);
+      return newCurrentUser;
 
-      return Object.assign({}, state, {
-        profileImg: dummy
-      });
+
+    case 'DELETE_PROFILE_IMG':
+      return Object.assign(newCurrentUser, { profileImg: dummy });
 
     default:
-      return state
+      return state;
   }
 }
