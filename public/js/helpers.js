@@ -21,17 +21,16 @@ export function dayBeatify(date, format) {
 
 export function durationBeatify(minutes, type) {
 	let duration = moment.duration(minutes, 'minutes');
-	let min = duration.get('minutes') < 10 ? "0" + duration.get('minutes') : duration.get('minutes');
+	let min = duration.get('minutes') < 10 ? '0' + duration.get('minutes') : duration.get('minutes');
+	let hours = duration.get('hours') < 10 ? '0' + duration.get('hours') : duration.get('hours');
+
 	switch (type) {
 		case 'short':
-			return `${duration.get('hours')}:${min}`;
-			break;
+			return `${hours}:${min}`;
 
 		default:
 			return `${duration.get('hours')} h ${min} min`;
-			break;
 	}
-
 }
 
 export function groupTimeEntriesByDay(timeEntries) {
@@ -66,15 +65,4 @@ export function getFromStateOrLocalStorage(name, state) {
 	} else {
 		return false;
 	}
-}
-
-export function timeToDuration(str) {
-	const timeMatch = str.match(/^(\d+):(\d+)$/);
-	if (timeMatch.length < 2) return 0;
-
-	const hours = +timeMatch[1];
-	const mins = +timeMatch[2];
-	const duration = hours * 60 + mins;
-
-	return duration;
 }
