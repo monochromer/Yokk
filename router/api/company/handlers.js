@@ -210,3 +210,36 @@ exports.delete = function (req, res, next) {
     res.status(200).send(result)
   })
 };
+
+exports.add = function (req, res, next) {
+  const { user } = req;
+
+  if (!user) {
+    res.status(401).send();
+    return;
+  }
+
+  const { Team, Company } = req.app.db.models;
+  const { name, originatorEmail } = req.body;
+  const team = new Team({
+    teamOriginator: user._id,
+    members: [user._id]
+  });
+  const company = new Company({
+    name,
+    originatorEmail,
+    teams: [team._id],
+    emailConfirmed: true
+  });
+
+  team.save()
+    .then(() => {
+      return company.save();
+    })
+    .then(savedCompany => {
+      res.send(savedCompany);
+    })
+    .catch(err => {
+      res.send(err);
+    });
+};
