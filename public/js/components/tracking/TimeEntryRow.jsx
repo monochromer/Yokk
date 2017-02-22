@@ -110,16 +110,15 @@ class TimeEntryRow extends React.Component {
             </div>
         );
 
-        if (entrySource !== 'redmine') {
-            buttonsBlock = this.state.editing ? buttonsEditing : buttons;
-            sourceIcon = (<img src="/img/redmine-active.svg" width="40px"/>);
-        }
-
-
         if (entrySource === 'redmine') {
             let link = `http://redmine.soshace.com/issues/number${number}`;
             description = (<span><a href={ link }>issue { number }</a> &nbsp;{ description }</span>);
-        } else if (this.state.editing) {
+            sourceIcon = (<img src="/img/redmine-active.svg" width="40px"/>);
+        } else {
+            buttonsBlock = this.state.editing ? buttonsEditing : buttons;
+        }
+
+        if (this.state.editing) {
             description = (
                 <Input handleChange={ event => this.handleChange('description', event.target.value) }
                        defaultValue={ this.state.fields.description.displayValue }
@@ -139,6 +138,7 @@ class TimeEntryRow extends React.Component {
                        className="input-group input-group__grey"/>
             );
         }
+
         return (
             <div className="row entry-row vertical-center">
                 <div className="col-md-1 text-center">{ sourceIcon }</div>

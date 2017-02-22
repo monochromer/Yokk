@@ -10,5 +10,5 @@ export function validateString(str) {
 }
 
 export function validateDateFormat(date) {
-    return /\d{2}\.\d{2}\.\d{4}/.test(date) && moment(date, 'DD.MM.YYYY').isValid();
+    return /^\d{2}\.\d{2}\.\d{4}$/.test(date) && moment(date, 'DD.MM.YYYY').isValid();
 }
