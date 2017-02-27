@@ -43,12 +43,12 @@ export class Input extends React.Component {
     }
 
     render() {
+        const maskChar = typeof this.props.maskChar === 'string' ? this.props.maskChar : '_';
+        const type = this.props.type ? this.props.type : 'text';
 
         if(this.props.error) {
             var error = ( <span className="error"> { this.props.error } </span> );
         }
-
-        const type = this.props.type ? this.props.type : "text";
 
         return (
             <div className={ this.getInputClasses() } onFocus={ this.handleFocus } onBlur={ this.handleBlur }>
@@ -58,7 +58,8 @@ export class Input extends React.Component {
                        name={ this.props.name }
                        onChange={ this.handleChange }
                        defaultValue={ this.props.defaultValue }
-                       mask={ this.props.mask }/>
+                       mask={ this.props.mask }
+                       maskChar={ maskChar }/>
                 { error }
             </div>
         )

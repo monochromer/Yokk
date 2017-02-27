@@ -4,12 +4,12 @@ module.exports = function (app, mongoose) {
   const userSchema = new mongoose.Schema({
     email: {
       type: String,
-      uniq: true,
+      unique: true,
       required: true
     },
     teamId: {
       type: String,
-      uniq: true,
+      unique: true,
       required: true
     }
   })

@@ -8,15 +8,26 @@ import { fetchCurrentUser } from '../actions/currentUser.js'
 
 class Layout extends React.Component {
 
+    constructor(props) {
+        super(props);
+
+        this.onCreateNewCompany = this.onCreateNewCompany.bind(this);
+    }
+
     componentWillMount() {
         store.dispatch(fetchTeamUsers());
         store.dispatch(fetchCurrentUser());
     }
 
+    onCreateNewCompany() {
+        store.dispatch({ type: 'MODAL_NEW_COMPANY_OPEN' });
+    }
+
     render() {
         return (
             <div className="index-container">
-                <TopPanel location={this.props.location.pathname}/>
+                <TopPanel location={ this.props.location.pathname }
+                    onCreateNewCompany={ this.onCreateNewCompany }/>
                 { this.props.children }
                 <Footer />
                 <LinkService />

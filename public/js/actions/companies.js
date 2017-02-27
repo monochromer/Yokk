@@ -58,6 +58,16 @@ export function step4(teamName, email) {
   }
 }
 
+export function createCompany(name, originatorEmail) {
+  return {
+    type: "CREATE_COMPANY",
+    createItem: {
+      url: 'api/add-company',
+      data: {name}
+    }
+  }
+}
+
 export function authUser(login, password) {
   return function (dispatch) {
     request.post('/login').send({ username: login, password: password })

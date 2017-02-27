@@ -7,7 +7,7 @@ module.exports = function (app, mongoose) {
     var userSchema = new mongoose.Schema({
         login: {
             type: String,
-            uniq: true,
+            unique: true,
             required: true
         },
         hashedPassword: {
@@ -23,7 +23,7 @@ module.exports = function (app, mongoose) {
         position: String,
         email: {
             type: String,
-            uniq: true
+            unique: true
         },
         emailConfirmed: {
             type: String,

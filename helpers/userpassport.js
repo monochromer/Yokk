@@ -46,6 +46,7 @@ module.exports = function(app) {
                     _id: user._id,
                     login: user.login,
                     role: user.role,
+                    email: user.email
                 };
             }
             cb(null, stripped_user);

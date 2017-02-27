@@ -219,8 +219,9 @@ exports.add = function (req, res, next) {
     return;
   }
 
-  const { Team, Company } = req.app.db.models;
-  const { name, originatorEmail } = req.body;
+  const { Company, User, Team } = req.app.db.models;
+  const name = req.body.name;
+  const originatorEmail = user.email;
   const team = new Team({
     teamOriginator: user._id,
     members: [user._id]
@@ -232,12 +233,16 @@ exports.add = function (req, res, next) {
     emailConfirmed: true
   });
 
-  team.save()
-    .then(() => {
-      return company.save();
-    })
+  company.save()
     .then(savedCompany => {
       res.send(savedCompany);
+      return User.findOne({ _id: user._id })
+    })
+    .then(someUser => {
+      someUser.companies.push(company._id);
+      someUser.companies.push(team._id);
+      someUser.save();
+      team.save();
     })
     .catch(err => {
       res.send(err);

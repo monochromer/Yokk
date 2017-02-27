@@ -1,8 +1,9 @@
-import React, {Component, PropTypes} from 'react'
-import {Link} from 'react-router'
-import {connect} from 'react-redux'
+import React, { Component, PropTypes } from 'react'
+import { Link } from 'react-router'
+import { connect } from 'react-redux'
+import { changeCurrentCompany } from '../../actions/currentUser'
 import CompaniesDropdown from './CompaniesDropdown'
-import {changeCurrentCompany} from '../../actions/currentUser'
+import NewCompanyModal from './NewCompanyModal.jsx'
 
 class TopPanel extends Component {
 
@@ -33,6 +34,9 @@ class TopPanel extends Component {
           <div className="col-md-4">
             <ul className="top-panel_menu">
               <li className="top-panel_menu-item">
+                <a className="top-panel_menu-link" href="#" onClick={ this.props.onCreateNewCompany }>New company</a>
+              </li>
+              <li className="top-panel_menu-item">
                 <Link className="top-panel_menu-link" activeClassName="top-panel_menu-link__active" to="/teams">Teams list</Link>
               </li>
               <li className="top-panel_menu-item">
@@ -56,8 +60,8 @@ class TopPanel extends Component {
 
           </div>
         </div>
+        <NewCompanyModal/>
       </div>
-
     )
   }
 }

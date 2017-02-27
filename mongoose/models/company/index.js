@@ -7,7 +7,7 @@ module.exports = function(app, mongoose) {
     var companySchema = new mongoose.Schema({
         name: {
             type: String,
-            uniq: true
+            unique: true
         },
         originator: String,
         originatorEmail: {

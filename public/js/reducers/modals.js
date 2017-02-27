@@ -9,6 +9,9 @@ const defaultState = {
     userChangePassword: {
         visible: false
     },
+    newCompany: {
+        visible: false
+    },
     teamId: ""
 }
 
@@ -63,6 +66,20 @@ export default function( state = defaultState, action ) {
                 }
             })
             break;
+
+        case "MODAL_NEW_COMPANY_OPEN":
+            return Object.assign({}, state, {
+                newCompany: {
+                    visible: true
+                }
+            });
+
+        case "MODAL_NEW_COMPANY_CLOSE":
+            return Object.assign({}, state, {
+                newCompany: {
+                    visible: false
+                }
+            });
 
         default:
             return state;

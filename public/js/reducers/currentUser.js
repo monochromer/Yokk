@@ -27,6 +27,11 @@ export default function (state = defaultState, action) {
     case 'DELETE_PROFILE_IMG':
       return Object.assign(newCurrentUser, { profileImg: dummy });
 
+    case 'CREATE_COMPANY':
+      let newState = Object.assign({}, state);
+      newState.companies.push(payload);
+      return newState;
+
     default:
       return state;
   }
