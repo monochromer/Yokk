@@ -19,7 +19,7 @@ app.use(sessions({
 }));
 
 // setting static folder
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '/../build')));
 app.use(express.static(path.join(__dirname, 'uploads')));
 
 var passport = require('./helpers/userpassport')(app);
@@ -33,7 +33,5 @@ app.use( (err, req, res) => {
     res.status(500).send(err);
 });
 
-
-
-
-module.exports = app;
+app.set('port', (process.env.PORT || 5000));
+app.listen(app.get('port'), () => console.log(`App is listening on port ${app.get('port')}`));

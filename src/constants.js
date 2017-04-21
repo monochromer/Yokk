@@ -1,5 +1,7 @@
 import moment from 'moment'
 
+export const SET_CURRENT_USER = 'SET_CURRENT_USER';
+
 export const FETCH_CURRENT_USER_URI = '/api/user/check_permissions';
 
 export const USER_CRUD = '/api/user/';

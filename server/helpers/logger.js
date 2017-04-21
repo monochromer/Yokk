@@ -4,14 +4,14 @@
 
 const moment = require('moment');
 const fs = require('fs');
-const Log = require('log');
+// const Log = require('log');
 const dir = './logs';
 
 if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir);
 }
 
-const log = new Log('debug', fs.createWriteStream(dir + '/start_' + moment().format() + '.log'));
+// const log = new Log('debug', fs.createWriteStream(dir + '/start_' + moment().format() + '.log'));
 
 module.exports = function(request, message) {
     const logger = {
@@ -20,13 +20,13 @@ module.exports = function(request, message) {
                 console.log(moment().format() + ' ' + request.method + ' ' + request.route.path + ' Error: ' + message);
             }
 
-            log.error(request.method + ' ' + message);
+            // log.error(request.method + ' ' + message);
         },
         info: function() {
             if (process.env.NODE_ENV == 'development') {
                 console.log(moment().format() + ' ' + request.method + ' ' + request.route.path + ' Info: ' + message);
             }
-            log.info(request.method + ' ' + message);
+            // log.info(request.method + ' ' + message);
         }
     };
     return logger;

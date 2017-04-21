@@ -25,7 +25,11 @@ class ModalUserAdd extends React.Component {
     }
 
     handleChange(event) {
-        this.state.invitations[event.target.name] = event.target.value;
+        this.setState({
+          invitations: {
+            [event.target.name]: event.target.value
+          }
+        });
     }
 
     handleSubmit(event) {
@@ -51,7 +55,7 @@ class ModalUserAdd extends React.Component {
         var invitationRows = [];
         for (let i = 0; i < this.state.rows; i++) {
             invitationRows.push(
-                <div className="row center-xs invintations_row" key={ _.uniqueId() }>
+                <div className="row center-xs invintations_row" key={ "invite_" + i }>
                     <div className="col-md-8 col-sm-8 col-xs-10">
                         <Input handleChange={ this.handleChange.bind(this) }
                                defaultValue={ this.state.invitations[i] }
