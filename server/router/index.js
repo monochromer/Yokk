@@ -1,31 +1,22 @@
-'use strict'
-
-const authorization = require('./authorization');
-const checkAuthStatus = require('connect-ensure-login').ensureLoggedIn('/promo');
-const helperRoutes = require('./helperRoutes');
-const checkFrontPath = require('./frontPaths.js');
-const path = require('path');
+import authenticate from './authenticate';
+import path from 'path';
 // const registration = require('./register');
-const api = require('./api');
+import login from './login';
+import users from './users';
+import timeEntry from './timeEntry';
+import reports from './reports';
+import sync from './sync';
+import teams from './teams';
 
-module.exports = function(app, passport) {
+export default function(app) {
 
-    // app.get('/', checkAuthStatus, authorization.index);
-    // app.get('/login', authorization.login);
-    // app.post('/login', passport.authenticate('local'), authorization.auth);
-
-    // app.get('/logout', authorization.logout);
-
-    // app.post('/register', registration, passport.authenticate('local', {
-        // failureRedirect: '/login'
-    // }), authorization.auth);
-
-    app.use('/api', checkAuthStatus, api);
-
-    // app.get('/promo/', (req, res, next) => res.sendFile(path.resolve(__dirname, '../views', 'promo.html')));
-    // app.get('/team/*', (req, res, next) => res.sendFile(path.resolve(__dirname, '../views', 'promo.html')));
-    app.get('/*', (req, res, next) => res.sendFile(path.join(__dirname,'/../../build/index.html')));
-
-    app.get('*', checkAuthStatus, checkFrontPath, helperRoutes.redirectUndefinedRoutes);
+  app.use('/api/login', login);
+  app.use('/api/users', authenticate, users);
+  app.use('/api/timeEntry', authenticate, timeEntry);
+  app.use('/api/reports', authenticate, reports);
+  app.use('/api/sync', authenticate, sync);
+  app.use('/api/teams', teams);
+  
+  app.get('/*', (req, res, next) => res.sendFile(path.join(__dirname,'/../../build/index.html')));
 
 }

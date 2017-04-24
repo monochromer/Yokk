@@ -1,37 +1,27 @@
-'use strict';
+import dotenv from 'dotenv';
+import express from 'express';
+import bodyParser from 'body-parser';
+import path from 'path';
+import router from './router';
+import runMongoose from './mongoose';
 
-require('dotenv').config();
+dotenv.config();
 
-const express = require('express');
 const app = express();
-const bodyParser = require('body-parser');
-const path = require('path');
-const sessions = require('express-session');
-require('./mongoose')(app);
+
+runMongoose(app);
 
 //middleware
 app.use(bodyParser.json({ strict: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(sessions({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-}));
 
 // setting static folder
 app.use(express.static(path.join(__dirname, '/../build')));
 app.use(express.static(path.join(__dirname, 'uploads')));
 
-var passport = require('./helpers/userpassport')(app);
-
 // router
-require('./router')(app, passport);
+router(app);
 
-// error handler
-app.use( (err, req, res) => {
-    console.log(err);
-    res.status(500).send(err);
-});
-
-app.set('port', (process.env.PORT || 5000));
+// app.set('port', (process.env.PORT || 5000));
+app.set('port', 9000);
 app.listen(app.get('port'), () => console.log(`App is listening on port ${app.get('port')}`));

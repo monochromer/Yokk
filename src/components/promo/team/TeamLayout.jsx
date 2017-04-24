@@ -1,6 +1,6 @@
 import React from 'react'
 
-class Layout extends React.Component {
+class TeamLayout extends React.Component {
 
     constructor(props) {
         super(props)
@@ -45,4 +45,4 @@ class Layout extends React.Component {
     }
 }
 
-export default Layout
+export default TeamLayout

@@ -51,7 +51,7 @@ class TopPanel extends React.Component {
 
 const getProps = function(store) {
     return {
-        user: store.currentUser
+        user: store.currentUser.data
     }
 };
 

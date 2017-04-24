@@ -1,7 +1,7 @@
 'use strict';
 
 const _ = require('lodash');
-const sendEmail = require('../../helpers/sendEmail');
+const sendEmail = require('../helpers/sendEmail');
 const path = require('path');
 const valid = require("valid-email");
 

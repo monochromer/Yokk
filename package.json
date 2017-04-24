@@ -12,7 +12,7 @@
     "body-parser": "^1.17.1",
     "classnames": "^2.2.5",
     "connect-ensure-login": "^0.1.1",
-		"dns" : "file:./src/dns",
+    "dns": "file:./src/dns",
     "dotenv": "^4.0.0",
     "express-session": "^1.15.2",
     "fs": "0.0.1-security",
@@ -39,7 +39,8 @@
     "redux-thunk": "^2.2.0",
     "superagent": "^3.5.2",
     "upwork-api": "^1.2.2",
-    "valid-email": "0.0.2"
+    "valid-email": "0.0.2",
+    "validator": "^7.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -47,5 +48,6 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "server": "babel-node server/index.js"
-  }
+  },
+  "proxy": "http://localhost:9000/"
 }

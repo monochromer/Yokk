@@ -8,16 +8,6 @@ import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import { setCurrentUser } from './actions/currentUser';
 
-if(
-	localStorage.jwtToken &&
-	(
-		!localStorage.sessionEnd ||
-		localStorage.sessionEnd < Date.now()
-	)
-){
-	localStorage.removeItem('jwtToken');
-}
-
 if (localStorage.jwtToken) {
 	const token = localStorage.jwtToken;
 	axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;

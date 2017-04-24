@@ -1,5 +1,5 @@
 const assignDefined = require('../helpers/assignDefined');
-const redmineObject = require('../../../node-redmine-ss');
+const redmineObject = require('../../node-redmine-ss');
 const hostname = process.env.REDMINE_HOST || 'redmine.soshace.com';
 const moment = require('moment');
 

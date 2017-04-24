@@ -1,8 +1,8 @@
 'use strict';
 
 // const lwip = require('lwip');
-const log = require('../../../helpers/logger');
-const sendEmail = require('../../helpers/sendEmail');
+const log = require('../../helpers/logger');
+const sendEmail = require('../helpers/sendEmail');
 const async = require('async');
 // const easyimg = require('easyimage');
 const moment = require('moment');

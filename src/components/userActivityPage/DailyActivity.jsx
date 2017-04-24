@@ -3,9 +3,8 @@ import ActivityRow from './ActivityRow.jsx';
 
 class DailyActivity extends React.Component {
     render() {
-        let rows = [];
-        this.props.timeEntries.map((timeEntry) => {
-            rows.push(<ActivityRow timeEntry={timeEntry} key={timeEntry._id}/>);
+        let rows = this.props.timeEntries.map((timeEntry) => {
+            return(<ActivityRow timeEntry={timeEntry} key={timeEntry._id}/>);
         });
 
         return (

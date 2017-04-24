@@ -1,4 +1,3 @@
-import {groupTimeEntriesByDay} from '../../helpers';
 import moment from 'moment';
 import _ from 'lodash';
 

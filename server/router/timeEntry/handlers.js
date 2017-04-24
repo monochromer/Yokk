@@ -1,7 +1,7 @@
 'use strict';
 
 const moment = require('moment');
-const stringToMinutes = require('../../../helpers/issues').stringToMinutes;
+const stringToMinutes = require('../../helpers/issues').stringToMinutes;
 const queryFiller = require('../helpers/queryFiller');
 
 exports.timeEntryBatch = function(req, res, next) {

@@ -1,8 +1,7 @@
 import React from 'react'
-import moment from 'moment'
 import store from '../../store'
 import { deleteTimeEntry, updateTimeEntry } from '../../actions/timeEntries.js'
-import { durationBeatify, refsToObject } from '../../helpers'
+import { durationBeatify } from '../../helpers'
 import { Input } from '../UI.jsx'
 
 
@@ -54,7 +53,7 @@ class TimeEntryRow extends React.Component {
         let { entrySource, description, duration, number } = this.props.timeEntry;
         duration = durationBeatify(duration, 'short');
 
-        if (entrySource == "redmine") {
+        if (entrySource === "redmine") {
             let link = `http://redmine.soshace.com/issues/number${number}`;
 
             description = (
@@ -98,11 +97,12 @@ class TimeEntryRow extends React.Component {
         );
 
         let buttonsBlock = "";
-        if (entrySource != "redmine") {
+        if (entrySource !== "redmine") {
             buttonsBlock = this.state.editing ? buttonsEditing : buttons;
         }
 
-        const sourceIcon = entrySource == "redmine" ? (<img src="/img/redmine-active.svg" width="40px"/>) : '';
+        const sourceIcon = entrySource === "redmine" ?
+          <img src="/img/redmine-active.svg" width="40px" alt="redmine icon" /> : '';
         return (
             <div className="row entry-row vertical-center">
                 <div className="col-md-1 text-center">{ sourceIcon }</div>

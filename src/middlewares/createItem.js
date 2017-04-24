@@ -1,20 +1,17 @@
-import request from 'superagent'
+import axios from 'axios';
 
 export default (store) => (next) => (action) => {
-    var { createItem } = action;
+  var { createItem } = action;
 
-    if(!createItem) return next(action);
+  if(!createItem) return next(action);
 
-    request.post(createItem.url)
-        .send(createItem.data)
-        .end( (err, response) => {
-            if(err) {
-                action.error = response.text;
-                action.type += '_FAIL';
-                return next(action);
-            }
-
-            action.payload = response.body;
-            return next(action);
-        });
+  axios.post(createItem.url, createItem.data)
+    .then( (response) => {
+      action.payload = response.data;
+      return next(action);
+    }, (err) => {
+      action.error = err.response.data;
+      action.type += '_FAIL';
+      return next(action);
+    });
 }

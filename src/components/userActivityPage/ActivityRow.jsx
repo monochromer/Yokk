@@ -13,7 +13,7 @@ class ActivityRow extends React.Component {
     render() {
         let { entrySource, description, duration, number } = this.props.timeEntry;
         duration = durationBeatify(duration, 'short');
-        if (entrySource == "redmine") {
+        if (entrySource === "redmine") {
             let link = `http://redmine.soshace.com/issues/number${number}`;
 
             description = (
@@ -24,7 +24,8 @@ class ActivityRow extends React.Component {
             );
         }
 
-        const sourceIcon = entrySource == "redmine" ? (<img src="/img/redmine-active.svg" width="40px"/>) : '';
+        const sourceIcon = entrySource === "redmine" ?
+          <img src="/img/redmine-active.svg" width="40px" alt="redmine icon" /> : [];
 
         return (
             <div className="row entry-row vertical-center">

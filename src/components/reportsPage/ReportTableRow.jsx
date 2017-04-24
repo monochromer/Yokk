@@ -10,22 +10,23 @@ class ReportTableRow extends React.Component {
         store.dispatch({type: "SAVE_USER_TO_SHOW", user: this.props.userName});
     }
     render() {
-        let UserActivityPageLink = `/user/activityPage/${this.props.userName}`;
+        // let UserActivityPageLink = `/user/activityPage/${this.props.userName}`;
 
-        let userName,
+        let
+            // userName,
             totalDuration,
             redmineDuration,
-            upworkDuration,
+            // upworkDuration,
             directDuration;
 
         if (typeof this.props.responseData !== 'undefined') {
-            userName = this.props.userName;
+            // userName = this.props.userName;
             totalDuration = convertToHours(this.props.responseData.total);
             redmineDuration = convertToHours(this.props.responseData.redmine);
-            upworkDuration = 'feature is not implemented yet'
+            // upworkDuration = 'feature is not implemented yet'
             directDuration = convertToHours(this.props.responseData.eop);
         } else {
-            userName = totalDuration = redmineDuration = upworkDuration = directDuration = 'no data';
+            // userName = totalDuration = redmineDuration = upworkDuration = directDuration = 'no data';
         }
 
         console.log(this.props.user);
@@ -39,7 +40,7 @@ class ReportTableRow extends React.Component {
                 <div className="col-md-6">
                     <div className="row">
                         <div className="col-md-2">
-                            <img src={ photo } width="40px" className="img-circle" />
+                            <img src={ photo } width="40px" className="img-circle" alt="profile" />
                         </div>
                         <div className="col-md-10">
                             <Link to={ '/user/' + login } className="users-list_user-name">
