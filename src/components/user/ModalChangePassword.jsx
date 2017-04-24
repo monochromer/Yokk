@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { refsToObject } from '../../helpers'
 import { updateUser } from '../../actions/users'
 
-const ModalChangePassword = React.createClass({
+class ModalChangePassword extends React.Component {
     getInitialState: function() {
         return {password: '', repeatPassword: '', matched: true};
     },
@@ -78,7 +78,7 @@ const ModalChangePassword = React.createClass({
 			</div>
         )
     }
-})
+}
 
 const getProps = function(store) {
     return {

@@ -37,7 +37,7 @@ class PromoPage extends React.Component {
     }
 
     handleChange(event) {
-        this.state.email = event.target.value;
+        this.setState({email: event.target.value});
         store.dispatch({type: "REMOVE_ERRORS"});
     }
 
@@ -94,7 +94,7 @@ class PromoPage extends React.Component {
                     </div>
                 </div>
 
-                <div className="container footer">
+                <div className="container promo-footer">
                     <div className="span2">
                         <a href="http://soshace.com" target="_blank" className={ soshaceLinkClasses }>
                             <img src="/img/logo.png" alt="soshace" title="soshace" height="36px"/>

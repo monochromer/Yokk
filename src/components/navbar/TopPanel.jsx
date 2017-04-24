@@ -7,7 +7,7 @@ class TopPanel extends React.Component {
         let photo = "";
 
         if(this.props.user.profileImg) {
-            photo = <img src={ this.props.user.profileImg.small } className="img-circle" width="34px" height="34px"/>
+            photo = <img src={ this.props.user.profileImg.small } className="img-circle" width="34px" height="34px" alt="user" />
         }
         return (
             <div className="top-panel">

@@ -2,12 +2,8 @@ import React from 'react'
 
 class TeamLayout extends React.Component {
 
-    constructor(props) {
-        super(props)
-    }
-
     render() {
-        const step = parseInt(this.props.location.pathname.replace(/\D+/g,""));
+        const step = parseInt(this.props.location.pathname.replace(/\D+/g,""), 10);
         return (
             <div className="steps-container">
                 <header className="steps-container__header">

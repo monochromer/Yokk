@@ -3,14 +3,9 @@ import TimeEntryRow from './TimeEntryRow.jsx'
 
 class TimeEntriesPerDay extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     render() {
-        let rows = [];
-        this.props.timeEntries.map( (timeEntry) => {
-            rows.push(<TimeEntryRow timeEntry={ timeEntry } key={ timeEntry._id } />);
+        let rows = this.props.timeEntries.map( (timeEntry) => {
+            return(<TimeEntryRow timeEntry={ timeEntry } key={ timeEntry._id } />);
         });
 
         return (

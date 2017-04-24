@@ -3,7 +3,6 @@ import UsersFilter from './UsersFilter.jsx';
 import store from '../../../store'
 import classNames from 'classnames'
 import { RANGES } from '../../../constants'
-import { Input } from '../../UI.jsx'
 import moment from 'moment';
 import DayPicker, { DateUtils } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
@@ -86,22 +85,22 @@ class Filters extends React.Component {
 
         const lasd7DaysClasses = classNames({
             'custom-periods_period': true,
-            'custom-periods_period__active': this.state.activePeriod == 'Last 7 Days'
+            'custom-periods_period__active': this.state.activePeriod === 'Last 7 Days'
         });
 
         const yesterdayClasses = classNames({
             'custom-periods_period': true,
-            'custom-periods_period__active': this.state.activePeriod == 'Yesterday'
+            'custom-periods_period__active': this.state.activePeriod === 'Yesterday'
         });
 
         const thisMonthClasses = classNames({
             'custom-periods_period': true,
-            'custom-periods_period__active': this.state.activePeriod == 'This Month'
+            'custom-periods_period__active': this.state.activePeriod === 'This Month'
         });
 
         const LastMonthClasses = classNames({
             'custom-periods_period': true,
-            'custom-periods_period__active': this.state.activePeriod == 'Last Month'
+            'custom-periods_period__active': this.state.activePeriod === 'Last Month'
         });
         const usersFilter = classNames({
             'filter_heading': true,

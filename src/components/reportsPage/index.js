@@ -37,7 +37,7 @@ class ReportsPage extends React.Component {
                             <div className="col-md-12">
                                 <Filters
                                     users={ this.props.users }
-                                    usersHighlight = {this.state.usersHighlight}
+                                    usersHighlight={this.state.usersHighlight}
                                     period={ this.props.period }
                                     usersForReport={ this.props.usersForReport} />
                             </div>

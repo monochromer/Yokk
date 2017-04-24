@@ -1,6 +1,5 @@
 import React from 'react';
 import ReportTableRow from './ReportTableRow.jsx'
-import connect from 'react-redux'
 
 
 class ReportTable extends React.Component {

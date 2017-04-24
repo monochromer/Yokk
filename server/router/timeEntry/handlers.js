@@ -99,6 +99,8 @@ exports.saveTimeEntry = function(req, res, next) {
     }
 
     timeEntry.duration = stringToMinutes(req.body.duration);
+    
+    timeEntry.executor = req.user._id;
 
     timeEntry.save((err, timeEntry) => {
         if (err) next(err);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { findUserByLogin } from '../../helpers.js'
-import { Link } from 'react-router'
+// import { Link } from 'react-router'
 
 
 class UserPage extends React.Component {
@@ -28,7 +28,7 @@ class UserPage extends React.Component {
 
     render() {
         if (this.state.user) {
-            const { profileImg, login, redmineApiKey, fullname, position, phone, skype, workhours, email, birthday, vk, aboutme, cv } = this.state.user;
+            const { profileImg, login, redmineApiKey, fullname, position, phone, skype, workhours, email, birthday, vk, aboutme } = this.state.user;
             const photo = profileImg ? profileImg.medium : "";
             const redmine = redmineApiKey ? "/img/redmine-active.svg" : "/img/redmine-bw.svg";
             return (
@@ -37,7 +37,7 @@ class UserPage extends React.Component {
 
                         <div className="col-md-3 profile_photo">
                             <div className="profile_dropzone profile_dropzone__view">
-                                <img src={ photo } height="205px" className="img-circle"/>
+                                <img src={ photo } height="205px" className="img-circle" alt="profile" />
                             </div>
                         </div>
 

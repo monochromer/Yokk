@@ -4,8 +4,8 @@ import store from '../../store.js'
 import { Input } from '../UI.jsx'
 import { REDMINE } from '../../constants'
 import { findUserByLogin } from '../../helpers'
-import { updateUser, linkServiceOpen } from '../../actions/users'
-import { browserHistory } from 'react-router'
+import { updateUser, linkServiceOpen, fetchUsers } from '../../actions/users'
+// import { browserHistory } from 'react-router'
 import { connect } from 'react-redux'
 
 class UserEdit extends React.Component {
@@ -19,6 +19,10 @@ class UserEdit extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.linkRedmine = this.linkRedmine.bind(this);
+    }
+
+    componentWillMount(){
+      this.props.fetchUsers();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -94,7 +98,7 @@ class UserEdit extends React.Component {
             email,
             birthday,
             vk,
-            aboutme,
+            // aboutme,
             cv
           } = this.state.user;
             const photo = profileImg ? profileImg.medium : "";
@@ -199,4 +203,4 @@ function getProps(state) {
     }
 }
 
-export default connect(getProps)(UserEdit);
+export default connect(getProps, { fetchUsers })(UserEdit);

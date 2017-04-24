@@ -2,7 +2,7 @@ import React from 'react';
 import UserActivityTable from './UserActivityTable.jsx';
 import { connect } from 'react-redux';
 import { findUserByLogin } from '../../helpers.js';
-import { Input } from '../UI.jsx'
+// import { Input } from '../UI.jsx'
 
 class UserActivityPage extends React.Component {
     constructor(props) {
@@ -25,24 +25,24 @@ class UserActivityPage extends React.Component {
 
         const userActivity = findUserActivity(login, this.props.usersActivities);
 
-        let period, oldestLoadedRecorDate;
+        // let period, oldestLoadedRecorDate;
 
-        if (userActivity) {
-            period = {
-                startDate: userActivity.startDate,
-                endDate: userActivity.endDate
-            };
-            oldestLoadedRecorDate = userActivity.list[userActivity.list.length - 1].dateCreated;
-        }
+        // if (userActivity) {
+            // period = {
+                // startDate: userActivity.startDate,
+                // endDate: userActivity.endDate
+            // };
+            // oldestLoadedRecorDate = userActivity.list[userActivity.list.length - 1].dateCreated;
+        // }
 
         const user = findUserByLogin(this.props.users, login);
 
         if (user) {
-            this.state.userHeading = user.fullname ? user.fullname : user.login;
+            this.setState({userHeading: user.fullname ? user.fullname : user.login});
             if (user.profileImg) {
-                this.state.photo = user.profileImg.medium;
+                this.setState({photo: user.profileImg.medium});
             }
-            this.state.position = user.position ? user.position : "Here is user's an activity";
+            this.setState({position: user.position ? user.position : "Here is user's an activity"});
         }
 
         return (
@@ -54,7 +54,7 @@ class UserActivityPage extends React.Component {
                                 <div className="row">
                                     <div className="col-md-4 flex vertical-center">
                                         <div className="profile-photo center-block">
-                                            <img src={ this.state.photo } width="135px" className="img-circle"/>
+                                            <img src={ this.state.photo } width="135px" className="img-circle" alt="profile" />
                                         </div>
                                     </div>
                                     <div className="col-md-8 text-left">

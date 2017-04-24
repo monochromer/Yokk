@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import Dropzone from 'react-dropzone'
 import store from '../../store.js'
 import {uploadUserPhoto, deleteUserPhoto} from '../../actions/users.js'
@@ -27,7 +27,7 @@ export default class DropPicture extends Component {
   }
 
   render() {
-    const {onDrop, deletePicture} = this;
+    // const {onDrop, deletePicture} = this;
 
     const uploadingPhoto = (
       <i className="demo-icon icon-spin3 animate-spin">&#xe832;</i>
@@ -38,7 +38,7 @@ export default class DropPicture extends Component {
         <Dropzone className="profile_dropzone" onDrop={this.onDrop}>
           {this.props.uploading
             ? uploadingPhoto
-            : <img src={this.props.photo} height="205px" className="img-circle"/>}
+            : <img src={this.props.photo} height="205px" className="img-circle" alt="uploading" />}
         </Dropzone>
         <div className="avatar_delete_btn_container">
           <div className="btn__delete_profile_img_div">

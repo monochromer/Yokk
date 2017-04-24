@@ -2,7 +2,7 @@ import _ from "lodash"
 import moment from 'moment'
 
 export function findUserByLogin(users, login) {
-	return _.find(users, (o) => o.login == login);
+	return _.find(users, (o) => o.login === login);
 }
 
 export function refsToObject(refs) {
@@ -25,11 +25,9 @@ export function durationBeatify(minutes, type) {
 	switch (type) {
 		case 'short':
 			return `${duration.get('hours')}:${min}`;
-			break;
 
 		default:
 			return `${duration.get('hours')} h ${min} min`;
-			break;
 	}
 
 }
@@ -38,18 +36,18 @@ export function groupTimeEntriesByDay(timeEntries) {
 	let days = {};
 
 	let sorted = _.orderBy(timeEntries, ['date'], ['desc']);
-	sorted.map((timeEntry) => {
-		let day = dayBeatify(timeEntry.date);
+  for(let entryIdx = 0; entryIdx < sorted.length; entryIdx++){
+		let day = dayBeatify(sorted[entryIdx].date);
 		if(!days[day]) {
 			days[day] = {
-				list: [timeEntry],
-				totalDuration: timeEntry.duration
+				list: [sorted[entryIdx]],
+				totalDuration: sorted[entryIdx].duration
 			}
 		} else {
-			days[day].list.push(timeEntry);
-			days[day].totalDuration += timeEntry.duration;
+			days[day].list.push(sorted[entryIdx]);
+			days[day].totalDuration += sorted[entryIdx].duration;
 		}
-	});
+	}
 
 	for(let day in days) {
 		days[day].list = _.orderBy(days[day].list, ['date'], ['desc']);

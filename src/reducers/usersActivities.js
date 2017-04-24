@@ -10,8 +10,8 @@ export default function(state = defaultState, action) {
         startDate,
         endDate,
         oldestDate,
-        filter,
-        currentUser
+        filter
+        // currentUser
     } = action;
 
     switch (type) {
@@ -31,7 +31,7 @@ export default function(state = defaultState, action) {
 
                 newState[user].offset = newState[user].list.length;
 
-                let allBatches = (payload.length == 0 || payload.lenght < 10) ? true : false;
+                let allBatches = (payload.length === 0 || payload.lenght < 10) ? true : false;
                 newState[user].helpers = {};
                 newState[user].helpers.allBatches = allBatches;
 
@@ -43,7 +43,6 @@ export default function(state = defaultState, action) {
                 newState[user].filter = false;
 
                 return newState;
-                break;
             }
 
         case "FETCH_USER_ACTIVITY":
@@ -59,12 +58,11 @@ export default function(state = defaultState, action) {
                     newState[user].list = payload;
                     newState[user].offset = newState[user].list.length;
                 }
-                let allBatches = (payload.length == 0 || payload.lenght < 10) ? true : false;
+                let allBatches = (payload.length === 0 || payload.lenght < 10) ? true : false;
                 newState[user].helpers = {};
                 newState[user].helpers.allBatches = allBatches;
 
                 return newState;
-                break;
             }
 
 
@@ -73,21 +71,18 @@ export default function(state = defaultState, action) {
                 let newState = Object.assign({}, state);
 
                 return newState;
-                break;
             }
 
         case "SAVE_USER_TO_SHOW":
             return Object.assign({}, state, {
                 showUser: user
             });
-            break;
 
         case "STORE_OLDEST_DATE":
             {
                 let newState = Object.assign({}, state);
                 newState[user].oldestDate = oldestDate;
                 return newState;
-                break;
             }
 
         case "STORE_USER_ACTIVITY_PERIOD_FILTER":
@@ -95,14 +90,12 @@ export default function(state = defaultState, action) {
             stateAfterPeriodChange[user].startDate = startDate;
             stateAfterPeriodChange[user].endDate = endDate;
             return stateAfterPeriodChange;
-            break;
 
         case "USER_ACTIVITY_SET_FILTER":
             {
                 let newState = Object.assign({}, state);
                 newState[user].filter = filter;
                 return newState;
-                break;
             }
 
         default:

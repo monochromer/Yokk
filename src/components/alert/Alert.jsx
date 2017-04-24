@@ -2,7 +2,7 @@ import React from 'react'
 import store from '../../store.js'
 import { connect } from 'react-redux'
 
-var Alert = React.createClass({
+class Alert extends React.Component {
     handleClose: function() {
         store.dispatch({ type: "ALERT_CLOSE" });
     },
@@ -19,7 +19,7 @@ var Alert = React.createClass({
             </div>
         )
     }
-})
+}
 
 var getProps = function( store ) {
     return { visible: store.alerts.visible, text: store.alerts.text, class: store.alerts.class }

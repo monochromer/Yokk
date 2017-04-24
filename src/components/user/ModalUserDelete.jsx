@@ -3,7 +3,7 @@ import store from '../../store.js';
 import { connect } from 'react-redux';
 import { deleteUser } from '../../actions/users.js';
 
-var ModalUserDelete = React.createClass({
+class ModalUserDelete extends React.createClass {
 	handleDelete: function() {
 		store.dispatch( deleteUser(this.props.login) );
 		store.dispatch({ type: "MODAL_DELETE_CLOSE" });
@@ -36,7 +36,7 @@ var ModalUserDelete = React.createClass({
 			</div>
 		)
 	}
-});
+}
 
 var getProps = function(store) {
 	return {

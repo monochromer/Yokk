@@ -22,7 +22,7 @@ class UserRow extends React.Component {
     }
 
     render() {
-        let { login, role, position, joinedon, profileImg, fullname, redmineApiKey } = this.props.user;
+        let { login, role, position, profileImg, fullname, redmineApiKey } = this.props.user;
         let userActivityPageLink = `/user/activityPage/${ login }`;
         let photo = profileImg ? profileImg.small : "";
         let name = fullname ? fullname : login;
@@ -40,11 +40,11 @@ class UserRow extends React.Component {
         );
 
 
-        if (this.props.currentUser.role == "admin" || this.props.currentUser.login == login) {
+        if (this.props.currentUser.role === "admin" || this.props.currentUser.login === login) {
             buttons = actionButtons;
         }
 
-        const redmine = redmineApiKey ? <img src="/img/redmine-active.svg" width="52px" height="52px" /> : "Nothing";
+        const redmine = redmineApiKey ? <img src="/img/redmine-active.svg" width="52px" height="52px" alt="redmine" /> : "Nothing";
         position = position ? position : "No Information";
 
         return (
@@ -53,7 +53,7 @@ class UserRow extends React.Component {
                 <div className="col-md-3">
                     <div className="row">
                         <div className="col-md-3 users-list_photo">
-                            <img src={ photo } width="40px" className="img-circle " />
+                            <img src={ photo } width="40px" className="img-circle" alt="user" />
                         </div>
                         <div className="col-md-9">
                             <Link to={ '/user/' + login } className="users-list_user-name">

@@ -11,9 +11,9 @@ import teams from './teams';
 export default function(app) {
 
   app.use('/api/login', login);
-  app.use('/api/users', authenticate, users);
+  app.use('/api/user', authenticate, users);
   app.use('/api/timeEntry', authenticate, timeEntry);
-  app.use('/api/reports', authenticate, reports);
+  app.use('/api/report', authenticate, reports);
   app.use('/api/sync', authenticate, sync);
   app.use('/api/teams', teams);
   

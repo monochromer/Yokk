@@ -2,7 +2,7 @@ import React from 'react'
 import store from '../../store.js'
 import { connect } from 'react-redux'
 
-import { Table, Button, ButtonToolbar } from 'react-bootstrap'
+// import { Table, Button, ButtonToolbar } from 'react-bootstrap'
 import UserRow from './UserRow.jsx'
 import ModalUserAdd from './ModalUserAdd.jsx'
 

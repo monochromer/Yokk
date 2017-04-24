@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export default(store) => (next) => (action) => {
-    const {deleteItem, type} = action;
+    const {deleteItem} = action;
 
     if (!deleteItem)
         return next(action);

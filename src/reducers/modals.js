@@ -20,7 +20,6 @@ export default function( state = defaultState, action ) {
                     login: action.login
                 }
             });
-            break;
 
         case "MODAL_DELETE_CLOSE":
             return Object.assign({}, state, {
@@ -28,7 +27,6 @@ export default function( state = defaultState, action ) {
                     visible: false
                 }
             });
-            break;
 
         case "MODAL_ADD_USER_SHOW":
             return Object.assign({}, state, {
@@ -36,14 +34,12 @@ export default function( state = defaultState, action ) {
                     visible: true
                 }
             })
-            break;
         case "MODAL_ADD_USER_CLOSE":
             return Object.assign({}, state, {
                 userAdd: {
                     visible:false
                 }
             })
-            break;
 
         case "MODAL_CHANGE_PASSWORD_SHOW":
             return Object.assign({}, state, {
@@ -52,7 +48,6 @@ export default function( state = defaultState, action ) {
                     login: action.login
                 }
             })
-            break;
 
         case "MODAL_CHANGE_PASSWORD_CLOSE":
             return Object.assign({}, state, {
@@ -60,7 +55,6 @@ export default function( state = defaultState, action ) {
                     visible: false
                 }
             })
-            break;
 
         default:
             return state;

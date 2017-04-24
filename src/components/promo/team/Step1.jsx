@@ -20,8 +20,8 @@ class Step1 extends React.Component {
             code: this.state.code
         });
 
-        if(parseInt(event.target.name) < 5) {
-            this.refs[parseInt(event.target.name) + 1].focus();
+        if(parseInt(event.target.name, 10) < 5) {
+            this.refs[parseInt(event.target.name, 10) + 1].focus();
         }
     }
 
@@ -83,7 +83,7 @@ class Step1 extends React.Component {
                     <div className="row center-xs">
                         <div className="col-md-6 col-sm-8 col-xs-10">
                             <button type="submit"
-                                    className="btn btn__lg btn__blue team-create__create" disabled={ this.state.code.length != 6 ? "disabled" : "" } >
+                                    className="btn btn__lg btn__blue team-create__create" disabled={ this.state.code.length !== 6 ? "disabled" : "" } >
                                 Continue to
                                 Name
                             </button>

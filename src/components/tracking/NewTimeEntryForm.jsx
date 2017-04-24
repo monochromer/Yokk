@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import InputElement from 'react-input-mask'
+// import InputElement from 'react-input-mask'
 import store from '../../store.js'
 import moment from 'moment'
 import { createTimeEntry, fetchRedmineTimeEntries, fetchUpworkTimeEntries } from '../../actions/timeEntries.js'
 import { connect } from 'react-redux'
 import { findUserByLogin } from '../../helpers'
-import { validateDuration } from '../../utils/validators'
+// import { validateDuration } from '../../utils/validators'
 import { Input } from '../UI.jsx'
 
 class NewTimeEntryForm extends Component {
@@ -47,7 +47,7 @@ class NewTimeEntryForm extends Component {
     }
 
   syncUpwork() {
-    const user = findUserByLogin(this.props.users, this.props.currentUser);
+    // const user = findUserByLogin(this.props.users, this.props.currentUser);
     // if (user.upworkApiKey) {
         store.dispatch(fetchUpworkTimeEntries());
     // } else {
@@ -131,8 +131,8 @@ class NewTimeEntryForm extends Component {
 
 function getProps(store) {
     return {
-        currentUser: store.currentUser.login,
-        currentUserID: store.currentUser._id,
+        currentUser: store.currentUser.data.login,
+        currentUserID: store.currentUser.data._id,
         users: store.users.list
     }
 }

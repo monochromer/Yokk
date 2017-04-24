@@ -111,7 +111,7 @@ class LoginForm extends React.Component {
     );
 
     return (
-      <div>{ this.state.auth ? auth : reg }</div>
+      <div className="login-form-container">{ this.state.auth ? auth : reg }</div>
     )
   }
 }

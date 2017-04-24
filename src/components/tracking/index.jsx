@@ -2,9 +2,9 @@ import React from 'react'
 import NewTimeEntryForm from './NewTimeEntryForm.jsx'
 import TimeEntriesList from './TimeEntriesList.jsx'
 
-var Tracking = React.createClass({
+class Tracking extends React.Component {
 
-    render: function() {
+    render() {
 
         return (
             <div style={{"flex": "1 0 auto"}}>
@@ -13,6 +13,6 @@ var Tracking = React.createClass({
             </div>
         );
     }
-});
+}
 
 export default Tracking

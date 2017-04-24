@@ -1,14 +1,13 @@
 import React from 'react'
-import { browserHistory } from 'react-router'
 import TimeEntriesPerDay from './TimeEntriesPerDay.jsx'
 import store from '../../store'
 import classNames from 'classnames'
 import {
-  fetchNextTimeEntryBatch,
-  fetchUserActivityFilteredByDate
+  fetchNextTimeEntryBatch
+  // fetchUserActivityFilteredByDate
 } from '../../actions/timeEntries.js'
 import { connect } from 'react-redux'
-import { dayBeatify, durationBeatify, groupTimeEntriesByDay } from '../../helpers'
+import { durationBeatify, groupTimeEntriesByDay } from '../../helpers'
 import moment from 'moment';
 import DayPicker, { DateUtils } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
@@ -39,7 +38,7 @@ class TimeEntriesList extends React.Component {
 
     handleDayClick(e, day) {
       const range = DateUtils.addDayToRange(day, this.state);
-      const dateStrings = true;
+      // const dateStrings = true;
       // console.log(fetchUserActivityFilteredByDate(range));
       // store.dispatch(fetchUserActivityFilteredByDate(range, dateStrings))
       this.setState(range);
@@ -54,7 +53,7 @@ class TimeEntriesList extends React.Component {
     }
 
     render() {
-        const { handlePickerEvent, handleResetClick } = this;
+        const { handleResetClick } = this;
         const { from, to } = this.state;
         // const { days } = this.props;
         const { list } = this.props;

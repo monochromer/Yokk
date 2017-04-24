@@ -32,7 +32,7 @@ class LinkService extends React.Component {
 
         let modalClasses = classNames({
             modal: true,
-            hide: this.props.status == "hidden"
+            hide: this.props.status === "hidden"
         });
 
         return (

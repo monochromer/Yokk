@@ -1,5 +1,5 @@
 import { TEAM_CRUD } from '../constants'
-import request from 'superagent'
+import axios from 'axios'
 
 export function step0(email) {
     return {
@@ -74,7 +74,7 @@ export function step5(teamName, addMembers) {
 
 export function authUser(login, password) {
     return function(dispatch) {
-        request.post('/login').send({username: login, password: password});
+        axios.post('/login', {username: login, password: password});
         console.log(login + password);
     }
 }

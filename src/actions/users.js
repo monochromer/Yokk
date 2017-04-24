@@ -1,4 +1,4 @@
-import request from 'superagent';
+import axios from 'axios';
 import {
     USER_CRUD,
     COMBINE_USER_ADDPHOTO_URI,
@@ -6,9 +6,9 @@ import {
 } from '../constants'
 
 import {
-    addUserSuccess,
-    addPhotoSuccess,
-    updateUserSuccess
+    addUserSuccess
+    // addPhotoSuccess,
+    // updateUserSuccess
 } from '../utils/alerts/users'
 
 export function fetchUsers() {
@@ -64,10 +64,10 @@ export function linkService(id, fields) {
 
 export function addUser(user) {
     return function(dispatch) {
-        request.post(USER_CRUD).send(user).end((err, response) => {
+        axios.post(USER_CRUD, user).then((response) => {
             dispatch({
                 type: "ADD_USER",
-                payload: response.body
+                payload: response.data
             });
             dispatch({
                 type: "ALERT_SHOW",
@@ -82,10 +82,12 @@ export function addUser(user) {
 export function uploadUserPhoto(files, login) {
     return function(dispatch) {
         dispatch({type: "PHOTO_UPLOADING_START"});
-        request.post(COMBINE_USER_ADDPHOTO_URI(login)).attach('pic', files[0]).end(function(err, response) {
+        var data = new FormData();
+        data.append('pic', files[0]);
+        axios.post(COMBINE_USER_ADDPHOTO_URI(login), data).then((response) => {
             dispatch({
                 type: "UPDATE_USER",
-                payload: response.body
+                payload: response.data
             })
         });
     }
@@ -93,9 +95,9 @@ export function uploadUserPhoto(files, login) {
 
 export function deleteUserPhoto(userId) {
   const reqUrl = `/api/user/${userId}/upload_profile_picture`
-  request.del(reqUrl).end(() => {
+  axios.delete(reqUrl).then(() => {
     console.log('profile img updated');
-  })
+  });
   return {
     type: "DELETE_PROFILE_IMG",
     payload: {
