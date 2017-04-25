@@ -1,10 +1,9 @@
 'use strict';
 
-// const lwip = require('lwip');
+const jimp = require('jimp');
 const log = require('../../helpers/logger');
 const sendEmail = require('../helpers/sendEmail');
 const async = require('async');
-// const easyimg = require('easyimage');
 const moment = require('moment');
 const fs = require('fs')
 const path = require('path')
@@ -176,28 +175,34 @@ exports.uploadUserAvatar = function(req, res, next) {
 
     async.series([
             (callback) => {
-                // lwip.open(imageInfo.dir + imageInfo.name, (err, image) => {
-                    // image.batch().cover(200, 200).writeFile(imageInfo.dir + imageInfo.date + '200-200.' + imageInfo.ext, (err) => {
-                        // if (err) {
-                            // callback(err);
-                        // } else {
-                            // callback(null);
-                        // }
-                    // })
-                // })
-								callback(null);
+                jimp.read(imageInfo.dir + imageInfo.name, function (err, image) {
+                    if(err){
+                        callback(err);
+                        return false;
+                    }
+                    image.cover(200, 200).write(imageInfo.dir + imageInfo.date + '200-200.' + imageInfo.ext, (err) => {
+                        if (err) {
+                            callback(err);
+                        } else {
+                            callback(null);
+                        }
+                    });
+                });
             },
             (callback) => {
-                // lwip.open(imageInfo.dir + imageInfo.name, (err, image) => {
-                    // image.batch().cover(400, 400).writeFile(imageInfo.dir + imageInfo.date + '400-400.' + imageInfo.ext, (err) => {
-                        // if (err) {
-                            // callback(err);
-                        // } else {
-                            // callback(null);
-                        // }
-                    // })
-                // })
-								callback(null);
+                jimp.read(imageInfo.dir + imageInfo.name, function (err, image) {
+                    if(err){
+                        callback(err);
+                        return false;
+                    }
+                    image.cover(400, 400).write(imageInfo.dir + imageInfo.date + '400-400.' + imageInfo.ext, (err) => {
+                        if (err) {
+                            callback(err);
+                        } else {
+                            callback(null);
+                        }
+                    });
+                });
             },
             (callback) => {
                 const originalImg = ('/' + req.file.path.split('/').slice(1).slice(-4).join('/')).split(':').join('-');
@@ -228,7 +233,7 @@ exports.uploadUserAvatar = function(req, res, next) {
 exports.deleteUserAvatar = function(req, res, next) {
   const userModel = req.app.db.models.User
   const userId = req.params.user_login
-  const baseDir = path.join(__dirname, '../../../uploads/users/')
+  const baseDir = path.join(__dirname, '../../uploads/users/')
   const dirToDelete = `${baseDir}/${userId}/avatars`
 
   deleteFolderRecursive(dirToDelete);

@@ -17,6 +17,7 @@
     "express-session": "^1.15.2",
     "fs": "0.0.1-security",
     "get-parameter": "^1.0.8",
+    "jimp": "^0.2.27",
     "jsonwebtoken": "^7.3.0",
     "moment": "^2.18.1",
     "mongoose": "^4.9.5",
