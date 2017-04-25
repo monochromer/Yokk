@@ -1,8 +1,16 @@
 import React from 'react'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
+import { logout } from '../../actions/currentUser';
 
 class TopPanel extends React.Component {
+	
+    logout = (e) => {
+        e.preventDefault();
+        this.props.logout();
+        window.location.reload();
+    }
+
     render() {
         let photo = "";
 
@@ -39,7 +47,7 @@ class TopPanel extends React.Component {
                             <Link to={ "/user/edit/" + this.props.user.login }>{ this.props.user.login }</Link>
                         </div>
 
-                        <a href="/logout" className="top-panel_logout">Logout</a>
+                        <a href="#" onClick={this.logout} className="top-panel_logout">Logout</a>
 
                     </div>
                 </div>
@@ -55,4 +63,4 @@ const getProps = function(store) {
     }
 };
 
-export default connect(getProps)(TopPanel);
+export default connect(getProps, { logout })(TopPanel);

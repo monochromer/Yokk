@@ -77,7 +77,7 @@ class UserRow extends React.Component {
 
 function getParams(store) {
     return {
-        currentUser: store.currentUser
+        currentUser: store.currentUser.data
     }
 }
 

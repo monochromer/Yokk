@@ -10,8 +10,8 @@ class Logout extends React.Component {
 
 var getProps = function(store) {
 	return {
-		login: store.currentUser.login,
-		role: store.currentUser.role
+		login: store.currentUser.data.login,
+		role: store.currentUser.data.role
 	}
 }
 

@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { Input } from '../UI.jsx'
 import { step5 } from '../../actions/teams'
 import { findUserByLogin } from '../../helpers'
+import { fetchUsers } from '../../actions/users'
 
 
 class ModalUserAdd extends React.Component {
@@ -19,6 +20,9 @@ class ModalUserAdd extends React.Component {
         this.addInvitation = this.addInvitation.bind(this);
     }
 
+    componentWillMount(){
+      this.props.fetchUsers();
+    }
 
     handleClose() {
         store.dispatch({type: "MODAL_ADD_USER_CLOSE"});
@@ -109,8 +113,8 @@ function getProps(store) {
     return {
         status: store.modals.userAdd.visible,
         users: store.users.list,
-        login: store.currentUser.login
+        login: store.currentUser.data.login
     }
 }
 
-export default connect(getProps)(ModalUserAdd)
+export default connect(getProps, { fetchUsers })(ModalUserAdd)
