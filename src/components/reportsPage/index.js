@@ -4,6 +4,7 @@ import Filters from './Filters';
 import store from '../../store.js';
 import { connect } from 'react-redux';
 import { fetchReportData } from '../../actions/statistics';
+import { fetchUsers } from '../../actions/users'
 
 class ReportsPage extends React.Component {
 
@@ -14,6 +15,10 @@ class ReportsPage extends React.Component {
         this.state = {
           usersHighlight: false
         }
+    }
+    
+    componentWillMount(){
+      this.props.fetchUsers();
     }
 
     getTheReport() {
@@ -71,4 +76,4 @@ function fetchProps(state) {
     }
 }
 
-export default connect(fetchProps)(ReportsPage);
+export default connect(fetchProps, { fetchUsers })(ReportsPage);

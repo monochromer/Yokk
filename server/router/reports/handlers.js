@@ -50,17 +50,14 @@ exports.createReport = function(req, res, next) {
                 if (err) next(err);
                 let data = {};
 
-                entries.map((entry) => {
-                    var {
-                        entrySource,
-                        duration
-                    } = entry;
+                for(let entryIdx = 0; entryIdx < entries.length; entryIdx++){
+                    var { entrySource, duration } = entries[entryIdx];
 
-                    var executor = _.find( users, user => user._id.toString() === entry.executor.toString() ).login;
+                    var executor = _.find( users, user => user._id.toString() === entries[entryIdx].executor.toString() ).login;
                     if (!data[executor]) {
                         data[executor] = {
                             total: duration,
-                            [entrySource]: duration + 1
+                            [entrySource]: duration
                         }
                     } else {
                         data[executor]["total"] += duration;
@@ -71,7 +68,7 @@ exports.createReport = function(req, res, next) {
                             data[executor][entrySource] = duration;
                         }
                     }
-                });
+                }
 
                 response = {
                     query: query,

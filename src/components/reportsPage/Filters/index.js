@@ -11,7 +11,6 @@ class Filters extends React.Component {
 
     constructor(props) {
         super(props);
-        this.handleChange = this.handleChange.bind(this);
         this.setCustomPeriod = this.setCustomPeriod.bind(this);
         this.handleDayClick = this.handleDayClick.bind(this);
         this.resetDates = this.resetDates.bind(this);
@@ -21,13 +20,6 @@ class Filters extends React.Component {
             from: null,
             to: null
         }
-    }
-
-    handleChange(event) {
-        store.dispatch({
-            type: "STORE_REPORT_PERIOD",
-            [event.target.name]: event.target.value
-        })
     }
 
     resetDates() {
@@ -59,7 +51,8 @@ class Filters extends React.Component {
         }
     }
 
-    handleDayClick(e, day) {
+    handleDayClick(day) {
+      console.log(day, this.state);
       const range = DateUtils.addDayToRange(day, this.state);
       const {from, to} = range;
 
@@ -81,26 +74,26 @@ class Filters extends React.Component {
 
     render() {
         const { setCustomPeriod, resetDates } = this;
-        const { from, to } = this.state;
+        const { from, to, activePeriod } = this.state;
 
         const lasd7DaysClasses = classNames({
             'custom-periods_period': true,
-            'custom-periods_period__active': this.state.activePeriod === 'Last 7 Days'
+            'custom-periods_period__active': activePeriod === 'Last 7 Days'
         });
 
         const yesterdayClasses = classNames({
             'custom-periods_period': true,
-            'custom-periods_period__active': this.state.activePeriod === 'Yesterday'
+            'custom-periods_period__active': activePeriod === 'Yesterday'
         });
 
         const thisMonthClasses = classNames({
             'custom-periods_period': true,
-            'custom-periods_period__active': this.state.activePeriod === 'This Month'
+            'custom-periods_period__active': activePeriod === 'This Month'
         });
 
         const LastMonthClasses = classNames({
             'custom-periods_period': true,
-            'custom-periods_period__active': this.state.activePeriod === 'Last Month'
+            'custom-periods_period__active': activePeriod === 'Last Month'
         });
         const usersFilter = classNames({
             'filter_heading': true,
