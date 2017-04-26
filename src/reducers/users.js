@@ -1,6 +1,7 @@
+import { dummy } from '../constants';
 import _ from 'lodash'
 
-var linkService = {
+let linkService = {
     status: "hidden"
 };
 
@@ -12,7 +13,7 @@ const defaultState = {
 };
 
 export default function(state = defaultState, action) {
-    const { type, payload } = action;
+    const { type, payload, userId } = action;
 
     var newState = "";
     switch (type) {
@@ -35,20 +36,14 @@ export default function(state = defaultState, action) {
             });
 
         case "DELETE_PROFILE_IMG":
-            newState = Object.assign({}, state)
+            newState = cloneObject(state)
 
-            const dummy = {
-              small: "/img/dummy/960-720.png",
-              medium: "/img/dummy/960-720.png",
-              original: "/img/dummy/960-720.png"
-            }
-            _.find(newState.list, userObject => userObject._id === payload.userId).profileImg = dummy
+             _.find(newState.list, o => o._id === userId).profileImg = dummy
 
             return newState
 
         case "UPDATE_USER_SUCCESS":
             newState = _.filter(state.list, (o) => o._id !== payload._id);
-            console.log(newState);
             return Object.assign({}, state, {
                 status: "success",
                 list: [...newState, payload]
@@ -93,4 +88,13 @@ export default function(state = defaultState, action) {
         default:
             return state;
     }
+}
+
+function cloneObject(clonedObject) {
+    if (typeof clonedObject !== 'object' || clonedObject === null) return clonedObject
+    let temporary = clonedObject.constructor()
+    for (let key in clonedObject) {
+        temporary[key] = cloneObject(clonedObject[key])
+    }
+    return temporary
 }

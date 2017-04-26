@@ -3,7 +3,6 @@ import _ from 'lodash'
 import { connect } from 'react-redux'
 import { step5 } from '../../../actions/teams'
 import { Input } from '../../UI.jsx'
-// import { authUser } from '../../../actions/teams'
 import store from '../../../store'
 
 class Step5 extends React.Component {
@@ -29,7 +28,6 @@ class Step5 extends React.Component {
         e.preventDefault();
         store.dispatch(step5(this.props.teamName,this.state.invitations));
         setTimeout(() => { document.location.href = '/login'} , 1000); // wtf !?
-
     }
 
     render() {

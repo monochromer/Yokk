@@ -7,7 +7,7 @@ class EnsureLoggedInContainer extends React.Component {
     const { authenticated, router } = this.props;
 
     if (!authenticated) {
-      router.push("/promo");
+      router.push("/registration");
     }
   }
 

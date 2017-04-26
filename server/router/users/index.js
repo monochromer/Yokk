@@ -8,8 +8,8 @@ router.route('/')
   .post(handle.saveUserToDb);
 router.route('/get/team')
   .get(handle.getTeamUsers);
-router.route('/check_permissions')
-  .get(handle.checkUserPermissions);
+router.route('/logged_in_user')
+  .get(handle.getLoggedInUser);
 router.route('/:id')
   .get(handle.showUser)
   .put(handle.updateUser)

@@ -21,15 +21,16 @@ export function dayBeatify(date, format) {
 
 export function durationBeatify(minutes, type) {
 	let duration = moment.duration(minutes, 'minutes');
-	let min = duration.get('minutes') < 10 ? "0" + duration.get('minutes') : duration.get('minutes');
+	let min = duration.get('minutes') < 10 ? '0' + duration.get('minutes') : duration.get('minutes');
+	let hours = duration.get('hours') < 10 ? '0' + duration.get('hours') : duration.get('hours');
+
 	switch (type) {
 		case 'short':
-			return `${duration.get('hours')}:${min}`;
+			return `${hours}:${min}`;
 
 		default:
 			return `${duration.get('hours')} h ${min} min`;
 	}
-
 }
 
 export function groupTimeEntriesByDay(timeEntries) {

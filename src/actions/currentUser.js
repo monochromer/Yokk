@@ -1,5 +1,6 @@
 import { SET_CURRENT_USER } from '../constants';
 import axios from 'axios';
+import { FETCH_CURRENT_USER_URI } from '../constants'
 
 export function login(userData){
 	return dispatch => {
@@ -12,11 +13,27 @@ export function login(userData){
 	}
 }
 
+export function fetchCurrentUser() {
+  return {
+    type: "FETCH_CURRENT_USER",
+    loadItems: FETCH_CURRENT_USER_URI
+  }
+}
+
 export function setCurrentUser(user){
 	return {
 		type: SET_CURRENT_USER,
 		user
 	};
+}
+
+export function changeCurrentCompany(companyId) {
+  return {
+    type: "CHANGE_CURRENT_COMPANY",
+    payload: {
+      companyId: companyId
+    }
+  }
 }
 
 export function logout(){

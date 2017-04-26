@@ -6,6 +6,7 @@ import timeEntries from './timeEntries'
 import reportRequest from './reportRequest'
 import usersActivities from './usersActivities'
 import teams from './teams'
+import currentUserTeams from './currentUserTeams'
 
 import { combineReducers } from 'redux'
 
@@ -17,5 +18,6 @@ export default combineReducers({
     timeEntries,
     reportRequest,
     usersActivities,
-    teams
+    teams,
+    currentUserTeams
 })

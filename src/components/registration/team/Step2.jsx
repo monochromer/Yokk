@@ -1,27 +1,27 @@
 import React from 'react'
-import store from '../../../store';
-import { step4 } from '../../../actions/teams'
+import store from '../../../store'
+import { step2 } from '../../../actions/companies'
+// import { step2 } from '../../../actions/teams'
 import { connect } from 'react-redux'
 import { Input } from '../../UI.jsx'
 
-class Step4 extends React.Component {
-
+class Step2 extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            teamName: ""
+            login: ""
         }
     }
 
     handleChange(event) {
         this.setState({
-            teamName: event.target.value
+            login: event.target.value
         })
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        store.dispatch(step4(this.state.teamName, this.props.email));
+        store.dispatch(step2(this.state.login));
     }
 
     render() {
@@ -29,29 +29,28 @@ class Step4 extends React.Component {
             <form onSubmit={ this.handleSubmit.bind(this) }>
                 <div className="container">
                     <div className="row center-xs step__heading">
-                        <div className="col-md-12 col-sm-12 col-xs-10">
-                            <h1 className="heading">What’s your company called?</h1>
+                        <div className="col-md-6 col-sm-8 col-xs-10">
+                            <h1 className="heading">What is your name?</h1>
                         </div>
                     </div>
                     <div className="row center-xs step__message">
                         <div className="col-md-6 col-sm-8 col-xs-10">
-                            <p>We’ll use this to name your team,<br/>
-                                which you can always change later.</p>
+                            <p>You name will be used for auth. You will not be able to change it.</p>
                         </div>
                     </div>
                     <div className="row center-xs step__code">
                         <div className="col-md-6 col-sm-8 col-xs-10">
-                            <Input className="input-group input-group__grey"
-                                   type="text"
-                                   handleChange={ this.handleChange.bind(this) }
-                                   name="name"
-                                   label="Company name"/>
+                            <Input handleChange={ this.handleChange.bind(this) }
+                                   className="input-group input-group__grey"
+                                   name="username"
+                                   label="User name"/>
                         </div>
                     </div>
                     <div className="row center-xs">
                         <div className="col-md-6 col-sm-8 col-xs-10">
-                            <button className="btn btn__blue btn__lg team-create__create"
-                                    disabled={ !this.state.teamName ? "disabled" : "" }>Continue to Sending Invitation
+                            <button type="submit" className="btn  btn__lg btn__blue team-create__create"
+                                    disabled={ !this.state.login ? "disabled" : "" }>Continue to
+                                Password
                             </button>
                         </div>
                     </div>
@@ -61,10 +60,10 @@ class Step4 extends React.Component {
     }
 }
 
-function getProps(state) {
+function getParams(store) {
     return {
-        email: state.teams.email
+        login: localStorage.getItem("login")
     }
 }
 
-export default connect(getProps)(Step4)
+export default connect(getParams)(Step2)

@@ -45,12 +45,14 @@ export default function(state = initialState, action) {
             return Object.assign({}, state, { password: action.password });
 
         case "STEP_4":
-            browserHistory.push('/team/step5');
+            // browserHistory.push('/team/step5');
+            setTimeout(() => { document.location.href = '/login'} , 0); // wtf !?
             localStorage.setItem('teamName', action.teamName);
             return Object.assign({}, state, { teamName: action.teamName });
 
-        case "STEP_5":
-            return state;
+        // case "STEP_5":
+        //     return state;
+        //     break;
 
         case "REMOVE_ERRORS":
             return Object.assign({}, state,

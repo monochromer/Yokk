@@ -1,8 +1,7 @@
 import moment from 'moment'
 
 export const SET_CURRENT_USER = 'SET_CURRENT_USER';
-
-export const FETCH_CURRENT_USER_URI = '/api/user/check_permissions';
+export const FETCH_CURRENT_USER_URI = '/api/user/logged_in_user';
 
 export const USER_CRUD = '/api/user/';
 
@@ -15,38 +14,54 @@ export const FETCH_UPWORK_TIME_ENTRIES_URI = '/api/sync/upwork';
 
 export const REPORT_API_URI = '/api/report/';
 
-export const TEAM_CRUD = '/api/teams/';
+export const COMPANY_CRUD = '/api/company/';
+export const TEAM_CRUD = '/api/teams'
+
+export const FETCH_TEAMS = 'FETCH_TEAMS'
+
+export const ADD_TEAM_MEMBERS = 'ADD_TEAM_MEMBERS'
+export const ADD_TEAM = 'ADD_TEAM'
+export const DELETE_TEAM_MEMBERS = 'DELETE_TEAM_MEMBERS'
+
+export const DELETE_TEAM = 'DELETE_TEAM'
+export const CHANGE_TEAM_NAME = 'CHANGE_TEAM_NAME'
 
 export function COMBINE_USER_ADDPHOTO_URI(login) {
-    return '/api/user/' + login + '/upload_profile_picture';
+  return '/api/user/' + login + '/upload_profile_picture';
 }
 
 export const REDMINE = {
-    name: "Redmine",
-    logo: "/img/upwork-logo.svg"
+  name: 'Redmine',
+  logo: '/img/upwork-logo.svg'
 };
 
 export const RANGES = {
-    'Today': [
-        moment(), moment()
-    ],
-    'Yesterday': [
-        moment().subtract(1, 'days'),
-        moment().subtract(1, 'days')
-    ],
-    'Last 7 Days': [
-        moment().subtract(6, 'days'),
-        moment()
-    ],
-    'Last 30 Days': [
-        moment().subtract(29, 'days'),
-        moment()
-    ],
-    'This Month': [
-        moment().startOf('month'), moment().endOf('month')
-    ],
-    'Last Month': [
-        moment().subtract(1, 'month').startOf('month'),
-        moment().subtract(1, 'month').endOf('month')
-    ]
+  'Today': [
+    moment(), moment()
+  ],
+  'Yesterday': [
+    moment().subtract(1, 'days'),
+    moment().subtract(1, 'days')
+  ],
+  'Last 7 Days': [
+    moment().subtract(6, 'days'),
+    moment()
+  ],
+  'Last 30 Days': [
+    moment().subtract(29, 'days'),
+    moment()
+  ],
+  'This Month': [
+    moment().startOf('month'), moment().endOf('month')
+  ],
+  'Last Month': [
+    moment().subtract(1, 'month').startOf('month'),
+    moment().subtract(1, 'month').endOf('month')
+  ]
+};
+
+export const dummy = {
+  small: '/img/dummy/960-720.png',
+  medium: '/img/dummy/960-720.png',
+  original: '/img/dummy/960-720.png'
 };

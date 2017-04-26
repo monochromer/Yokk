@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
-// import InputElement from 'react-input-mask'
 import store from '../../store.js'
 import moment from 'moment'
 import { createTimeEntry, fetchRedmineTimeEntries, fetchUpworkTimeEntries } from '../../actions/timeEntries.js'
 import { connect } from 'react-redux'
 import { findUserByLogin } from '../../helpers'
-// import { validateDuration } from '../../utils/validators'
+import { validateString, validateDuration, validateDateFormat } from '../../utils/validators'
 import { Input } from '../UI.jsx'
 
 class NewTimeEntryForm extends Component {
@@ -14,19 +13,19 @@ class NewTimeEntryForm extends Component {
 
         this.state = {
             description: {
-                value: "",
+                value: '',
                 valid: false,
-                virgin: true,
+                error: ''
             },
             duration: {
-                value: "",
+                value: '00:00',
                 valid: false,
-                virgin: true,
+                error: ''
             },
-            dateCreated: {
-                value: "",
+            date: {
+                value: moment().format('DD.MM.YYYY'),
                 valid: true,
-                virgin: false,
+                error: ''
             }
         };
 
@@ -42,33 +41,62 @@ class NewTimeEntryForm extends Component {
         if (user.redmineApiKey) {
             store.dispatch(fetchRedmineTimeEntries());
         } else {
-            alert("Check Redmine integration at your profile!");
+            alert('Check Redmine integration at your profile!');
         }
     }
 
-  syncUpwork() {
-    // const user = findUserByLogin(this.props.users, this.props.currentUser);
-    // if (user.upworkApiKey) {
-        store.dispatch(fetchUpworkTimeEntries());
-    // } else {
-    //     alert("Check Upwork integration at your profile!");
-    // }
+    syncUpwork() {
+        const user = findUserByLogin(this.props.users, this.props.currentUser);
+        if (user.upworkApiKey) {
+            store.dispatch(fetchUpworkTimeEntries());
+        } else {
+            alert('Check Upwork integration at your profile!');
+        }
     }
 
-    handleChange(event) {
+    handleChange(name, value) {
+        let valid, error;
+        switch(name) {
+            case 'description':
+                valid = validateString(value);
+                error = valid ? '' : 'Description is required.';
+                break;
+            case 'date':
+                valid = validateDateFormat(value);
+                error = valid ? '' : 'Invalid date.';
+                break;
+            case 'duration':
+                valid = validateDuration(value);
+                error = valid ? '' : 'Invalid duration.';
+                break;
+            default:
+        }
+
         this.setState({
-            [event.target.name]: event.target.value
-        })
+            [name]: { value, valid, error }
+        });
     }
 
     handleSubmit(event) {
         event.preventDefault();
 
-        const timeEntry = Object.assign({}, this.state, {
-            entrySource: "eop",
-            executor: this.props.currentUserID,
-            dateCreated: Date.now()
-        });
+        const { description, duration, date } = this.state;
+
+        if (!description.valid || !duration.valid || !date.valid) {
+            this.handleChange('description', description.value);
+            this.handleChange('duration', duration.value);
+            this.handleChange('date', date.value);
+            return;
+        }
+
+        const timeEntry = {
+            date: date.value,
+            dateCreated: Date.now(),
+            description: description.value,
+            duration: duration.value,
+            entrySource: 'eop',
+            executor: this.props.currentUserID
+        };
 
         store.dispatch(createTimeEntry(timeEntry));
     }
@@ -97,26 +125,29 @@ class NewTimeEntryForm extends Component {
                         <div className="row tracking-form_row">
                             <div className="col-md-8 tracking-form_description">
                                 <Input className="input-group input-group__light-blue"
-                                       handleChange={ this.handleChange }
-                                       name="description"
-                                       label="What you are working on?"/>
+                                        handleChange={ event => this.handleChange('description', event.target.value) }
+                                        error={ this.state.description.error }
+                                        name="description"
+                                        label="What you are working on?"/>
                             </div>
                             <div className="col-md-2 tracking-form_date">
                                 <Input className="input-group input-group__light-blue"
-                                       handleChange={ this.handleChange }
-                                       defaultValue={ moment().format("DD.MM.YYYY") }
-                                       name="date"
-                                       label="Date"
-                                       mask="99.99.9999"/>
+                                        handleChange={ event => this.handleChange('date', event.target.value) }
+                                        error={ this.state.date.error }
+                                        defaultValue={ moment().format("DD.MM.YYYY") }
+                                        name="date"
+                                        label="Date"
+                                        mask="99.99.9999"/>
                             </div>
 
                             <div className="col-md-1 tracking-form_duration">
                                 <Input className="input-group input-group__light-blue"
-                                       handleChange={ this.handleChange }
-                                       name="duration"
-                                       defaultValue="0:00"
-                                       label="Duration"
-                                        mask="9:99"/>
+                                        handleChange={ event => this.handleChange('duration', event.target.value) }
+                                        error={ this.state.duration.error }
+                                        name="duration"
+                                        defaultValue="00:00"
+                                        label="Duration"
+                                        mask="99:99"/>
                             </div>
                             <div className="col-md-1 tracking-form_add">
                                 <button className="btn btn__lg btn__white">Save</button>
@@ -131,8 +162,8 @@ class NewTimeEntryForm extends Component {
 
 function getProps(store) {
     return {
-        currentUser: store.currentUser.data.login,
-        currentUserID: store.currentUser.data._id,
+        currentUser: store.currentUser.login,
+        currentUserID: store.currentUser._id,
         users: store.users.list
     }
 }

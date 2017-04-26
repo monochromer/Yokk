@@ -8,7 +8,11 @@ const defaultState = {
     },
     userChangePassword: {
         visible: false
-    }
+    },
+    newCompany: {
+        visible: false
+    },
+    teamId: ""
 }
 
 export default function( state = defaultState, action ) {
@@ -32,7 +36,8 @@ export default function( state = defaultState, action ) {
             return Object.assign({}, state, {
                 userAdd: {
                     visible: true
-                }
+                },
+                teamId: action.teamId
             })
         case "MODAL_ADD_USER_CLOSE":
             return Object.assign({}, state, {
@@ -55,6 +60,20 @@ export default function( state = defaultState, action ) {
                     visible: false
                 }
             })
+
+        case "MODAL_NEW_COMPANY_OPEN":
+            return Object.assign({}, state, {
+                newCompany: {
+                    visible: true
+                }
+            });
+
+        case "MODAL_NEW_COMPANY_CLOSE":
+            return Object.assign({}, state, {
+                newCompany: {
+                    visible: false
+                }
+            });
 
         default:
             return state;

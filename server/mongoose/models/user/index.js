@@ -7,7 +7,7 @@ module.exports = function (app, mongoose) {
     var userSchema = new mongoose.Schema({
         login: {
             type: String,
-            uniq: true,
+            unique: true,
             required: true
         },
         hashedPassword: {
@@ -23,7 +23,11 @@ module.exports = function (app, mongoose) {
         position: String,
         email: {
             type: String,
-            uniq: true
+            unique: true
+        },
+        emailConfirmed: {
+            type: String,
+            default: false
         },
         phone: String,
         skype: String,
@@ -57,7 +61,9 @@ module.exports = function (app, mongoose) {
             type: String,
             default: 'user'
         },
+        companies: [mongoose.Schema.Types.ObjectId],
         team: mongoose.Schema.Types.ObjectId,
+        teams: [mongoose.Schema.Types.ObjectId],
         redmineHost: String,
         redmineApiKey: String
     });

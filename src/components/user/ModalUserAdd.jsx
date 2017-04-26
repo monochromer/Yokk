@@ -1,6 +1,7 @@
 import React from 'react'
 import store from '../../store'
 import classNames from 'classnames'
+import _ from 'lodash'
 import { connect } from 'react-redux'
 import { Input } from '../UI.jsx'
 import { step5 } from '../../actions/teams'
@@ -29,11 +30,7 @@ class ModalUserAdd extends React.Component {
     }
 
     handleChange(event) {
-        this.setState({
-          invitations: {
-            [event.target.name]: event.target.value
-          }
-        });
+        this.state.invitations[event.target.name] = event.target.value;
     }
 
     handleSubmit(event) {
@@ -59,7 +56,7 @@ class ModalUserAdd extends React.Component {
         var invitationRows = [];
         for (let i = 0; i < this.state.rows; i++) {
             invitationRows.push(
-                <div className="row center-xs invintations_row" key={ "invite_" + i }>
+                <div className="row center-xs invintations_row" key={ _.uniqueId() }>
                     <div className="col-md-8 col-sm-8 col-xs-10">
                         <Input handleChange={ this.handleChange.bind(this) }
                                defaultValue={ this.state.invitations[i] }
