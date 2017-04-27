@@ -3,17 +3,17 @@
 'use strict';
 
 const models = [
-    'user',
-    'timeEntry',
-    'statistics',
-    'team',
-    'company',
-    'unconfirmedUser'
+  'user',
+  'timeEntry',
+  'statistics',
+  'team',
+  'company',
+  'unconfirmedUser'
 ];
 
 // previously was in models.js in root
 module.exports = function(app, mongoose) {
-    models.forEach((model) => {
-        require('./' + model)(app, mongoose)
-    });
+  models.forEach((model) => {
+    require('./' + model)(app, mongoose)
+  });
 };

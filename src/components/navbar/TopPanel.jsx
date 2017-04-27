@@ -28,7 +28,7 @@ class TopPanel extends React.Component {
         width="34px"
         height="34px"
         alt="profile"
-       />
+      />
     }
     return (
       <div className="top-panel">
@@ -79,9 +79,9 @@ TopPanel.PropTypes = {
 }
 
 const getProps = function(store) {
-    return {
-        user: store.currentUser.data
-    }
+  return {
+    user: store.currentUser.data
+  }
 };
 
 

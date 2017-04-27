@@ -4,35 +4,35 @@ import InputElement from 'react-input-mask';
 import moment from 'moment';
 
 class FilterPeriod extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+  constructor(props) {
+    super(props);
+  }
 
-    changePeriod(e) {
+  changePeriod(e) {
 
-    }
+  }
 
-    render() {
+  render() {
 
-        return (
-            <form action="" className="form-inline">
+    return (
+      <form action="" className="form-inline">
 
-                <div className="form-group">
-                    <label htmlFor="startDateFilter" className="filtering__label">from &nbsp;</label>
-                    <InputElement type="text" className="form-control" mask="99.99.9999" id="startDateFilter"/>
-                </div>
+        <div className="form-group">
+          <label htmlFor="startDateFilter" className="filtering__label">from &nbsp;</label>
+          <InputElement type="text" className="form-control" mask="99.99.9999" id="startDateFilter"/>
+        </div>
 
 
-                <div className="form-group">
-                    <label htmlFor="endDateFilter" className="filtering__label">&nbsp; to &nbsp;</label>
-                    <InputElement  type="text" className="form-control" mask="99.99.9999" id="endDateFilter"/>
-                </div>
+        <div className="form-group">
+          <label htmlFor="endDateFilter" className="filtering__label">&nbsp; to &nbsp;</label>
+          <InputElement  type="text" className="form-control" mask="99.99.9999" id="endDateFilter"/>
+        </div>
 
-                &nbsp;<button className="btn btn-success"> Filter </button>
+        &nbsp;<button className="btn btn-success"> Filter </button>
 
-            </form>
-        );
-    }
+      </form>
+    );
+  }
 }
 
 export default FilterPeriod;

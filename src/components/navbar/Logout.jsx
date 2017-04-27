@@ -4,8 +4,8 @@ import { connect } from 'react-redux'
 
 class Logout extends React.Component {
 	render: function() {
-    	return <a href="/logout">Logout ({ this.props.login }) </a>
-  	}
+    return <a href="/logout">Logout ({ this.props.login }) </a>
+  }
 }
 
 var getProps = function(store) {

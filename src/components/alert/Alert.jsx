@@ -3,26 +3,26 @@ import store from '../../store.js'
 import { connect } from 'react-redux'
 
 class Alert extends React.Component {
-    handleClose: function() {
-        store.dispatch({ type: "ALERT_CLOSE" });
-    },
+  handleClose: function() {
+    store.dispatch({ type: "ALERT_CLOSE" });
+  },
 
-    render: function() {
-        return (
-            <div className={"alert alert-" + this.props.class + " alert-dismissible " + ( this.props.visible
-                ? ""
-                : "hide" )} role="alert">
-                <button type="button" className="close" onClick={this.handleClose}>
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <span dangerouslySetInnerHTML={{__html: this.props.text}}></span>
-            </div>
-        )
-    }
+  render: function() {
+    return (
+      <div className={"alert alert-" + this.props.class + " alert-dismissible " + ( this.props.visible
+        ? ""
+        : "hide" )} role="alert">
+        <button type="button" className="close" onClick={this.handleClose}>
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <span dangerouslySetInnerHTML={{__html: this.props.text}}></span>
+      </div>
+    )
+  }
 }
 
 var getProps = function( store ) {
-    return { visible: store.alerts.visible, text: store.alerts.text, class: store.alerts.class }
+  return { visible: store.alerts.visible, text: store.alerts.text, class: store.alerts.class }
 }
 
 export default connect( getProps )( Alert )

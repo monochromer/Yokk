@@ -4,31 +4,31 @@ var methods = require('./methods');
 var statics = require('./statics');
 
 module.exports = function(app, mongoose) {
-    var companySchema = new mongoose.Schema({
-        name: {
-            type: String,
-            uniq: true
-        },
-        originator: String,
-        originatorEmail: {
-            type: String,
-            required: true
-        },
-        confirmationCode: String,
-        emailConfirmed: {
-            type: Boolean,
-            default: false
-        },
-        companyLogoURL: String,
-        created: {
-            type: Date,
-            default: Date.now
-        },
-        teams: Array
-    });
+  var companySchema = new mongoose.Schema({
+    name: {
+      type: String,
+      uniq: true
+    },
+    originator: String,
+    originatorEmail: {
+      type: String,
+      required: true
+    },
+    confirmationCode: String,
+    emailConfirmed: {
+      type: Boolean,
+      default: false
+    },
+    companyLogoURL: String,
+    created: {
+      type: Date,
+      default: Date.now
+    },
+    teams: Array
+  });
 
-    methods(companySchema);
-    statics(companySchema);
+  methods(companySchema);
+  statics(companySchema);
 
-    app.db.model('Company', companySchema);
+  app.db.model('Company', companySchema);
 }

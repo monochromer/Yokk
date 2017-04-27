@@ -11,15 +11,15 @@ export function getDateState(storeDate) {
 }
 
 export function getUserFullName(login, usersArray) {
-    let user = _.find(usersArray, function(o) {
-        return o.login === login;
-    });
-    if (typeof user !== 'undefined') {
-        if (typeof user.fullname !== 'undefined') {
-            return user.fullname;
-        }
+  let user = _.find(usersArray, function(o) {
+    return o.login === login;
+  });
+  if (typeof user !== 'undefined') {
+    if (typeof user.fullname !== 'undefined') {
+      return user.fullname;
     }
-    return `(login: ${login})`;
+  }
+  return `(login: ${login})`;
 }
 
 export function filterPeriod(userActivity) {

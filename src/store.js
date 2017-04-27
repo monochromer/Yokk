@@ -11,11 +11,11 @@ import createItem from './middlewares/createItem'
 
 const middleware = applyMiddleware(promise(), thunk, callAPI, loadItems, updateItem, deleteItem, createItem, createLogger());
 const store = createStore(
-    reducer,
-    compose(
-        middleware,
-        window.devToolsExtension ? window.devToolsExtension() : f => f
-    )
+  reducer,
+  compose(
+    middleware,
+    window.devToolsExtension ? window.devToolsExtension() : f => f
+  )
 );
 
 window.store = store;

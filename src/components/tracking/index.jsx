@@ -4,15 +4,15 @@ import TimeEntriesList from './TimeEntriesList.jsx'
 
 class Tracking extends React.Component {
 
-    render() {
+  render() {
 
-        return (
-            <div style={{"flex": "1 0 auto"}}>
-                <NewTimeEntryForm />
-                <TimeEntriesList/>
-            </div>
-        );
-    }
+    return (
+      <div style={{"flex": "1 0 auto"}}>
+        <NewTimeEntryForm />
+        <TimeEntriesList/>
+      </div>
+    );
+  }
 }
 
 export default Tracking
