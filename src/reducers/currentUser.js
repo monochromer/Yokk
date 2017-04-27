@@ -19,8 +19,8 @@ export default (state = initialState, action = {}) => {
 				authenticated: !isEmpty(action.user),
 				data: {
           ...state.data,
-          _id: action.user._id,
-          login: action.user.login
+          _id: action.user ? action.user._id : null,
+          login: action.user ? action.user.login : null
         }
 			};
     case 'FETCH_CURRENT_USER':
