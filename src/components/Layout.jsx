@@ -16,6 +16,13 @@ class Layout extends React.Component {
       store.dispatch(fetchCurrentUser());
     }
   }
+  
+  componentWillReceiveProps(newProps){
+    if(!this.props.authenticated && newProps.authenticated){
+      store.dispatch(fetchTeamUsers());
+      store.dispatch(fetchCurrentUser());
+    }
+  }
 
   onCreateNewCompany = () => {
     store.dispatch({ type: 'MODAL_NEW_COMPANY_OPEN' });
