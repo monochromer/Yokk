@@ -1,32 +1,61 @@
 import React from 'react'
 import store from '../../../store'
-import { step2 } from '../../../actions/companies'
-// import { step2 } from '../../../actions/teams'
-import { connect } from 'react-redux'
+import { step2 } from '../../../actions/registration'
 import { Input } from '../../UI.jsx'
+import { isEmpty } from 'lodash';
 
 class Step2 extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      login: ""
+
+  state = {
+    firstName: "",
+    lastName: "",
+    errors: {}
+  }
+
+  handleChange = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value,
+      errors: {
+        ...this.state.errors,
+        [event.target.name]: null
+      }
+    });
+  }
+
+  checkForm = () => {
+    const { firstName, lastName } = this.state;
+    const errors = {};
+    if(!firstName.length){
+      errors.firstName = "Please enter First Name";
+    }
+    if(!lastName.length){
+      errors.lastName = "Please enter Last Name";
+    }
+    if(firstName.length > 50){
+      errors.firstName = "First Name must be 50 characters or less";
+    }
+    if(lastName.length > 50){
+      errors.lastName = "Last Name must be 50 characters or less";
+    }
+    if(!isEmpty(errors)){
+      this.setState({errors});
+      return false;
+    }
+    return true;
+  }
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    if(this.checkForm()){
+      const { firstName, lastName } = this.state;
+      store.dispatch(step2(firstName, lastName));
     }
   }
 
-  handleChange(event) {
-    this.setState({
-      login: event.target.value
-    })
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
-    store.dispatch(step2(this.state.login));
-  }
-
-  render() {
+  render(){
+    const { errors } = this.state;
     return (
-      <form onSubmit={ this.handleSubmit.bind(this) }>
+      <form onSubmit={ this.handleSubmit }>
         <div className="container">
           <div className="row center-xs step__heading">
             <div className="col-md-6 col-sm-8 col-xs-10">
@@ -35,22 +64,34 @@ class Step2 extends React.Component {
           </div>
           <div className="row center-xs step__message">
             <div className="col-md-6 col-sm-8 col-xs-10">
-              <p>You name will be used for auth. You will not be able to change it.</p>
+              <p>How should we address you?</p>
             </div>
           </div>
           <div className="row center-xs step__code">
             <div className="col-md-6 col-sm-8 col-xs-10">
-              <Input handleChange={ this.handleChange.bind(this) }
-                  className="input-group input-group__grey"
-                  name="username"
-                  label="User name"/>
+              <Input
+                handleChange={ this.handleChange }
+                className="input-group input-group__grey"
+                name="firstName"
+                label="First name"
+                error={errors.firstName}
+              />
+              <Input
+                handleChange={ this.handleChange }
+                className="input-group input-group__grey"
+                name="lastName"
+                label="Last name"
+                error={errors.lastName}
+              />
             </div>
           </div>
           <div className="row center-xs">
             <div className="col-md-6 col-sm-8 col-xs-10">
-              <button type="submit" className="btn btn__lg btn__blue team-create__create"
-                  disabled={ !this.state.login ? "disabled" : "" }>Continue to
-                Password
+              <button
+                type="submit"
+                className="btn btn__lg btn__blue team-create__create"
+              >
+                Confirm and continue
               </button>
             </div>
           </div>
@@ -60,10 +101,4 @@ class Step2 extends React.Component {
   }
 }
 
-function getParams(store) {
-  return {
-    login: localStorage.getItem("login")
-  }
-}
-
-export default connect(getParams)(Step2)
+export default Step2

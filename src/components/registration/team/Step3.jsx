@@ -1,63 +1,92 @@
 import React from 'react'
-import store from '../../../store'
-import {connect} from 'react-redux'
-import {browserHistory} from 'react-router'
-import {step3} from '../../../actions/companies'
-// import {step3} from '../../../actions/teams'
-import {addUser} from '../../../actions/users'
-import {getFromStateOrLocalStorage} from '../../../helpers'
-import {Input} from '../../UI.jsx'
+import { connect } from 'react-redux'
+import { step3 } from '../../../actions/registration'
+import { addUser } from '../../../actions/users'
+import { Input } from '../../UI.jsx'
 
 class Step3 extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      password: ""
+  state = {
+    password: "",
+    error: ""
+  }
+
+  handleChange = (event) => {
+    this.setState({
+      password: event.target.value,
+      error: ""
+    })
+  }
+
+  checkForm = () => {
+    const { password } = this.state;
+    let error = "";
+    if(password.length < 8){
+      error = "Password must be at least 8 characters long";
     }
+    if(password.length > 100){
+      error = "Password must be 100 characters or less";
+    }
+    if(error){
+      this.setState({error});
+      return false;
+    }
+    return true;
   }
 
-  handleChange(event) {
-    this.setState({password: event.target.value})
-  }
-
-  handleSubmit(event) {
+  handleSubmit = (event) => {
     let user = Object.assign({}, this.props.user, {password: this.state.password});
     event.preventDefault();
-    store.dispatch(addUser(user));
-    store.dispatch(step3(this.state.password));
+    if(this.checkForm()){
+      this.props.addUser(user, (err) => {
+        if(err){
+          this.setState({
+            error: err
+          });
+        }
+        else{
+          this.setState({
+            error: ""
+          });
+          this.props.step3(this.state.password);
+        }
+      });
+    }
   }
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit.bind(this)}>
+      <form onSubmit={this.handleSubmit}>
         <div className="container">
           <div className="row center-xs step__heading">
             <div className="col-md-6 col-sm-8 col-xs-10">
-              <h1 className="heading">Set your password</h1>
+              <h1 className="heading">Choose your password</h1>
             </div>
           </div>
           <div className="row center-xs step__message">
             <div className="col-md-6 col-sm-8 col-xs-10">
-              <p>Password must be at least 7 characters long, and shouldn't be like 123456 or abcdef</p>
+              <p>It must be at least 8 symbols long, include at least one upper
+                and lower case letter and digit. Th strongest passwords laso
+                include symbols. Avoid too simple passwords.</p>
             </div>
           </div>
           <div className="row center-xs step__code">
             <div className="col-md-6 col-sm-8 col-xs-10">
               <Input
-                handleChange={this.handleChange.bind(this)}
+                handleChange={this.handleChange}
                 className="input-group input-group__grey"
                 type="password"
                 name="password"
-                label="Password"/>
+                label="Password"
+                error={this.state.error}
+              />
             </div>
           </div>
           <div className="row center-xs">
             <div className="col-md-6 col-sm-8 col-xs-10">
               <button
                 className="btn btn__lg btn__blue team-create__create"
-                disabled={this.state.password.length <= 6
-                ? "disabled"
-                : ""}>Continue to Company
+              >
+                Confirm and continue
               </button>
             </div>
           </div>
@@ -68,21 +97,9 @@ class Step3 extends React.Component {
 }
 
 function getProps(state) {
-  let login = getFromStateOrLocalStorage('login', state.teams);
-  let email = getFromStateOrLocalStorage('email', state.teams);
-  let _id = getFromStateOrLocalStorage('_id', state.teams);
-
-  if (!login || !email || !_id) {
-    browserHistory.push('/registration');
-  }
-
   return {
-    user: {
-      login: login,
-      email: email,
-      team: _id
-    }
+    user: state.registration
   }
 }
 
-export default connect(getProps)(Step3)
+export default connect(getProps, { addUser, step3 })(Step3)

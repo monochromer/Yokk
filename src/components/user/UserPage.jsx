@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { findUserByLogin } from '../../helpers.js'
+import { findUserByEmail } from '../../helpers.js'
 // import { Link } from 'react-router'
 
 
@@ -10,7 +10,7 @@ class UserPage extends React.Component {
     super(props);
 
     this.state = {
-      user: findUserByLogin(this.props.users, this.props.routeParams.login)
+      user: findUserByEmail(this.props.users, this.props.routeParams.email)
     };
 
     this.showField = this.showField.bind(this);
@@ -18,7 +18,7 @@ class UserPage extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      user: findUserByLogin(nextProps.users, this.props.routeParams.login)
+      user: findUserByEmail(nextProps.users, this.props.routeParams.email)
     })
   }
 

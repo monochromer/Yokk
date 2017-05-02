@@ -44,9 +44,9 @@ class LoginForm extends React.Component {
   }
 
   render() {
-    const {handleChange} = this
-    const {wrongConfirmPass} = this.state
-    const style = {}
+    const { handleChange } = this;
+    const { wrongConfirmPass } = this.state;
+    const style = {};
 
     if (wrongConfirmPass) {
       style.confirmPassStyle = {backgroundColor: 'rgb(245,138,71)'}
@@ -67,14 +67,15 @@ class LoginForm extends React.Component {
         <div className="row center-md">
           <div className="col-md-5">
             <form className="form-signin" onSubmit={this.handleSubmit}>
-              <h2 className="heading">Sign In</h2>
+              <h2 className="heading">Welcome back!</h2>
+              <p>Please sign in to access your team</p>
               <Input
                 handleChange={handleChange}
                 className="input-group input-group__grey"
-                label="Username"
+                label="E-mail"
                 error={loginError}
                 required="true"
-                name="username"/>
+                name="email"/>
 
               <Input
                 handleChange={handleChange}

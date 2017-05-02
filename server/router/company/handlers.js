@@ -4,35 +4,124 @@ const sendEmail = require('../helpers/sendEmail')
 const valid = require("valid-email")
 
 exports.create = function (req, res, next) {
-  const { Company } = req.app.db.models
-  const step = req.body.step
-  const email = req.body.email
+  const { Company } = req.app.db.models;
+  const { email, step, code, login, name } = req.body;
 
   if (!valid(email)) {
-    res.status(400).send("Email is not valid");
+    res.status(400).send("Invalid e-mail");
     return false;
   }
 
-  const code = req.body.code
-  const login = req.body.login
-  const name = req.body.name
-
   switch (step) {
     case '0':
-      createCompanyWithGivenEmail(Company, email, sendEmail).then(company => {
-        res.status(200).send(company);
-      }).catch(reason => {
-        res.status(500).send();
-        next(reason);
+      const companyInitialData = {
+        originatorEmail: email
+      }
+
+      Company.findOne(companyInitialData, (err, company) => {
+        if(err){
+          console.log(err);
+          res.status(500).send("Server error");
+          return false;
+        }
+        if (company && company.emailConfirmed) {
+          res.status(409).send("This email address is already registered. You" +
+            " can log in. If you forgot your password, you can reset it.");
+          return false;
+        }
+        if (
+          company &&
+          company.codeSentDate &&
+          Date.now() < (+company.codeSentDate + 1000 * 60 * 10) //+ 10 mins
+        ) {
+          res.status(409).send("This address is already in the system but is " +
+            "not activated. Please activate it using link we sent you in the " +
+            "confirmation letter");
+          return false;
+        }
+
+        const { NODE_ENV } = process.env;
+        const confCode = (NODE_ENV === 'development') ? '111111' :
+          Math.random().toString().slice(2, 8);
+        companyInitialData.confirmationCode = confCode;
+        companyInitialData.codeSentDate = Date();
+        companyInitialData.codeTries = 0;
+
+        const htmlToSend = "<div>Your e-mail was successfully registered in " +
+          "system of Yokk!<br>To confirm it, enter the code below or use the " +
+          "link.<br><br>Code: " + confCode + "<br>Confirmation link:<br><br>" +
+          "Thank you for registration!<br>Yokk! Team</div>";
+
+        const mailOptions = {
+          from: '"Soshace team 👥" <bot@izst.ru>',
+          to: email,
+          subject: 'Your company is being processed. Please follow the instructions',
+          html: htmlToSend
+        };
+
+        if(!company){
+          const newCompany = new Company(companyInitialData);
+          newCompany.save((err, company) => {
+            if(err){
+              console.log(err);
+              res.status(500).send("Server error");
+              return false;
+            }
+            res.status(200).send(company);;
+            sendEmail(mailOptions);
+          })
+        }
+        else{
+          company.confirmationCode = confCode;
+          company.codeSentDate = Date();
+          company.codeTries = 0;
+          company.save((err, company) => {
+            if(err){
+              console.log(err);
+              res.status(500).send("Server error");
+              return false;
+            }
+            res.status(200).send(company);;
+            sendEmail(mailOptions);
+          });
+        }
       });
       break;
 
     case '1':
-      checkConfirmationCode(code, email).then(company => {
+      Company.findOne({originatorEmail: email}, (err, company) => {
+        if(err){
+          console.log(err);
+          res.status(500).send("Server error");
+          return false;
+        }
+        if(!company){
+          res.status(400).send("Company is not found");
+          return false;
+        }
+        if(company.emailConfirmed === true){ //set to true on last step
+          res.status(409).send("Company is already confirmed");
+          return false;
+        }
+        if(company.codeTries > 2){
+          res.status(403).send("You entered an incorrect code 3 times and now" +
+            " your current code is deactivated. Click here to get a new " +
+            "confirmation code.");
+          return false;
+        }
+        if(company.confirmationCode !== code){
+          company.codeTries++;
+          company.save((err, company) => {
+            if(err){
+              console.log(err);
+              res.status(500).send("Server error");
+              return false;
+            }
+            res.status(403).send("Invalid code");
+          });
+          return false;
+        }
         res.status(200).send(company);
-      }).catch(reason => {
-        res.status(500).send();
-        next(reason);
       });
       break;
 
@@ -55,74 +144,6 @@ exports.create = function (req, res, next) {
       break;
 
     default:
-      createCompanyWithGivenEmail(Company, email, sendEmail).then(company => {
-        res.status(200).send(company);
-      }).catch(reason => {
-        res.status(500).send();
-        next(reason);
-      });
-      break;
-  }
-
-  function createCompanyWithGivenEmail(companyModel, email, sendEmailFunc) {
-    return new Promise((resolve, reject) => {
-      if (!email) return reject(new Error());
-
-      const companyInitialData = {
-        originatorEmail: email
-      }
-
-      companyModel.findOne(companyInitialData, (err, company) => {
-        if (company && company.emailConfirmed) {
-          let error = new Error();
-          error.name = "This company is already created and confirmed";
-          return next(error.name);
-        }
-
-        const {NODE_ENV} = process.env
-        const confCode = (NODE_ENV === 'development') ? '111111' : Math.random().toString().slice(2, 8)
-        companyInitialData.confirmationCode = confCode
-
-        const htmlToSend = `<div>Confirmation code ${confCode}</div>`;
-
-        const mailOptions = {
-          from: '"Soshace team 👥" <bot@izst.ru>',
-          to: email,
-          subject: 'Your company is being processed. Please follow the instructions',
-          html: htmlToSend
-        };
-
-        if (!company) {
-          const newCompany = new companyModel(companyInitialData);
-          newCompany.save((err, company) => {
-            if (err) next(err);
-            resolve(company);
-            sendEmailFunc(mailOptions);
-          })
-        } else {
-          resolve(company);
-          sendEmailFunc(mailOptions);
-        }
-      })
-    })
-  }
-
-  function checkConfirmationCode(confirmationCode, email) {
-    return new Promise((resolve, reject) => {
-      Company.findOne({
-        originatorEmail: email
-      }, (err, company) => {
-        if (err) return reject(err);
-        if (!company) return reject(new Error());
-        if (company.confirmationCode !== confirmationCode) return reject(new Error());
-        if (company.confirmed === true) return reject(new Error());
-
-        company.confirmed = true;
-        company.save();
-
-        resolve(company);
-      })
-    })
   }
 
   function saveCompanyOriginatorLogin(login, originatorEmail) {

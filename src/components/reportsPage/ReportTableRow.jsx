@@ -2,7 +2,7 @@ import React from 'react';
 import store from '../../store.js';
 import { convertToHours } from './reportPageHelpers.js';
 import { Link } from 'react-router';
-import { findUserByLogin } from '../../helpers'
+import { findUserByEmail } from '../../helpers'
 import { connect } from 'react-redux'
 
 class ReportTableRow extends React.Component {
@@ -30,7 +30,7 @@ class ReportTableRow extends React.Component {
     }
 
     console.log(this.props.user);
-    var userProfile = findUserByLogin(this.props.users, this.props.user);
+    var userProfile = findUserByEmail(this.props.users, this.props.user);
     const { profileImg, fullname, role, login } = userProfile;
     let name = fullname ? fullname : login;
     let photo = profileImg ? profileImg.small : "";

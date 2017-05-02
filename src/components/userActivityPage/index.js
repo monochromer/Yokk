@@ -1,7 +1,7 @@
 import React from 'react';
 import UserActivityTable from './UserActivityTable.jsx';
 import { connect } from 'react-redux';
-import { findUserByLogin } from '../../helpers.js';
+import { findUserByEmail } from '../../helpers.js';
 // import { Input } from '../UI.jsx'
 
 class UserActivityPage extends React.Component {
@@ -15,15 +15,15 @@ class UserActivityPage extends React.Component {
   }
 
   render() {
-    const login = this.props.routeParams.login;
+    const email = this.props.routeParams.email;
 
-    function findUserActivity(login, usersActivities) {
+    function findUserActivity(email, usersActivities) {
       if (usersActivities) {
-        return usersActivities[login];
+        return usersActivities[email];
       }
     }
 
-    const userActivity = findUserActivity(login, this.props.usersActivities);
+    const userActivity = findUserActivity(email, this.props.usersActivities);
 
     // let period, oldestLoadedRecorDate;
 
@@ -35,10 +35,10 @@ class UserActivityPage extends React.Component {
       // oldestLoadedRecorDate = userActivity.list[userActivity.list.length - 1].dateCreated;
     // }
 
-    const user = findUserByLogin(this.props.users, login);
+    const user = findUserByEmail(this.props.users, email);
 
     if (user) {
-      this.setState({userHeading: user.fullname ? user.fullname : user.login});
+      this.setState({userHeading: user.fullname ? user.fullname : user.email});
       if (user.profileImg) {
         this.setState({photo: user.profileImg.medium});
       }
@@ -84,7 +84,7 @@ class UserActivityPage extends React.Component {
 
         <div className="row">
           <div className="col-md-12">
-            <UserActivityTable login={ login } userActivity={userActivity}/>
+            <UserActivityTable login={ email } userActivity={userActivity}/>
           </div>
         </div>
       </div>

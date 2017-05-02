@@ -1,16 +1,16 @@
 import jwt from 'jsonwebtoken';
 
 export const login = (req, res) => {
-	const { username, password } = req.body;
+	const { email, password } = req.body;
 	if(
-    !username ||
+    !email ||
     !password
   ){
 		res.status(400).send();
 		return false;
 	}
   const User = req.app.db.models.User;
-  User.findOne({login: username}).exec((err, user) => {
+  User.findOne({email}).exec((err, user) => {
 		if(err){
 			console.log(err);
 			res.status(500).send();
@@ -26,11 +26,7 @@ export const login = (req, res) => {
     }
     else{
       const jwtToken = jwt.sign({
-        _id: user._id,
-        login: user.login,
-        team: user.team,
-        role: user.role,
-        profileImg: user.profileImg
+        _id: user._id
       }, process.env.JWT_SECRET);
       res.json({jwtToken});
     }

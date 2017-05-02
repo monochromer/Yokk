@@ -3,7 +3,7 @@ import store from '../../store.js'
 import moment from 'moment'
 import { createTimeEntry, fetchRedmineTimeEntries, fetchUpworkTimeEntries } from '../../actions/timeEntries.js'
 import { connect } from 'react-redux'
-import { findUserByLogin } from '../../helpers'
+import { findUserByEmail } from '../../helpers'
 import { validateString, validateDuration, validateDateFormat } from '../../utils/validators'
 import { Input } from '../UI.jsx'
 
@@ -37,7 +37,7 @@ class NewTimeEntryForm extends Component {
 
 
   syncRedmine() {
-    const user = findUserByLogin(this.props.users, this.props.currentUser);
+    const user = findUserByEmail(this.props.users, this.props.currentUser);
     if (user.redmineApiKey) {
       store.dispatch(fetchRedmineTimeEntries());
     } else {
@@ -46,7 +46,7 @@ class NewTimeEntryForm extends Component {
   }
 
   syncUpwork() {
-    const user = findUserByLogin(this.props.users, this.props.currentUser);
+    const user = findUserByEmail(this.props.users, this.props.currentUser);
     if (user.upworkApiKey) {
       store.dispatch(fetchUpworkTimeEntries());
     } else {

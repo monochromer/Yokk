@@ -1,8 +1,8 @@
 import _ from "lodash"
 import moment from 'moment'
 
-export function findUserByLogin(users, login) {
-	return _.find(users, (o) => o.login === login);
+export function findUserByEmail(users, email) {
+	return _.find(users, (o) => o.email === email);
 }
 
 export function refsToObject(refs) {

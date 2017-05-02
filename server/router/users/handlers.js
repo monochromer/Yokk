@@ -60,7 +60,7 @@ exports.getTeamUsers = function (req, res, next) {
   }
 };
 
-exports.saveUserToDb = function (req, res, next) {
+exports.saveUserToDb = function (req, res) {
   const { User, Company, Team } = req.app.db.models
   const user = new User(req.body)
   user.joinedon = Date.now()
@@ -70,60 +70,52 @@ exports.saveUserToDb = function (req, res, next) {
   Company.findOne({
     originatorEmail: req.body.email
   }, (err, company) => {
+    if(err){
+      console.log(err);
+      res.status(500).send('Server error');
+      return false;
+    }
+    if(!company){
+      res.status(400).send('Company not found');
+      return false;
+    }
 
     user.companies = [company._id]
 
-    User.findByLogin(user.login, (err, dbUser) => {
-      if (err) next(err);
+    User.findOne({email: user.email}, (err, dbUser) => {
+      if(err){
+        console.log(err);
+        res.status(500).send('Server error');
+        return false;
+      }
 
       if (!dbUser) {
         user.save((err, user) => {
-          if (err) next(err)
+          if(err){
+            console.log(err);
+            res.status(500).send('Server error');
+            return false;
+          }
 
-          res.status(200).send(user)
+          res.status(200).send(user);
 
           const teamInitData = {
             created: Date.now(),
             members: [user._id]
           }
 
-          const newTeam = new Team(teamInitData)
+          const newTeam = new Team(teamInitData);
           newTeam.save((err, team) => {
-            company.teams.push(team._id)
-            company.save()
+            company.teams.push(team._id);
+            company.save();
 
-            user.teams.push(team._id)
-            user.save()
+            user.teams.push(team._id);
+            user.save();
           })
-
-          if (typeof req.body.email !== 'undefined') {
-            let credentials = {
-              login: req.body.login,
-              password: req.body.password,
-              email: req.body.email
-            };
-            let text;
-            let htmlToSend =
-              `<div>Login: <b>${credentials.login}</b></div>
-                          <div>Password: <b>${credentials.password}</b></div>
-                          <div><a href='http://eop.soshace.com/'>eop.soshace.com</a></div>`;
-
-            let mailOptions = {
-              from: '"Soshace team 👥" <bot@izst.ru>', // sender address
-              to: credentials.email, // list of receivers
-              subject: 'Congratulations! You\'re now registered user', // Subject line
-              text: text,
-              html: htmlToSend // html body
-            };
-            return sendEmail(mailOptions);
-          }
-          const logMsq = `User (login: ${user.login}) is saved to DB`;
-          return log(req, logMsq).info();
         });
       } else {
-        const logMsq = `User (login: ${user.login}) is already in DB`;
-        res.status(500).send();
-        return log(req, logMsq).info()
+        const logMsq = `User (email: ${user.email}) is already in DB`;
+        res.status(400).send(logMsq);
       }
     });
   })
@@ -307,7 +299,7 @@ exports.deleteUserAvatar = function (req, res, next) {
 exports.getLoggedInUser = function (req, res, next) {
   // as of now, returned fields can be adjusted in userpassport.js
   const { User, Company, Team } = req.app.db.models
-  User.findByLogin(req.user.login, (err, user) => {
+  User.findOne({email: req.user.email}, (err, user) => {
     if(err){
       console.log(err);
       res.status(500).send();

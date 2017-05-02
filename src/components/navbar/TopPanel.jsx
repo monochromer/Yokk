@@ -61,7 +61,7 @@ class TopPanel extends React.Component {
 
             <div className="profile-block">
               {photo}
-              <Link to={"/user/edit/" + user.login}>{user.login}</Link>
+              <Link to={"/user/edit/" + user.email}>{user.email}</Link>
             </div>
 
             <a href="#" onClick={this.logout} className="top-panel_logout">Logout</a>

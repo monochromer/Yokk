@@ -1,4 +1,3 @@
-import axios from 'axios'
 import {
   TEAM_CRUD,
   ADD_TEAM,
@@ -141,13 +140,6 @@ export function step5(teamName, addMembers) {
       }
     }
   }
-}
-
-export function authUser(login, password) {
-    return function(dispatch) {
-        axios.post('/login', {username: login, password: password});
-        console.log(login + password);
-    }
 }
 
 export function fetchTEams(companyId) {

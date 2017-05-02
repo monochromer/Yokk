@@ -62,12 +62,12 @@ export function linkService(id, fields) {
   }
 }
 
-export function addUser(user) {
+export function addUser(user, callback) {
   return function(dispatch) {
-    axios.post(USER_CRUD, user).then((response) => {
+    axios.post(USER_CRUD, user).then((resp) => {
       dispatch({
         type: "ADD_USER",
-        payload: response.data
+        payload: resp.data
       });
       dispatch({
         type: "ALERT_SHOW",
@@ -75,6 +75,9 @@ export function addUser(user) {
         class: "success"
       });
       dispatch({ type: "MODAL_ADD_USER_CLOSE" });
+      callback();
+    }, (err) => {
+      callback(err.response.data);
     });
   }
 }

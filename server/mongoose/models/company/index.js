@@ -24,7 +24,9 @@ module.exports = function(app, mongoose) {
       type: Date,
       default: Date.now
     },
-    teams: Array
+    teams: Array,
+    codeSentDate: Date,
+    codeTries: Number
   });
 
   methods(companySchema);

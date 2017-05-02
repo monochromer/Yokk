@@ -33,9 +33,9 @@ export default (
       <IndexRoute component={ Tracking } />
 			<Route path="teams" component={ Teams }></Route>
       <Route path="users" component={ UserTable } />
-      <Route path="user/:login" component={ UserPage } />
-      <Route path="user/edit/:login" component={ UserEdit } />
-      <Route path="user/activityPage/:login" component={ UserActivityPage } />
+      <Route path="user/:email" component={ UserPage } />
+      <Route path="user/edit/:email" component={ UserEdit } />
+      <Route path="user/activityPage/:email" component={ UserActivityPage } />
       <Route path="reports" component={ ReportsPage } />
     </Route>
   </Route>

@@ -1,9 +1,7 @@
 import React from 'react'
-import store from '../../store'
 import validator from 'validator'
 import classNames from 'classnames'
-import { step0 } from '../../actions/companies'
-// import { step0 } from '../../actions/teams'
+import { checkCompanyEmail } from '../../actions/registration'
 import { connect } from 'react-redux'
 import { Input } from '../UI.jsx'
 
@@ -14,32 +12,31 @@ class PromoPage extends React.Component {
     super();
     this.state = {
       email: "",
-      rightPanelOpened: false
+      rightPanelOpened: false,
+      error: ""
     };
-
-    this.handleClickCreate = this.handleClickCreate.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
   }
 
-  handleSubmit(event) {
+  handleSubmit = (event) => {
     event.preventDefault();
     if (validator.isEmail(this.state.email)) {
-      store.dispatch(step0(this.state.email));
-    } else {
-      store.dispatch({type: "CREATE_ERROR", step: "step0", text: "It is not valid email!"})
+      this.props.checkCompanyEmail(this.state.email, (err) => {
+        this.setState({error: err || ""});
+      });
+    }
+    else{
+      this.setState({error: "Invalid e-mail"});
     }
   }
 
-  handleClickCreate() {
+  handleClickCreate = () => {
     this.setState({
       rightPanelOpened: true
     })
   }
 
-  handleChange(event) {
+  handleChange = (event) => {
     this.setState({email: event.target.value});
-    store.dispatch({type: "REMOVE_ERRORS"});
   }
 
   render() {
@@ -121,7 +118,7 @@ class PromoPage extends React.Component {
                       className={ inputClassNames }
                       name="email"
                       label="E-mail address"
-                      error={ this.props.error }
+                      error={ this.state.error }
                   />
                   <button type="submit" className="btn btn__lg btn__white right-panel_btn">Register Company</button>
                 </div>
@@ -152,10 +149,4 @@ class PromoPage extends React.Component {
   }
 }
 
-function getProps(store) {
-  return {
-    error: store.teams.errors.step0
-  }
-}
-
-export default connect(getProps)(PromoPage)
+export default connect(null, { checkCompanyEmail })(PromoPage)

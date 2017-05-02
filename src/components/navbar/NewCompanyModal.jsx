@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { Input } from '../UI.jsx'
 import { validateString } from '../../utils/validators'
-import { createCompany } from '../../actions/companies'
+import { createCompany } from '../../actions/registration'
 
 class NewCompanyModal extends React.Component {
 

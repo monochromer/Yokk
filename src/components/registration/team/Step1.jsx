@@ -1,39 +1,33 @@
-import React, { Component, PropTypes } from 'react'
-import store from '../../../store'
+import React from 'react'
 import _ from 'lodash'
-import {connect} from 'react-redux'
-import {browserHistory} from 'react-router'
-import {step1} from '../../../actions/companies'
-// import {step1} from '../../../actions/teams'
-import {getFromStateOrLocalStorage} from '../../../helpers'
+import { connect } from 'react-redux'
+import { checkConfirmationCode } from '../../../actions/registration'
 
-class Step1 extends Component {
+class Step1 extends React.Component {
 
   state = {
-    code: []
-  }
-
-  static propTypes = {
-    email: PropTypes.string.isRequired
+    code: '',
+    error: ''
   }
 
   handleChange = event => {
-    this.state.code[event.target.name] = event.target.value;
-    this.setState({code: this.state.code});
-
-    if (parseInt(event.target.name, 10) < 5) {
-      this.refs[parseInt(event.target.name, 10) + 1].focus();
-    }
+    this.setState({
+      [event.target.name]: event.target.value
+    });
   }
 
   handleSubmit = event => {
-    event.preventDefault()
-    store.dispatch(step1(_.join(this.state.code, ""), this.props.email))
+    event.preventDefault();
+    this.props.checkConfirmationCode(this.state.code, this.props.email, (err) => {
+      this.setState({
+        error: err || ''
+      });
+    });
   }
 
   render() {
-    const {handleSubmit, handleChange} = this
-    const inputClass = "step1__confirmation-input text-center"
+    const { handleSubmit, handleChange } = this;
+    const { code, error } = this.state;
 
     return (
       <div className="container">
@@ -47,30 +41,23 @@ class Step1 extends Component {
           <div className="row center-xs step__message">
             <div className="col-md-6 col-sm-8 col-xs-10">
               <p>
-                We’ve sent a six-digit confirmation code to&nbsp;<b>{this.props.email}</b>. Enter it below to confirm your e-mail address.
+                We’ve sent a six-digits confirmation code to&nbsp;<b>{this.props.email}</b>. Enter it to verify your e-mail address.
               </p>
             </div>
           </div>
 
           <div className="row center-xs step__code">
 
-            <div className="col-md-1 col-sm-2 col-xs-2">
-              <input className={inputClass} ref="0" onChange={handleChange} name="0" type="text" maxLength="1"/>
-            </div>
-            <div className="col-md-1 col-sm-2 col-xs-2">
-              <input className={inputClass} ref="1" onChange={handleChange} name="1" type="text" maxLength="1"/>
-            </div>
-            <div className="col-md-1 col-sm-2 col-xs-2">
-              <input className={inputClass} ref="2" onChange={handleChange} name="2" type="text" maxLength="1"/>
-            </div>
-            <div className="col-md-1 col-sm-2 col-xs-2">
-              <input className={inputClass} ref="3" onChange={handleChange} name="3" type="text" maxLength="1"/>
-            </div>
-            <div className="col-md-1 col-sm-2 col-xs-2">
-              <input className={inputClass} ref="4" onChange={handleChange} name="4" type="text" maxLength="1"/>
-            </div>
-            <div className="col-md-1 col-sm-2 col-xs-2">
-              <input className={inputClass} ref="5" onChange={handleChange} name="5" type="text" maxLength="1"/>
+            <div className="col-md-6 col-sm-12 col-xs-12">
+              <input
+                className="step1__confirmation-input text-center"
+                onChange={handleChange}
+                value={code}
+                name="code"
+                type="text"
+                maxLength="6"
+              />
+              {error && <div style={{color: 'red'}}>{error}</div>}
             </div>
 
           </div>
@@ -80,10 +67,8 @@ class Step1 extends Component {
               <button
                 type="submit"
                 className="btn btn__lg btn__blue team-create__create"
-                disabled={this.state.code.length !== 6
-                ? "disabled"
-                : ""}>
-                Continue to Name
+                disabled={code.length !== 6 ? "disabled" : ""}>
+                Confirm and continue
               </button>
             </div>
           </div>
@@ -94,18 +79,15 @@ class Step1 extends Component {
   }
 }
 
-// Step1.propTypes = {
-//   email: React.PropTypes.string.isRequired
-// }
-
-function getProps(state) {
-  let email = getFromStateOrLocalStorage('email', state.teams);
-
-  if (!email) {
-    browserHistory.push('/registration');
-  }
-
-  return {email: email}
+Step1.propTypes = {
+  email: React.PropTypes.string.isRequired,
+  checkConfirmationCode: React.PropTypes.func.isRequired
 }
 
-export default connect(getProps)(Step1)
+function getProps(state) {
+  return {
+    email: state.registration.email
+  }
+}
+
+export default connect(getProps, { checkConfirmationCode })(Step1)

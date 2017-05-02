@@ -5,11 +5,6 @@ var statics = require('./statics');
 
 module.exports = function (app, mongoose) {
   var userSchema = new mongoose.Schema({
-    login: {
-      type: String,
-      unique: true,
-      required: true
-    },
     hashedPassword: {
       type: String,
       required: true
@@ -19,7 +14,8 @@ module.exports = function (app, mongoose) {
       required: true
     },
 
-    fullname: String,
+    firstName: String,
+    lastName: String,
     position: String,
     email: {
       type: String,

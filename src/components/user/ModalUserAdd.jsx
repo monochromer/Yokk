@@ -5,7 +5,7 @@ import _ from 'lodash'
 import { connect } from 'react-redux'
 import { Input } from '../UI.jsx'
 import { step5 } from '../../actions/teams'
-import { findUserByLogin } from '../../helpers'
+import { findUserByEmail } from '../../helpers'
 import { fetchUsers } from '../../actions/users'
 
 
@@ -35,7 +35,7 @@ class ModalUserAdd extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    let teamId = findUserByLogin(this.props.users, this.props.login).team;
+    let teamId = findUserByEmail(this.props.users, this.props.email).team;
     store.dispatch(step5(teamId, this.state.invitations));
     store.dispatch({type: "MODAL_ADD_USER_CLOSE"});
   }
@@ -110,7 +110,7 @@ function getProps(store) {
   return {
     status: store.modals.userAdd.visible,
     users: store.users.list,
-    login: store.currentUser.data.login
+    email: store.currentUser.data.email
   }
 }
 

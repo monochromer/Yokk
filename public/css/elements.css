@@ -286,16 +286,16 @@ a:hover {
 }
 
 .input-group__error input {
-    border-bottom: 2px solid #FFC7C7;
-    color: #FFC7C7;
+    border-bottom: 2px solid #ff3f3f;
+    color: #ff3f3f;
 }
 
 .input-group__error label {
-    color: #FFC7C7;
+    color: #ff3f3f;
 }
 
 .error {
-    color: #FFC7C7;
+    color: #ff3f3f;
     font-weight: lighter;
     font-size: 0.7rem;
     position: absolute;

@@ -3,22 +3,16 @@ import DropPicture from './DropPicture.jsx'
 import store from '../../store.js'
 import { Input } from '../UI.jsx'
 import { REDMINE } from '../../constants'
-import { findUserByLogin } from '../../helpers'
+import { findUserByEmail } from '../../helpers'
 import { updateUser, linkServiceOpen, fetchUsers } from '../../actions/users'
 // import { browserHistory } from 'react-router'
 import { connect } from 'react-redux'
 
 class UserEdit extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: findUserByLogin(this.props.users, this.props.routeParams.login),
-      fields: {}
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.linkRedmine = this.linkRedmine.bind(this);
+  state = {
+    user: findUserByEmail(this.props.users, this.props.routeParams.email),
+    fields: {}
   }
 
   componentWillMount(){
@@ -27,11 +21,11 @@ class UserEdit extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      user: findUserByLogin(nextProps.users, this.props.routeParams.login)
+      user: findUserByEmail(nextProps.users, this.props.routeParams.email)
     })
   }
 
-  handleChange(event) {
+  handleChange = (event) => {
     let fields = Object.assign({}, this.state.fields, { [event.target.name]: event.target.value });
 
     this.setState({
@@ -43,7 +37,7 @@ class UserEdit extends React.Component {
 
 
 
-  handleSubmit(event) {
+  handleSubmit = (event) => {
     event.preventDefault();
     store.dispatch(updateUser(this.state.user._id, this.state.fields));
   }
@@ -52,13 +46,13 @@ class UserEdit extends React.Component {
     store.dispatch({ type: "MODAL_CHANGE_PASSWORD_SHOW", login: this.state.user.login });
   }
 
-  linkRedmine() {
+  linkRedmine = () => {
     store.dispatch(linkServiceOpen(this.state.user._id, REDMINE));
   }
 
 
   render() {
-    // const user = findUserByLogin(this.props.users, this.props.routeParams.login);
+    // const user = findUserByEmail(this.props.users, this.props.routeParams.email);
     // if (user) {
     //   console.log(user._id);
     //   console.log( user.profileImg );
