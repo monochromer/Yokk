@@ -1,8 +1,7 @@
 import React from 'react'
-import { step4 } from '../../../actions/registration'
-// import { step4 } from '../../../actions/teams'
+import { step4 } from '../../actions/registration'
 import { connect } from 'react-redux'
-import { Input } from '../../UI.jsx'
+import { Input } from '../UI.jsx'
 
 class Step4 extends React.Component {
 

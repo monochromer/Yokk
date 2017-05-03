@@ -10,7 +10,7 @@ module.exports = function(app, mongoose) {
     teamLogoURL: String,
     created: {
       type: Date,
-      default: Date.now
+      default: Date()
     },
     members: Array
   });

@@ -3,16 +3,17 @@ import jwt from 'jsonwebtoken';
 export const register = (req, res) => {
   const { User, Team, unconfirmedUser } = req.app.db.models
 
-  const { login, password, email, teamId, companyId } = req.body
+  const { firstName, lastName, password, email, teamId, companyId } = req.body
 
   findUserByEmail(email)
     .then(() => {
       const newUser = new User({
-        login: login,
-        password: password,
-        email: email,
+        firstName,
+        lastName,
+        password,
+        email,
         teams: [teamId],
-        joinedon: Date.now(),
+        joinedon: Date(),
         companies: [companyId]
       })
       return createNewUser(User, newUser)

@@ -18,7 +18,7 @@ export default function(app) {
   app.use('/api/timeEntry', authenticate, timeEntry);
   app.use('/api/report', authenticate, reports);
   app.use('/api/sync', authenticate, sync);
-  app.use('/api/teams', authenticate, teams);
+  app.use('/api/teams', identify, teams);
   app.use('/api/company', identify, company);
   
   app.get('/*', (req, res, next) => res.sendFile(path.join(__dirname,'/../../build/index.html')));

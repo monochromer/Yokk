@@ -5,25 +5,21 @@ const valid = require("valid-email")
 
 exports.create = function (req, res, next) {
   const { Company } = req.app.db.models;
-  const { email, step, code, login, name } = req.body;
+  const { email, step, code, name } = req.body;
 
   if (!valid(email)) {
     res.status(400).send("Invalid e-mail");
     return false;
   }
 
-  switch (step) {
-    case '0':
-      const companyInitialData = {
-        originatorEmail: email
-      }
-
-      Company.findOne(companyInitialData, (err, company) => {
-        if(err){
-          console.log(err);
-          res.status(500).send("Server error");
-          return false;
-        }
+  Company.findOne({originatorEmail: email}, (err, company) => {
+    if(err){
+      console.log(err);
+      res.status(500).send("Server error");
+      return false;
+    }
+    switch (step) {
+      case '0':
         if (company && company.emailConfirmed) {
           res.status(409).send("This email address is already registered. You" +
             " can log in. If you forgot your password, you can reset it.");
@@ -43,9 +39,6 @@ exports.create = function (req, res, next) {
         const { NODE_ENV } = process.env;
         const confCode = (NODE_ENV === 'development') ? '111111' :
           Math.random().toString().slice(2, 8);
-        companyInitialData.confirmationCode = confCode;
-        companyInitialData.codeSentDate = Date();
-        companyInitialData.codeTries = 0;
 
         const htmlToSend = "<div>Your e-mail was successfully registered in " +
           "system of Yokk!<br>To confirm it, enter the code below or use the " +
@@ -60,7 +53,12 @@ exports.create = function (req, res, next) {
         };
 
         if(!company){
-          const newCompany = new Company(companyInitialData);
+          const newCompany = new Company({
+            originatorEmail: email,
+            confirmationCode: confCode,
+            codeSentDate: Date(),
+            codeTries: 0
+          });
           newCompany.save((err, company) => {
             if(err){
               console.log(err);
@@ -85,16 +83,9 @@ exports.create = function (req, res, next) {
             sendEmail(mailOptions);
           });
         }
-      });
-      break;
+        break;
 
-    case '1':
-      Company.findOne({originatorEmail: email}, (err, company) => {
-        if(err){
-          console.log(err);
-          res.status(500).send("Server error");
-          return false;
-        }
+      case '1':
         if(!company){
           res.status(400).send("Company is not found");
           return false;
@@ -122,65 +113,39 @@ exports.create = function (req, res, next) {
           return false;
         }
         res.status(200).send(company);
-      });
-      break;
+        break;
 
-    case '2':
-      saveCompanyOriginatorLogin(login, email).then(company => {
-        res.status(200).send(company);
-      }).catch(reason => {
-        res.status(500).send();
-        next(reason);
-      });
-      break;
-
-    case '4':
-      saveCompanyName(name, email).then(company => {
-        res.status(200).send(company);
-      }).catch(reason => {
-        res.status(500).send();
-        next(reason);
-      });
-      break;
-
-    default:
-  }
-
-  function saveCompanyOriginatorLogin(login, originatorEmail) {
-    return new Promise((resolve, reject) => {
-      if (!login) reject('!login');
-      Company.findOne({
-        originatorEmail: originatorEmail
-      }, (err, company) => {
-        if (err) next(err);
-        if (company === null) return reject(new Error());
-        if (company.confirmed === false) return reject(new Error());
-        if (company.originator) return reject(new Error());
-        if (typeof login !== 'string' || login.length > 30) return reject(new Error());
-
-        company.originator = login;
-        company.save();
-        resolve(company);
-      })
-    })
-  }
-
-  function saveCompanyName(name, originatorEmail) {
-    return new Promise((resolve, reject) => {
-      Company.findOne({
-        originatorEmail: originatorEmail
-      }, (err, company) => {
-        if (err) next(err);
-        if (company === null) return reject(new Error());
-        if (company.name) return reject(new Error());
-        if (typeof name !== 'string' || name.length > 30) return reject(new Error());
-
+      case '4':
+        if(!company){
+          res.status(400).send("Company is not found");
+          return false;
+        }
+        if(typeof name !== 'string'){
+          res.status(400).send("Bad request");
+          return false;
+        }
+        if(!name.length){
+          res.status(406).send("Please enter Company Name");
+          return false;
+        }
+        if(name.length > 50){
+          res.status(406).send("Company Name must be 50 characters or less");
+          return false;
+        }
         company.name = name;
-        company.save();
-        resolve(company);
-      })
-    })
-  }
+        company.save((err) => {
+          if(err){
+            console.log(err);
+            res.status(500).send("Server error");
+            return false;
+          }
+          res.status(200).send(company);
+        });
+        break;
+
+      default:
+    }
+  });
 
 };
 

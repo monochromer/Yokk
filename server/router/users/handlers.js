@@ -63,7 +63,7 @@ exports.getTeamUsers = function (req, res, next) {
 exports.saveUserToDb = function (req, res) {
   const { User, Company, Team } = req.app.db.models
   const user = new User(req.body)
-  user.joinedon = Date.now()
+  user.joinedon = Date()
 
   const companyName = req.body.teamName
 
@@ -89,34 +89,33 @@ exports.saveUserToDb = function (req, res) {
         return false;
       }
 
-      if (!dbUser) {
-        user.save((err, user) => {
+      if (dbUser) {
+        const logMsq = `User (email: ${user.email}) is already in DB`;
+        res.status(400).send(logMsq);
+        return false;
+      }
+      user.save((err, user) => {
+        if(err){
+          console.log(err);
+          res.status(500).send('Server error');
+          return false;
+        }
+        const newTeam = new Team({members: [user._id]});
+        newTeam.save((err, team) => {
           if(err){
             console.log(err);
             res.status(500).send('Server error');
             return false;
           }
+          res.status(200).send({userId: user._id, teamId: team._id});
 
-          res.status(200).send(user);
-
-          const teamInitData = {
-            created: Date.now(),
-            members: [user._id]
-          }
-
-          const newTeam = new Team(teamInitData);
-          newTeam.save((err, team) => {
-            company.teams.push(team._id);
-            company.save();
-
-            user.teams.push(team._id);
-            user.save();
-          })
-        });
-      } else {
-        const logMsq = `User (email: ${user.email}) is already in DB`;
-        res.status(400).send(logMsq);
-      }
+          company.teams.push(team._id);
+          company.emailConfirmed = true;
+          company.save();
+          user.teams.push(team._id);
+          user.save();
+        })
+      });
     });
   })
 

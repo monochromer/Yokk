@@ -1,4 +1,4 @@
-import { COMPANY_CRUD } from '../constants';
+import { COMPANY_CRUD, USER_CRUD } from '../constants';
 import axios from 'axios';
 
 export function checkCompanyEmail(email, callback){
@@ -38,10 +38,17 @@ export function step2(firstName, lastName) {
   }
 }
 
-export function step3(password) {
-  return {
-    type: "STEP_3",
-    password: password
+export function step3(user, callback) {
+  return function(dispatch) {
+    axios.post(USER_CRUD, user).then((resp) => {
+      dispatch({
+        type: "STEP_3",
+        payload: resp.data
+      });
+      callback();
+    }, (err) => {
+      callback(err.response.data);
+    });
   }
 }
 

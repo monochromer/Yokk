@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import { connect } from 'react-redux'
-import { checkConfirmationCode } from '../../../actions/registration'
+import { checkConfirmationCode } from '../../actions/registration'
 
 class Step1 extends React.Component {
 

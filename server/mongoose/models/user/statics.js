@@ -4,7 +4,6 @@ module.exports = function(schema) {
   schema.statics.allUsers = function(cb) {
     var fieldsToReturn = {
       _id: 1,
-      login: 1,
       fullname: 1,
       position: 1,
       email: 1,
@@ -26,10 +25,10 @@ module.exports = function(schema) {
     return this.find({}, fieldsToReturn, cb);
   };
 
-  schema.statics.findByLogin = function(login, cb) {
+  schema.statics.findByEmail = function(email, cb) {
     var fieldsToReturn = {
       _id: 1,
-      login: 1,
+      email: 1,
       team: 1,
       role: 1,
       profileImg: 1,
@@ -37,21 +36,8 @@ module.exports = function(schema) {
       teams: 1
     }
     return this.findOne({
-      login: login
+      email: email
     }, fieldsToReturn, cb);
-  };
-
-  schema.statics.userAuthorize = function(login, cb) {
-    var fieldsToReturn = {
-      _id: 1,
-      login: 1,
-      hashedPassword: 1,
-      salt: 1
-    };
-    return this.findOne({
-      login: login
-    }, fieldsToReturn, cb);
-
   };
 
   schema.statics.checkPassword = function(password) {
@@ -61,14 +47,6 @@ module.exports = function(schema) {
   schema.statics.editUser = function(id, updateObject, cb) {
     return this.findOneAndUpdate({
       _id: id
-    }, updateObject, {
-      new: true
-    }, cb);
-  };
-
-  schema.statics.updateUserPassword = function(login, updateObject, cb) {
-    return this.findOneAndUpdate({
-      login: login
     }, updateObject, {
       new: true
     }, cb);

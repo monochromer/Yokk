@@ -22,7 +22,7 @@ module.exports = function(app, mongoose) {
     companyLogoURL: String,
     created: {
       type: Date,
-      default: Date.now
+      default: Date()
     },
     teams: Array,
     codeSentDate: Date,

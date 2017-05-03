@@ -3,10 +3,11 @@ import { browserHistory } from 'react-router'
 var initialState = {
   email: "",
   companyId: "",
+  code: "",
   firstName: "",
   lastName: "",
-  companyName: "",
-  code: ""
+  userId: "",
+  teamId: ""
 };
 
 export default function(state = initialState, action) {
@@ -15,11 +16,14 @@ export default function(state = initialState, action) {
   switch (type) {
 
     case "STEP_0":
-      browserHistory.push('/team/step1');
-      return Object.assign({}, state, { email: payload.originatorEmail });
+      browserHistory.push('/registration/step1');
+      return {
+        ...state,
+        email: payload.originatorEmail
+      };
 
     case "STEP_1":
-      browserHistory.push('/team/step2');
+      browserHistory.push('/registration/step2');
       return {
         ...state,
         companyId: payload._id,
@@ -27,20 +31,24 @@ export default function(state = initialState, action) {
       };
 
     case "STEP_2":
-      browserHistory.push('/team/step3');
-      return Object.assign({}, state, {
+      browserHistory.push('/registration/step3');
+      return {
+        ...state,
         firstName: action.firstName,
         lastName: action.lastName
-      });
+      };
 
     case "STEP_3":
-      browserHistory.push('/team/step4');
-      return Object.assign({}, state, { password: action.password });
+      browserHistory.push('/registration/step4');
+      return {
+        ...state,
+        userId: payload.userId,
+        teamId: payload.teamId
+      };
 
     case "STEP_4":
-      // browserHistory.push('/team/step5');
-      setTimeout(() => { document.location.href = '/login'} , 0); // wtf !?
-      return Object.assign({}, state, { teamName: action.teamName });
+      browserHistory.push('/registration/step5');
+      return state;
 
     default:
       return state;

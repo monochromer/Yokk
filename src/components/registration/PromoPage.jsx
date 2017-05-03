@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import { checkCompanyEmail } from '../../actions/registration'
 import { connect } from 'react-redux'
 import { Input } from '../UI.jsx'
+import { Link } from 'react-router'
 
 
 class PromoPage extends React.Component {
@@ -78,7 +79,7 @@ class PromoPage extends React.Component {
           <div className="row">
             <div className="col-md-3 col-sm-6 col-xs-6 logo">Eye of providence</div>
             <div className="col-md-offset-6 col-md-3 col-sm-6 col-xs-6 text-right">
-              <a href="/login" className={ signInClasses }>Sign In</a>
+              <Link to="/login" className={ signInClasses }>Sign In</Link>
             </div>
           </div>
         </div>

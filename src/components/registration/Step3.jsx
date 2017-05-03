@@ -1,8 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { step3 } from '../../../actions/registration'
-import { addUser } from '../../../actions/users'
-import { Input } from '../../UI.jsx'
+import { step3 } from '../../actions/registration'
+import { Input } from '../UI.jsx'
 
 class Step3 extends React.Component {
   state = {
@@ -37,17 +36,11 @@ class Step3 extends React.Component {
     let user = Object.assign({}, this.props.user, {password: this.state.password});
     event.preventDefault();
     if(this.checkForm()){
-      this.props.addUser(user, (err) => {
+      this.props.step3(user, (err) => {
         if(err){
           this.setState({
             error: err
           });
-        }
-        else{
-          this.setState({
-            error: ""
-          });
-          this.props.step3(this.state.password);
         }
       });
     }
@@ -65,7 +58,7 @@ class Step3 extends React.Component {
           <div className="row center-xs step__message">
             <div className="col-md-6 col-sm-8 col-xs-10">
               <p>It must be at least 8 symbols long, include at least one upper
-                and lower case letter and digit. Th strongest passwords laso
+                and lower case letter and digit. The strongest passwords also
                 include symbols. Avoid too simple passwords.</p>
             </div>
           </div>
@@ -102,4 +95,4 @@ function getProps(state) {
   }
 }
 
-export default connect(getProps, { addUser, step3 })(Step3)
+export default connect(getProps, { step3 })(Step3)

@@ -61,6 +61,9 @@ class LoginForm extends React.Component {
     const passwordError = this.state.error
       ? "Check your password"
       : null
+if(1){
+// console.log();
+}
 
     const auth = (
       <div className="container container__fixed">
@@ -71,7 +74,7 @@ class LoginForm extends React.Component {
               <p>Please sign in to access your team</p>
               <Input
                 handleChange={handleChange}
-                className="input-group input-group__grey"
+                className="input-group input-group__grey input-group__focus"
                 label="E-mail"
                 error={loginError}
                 required="true"
@@ -81,12 +84,12 @@ class LoginForm extends React.Component {
                 handleChange={handleChange}
                 type="password"
                 error={passwordError}
-                className="input-group input-group__grey"
+                className="input-group input-group__grey input-group__focus"
                 label="Password"
                 required="true"
                 name="password"/>
 
-              <Checkbox label="Remember me?" name="rememberme"/>
+              <Checkbox label="Remember me" name="rememberme"/>
 
               <button className="btn btn__lg btn__blue" type="submit">Sign in</button>
             </form>

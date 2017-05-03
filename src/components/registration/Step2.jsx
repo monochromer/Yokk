@@ -1,7 +1,7 @@
 import React from 'react'
-import store from '../../../store'
-import { step2 } from '../../../actions/registration'
-import { Input } from '../../UI.jsx'
+import store from '../../store'
+import { step2 } from '../../actions/registration'
+import { Input } from '../UI.jsx'
 import { isEmpty } from 'lodash';
 
 class Step2 extends React.Component {

@@ -11,23 +11,25 @@ import UserActivityPage from './components/userActivityPage';
 import Teams from './components/Teams'
 import EnsureLoggedInContainer from './EnsureLoggedInContainer';
 import PromoPage from './components/registration/PromoPage.jsx'
-import TeamLayout from './components/registration/team/Layout.jsx'
-import Step1 from './components/registration/team/Step1.jsx'
-import Step2 from './components/registration/team/Step2.jsx'
-import Step3 from './components/registration/team/Step3.jsx'
-import Step4 from './components/registration/team/Step4.jsx'
-import Step5 from './components/registration/team/Step5.jsx'
+import StepsLayout from './components/registration/StepsLayout.jsx'
+import Step1 from './components/registration/Step1.jsx'
+import Step2 from './components/registration/Step2.jsx'
+import Step3 from './components/registration/Step3.jsx'
+import Step4 from './components/registration/Step4.jsx'
+import Step5 from './components/registration/Step5.jsx'
 
 export default (
   <Route path="/" component={ Layout }>
     <Route path="login" component={ LoginForm } />
-    <Route path="registration" component={ PromoPage } />
-    <Route path="team" component={ TeamLayout }>
-      <Route path="step1" component={ Step1 } />
-      <Route path="step2" component={ Step2 } />
-      <Route path="step3" component={ Step3 } />
-      <Route path="step4" component={ Step4 } />
-      <Route path="step5" component={ Step5 } />
+    <Route path="registration">
+      <IndexRoute component={ PromoPage } />
+      <Route component={ StepsLayout }>
+        <Route path="step1" component={ Step1 } />
+        <Route path="step2" component={ Step2 } />
+        <Route path="step3" component={ Step3 } />
+        <Route path="step4" component={ Step4 } />
+        <Route path="step5" component={ Step5 } />
+      </Route>
     </Route>
     <Route component={EnsureLoggedInContainer}>
       <IndexRoute component={ Tracking } />

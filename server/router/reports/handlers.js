@@ -31,12 +31,12 @@ exports.createReport = function(req, res, next) {
   function getExecutors(usersArray, userModel) {
     return new Promise((resolve, reject) => {
       userModel.find({
-        login: {
+        _id: {
           $in: usersArray
         }
       }, {
         _id: 1,
-        login: 1
+        email: 1
       }, (err, users) => {
         resolve(users);
       })

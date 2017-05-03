@@ -1,5 +1,5 @@
 import { applyMiddleware, createStore, compose } from 'redux'
-import { createLogger } from 'redux-logger'
+// import { createLogger } from 'redux-logger'
 import thunk from 'redux-thunk'
 import reducer from './reducers'
 import promise from 'redux-promise-middleware'
@@ -9,7 +9,16 @@ import updateItem from './middlewares/updateItem'
 import deleteItem from './middlewares/deleteItem'
 import createItem from './middlewares/createItem'
 
-const middleware = applyMiddleware(promise(), thunk, callAPI, loadItems, updateItem, deleteItem, createItem, createLogger());
+const middleware = applyMiddleware(
+  promise(),
+  thunk,
+  callAPI,
+  loadItems,
+  updateItem,
+  deleteItem,
+  createItem
+  // createLogger()
+);
 const store = createStore(
   reducer,
   compose(
