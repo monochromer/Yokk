@@ -36,20 +36,11 @@ exports.timeEntryBatch = function(req, res, next) {
 
   if (typeof req.query.user !== 'undefined') {
     query.executor = req.query.user;
-  } else if (typeof req.user.login !== 'undefined') {
+  } else if (typeof req.user._id !== 'undefined') {
     query.executor = req.user._id;
   }
 
-  const getUserId = promiseUserId(req.query.login, req.app.db.models.User);
-
-  if (!req.query.login) {
-    getTimeEntries(query);
-  } else {
-    getUserId.then(userId => {
-      query.executor = userId;
-      getTimeEntries(query);
-    })
-  }
+  getTimeEntries(query);
 
   function getTimeEntries(query) {
     TimeEntryModel
@@ -71,17 +62,6 @@ exports.timeEntryBatch = function(req, res, next) {
         }
         res.send(timeEntries);
       });
-  }
-
-  function promiseUserId(login, userModel) {
-    if (!login) return;
-    return new Promise((resolve, reject) => {
-      userModel.findOne({
-        login: login
-      }, (err, user) => {
-        resolve(user._id);
-      })
-    })
   }
 
 };

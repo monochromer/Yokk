@@ -8,17 +8,21 @@ const moment = require('moment');
 const fs = require('fs')
 const path = require('path')
 
-exports.getAllUsers = function (req, res, next) {
+exports.getAllUsers = function (req, res) {
   const userModel = req.app.db.models.User;
   const team = req.query.team;
 
   userModel.allUsers((err, user) => {
-    if (err) next(err);
+    if(err){
+      console.log(err);
+      res.status(500).send();
+      return false;
+    }
     res.send(user);
   });
 };
 
-exports.getTeamUsers = function (req, res, next) {
+exports.getTeamUsers = function (req, res) {
   const userModel = req.app.db.models.User;
   const currentUser = req.user;
 
@@ -30,7 +34,8 @@ exports.getTeamUsers = function (req, res, next) {
       res.status(200).send(teamUsers);
     })
     .catch(reason => {
-      next(reason);
+      console.log(reason);
+      res.status(500).send();
     })
 
   function getCurrentUserTeam(currentUserId, model) {
@@ -121,57 +126,69 @@ exports.saveUserToDb = function (req, res) {
 
 }
 
-exports.showUser = function (req, res, next) {
+exports.showUser = function (req, res) {
   const userModel = req.app.db.models.User;
-  const login = req.params.user_login;
-  userModel.findByLogin(login, (err, user) => {
-    if (err) next(err);
+  const { _id } = req.params;
+  userModel.findById(_id, (err, user) => {
+    if(err){
+      console.log(err);
+      res.status(500).send("Server error");
+      return false;
+    }
     res.send(user);
-    log(req).info();
   });
 };
 
-exports.updateUser = function (req, res, next) {
+exports.updateUser = function (req, res) {
   const userModel = req.app.db.models.User;
-  const id = req.params.id;
+  const { _id } = req.params;
   const update = req.body;
 
   if (req.body.password !== undefined) {
-    userModel.findByLogin(login, (err, user) => {
-      if (err) next(err);
+    userModel.findById(_id, (err, user) => {
+      if(err){
+        console.log(err);
+        res.status(500).send("Server error");
+        return false;
+      }
       user.updatePassword(req.body.password);
       user.save((err, user) => {
-        // seding passwords BAD
-        res.status(200).send(user);
+        if(err){
+          console.log(err);
+          res.status(500).send("Server error");
+          return false;
+        }
+        res.status(200).send();
       });
-      const logMsq = `User's password (login: ${user.login}) is updated`;
-
-      return log(req, logMsq).info();
 
     });
   } else {
-    userModel.editUser(id, update, (err, user) => {
-      if (err) next(err);
-      res.status(200).send(user);
+    userModel.editUser(_id, update, (err, user) => {
+      if(err){
+        console.log(err);
+        res.status(500).send("Server error");
+        return false;
+      }
+      res.status(200).send();
     });
   }
 }
 
-exports.deleteUser = function (req, res, next) {
+exports.deleteUser = function (req, res) {
   const { User, unconfirmedUser, Team } = req.app.db.models
-  const { id } = req.params
+  const { _id } = req.params
   const ObjectId = require('mongodb').ObjectID
 
-  User.findOne({ _id: id }, (err, user) => {
+  User.findOne({ _id }, (err, user) => {
     if (!user) {
-      unconfirmedUser.findOne({ _id: id }, (err, user) => {
+      unconfirmedUser.findOne({ _id }, (err, user) => {
         user.remove()
       })
     } else {
       user.remove()
-      Team.find({members: ObjectId(id)}, (err, teams) => {
+      Team.find({members: ObjectId(_id)}, (err, teams) => {
         teams.forEach(team => {
-          team.members = team.members.filter(member => `${member}` !== id )
+          team.members = team.members.filter(member => `${member}` !== _id )
           team.save()
         })
       })
@@ -186,9 +203,9 @@ exports.deleteUser = function (req, res, next) {
 
 }
 
-exports.uploadUserAvatar = function (req, res, next) {
+exports.uploadUserAvatar = function (req, res) {
   const userModel = req.app.db.models.User;
-  const login = req.params.user_login;
+  const { _id } = req.params;
 
   const requiredSizes = [
     '200-200',
@@ -234,8 +251,8 @@ exports.uploadUserAvatar = function (req, res, next) {
       },
       (callback) => {
         const originalImg = ('/' + req.file.path.split('/').slice(1).slice(-4).join('/')).split(':').join('-');
-        const smallImg = '/users/' + login + '/avatars/' + imageInfo.date + '200-200.' + imageInfo.ext;
-        const mediumImg = '/users/' + login + '/avatars/' + imageInfo.date + '400-400.' + imageInfo.ext;
+        const smallImg = '/users/' + _id + '/avatars/' + imageInfo.date + '200-200.' + imageInfo.ext;
+        const mediumImg = '/users/' + _id + '/avatars/' + imageInfo.date + '400-400.' + imageInfo.ext;
 
         const update = {
           profileImg: {
@@ -245,24 +262,32 @@ exports.uploadUserAvatar = function (req, res, next) {
           }
         };
 
-        userModel.editUser(login, update, (err, user) => {
-          if (err) next(err);
+        userModel.editUser(_id, update, (err, user) => {
+          if(err){
+            console.log(err);
+            res.status(500).send();
+            return false;
+          }
           res.status(200).send(user);
           callback(null, user);
         });
       }
     ],
     (err, user) => {
-      if (err) next(err);
+      if(err){
+        console.log(err);
+        res.status(500).send();
+        return false;
+      }
     }
   )
 };
 
-exports.deleteUserAvatar = function (req, res, next) {
+exports.deleteUserAvatar = function (req, res) {
   const userModel = req.app.db.models.User
-  const userId = req.params.user_login
-  const baseDir = path.join(__dirname, '../../../uploads/users/')
-  const dirToDelete = `${baseDir}/${userId}/avatars`
+  const { _id } = req.params;
+  const baseDir = path.join(__dirname, '../../uploads/users/')
+  const dirToDelete = `${baseDir}/${_id}/avatars`
 
   deleteFolderRecursive(dirToDelete);
 
@@ -274,8 +299,12 @@ exports.deleteUserAvatar = function (req, res, next) {
     }
   }
 
-  userModel.editUser(userId, update, (err, user) => {
-    if (err) next(err);
+  userModel.editUser(_id, update, (err, user) => {
+    if(err){
+      console.log(err);
+      res.status(500).send();
+      return false;
+    }
     res.status(200).send(user);
   });
 
@@ -295,10 +324,10 @@ exports.deleteUserAvatar = function (req, res, next) {
 
 }
 
-exports.getLoggedInUser = function (req, res, next) {
+exports.getLoggedInUser = function (req, res) {
   // as of now, returned fields can be adjusted in userpassport.js
   const { User, Company, Team } = req.app.db.models
-  User.findOne({email: req.user.email}, (err, user) => {
+  User.findOne({_id: req.user._id}, (err, user) => {
     if(err){
       console.log(err);
       res.status(500).send();

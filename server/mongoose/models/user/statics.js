@@ -4,7 +4,8 @@ module.exports = function(schema) {
   schema.statics.allUsers = function(cb) {
     var fieldsToReturn = {
       _id: 1,
-      fullname: 1,
+      firstName: 1,
+      lastName: 1,
       position: 1,
       email: 1,
       phone: 1,
@@ -25,7 +26,7 @@ module.exports = function(schema) {
     return this.find({}, fieldsToReturn, cb);
   };
 
-  schema.statics.findByEmail = function(email, cb) {
+  schema.statics.findById = function(_id, cb) {
     var fieldsToReturn = {
       _id: 1,
       email: 1,
@@ -35,26 +36,20 @@ module.exports = function(schema) {
       companies: 1,
       teams: 1
     }
-    return this.findOne({
-      email: email
-    }, fieldsToReturn, cb);
+    return this.findOne({_id}, fieldsToReturn, cb);
   };
 
   schema.statics.checkPassword = function(password) {
     return this.encryptPassword(password) === this.hashedPassword;
   };
 
-  schema.statics.editUser = function(id, updateObject, cb) {
-    return this.findOneAndUpdate({
-      _id: id
-    }, updateObject, {
+  schema.statics.editUser = function(_id, updateObject, cb) {
+    return this.findOneAndUpdate({_id}, updateObject, {
       new: true
     }, cb);
   };
 
-  schema.statics.deleteUser = function(id, cb) {
-    return this.remove({
-      _id: id
-    }, cb);
+  schema.statics.deleteUser = function(_id, cb) {
+    return this.remove({_id}, cb);
   };
 }

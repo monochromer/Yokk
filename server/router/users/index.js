@@ -10,11 +10,11 @@ router.route('/get/team')
   .get(handle.getTeamUsers);
 router.route('/logged_in_user')
   .get(handle.getLoggedInUser);
-router.route('/:id')
+router.route('/:_id')
   .get(handle.showUser)
   .put(handle.updateUser)
   .delete(handle.deleteUser);
-router.route('/:user_login/upload_profile_picture')
+router.route('/:_id/upload_profile_picture')
   .post(upload.single('pic'), handle.uploadUserAvatar)
   .delete(handle.deleteUserAvatar);
 

@@ -325,7 +325,7 @@ exports.update = function (req, res, next) {
   }
 
   function sendInvitations(emails, teamName, teamId, sendEmailFunc) {
-    const {NODE_ENV, LINK_BASE_DEV, LINK_BASE_PROD} = process.env
+    const { NODE_ENV, LINK_BASE_DEV, LINK_BASE_PROD } = process.env
     const linkBase = (NODE_ENV === 'development' ? LINK_BASE_DEV : LINK_BASE_PROD)
     emails.forEach(email => {
       const confirmationLink = `${linkBase}login?teamId=${teamId}&email=${email}&teamName=${teamName}`;
@@ -407,7 +407,7 @@ exports.deleteMeberFromTeam = function (req, res, next) {
 }
 
 function sendInvitation(teamName, teamId, sendEmailFunc, email, companyId) {
-  const {NODE_ENV, LINK_BASE_DEV, LINK_BASE_PROD} = process.env
+  const { NODE_ENV, LINK_BASE_DEV, LINK_BASE_PROD } = process.env
   const linkBase = (NODE_ENV === 'development' ? LINK_BASE_DEV : LINK_BASE_PROD)
 
   const confirmationLink = `${linkBase}login?teamId=${teamId}&email=${email}&teamName=${teamName}&companyId=${companyId}`
