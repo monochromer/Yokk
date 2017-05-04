@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class EnsureLoggedInContainer extends React.Component {
@@ -23,11 +24,11 @@ class EnsureLoggedInContainer extends React.Component {
 }
 
 EnsureLoggedInContainer.propTypes = {
-	authenticated: React.PropTypes.bool.isRequired
+	authenticated: PropTypes.bool.isRequired
 }
 
 EnsureLoggedInContainer.contextTypes = {
-	router: React.PropTypes.object.isRequired
+	router: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {

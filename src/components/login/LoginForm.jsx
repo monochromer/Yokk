@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import getParameter from 'get-parameter';
 import { Input, Checkbox } from '../UI.jsx';
 import axios from 'axios';
@@ -147,12 +148,12 @@ if(1){
 }
 
 LoginForm.propTypes = {
-	login: React.PropTypes.func.isRequired,
-	setCurrentUser: React.PropTypes.func.isRequired
+	login: PropTypes.func.isRequired,
+	setCurrentUser: PropTypes.func.isRequired
 }
 
 LoginForm.contextTypes = {
-	router: React.PropTypes.object.isRequired
+	router: PropTypes.object.isRequired
 }
 
 export default connect(null, { login, setCurrentUser })(LoginForm);

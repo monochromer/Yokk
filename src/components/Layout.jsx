@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import TopPanel from './navbar/TopPanel.jsx'
 import Footer from './footer/Footer.jsx'
 import LinkService from './linkService/LinkService.jsx'
@@ -51,7 +52,7 @@ class Layout extends React.Component {
 }
 
 Layout.propTypes = {
-	authenticated: React.PropTypes.bool.isRequired
+	authenticated: PropTypes.bool.isRequired
 }
 
 function mapStateToProps(state) {

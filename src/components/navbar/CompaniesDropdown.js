@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react'
+import React, {Component} from 'react'
+import PropTypes from 'prop-types';
 import Dropdown from 'react-dropdown'
 
 export default class CompaniesDropdown extends Component {
@@ -9,11 +10,6 @@ export default class CompaniesDropdown extends Component {
 
   _onSelect = option => {
     this.props.onCompanyChange(option.value)()
-  }
-
-  static PropTypes = {
-    companies: PropTypes.array.isRequired,
-    onCompanyChange: PropTypes.func.isRequired
   }
 
   render() {
@@ -36,6 +32,11 @@ export default class CompaniesDropdown extends Component {
     )
   }
 
+}
+
+CompaniesDropdown.propTypes = {
+  companies: PropTypes.array.isRequired,
+  onCompanyChange: PropTypes.func.isRequired
 }
 
 function getUserCompaniesList(companies) {

@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react'
+import React, {Component} from 'react'
+import PropTypes from 'prop-types';
 import store from '../../store.js'
 import {connect} from 'react-redux'
 import AddUsersModal from './AddUsersModal'

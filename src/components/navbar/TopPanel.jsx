@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router'
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import { changeCurrentCompany, logout } from '../../actions/currentUser'
 import CompaniesDropdown from './CompaniesDropdown'
@@ -37,7 +38,7 @@ class TopPanel extends React.Component {
             <a href="/" className="top-panel_logo">Eye of Providence</a>
           </div>
           <div className="col-md-2">
-            <CompaniesDropdown companies={user.companies} onCompanyChange={this.onCompanyChange}/>
+            <CompaniesDropdown companies={user.companies || []} onCompanyChange={this.onCompanyChange}/>
           </div>
           <div className="col-md-4">
             <ul className="top-panel_menu">
@@ -75,7 +76,7 @@ class TopPanel extends React.Component {
 }
 
 TopPanel.PropTypes = {
-  user: React.PropTypes.object.isRequired
+  user: PropTypes.object.isRequired
 }
 
 const getProps = function(store) {

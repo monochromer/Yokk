@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 import _ from 'lodash'
 import { connect } from 'react-redux'
 import { checkConfirmationCode } from '../../actions/registration'
@@ -80,8 +81,8 @@ class Step1 extends React.Component {
 }
 
 Step1.propTypes = {
-  email: React.PropTypes.string.isRequired,
-  checkConfirmationCode: React.PropTypes.func.isRequired
+  email: PropTypes.string.isRequired,
+  checkConfirmationCode: PropTypes.func.isRequired
 }
 
 function getProps(state) {

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone'
 import store from '../../store.js'
 import {uploadUserPhoto, deleteUserPhoto} from '../../actions/users.js'
@@ -11,12 +12,6 @@ export default class DropPicture extends Component {
     this.deletePicture = this.deletePicture.bind(this);
   }
 
-  // static propTypes = {
-  //   _id: React.PropTypes.string.isRequired,
-  //   photo: React.PropTypes.string, //
-  //   uploading: React.PropTypes.bool
-  // }
-
   onDrop(files) {
     store.dispatch(uploadUserPhoto(files, this.props._id));
   }
@@ -27,7 +22,6 @@ export default class DropPicture extends Component {
   }
 
   render() {
-    // const {onDrop, deletePicture} = this;
 
     const uploadingPhoto = (
       <i className="demo-icon icon-spin3 animate-spin">&#xe832;</i>
@@ -48,4 +42,10 @@ export default class DropPicture extends Component {
       </div>
     );
   }
+}
+
+DropPicture.propTypes = {
+  _id: PropTypes.string.isRequired,
+  photo: PropTypes.string.isRequired,
+  uploading: PropTypes.bool.isRequired
 }
