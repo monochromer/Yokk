@@ -1,7 +1,6 @@
 import React from 'react'
 import store from '../../store'
 import classNames from 'classnames'
-import _ from 'lodash'
 import { connect } from 'react-redux'
 import { Input } from '../UI.jsx'
 import { step5 } from '../../actions/teams'
@@ -10,39 +9,38 @@ import { fetchUsers } from '../../actions/users'
 
 
 class ModalUserAdd extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = { rows: 1, invitations: [] };
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.addInvitation = this.addInvitation.bind(this);
+  
+  state = {
+    invitations: [""]
   }
 
   componentWillMount(){
     this.props.fetchUsers();
   }
 
-  handleClose() {
+  handleClose = () => {
     store.dispatch({type: "MODAL_ADD_USER_CLOSE"});
   }
 
-  handleChange(event) {
-    this.state.invitations[event.target.name] = event.target.value;
+  handleChange = (e) => {
+    const { invitations } = this.state;
+    invitations[e.target.name] = e.target.value;
+    this.setState({invitations});
   }
 
-  handleSubmit(event) {
+  handleSubmit = (event) => {
     event.preventDefault();
     let teamId = findUserByEmail(this.props.users, this.props.email).team;
     store.dispatch(step5(teamId, this.state.invitations));
     store.dispatch({type: "MODAL_ADD_USER_CLOSE"});
   }
 
-  addInvitation() {
+  addInvitation = () => {
     this.setState({
-      rows: this.state.rows + 1
+      invitations: [
+        ...this.state.invitations,
+        ""
+      ]
     });
   }
 
@@ -52,21 +50,20 @@ class ModalUserAdd extends React.Component {
       modal: true,
       hide: !this.props.status
     });
+    const { invitations } = this.state;
 
-    var invitationRows = [];
-    for (let i = 0; i < this.state.rows; i++) {
-      invitationRows.push(
-        <div className="row center-xs invintations_row" key={ _.uniqueId() }>
+    const invitationRows = invitations.map((invitation, index) => {
+      return(
+        <div className="row center-xs invintations_row" key={ index }>
           <div className="col-md-8 col-sm-8 col-xs-10">
             <Input handleChange={ this.handleChange.bind(this) }
-                 defaultValue={ this.state.invitations[i] }
                  className="input-group input-group__grey-white" type="email"
-                 name={ i }
+                 name={ index }
                  label="E-mail"/>
           </div>
         </div>
       );
-    }
+    });
 
     return (
       <div className={ modalClasses }>

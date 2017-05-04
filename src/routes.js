@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import Layout from './components/Layout.jsx';
 import LoginForm from './components/login/LoginForm.jsx';
+import RegisterForm from './components/login/RegisterForm.jsx';
 import UserTable from './components/user/UserTable.jsx';
 import UserPage from './components/user/UserPage.jsx';
 import UserEdit from './components/user/UserEdit.jsx';
@@ -21,6 +22,7 @@ import Step5 from './components/registration/Step5.jsx'
 export default (
   <Route path="/" component={ Layout }>
     <Route path="login" component={ LoginForm } />
+    <Route path="register" component={ RegisterForm } />
     <Route path="registration">
       <IndexRoute component={ PromoPage } />
       <Route component={ StepsLayout }>

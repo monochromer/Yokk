@@ -3,6 +3,7 @@ import { browserHistory } from 'react-router'
 var initialState = {
   email: "",
   companyId: "",
+  companyName: "",
   code: "",
   firstName: "",
   lastName: "",
@@ -48,7 +49,10 @@ export default function(state = initialState, action) {
 
     case "STEP_4":
       browserHistory.push('/registration/step5');
-      return state;
+      return {
+        ...state,
+        companyName: action.companyName
+      };
 
     default:
       return state;

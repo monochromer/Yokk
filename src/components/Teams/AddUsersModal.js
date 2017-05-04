@@ -3,25 +3,24 @@ import classNames from 'classnames'
 import {connect} from 'react-redux'
 import {Input} from '../UI.jsx'
 import {addTeamMembers, closeAddTeamMembersModal} from '../../actions/teams'
-import _ from 'lodash'
 
 class AddUsersModal extends React.Component {
-
+  
   state = {
-    rows: 1,
-    invitations: [],
-    teamId: ""
+    invitations: [""]
   }
 
   handleClose = () => {
     this.props.closeAddTeamMembersModal()
   }
 
-  handleChange = e => {
-    this.state.invitations[e.target.name] = e.target.value;
+  handleChange = (e) => {
+    const { invitations } = this.state;
+    invitations[e.target.name] = e.target.value;
+    this.setState({invitations});
   }
 
-  handleSubmit = teamId => e => {
+  handleSubmit = (e) => {
     e.preventDefault()
     const {invitations} = this.state
     const {teamId, companyId} = this.props
@@ -31,33 +30,34 @@ class AddUsersModal extends React.Component {
 
   addInvitation = () => {
     this.setState({
-      rows: this.state.rows + 1
+      invitations: [
+        ...this.state.invitations,
+        ""
+      ]
     });
   }
 
   render() {
-    const {teamId} = this.props
     const modalClasses = classNames({
       modal: true,
       hide: !this.props.status
     });
 
-    var invitationRows = [];
-    for (let i = 0; i < this.state.rows; i++) {
-      invitationRows.push(
-        <div className="row center-xs invintations_row" key={_.uniqueId()}>
+    const { invitations } = this.state;
+    const invitationRows = invitations.map((invitation, index) => {
+      return(
+        <div className="row center-xs invintations_row" key={index}>
           <div className="col-md-8 col-sm-8 col-xs-10">
             <Input
               handleChange={this.handleChange}
-              defaultValue={this.state.invitations[i]}
               className="input-group input-group__grey-white"
               type="email"
-              name={i}
+              name={index}
               label="E-mail"/>
           </div>
         </div>
       );
-    }
+    });
 
     return (
       <div className={modalClasses}>
@@ -70,7 +70,7 @@ class AddUsersModal extends React.Component {
                   <h2 className="heading heading__white">Send Invitations</h2>
                 </div>
               </div>
-              <form onSubmit={this.handleSubmit(teamId)}>
+              <form onSubmit={this.handleSubmit}>
 
                 {invitationRows}
 

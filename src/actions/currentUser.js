@@ -4,12 +4,13 @@ import { FETCH_CURRENT_USER_URI } from '../constants'
 
 export function login(userData){
 	return dispatch => {
-    if(userData.auth){
-      return axios.post('/api/login', userData);
-    }
-    else{
-      return axios.post('/api/register', userData);
-    }
+    return axios.post('/api/login', userData);
+	}
+}
+
+export function register(userData){
+	return dispatch => {
+    return axios.post('/api/register', userData);
 	}
 }
 

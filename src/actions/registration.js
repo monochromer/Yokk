@@ -52,15 +52,15 @@ export function step3(user, callback) {
   }
 }
 
-export function step4(teamName, email) {
+export function step4(companyName, email) {
   return {
     type: "STEP_4",
-    teamName: teamName,
+    companyName,
     createItem: {
       url: COMPANY_CRUD,
       data: {
-        name: teamName,
-        email: email,
+        companyName,
+        email,
         step: '4'
       }
     }

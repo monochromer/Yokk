@@ -21,7 +21,7 @@ export function saveTeam(teamName, companyId) {
   }
 }
 
-export function addTeamMembers(teamId, newMembers, companyId) {
+export function addTeamMembers(teamId, newMembers, companyId, userName, companyName) {
   return {
     type: ADD_TEAM_MEMBERS,
     teamId: teamId,
@@ -31,9 +31,11 @@ export function addTeamMembers(teamId, newMembers, companyId) {
     callAPI: `/api/teams/addTeamMembers`,
     reqType: 'post',
     body: {
-      teamId: teamId,
+      teamId,
       membersEmails: newMembers,
-      companyId: companyId
+      companyId,
+      userName,
+      companyName
     }
   }
 }

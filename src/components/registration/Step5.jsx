@@ -27,8 +27,9 @@ class Step5 extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { teamId, companyId, addTeamMembers } = this.props;
-    addTeamMembers(teamId, this.state.invitations, companyId);
+    const { addTeamMembers } = this.props;
+    const { teamId, companyId, firstName, lastName, companyName } = this.props.regData;
+    addTeamMembers(teamId, this.state.invitations, companyId, (firstName + " " + lastName), companyName);
     browserHistory.push('/login');
   }
 
@@ -60,7 +61,7 @@ class Step5 extends React.Component {
         <div className="container">
           <div className="row center-xs step__heading">
             <div className="col-md-12 col-sm-12 col-xs-10">
-              <h1 className="heading">Send Invitations</h1>
+              <h1 className="heading">Invite someone</h1>
             </div>
           </div>
           <div className="row center-xs step__message">
@@ -104,8 +105,7 @@ class Step5 extends React.Component {
 
 function getProps(state) {
   return {
-    companyId: state.registration.companyId,
-    teamId: state.registration.teamId
+    regData: state.registration
   }
 }
 
