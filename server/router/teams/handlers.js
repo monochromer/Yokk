@@ -53,7 +53,7 @@ exports.create = function (req, res, next) {
 
 exports.addTeamMembers = function (req, res, next) {
   const { unconfirmedUser, Team, User } = req.app.db.models
-  const { teamId, companyId, membersEmails } = req.body
+  const { teamId, companyId, membersEmails, userName, companyName } = req.body
   // const { teamId, companyId, changeInProd } = req.body
   // const membersEmails = [changeInProd]
 
@@ -105,8 +105,7 @@ exports.addTeamMembers = function (req, res, next) {
             // token should expire (DB should be cleaned) at some intervals
             const {DEFAULT_TEAM_NAME} = process.env
             const teamName = team.name ? team.name : DEFAULT_TEAM_NAME
-            sendInvitation(teamName, teamId, sendEmail, email, companyId)
-
+            sendInvitation(userName, companyName, teamId, sendEmail, email, companyId)
 
             resolve(user)
           })
@@ -328,7 +327,7 @@ exports.update = function (req, res, next) {
     const { NODE_ENV, LINK_BASE_DEV, LINK_BASE_PROD } = process.env
     const linkBase = (NODE_ENV === 'development' ? LINK_BASE_DEV : LINK_BASE_PROD)
     emails.forEach(email => {
-      const confirmationLink = `${linkBase}login?teamId=${teamId}&email=${email}&teamName=${teamName}`;
+      const confirmationLink = `${linkBase}register?teamId=${teamId}&email=${email}`;
 
       const htmlToSend = `
                 <div>You invited to be a part of team ${teamName}</div>
@@ -406,20 +405,23 @@ exports.deleteMeberFromTeam = function (req, res, next) {
   })
 }
 
-function sendInvitation(teamName, teamId, sendEmailFunc, email, companyId) {
+function sendInvitation(userName, companyName, teamId, sendEmailFunc, email, companyId) {
   const { NODE_ENV, LINK_BASE_DEV, LINK_BASE_PROD } = process.env
   const linkBase = (NODE_ENV === 'development' ? LINK_BASE_DEV : LINK_BASE_PROD)
 
-  const confirmationLink = `${linkBase}login?teamId=${teamId}&email=${email}&teamName=${teamName}&companyId=${companyId}`
+  const confirmationLink = `${linkBase}register?teamId=${teamId}&email=${email}&companyId=${companyId}`
 
-  const htmlToSend = `
-              <div>You invited to be a part of team ${teamName}</div>
-              <div>Confirm your participation by clicking <a href="${confirmationLink}">the link</a></div>`;
+  const htmlToSend = `<div>You were invited by ${userName} to join ${companyName} on Yokk!.<br>
+                        To register, use this link:<br>
+                        ${confirmationLink}
+                        <br><br>
+                        Best regards,<br>
+                        Yokk! team</div>`;
 
   const mailOptions = {
-    from: '"Soshace team 👥" <bot@izst.ru>',
+    from: '"Yokk! team" <yokk@soshace.com>',
     to: email,
-    subject: `Invitation to follow team ${teamName}`,
+    subject: `Invitation to ${companyName}`,
     html: htmlToSend
   };
 

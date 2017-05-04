@@ -5,7 +5,7 @@ const valid = require("valid-email")
 
 exports.create = function (req, res, next) {
   const { Company } = req.app.db.models;
-  const { email, step, code, name } = req.body;
+  const { email, step, code, companyName } = req.body;
 
   if (!valid(email)) {
     res.status(400).send("Invalid e-mail");
@@ -120,19 +120,19 @@ exports.create = function (req, res, next) {
           res.status(400).send("Company is not found");
           return false;
         }
-        if(typeof name !== 'string'){
+        if(typeof companyName !== 'string'){
           res.status(400).send("Bad request");
           return false;
         }
-        if(!name.length){
+        if(!companyName.length){
           res.status(406).send("Please enter Company Name");
           return false;
         }
-        if(name.length > 50){
+        if(companyName.length > 50){
           res.status(406).send("Company Name must be 50 characters or less");
           return false;
         }
-        company.name = name;
+        company.name = companyName;
         company.save((err) => {
           if(err){
             console.log(err);

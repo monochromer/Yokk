@@ -1,6 +1,5 @@
 const moment = require('moment');
 const toDate = require('../helpers/toDate').toDate;
-const _ = require('lodash');
 
 exports.createReport = function(req, res, next) {
 
@@ -53,7 +52,7 @@ exports.createReport = function(req, res, next) {
         for(let entryIdx = 0; entryIdx < entries.length; entryIdx++){
           var { entrySource, duration } = entries[entryIdx];
 
-          var executor = _.find( users, user => user._id.toString() === entries[entryIdx].executor.toString() ).login;
+          var executor = "" + entries[entryIdx].executor;
           if (!data[executor]) {
             data[executor] = {
               total: duration,

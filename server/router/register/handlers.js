@@ -21,15 +21,18 @@ export const register = (req, res) => {
     .then(user => {
       return saveUserToTeamMembers(teamId, user._id, Team)
     })
-    .then(() => {
-      return deleteUserEmailFromUnconfirmedEmails(email, unconfirmedUser)
+    .then((userId) => {
+      return deleteUserEmailFromUnconfirmedEmails(email, unconfirmedUser, userId)
     })
-    .then(result => {
-      res.status(200).send()
+    .then(userId => {
+      const jwtToken = jwt.sign({
+        _id: userId
+      }, process.env.JWT_SECRET);
+      res.json({jwtToken});
     })
     .catch(reason => {
       console.log(reason);
-      res.status(500).send();
+      res.status(500).send(reason);
       return false;
     })
 
@@ -41,17 +44,17 @@ export const register = (req, res) => {
         team.members.push(userId)
         team.save((err, team) => {
           if (err) return reject('Something went wrong while saving user to team')
-          resolve()
+          resolve(userId)
         })
       })
     })
   }
 
-  function deleteUserEmailFromUnconfirmedEmails(email, unconfirmedUserModel) {
+  function deleteUserEmailFromUnconfirmedEmails(email, unconfirmedUserModel, userId) {
     return new Promise((resolve, reject) => {
       unconfirmedUserModel.find({ email: email }).remove((err, result) => {
         if (err) return reject(err)
-        resolve('User succesfully created, added to team and email removed from unconfirmed')
+        resolve(userId)
       })
     })
   }
@@ -70,7 +73,10 @@ export const register = (req, res) => {
     return new Promise((resolve, reject) => {
       const newUser = new userModel(initialData)
       newUser.save((err, user) => {
-        if (err) return reject('Some error occured while saving user')
+        if(err){
+          console.log(err);
+          return reject('Some error occured while saving user')
+        }
         resolve(user)
       })
     })

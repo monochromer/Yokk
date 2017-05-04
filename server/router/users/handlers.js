@@ -69,6 +69,7 @@ exports.saveUserToDb = function (req, res) {
   const { User, Company, Team } = req.app.db.models
   const user = new User(req.body)
   user.joinedon = Date()
+  user.emailConfirmed = true
 
   const companyName = req.body.teamName
 
