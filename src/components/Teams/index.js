@@ -60,6 +60,9 @@ class Teams extends Component {
     const { teamChangeHandler, addNewTeam } = this
     const { teamExists } = this.state
     const { user, teams } = this.props
+    if(!teams.length){
+      return(<div>Fetching data...</div>);
+    }
 
     let companyId
     if (user.companies) {
