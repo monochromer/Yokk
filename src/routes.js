@@ -3,6 +3,7 @@ import { Route, IndexRoute } from 'react-router';
 import Layout from './components/Layout.jsx';
 import LoginForm from './components/login/LoginForm.jsx';
 import RegisterForm from './components/login/RegisterForm.jsx';
+import ForgotPasswordForm from './components/login/ForgotPasswordForm.jsx';
 import UserTable from './components/user/UserTable.jsx';
 import UserPage from './components/user/UserPage.jsx';
 import UserEdit from './components/user/UserEdit.jsx';
@@ -23,6 +24,7 @@ export default (
   <Route path="/" component={ Layout }>
     <Route path="login" component={ LoginForm } />
     <Route path="register" component={ RegisterForm } />
+    <Route path="forgot_password" component={ ForgotPasswordForm } />
     <Route path="registration">
       <IndexRoute component={ PromoPage } />
       <Route component={ StepsLayout }>

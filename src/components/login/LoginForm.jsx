@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Input, Checkbox } from '../UI.jsx';
@@ -50,7 +51,7 @@ class LoginForm extends React.Component {
                 <Input
                   handleChange={this.handleChange}
                   className="input-group input-group__grey input-group__focus"
-                  label="E-mail"
+                  label="E-mail *"
                   error={errors.email}
                   required="true"
                   name="email"/>
@@ -60,11 +61,16 @@ class LoginForm extends React.Component {
                   type="password"
                   error={errors.password}
                   className="input-group input-group__grey input-group__focus"
-                  label="Password"
+                  label="Password *"
                   required="true"
                   name="password"/>
 
-                <Checkbox label="Remember me" name="rememberme"/>
+                <div className="text-left">
+                  <Link className="forgot_password_link" to="/forgot_password">
+                    I forgot my password
+                  </Link>
+                  <Checkbox label="Remember me" name="rememberme"/>
+                </div>
 
                 <button className="btn btn__lg btn__blue" type="submit">Sign in</button>
               </form>
