@@ -14,6 +14,18 @@ export function register(userData){
 	}
 }
 
+export function sendResetPasswordLink(userData){
+	return dispatch => {
+    return axios.post('/api/resetPassword/sendLink', userData);
+	}
+}
+
+export function resetPassword(userData){
+	return dispatch => {
+    return axios.post('/api/resetPassword', userData);
+	}
+}
+
 export function fetchCurrentUser() {
   return {
     type: "FETCH_CURRENT_USER",
