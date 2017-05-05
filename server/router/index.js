@@ -2,6 +2,7 @@ import authenticate from './authenticate';
 import identify from './identify';
 import path from 'path';
 import registration from './register';
+import resetPassword from './resetPassword';
 import login from './login';
 import users from './users';
 import timeEntry from './timeEntry';
@@ -14,6 +15,7 @@ export default function(app) {
 
   app.use('/api/login', login);
   app.use('/api/register', registration);
+  app.use('/api/resetPassword', resetPassword);
   app.use('/api/user', identify, users);
   app.use('/api/timeEntry', authenticate, timeEntry);
   app.use('/api/report', authenticate, reports);

@@ -13,7 +13,7 @@ module.exports = function (app, mongoose) {
       type: String,
       required: true
     },
-
+    resetPasswordSecret: String,
     firstName: String,
     lastName: String,
     position: String,
