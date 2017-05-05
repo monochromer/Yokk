@@ -4,20 +4,18 @@ import classNames from 'classnames'
 
 export class Input extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      focus: this.props.defaultValue ? true : false,
-      value: ""
-    };
-
-    this.handleFocus = this.handleFocus.bind(this);
-    this.handleBlur = this.handleBlur.bind(this);
-    this.getInputClasses = this.getInputClasses.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+  state = {
+    focus: this.props.defaultValue ? true : false,
+    value: ""
   }
 
-  getInputClasses() {
+  componentWillReceiveProps(newProps){
+    this.setState({
+      focus: newProps.defaultValue ? true : false,
+    });
+  }
+
+  getInputClasses = () => {
     return classNames({
       [this.props.className]: true,
       'input-group__focus': this.state.focus,
@@ -25,17 +23,17 @@ export class Input extends React.Component {
     });
   }
 
-  handleFocus() {
+  handleFocus = () => {
     this.setState({ focus: true })
   }
 
-  handleBlur() {
+  handleBlur = () => {
     if(!this.state.value && !this.props.defaultValue) {
       this.setState({ focus: false })
     }
   }
 
-  handleChange(event) {
+  handleChange = (event) => {
     this.setState({value: event.target.value});
     if(this.props.hasOwnProperty('handleChange')) {
       this.props.handleChange(event);

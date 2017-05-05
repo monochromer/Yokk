@@ -11,6 +11,8 @@ class LoginForm extends React.Component {
 
   state = {
     errors: {},
+    email: "",
+    password: ""
   };
 
   handleChange = ev => {
@@ -38,7 +40,7 @@ class LoginForm extends React.Component {
 
   render() {
 
-    const { errors } = this.state;
+    const { errors, email, password } = this.state;
 
     return (
       <div className="login-form-container">
@@ -50,9 +52,10 @@ class LoginForm extends React.Component {
                 <p>Please sign in to access your team</p>
                 <Input
                   handleChange={this.handleChange}
-                  className="input-group input-group__grey input-group__focus"
+                  className="input-group input-group__grey"
                   label="E-mail *"
                   error={errors.email}
+                  defaultValue={email}
                   required="true"
                   name="email"/>
 
@@ -60,9 +63,10 @@ class LoginForm extends React.Component {
                   handleChange={this.handleChange}
                   type="password"
                   error={errors.password}
-                  className="input-group input-group__grey input-group__focus"
+                  className="input-group input-group__grey"
                   label="Password *"
                   required="true"
+                  defaultValue={password}
                   name="password"/>
 
                 <div className="text-left">
