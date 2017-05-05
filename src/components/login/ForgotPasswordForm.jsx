@@ -8,13 +8,14 @@ class ForgotPasswordForm extends React.Component {
 
   state = {
     error: "",
-    success: ""
+    success: "",
+    email: ""
   };
 
   handleChange = ev => {
     this.setState({
       [ev.target.name]: ev.target.value,
-      errors: {}
+      error: ""
     })
   }
 
@@ -22,10 +23,11 @@ class ForgotPasswordForm extends React.Component {
     ev.preventDefault();
     this.props.sendResetPasswordLink(this.state).then(() => {
       this.setState({
-        success: "Email sent. Please read and follow the instruction"
+        success: "Email sent. Please read and follow the instructions",
+        error: ""
       });
     }, (err) => this.setState({
-      error: err.responce.data
+      error: err.response.data
     }));
   }
 
@@ -52,7 +54,7 @@ class ForgotPasswordForm extends React.Component {
                   required="true"
                   name="email"/>
                 {success && <div className="success_message">{success}</div>}
-
+<div className="checkbox-group"></div>
                 <button className="btn btn__lg btn__blue" type="submit">
                   Send me e-mail
                 </button>
@@ -67,10 +69,6 @@ class ForgotPasswordForm extends React.Component {
 
 ForgotPasswordForm.propTypes = {
 	sendResetPasswordLink: PropTypes.func.isRequired,
-}
-
-ForgotPasswordForm.contextTypes = {
-	router: PropTypes.object.isRequired
 }
 
 export default connect(null, { sendResetPasswordLink })(ForgotPasswordForm);
