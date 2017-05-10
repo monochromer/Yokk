@@ -95,3 +95,79 @@ export class Checkbox extends React.Component {
     )
   }
 }
+
+export class PasswordStrengthIndicator extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.getPasswordStrength = this.getPasswordStrength.bind(this);
+  }
+
+  getPasswordStrength() {
+    const password = this.props.password;
+    let passwordStrength;
+
+    const passwordContainsDigits = new RegExp( /\d/ ).test( password );
+    const passwordContainsLowercaseLatinLetter = new RegExp( /[a-z]/ ).test( password );
+    const passwordContainsUppercaseLatinLetter = new RegExp( /[A-Z]/ ).test( password );
+    const passwordContainsSpecialSymbols = new RegExp( /[-!@#$%^&*()_+|~=`{}[\]:";'<>?,./]/ ).test( password );
+    const passwordHasProperLength = (password.length >= 8 && password.length <= 100);
+
+    if (
+      passwordContainsDigits &&
+      passwordContainsLowercaseLatinLetter &&
+      passwordContainsUppercaseLatinLetter &&
+      passwordContainsSpecialSymbols &&
+      passwordHasProperLength
+    ) {
+      passwordStrength = 'Strongest';
+    } else if (
+      passwordContainsDigits &&
+      passwordContainsLowercaseLatinLetter &&
+      passwordContainsUppercaseLatinLetter &&
+      passwordHasProperLength
+    ) {
+      passwordStrength = 'Strong';
+    } else {
+      passwordStrength = 'Weak';
+    }
+
+    return passwordStrength;
+  }
+
+  render() {
+    let classNames = "password-strength-indicator";
+    const passwordStrength = this.getPasswordStrength();
+
+    switch(passwordStrength) {
+      case 'Strongest':
+        classNames += ' password-strength-indicator_strongest';
+        break;
+      case 'Strong':
+        classNames += ' password-strength-indicator_strong';
+        break;
+      case 'Weak':
+      default:
+        classNames += ' password-strength-indicator_weak';
+        break;
+    }
+
+    return (
+      <div className={classNames}>
+        <div className="password-strength-indicator__text">
+          {passwordStrength}
+        </div>
+        <div className="password-strength-indicator__items">
+          <div className="password-strength-indicator__item"></div>
+          <div className="password-strength-indicator__item"></div>
+          <div className="password-strength-indicator__item"></div>
+          <div className="password-strength-indicator__item"></div>
+          <div className="password-strength-indicator__item"></div>
+          <div className="password-strength-indicator__item"></div>
+        </div>
+      </div>
+    );
+  }
+
+}

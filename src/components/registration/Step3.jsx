@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { step3 } from '../../actions/registration'
-import { Input } from '../UI.jsx'
+import { Input, PasswordStrengthIndicator } from '../UI.jsx'
 
 class Step3 extends React.Component {
   state = {
@@ -71,6 +71,13 @@ class Step3 extends React.Component {
                 name="password"
                 label="Password"
                 error={this.state.error}
+              />
+            </div>
+          </div>
+          <div className="row center-xs step__code">
+            <div className="col-md-6 col-sm-8 col-xs-10">
+              <PasswordStrengthIndicator
+                password={this.state.password}
               />
             </div>
           </div>

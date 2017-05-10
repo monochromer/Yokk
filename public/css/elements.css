@@ -336,6 +336,52 @@ a:hover {
 
 
 
+
+/*---------------------------------------- password strength indicator  --------------------------------------*/
+
+.password-strength-indicator__text {
+    font-size: 24px;
+    display: inline-block;
+    margin-bottom: 30px;
+}
+
+.password-strength-indicator__items {
+    text-align: center;
+}
+
+.password-strength-indicator__item {
+    display: inline-block;
+    width: 15%;
+    height: 4px;
+    background: #aaa;
+}
+
+.password-strength-indicator__item + .password-strength-indicator__item {
+    margin-left: 1.5%;
+}
+
+.password-strength-indicator_weak .password-strength-indicator__item:nth-child(1),
+.password-strength-indicator_weak .password-strength-indicator__item:nth-child(2) {
+    background: #D95D39;
+}
+
+.password-strength-indicator_strong .password-strength-indicator__item:nth-child(1),
+.password-strength-indicator_strong .password-strength-indicator__item:nth-child(2),
+.password-strength-indicator_strong .password-strength-indicator__item:nth-child(3),
+.password-strength-indicator_strong .password-strength-indicator__item:nth-child(4) {
+    background: #F7BC23;
+}
+
+.password-strength-indicator_strongest .password-strength-indicator__item {
+    background: #2FBF71;
+}
+
+/*---------------------------------------- /password strength indicator  --------------------------------------*/
+
+
+
+
+
 .blue-active-logo {
     text-decoration: none;
     font-size: 1.5rem;
