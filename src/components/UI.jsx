@@ -6,13 +6,22 @@ export class Input extends React.Component {
 
   state = {
     focus: this.props.defaultValue ? true : false,
-    value: ""
+    value: "",
+    pageLoaded: false
   }
 
   componentWillReceiveProps(newProps){
-    this.setState({
-      focus: newProps.defaultValue ? true : false,
-    });
+    const focus = (this.state.focus || newProps.defaultValue) ? true : false;
+    this.setState({focus});
+    if(
+      !this.state.pageLoaded &&
+      newProps.type &&
+      newProps.type === "password" &&
+      newProps.defaultValue === "" &&
+      this.props.defaultValue === ""
+    ){
+      this.setState({pageLoaded: true, focus: true});
+    }
   }
 
   getInputClasses = () => {
