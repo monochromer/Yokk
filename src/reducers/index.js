@@ -7,6 +7,7 @@ import reportRequest from './reportRequest'
 import usersActivities from './usersActivities'
 import registration from './registration'
 import currentUserTeams from './currentUserTeams'
+import notifications from './notifications'
 
 import { combineReducers } from 'redux'
 
@@ -19,5 +20,6 @@ export default combineReducers({
   reportRequest,
   usersActivities,
   registration,
-  currentUserTeams
+  currentUserTeams,
+  notifications
 })
