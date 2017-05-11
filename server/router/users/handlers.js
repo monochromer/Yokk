@@ -339,13 +339,26 @@ exports.getLoggedInUser = function (req, res) {
       return false;
     }
     Company.find({ _id: { $in: user.companies } }, (err, companies) => {
-      const userToReturn = Object.assign({}, user, { companies: companies })
-      user.companies = companies
+      if(err){
+        console.log(err);
+        res.status(500).send();
+        return false;
+      }
       Team.find({ _id: { $in: user.teams } }, (err, teams) => {
-        user.teams = teams
+        if(err){
+          console.log(err);
+          res.status(500).send();
+          return false;
+        }
         const userToReturn = JSON.parse(JSON.stringify(user))
-        userToReturn.companyId = companies[0]._id
         userToReturn.companies = companies
+        userToReturn.teams = teams
+        if(
+          !userToReturn.companyId || 
+          userToReturn.companies.indexOf(userToReturn.companyId) === -1
+        ){
+          userToReturn.companyId = userToReturn.companies[0]._id;
+        }
         res.status(200).send(userToReturn)
       })
     });
