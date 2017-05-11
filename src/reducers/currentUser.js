@@ -6,7 +6,8 @@ const initialState = {
 	data: {
     role: '',
     login: '',
-    companyId: ''
+    companyId: '',
+    companies: []
   },
 	authenticated: false
 }
