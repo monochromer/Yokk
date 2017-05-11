@@ -33,7 +33,7 @@ class Step3 extends React.Component {
   }
 
   handleSubmit = (event) => {
-    let user = Object.assign({}, this.props.user, {password: this.state.password});
+    let user = Object.assign({}, this.props.user, {password: this.state.password}, {role: 'owner'});
     event.preventDefault();
     if(this.checkForm()){
       this.props.step3(user, (err) => {
