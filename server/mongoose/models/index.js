@@ -8,7 +8,8 @@ const models = [
   'statistics',
   'team',
   'company',
-  'unconfirmedUser'
+  'unconfirmedUser',
+  'notification'
 ];
 
 // previously was in models.js in root
