@@ -11,7 +11,8 @@ import UserEdit from './components/user/UserEdit.jsx';
 import Tracking from './components/tracking/index.jsx';
 import ReportsPage from './components/reportsPage';
 import UserActivityPage from './components/userActivityPage';
-import Teams from './components/Teams'
+import Teams from './components/Teams';
+import Settings from './components/Settings';
 import EnsureLoggedInContainer from './EnsureLoggedInContainer';
 import PromoPage from './components/registration/PromoPage.jsx'
 import StepsLayout from './components/registration/StepsLayout.jsx'
@@ -40,6 +41,7 @@ export default (
     <Route component={EnsureLoggedInContainer}>
       <IndexRoute component={ Tracking } />
 			<Route path="teams" component={ Teams }></Route>
+      <Route path="settings" component={ Settings }></Route>
       <Route path="users" component={ UserTable } />
       <Route path="user/:email" component={ UserPage } />
       <Route path="user/edit/:email" component={ UserEdit } />
