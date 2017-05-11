@@ -408,6 +408,32 @@ body {
 
 
 
+/*---------------------------------------- notifications-page --------------------------------------*/
+
+.notifications-table {
+  border: 1px solid black;
+}
+
+.lines-per-page,
+.pagination{
+  display: inline-block;
+  margin: 10px;
+}
+
+.notifications-item {
+    line-height: 40px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.notifications-item:hover {
+    background-color: #e6e6e6;
+}
+
+/*---------------------------------------- /notifications-page --------------------------------------*/
+
+
+
 /*---------------------------------------- activity-page --------------------------------------*/
 
 .activity-page__header {

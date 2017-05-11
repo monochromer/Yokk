@@ -20,6 +20,7 @@ import Step2 from './components/registration/Step2.jsx'
 import Step3 from './components/registration/Step3.jsx'
 import Step4 from './components/registration/Step4.jsx'
 import Step5 from './components/registration/Step5.jsx'
+import Notifications from './components/Notifications.jsx'
 
 export default (
   <Route path="/" component={ Layout }>
@@ -41,6 +42,7 @@ export default (
       <IndexRoute component={ Tracking } />
 			<Route path="teams" component={ Teams }></Route>
       <Route path="users" component={ UserTable } />
+      <Route path="notifications" component={ Notifications } />
       <Route path="user/:email" component={ UserPage } />
       <Route path="user/edit/:email" component={ UserEdit } />
       <Route path="user/activityPage/:email" component={ UserActivityPage } />
