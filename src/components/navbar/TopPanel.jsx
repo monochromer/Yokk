@@ -5,24 +5,42 @@ import { connect } from 'react-redux'
 import { changeCurrentCompany, logout } from '../../actions/currentUser'
 import UserMenu from './UserMenu.jsx'
 import NotificationsDropdown from './NotificationsDropdown.jsx'
+// import NewCompanyModal from './NewCompanyModal.jsx'
 
 class TopPanel extends React.Component {
 
   state = {
     showUserMenu: false,
-    showNotifications: false
+    showNotifications: false,
+    showNewCompanyModal: false
   }
 
   showUserMenu = () => {
-    this.setState({
-      showUserMenu: true
-    });
+    if(this.state.showUserMenu){
+      return false;
+    }
+
+    var hideUserMenu = function(){
+      this.setState({showUserMenu:false});
+      document.removeEventListener("click", hideUserMenu);
+    }.bind(this);
+
+    this.setState({showUserMenu:true});
+    document.addEventListener("click", hideUserMenu);
   }
 
   showNotifications = () => {
-    this.setState({
-      showNotifications: true
-    });
+    if(this.state.showNotifications){
+      return false;
+    }
+
+    var hideNotifications = function(){
+      this.setState({showNotifications:false});
+      document.removeEventListener("click", hideNotifications);
+    }.bind(this);
+
+    this.setState({showNotifications:true});
+    document.addEventListener("click", hideNotifications);
   }
 
   onCompanyChange = companyId => e => {
@@ -45,6 +63,9 @@ class TopPanel extends React.Component {
         notifications={notifications}
       />
       : [];
+    const newNotifications = notifications.find(el => el.new) ?
+      <div className="new-notifications-circle"></div>
+      : [];
 
     const photo = user.profileImg ? 
       <img
@@ -64,6 +85,7 @@ class TopPanel extends React.Component {
              onClick={this.showNotifications}
           >
             <span className="glyphicon glyphicon-bell"></span>
+            {newNotifications}
             {notificationsDropdown}
           </div>
           <div
@@ -77,16 +99,32 @@ class TopPanel extends React.Component {
         <div className="top-panel_menu">
           <ul>
             <li>
-              <Link activeClassName="active" to="/">Tracker</Link>
+              <Link
+                className="top-panel_menu-item"
+                activeClassName="active"
+                to="/"
+              >Tracker</Link>
             </li>
             <li>
-              <Link activeClassName="active" to="/teams">Teams</Link>
+              <Link
+                className="top-panel_menu-item"
+                activeClassName="active"
+                to="/teams"
+              >Teams</Link>
             </li>
             <li>
-              <Link activeClassName="active" to="/statistic">Statistic</Link>
+              <Link
+                className="top-panel_menu-item"
+                activeClassName="active"
+                to="/statistic"
+              >Statistic</Link>
             </li>
             <li>
-              <Link activeClassName="active" to="/settings">Settings</Link>
+              <Link
+                className="top-panel_menu-item"
+                activeClassName="active"
+                to="/settings"
+              >Settings</Link>
             </li>
           </ul>
         </div>
