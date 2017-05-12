@@ -305,6 +305,10 @@ a:hover {
     overflow: hidden;
 }
 
+.error a{
+    color: #ff3f3f;
+}
+
 /*---------------------------------------- /inputs --------------------------------------*/
 
 
@@ -476,6 +480,15 @@ a:hover {
     font-size: 16px;
     color: #000000;
     margin-top: 12px;
+}
+
+.form-error {
+    color: red;
+    padding: 10px 30px;
+    border: 1px solid red;
+    background-color: pink;
+    border-radius: 5px;
+    margin-top: 20px;
 }
 
 /*---------------------------------------- /form-data --------------------------------------*/

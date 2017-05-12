@@ -10,7 +10,7 @@ class TeamLayout extends React.Component {
           <div className="container">
             <div className="row bottom-xs">
               <div className="col-md-3 col-sm-6 col-xs-6">
-                <a href="/" className="blue-active-logo">Eye&nbsp;of&nbsp;Providence</a>
+                <a href="/" className="blue-active-logo">Yokk!</a>
               </div>
               <div className="col-md-6 col-sm-6 col-xs-6 text-center hide-sm hide-xs">
                 <span className="steps-counter">step { step } of 5</span>

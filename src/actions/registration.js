@@ -1,13 +1,14 @@
-import { COMPANY_CRUD, USER_CRUD } from '../constants';
+import { COMPANY_CRUD } from '../constants';
 import axios from 'axios';
 
 export function checkCompanyEmail(email, callback){
   return (dispatch) => {
     axios.post(COMPANY_CRUD, {
-      email: email,
+      email,
       step: '0'
-    }).then((resp) => {
-      dispatch({type: "STEP_0", payload: resp.data});
+    }).then(() => {
+      dispatch({type: "STEP_0", email});
+      callback();
     }, (err) => {
       callback(err.response.data);
     });
@@ -17,11 +18,11 @@ export function checkCompanyEmail(email, callback){
 export function checkConfirmationCode(code, email, callback){
   return (dispatch) => {
     axios.post(COMPANY_CRUD, {
-      code: code,
-      email: email,
+      code,
+      email,
       step: '1'
-    }).then((resp) => {
-      dispatch({type: "STEP_1", payload: resp.data});
+    }).then(() => {
+      dispatch({type: "STEP_1", code, email});
     }, (err) => {
       dispatch({type: "STEP_1_FAILED"});
       callback(err.response.data);
@@ -38,32 +39,23 @@ export function step2(firstName, lastName) {
   }
 }
 
-export function step3(user, callback) {
-  return function(dispatch) {
-    axios.post(USER_CRUD, user).then((resp) => {
-      dispatch({
-        type: "STEP_3",
-        payload: resp.data
-      });
-      callback();
-    }, (err) => {
-      callback(err.response.data);
-    });
+export function step3(password) {
+  return {
+    type: "STEP_3",
+    password
+  };
+}
+
+export function step4(companyName) {
+  return {
+    type: "STEP_4",
+    companyName
   }
 }
 
-export function step4(companyName, email) {
-  return {
-    type: "STEP_4",
-    companyName,
-    createItem: {
-      url: COMPANY_CRUD,
-      data: {
-        companyName,
-        email,
-        step: '4'
-      }
-    }
+export function finishRegistration(data) {
+  return function(dispatch) {
+    return axios.post(COMPANY_CRUD, data);
   }
 }
 

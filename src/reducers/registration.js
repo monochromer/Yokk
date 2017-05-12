@@ -2,33 +2,30 @@ import { browserHistory } from 'react-router'
 
 var initialState = {
   email: "",
-  companyId: "",
-  companyName: "",
   code: "",
   firstName: "",
   lastName: "",
-  userId: "",
-  teamId: ""
+  password: "",
+  companyName: ""
 };
 
 export default function(state = initialState, action) {
-  const { type, payload } = action;
 
-  switch (type) {
+  switch (action.type) {
 
     case "STEP_0":
       browserHistory.push('/registration/step1');
       return {
         ...state,
-        email: payload.originatorEmail
+        email: action.email
       };
 
     case "STEP_1":
       browserHistory.push('/registration/step2');
       return {
         ...state,
-        companyId: payload._id,
-        code: payload.confirmationCode
+        code: action.code,
+        email: action.email
       };
 
     case "STEP_2":
@@ -43,8 +40,7 @@ export default function(state = initialState, action) {
       browserHistory.push('/registration/step4');
       return {
         ...state,
-        userId: payload.userId,
-        teamId: payload.teamId
+        password: action.password
       };
 
     case "STEP_4":

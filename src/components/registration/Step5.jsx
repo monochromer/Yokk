@@ -1,13 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addTeamMembers } from '../../actions/teams';
+import { finishRegistration } from '../../actions/registration';
 import { Input } from '../UI.jsx';
 import { browserHistory } from 'react-router';
 
 class Step5 extends React.Component {
   
   state = {
-    invitations: [""]
+    invitations: [""],
+    error: ""
   }
 
   addInvitation = () => {
@@ -27,19 +29,36 @@ class Step5 extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { addTeamMembers } = this.props;
-    const { teamId, companyId, firstName, lastName, companyName } = this.props.regData;
-    addTeamMembers(teamId, this.state.invitations, companyId, (firstName + " " + lastName), companyName);
-    browserHistory.push('/login');
+    const { addTeamMembers, regData } = this.props;
+    const data = {
+      ...regData,
+      step: '5'
+    };
+    this.props.finishRegistration(data).then((res) => {
+      const { firstName, lastName, companyName } = regData;
+      const { teamId, companyId } = res.data;
+      addTeamMembers(teamId, this.state.invitations, companyId, (firstName + " " + lastName), companyName);
+      browserHistory.push('/login');
+    }, (err) => {
+      this.setState({error: "" + err.response.data});
+    });
   }
 
   handleSkip = (e) => {
     e.preventDefault();
-    browserHistory.push('/login');
+    const data = {
+      ...this.props.regData,
+      step: '5'
+    };
+    this.props.finishRegistration(data).then(() => {
+      browserHistory.push('/login');
+    }, (err) => {
+      this.setState({error: "" + err.response.data});
+    });
   }
 
   render() {
-    const { invitations } = this.state;
+    const { invitations, error } = this.state;
     const invitationRows = invitations.map((invitation, index) => {
       return(
         <div className="row center-xs invintations_row" key={index}>
@@ -86,6 +105,7 @@ class Step5 extends React.Component {
 
           <div className="row center-xs">
             <div className="col-md-6 col-sm-8 col-xs-10">
+              {error && <div className="form-error">{error}</div>}
               <button className="btn btn__lg btn__blue team-create__create">
                 Send Invitations
               </button>
@@ -109,4 +129,4 @@ function getProps(state) {
   }
 }
 
-export default connect(getProps, { addTeamMembers })(Step5)
+export default connect(getProps, { addTeamMembers, finishRegistration })(Step5)

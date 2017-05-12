@@ -18,12 +18,24 @@ class Step3 extends React.Component {
 
   checkForm = () => {
     const { password } = this.state;
+    const passwordContainsDigits = new RegExp( /\d/ ).test( password );
+    const passwordContainsLowercaseLatinLetter = new RegExp( /[a-z]/ ).test( password );
+    const passwordContainsUppercaseLatinLetter = new RegExp( /[A-Z]/ ).test( password );
     let error = "";
     if(password.length < 8){
-      error = "Password must be at least 8 characters long";
+      error = "The password is too weak. It must be at least 8 symbols long, include lowercase, capital letters and digits.";
     }
     if(password.length > 100){
       error = "Password must be 100 characters or less";
+    }
+    if(!passwordContainsDigits){
+      error = "The password is too weak. It must be at least 8 symbols long, include lowercase, capital letters and digits.";
+    }
+    if(!passwordContainsLowercaseLatinLetter){
+      error = "The password is too weak. It must be at least 8 symbols long, include lowercase, capital letters and digits.";
+    }
+    if(!passwordContainsUppercaseLatinLetter){
+      error = "The password is too weak. It must be at least 8 symbols long, include lowercase, capital letters and digits.";
     }
     if(error){
       this.setState({error});
@@ -33,16 +45,9 @@ class Step3 extends React.Component {
   }
 
   handleSubmit = (event) => {
-    let user = Object.assign({}, this.props.user, {password: this.state.password});
     event.preventDefault();
     if(this.checkForm()){
-      this.props.step3(user, (err) => {
-        if(err){
-          this.setState({
-            error: err
-          });
-        }
-      });
+      this.props.step3(this.state.password);
     }
   }
 
@@ -96,10 +101,4 @@ class Step3 extends React.Component {
   }
 }
 
-function getProps(state) {
-  return {
-    user: state.registration
-  }
-}
-
-export default connect(getProps, { step3 })(Step3)
+export default connect(null, { step3 })(Step3)

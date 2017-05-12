@@ -71,13 +71,24 @@ class PromoPage extends React.Component {
       'input-group__error': this.props.error
     });
 
+    const { error } = this.state;
+
+    const errorText = (error === 'This email address is already registered.') ?
+      <div>
+        This email address is already registered. You can{" "}
+        <a href='/login'>log in</a>.
+        If you forgot your password, you can{" "}
+        <a href='/forgot_password'>reset it</a>.
+      </div>
+      : error;
+
     return (
 
       <div className="container-fluid main-container">
 
         <div className="container top">
           <div className="row">
-            <div className="col-md-3 col-sm-6 col-xs-6 logo">Eye of providence</div>
+            <div className="col-md-3 col-sm-6 col-xs-6 logo">Yokk!</div>
             <div className="col-md-offset-6 col-md-3 col-sm-6 col-xs-6 text-right">
               <Link to="/login" className={ signInClasses }>Sign In</Link>
             </div>
@@ -87,7 +98,7 @@ class PromoPage extends React.Component {
         <div className="container center">
           <div className={ centerClasses }>
             <div className="col-md-12">
-              <h1 className="heading promo__heading">Eye of Providence <br /> helps to manage your teams</h1>
+              <h1 className="heading promo__heading">Yokk! <br /> helps you manage your team</h1>
               <button className={ createTeamButtonClasses } onClick={ this.handleClickCreate }>Register Company</button>
             </div>
           </div>
@@ -119,7 +130,7 @@ class PromoPage extends React.Component {
                       className={ inputClassNames }
                       name="email"
                       label="E-mail address"
-                      error={ this.state.error }
+                      error={ errorText }
                   />
                   <button type="submit" className="btn btn__lg btn__white right-panel_btn">Register Company</button>
                 </div>

@@ -3,11 +3,11 @@
 const sendEmail = require('../helpers/sendEmail')
 const valid = require("valid-email")
 
-exports.create = function (req, res, next) {
-  const { Company } = req.app.db.models;
-  const { email, step, code, companyName } = req.body;
+exports.create = function (req, res) {
+  const { User, Company, Team } = req.app.db.models
+  const { email, step, code, firstName, lastName, password, companyName } = req.body;
 
-  if (!valid(email)) {
+  if (!email || !valid(email)) {
     res.status(400).send("Invalid e-mail");
     return false;
   }
@@ -21,8 +21,7 @@ exports.create = function (req, res, next) {
     switch (step) {
       case '0':
         if (company && company.emailConfirmed) {
-          res.status(409).send("This email address is already registered. You" +
-            " can log in. If you forgot your password, you can reset it.");
+          res.status(409).send("This email address is already registered.");
           return false;
         }
         if (
@@ -36,13 +35,17 @@ exports.create = function (req, res, next) {
           return false;
         }
 
-        const { NODE_ENV } = process.env;
+        const { NODE_ENV, LINK_BASE_DEV, LINK_BASE_PROD } = process.env;
         const confCode = (NODE_ENV === 'development') ? '111111' :
           Math.random().toString().slice(2, 8);
 
+        const linkBase = (NODE_ENV === 'development' ? LINK_BASE_DEV : LINK_BASE_PROD)
+        const confirmationLink = `${linkBase}registration/step1?email=${email}&code=${confCode}`;
+
         const htmlToSend = "<div>Your e-mail was successfully registered in " +
           "system of Yokk!<br>To confirm it, enter the code below or use the " +
-          "link.<br><br>Code: " + confCode + "<br>Confirmation link:<br><br>" +
+          "link.<br><br>Code: " + confCode + "<br>Confirmation link:<br>" +
+          confirmationLink + "<br><br>" +
           "Thank you for registration!<br>Yokk! Team</div>";
 
         const mailOptions = {
@@ -65,7 +68,7 @@ exports.create = function (req, res, next) {
               res.status(500).send("Server error");
               return false;
             }
-            res.status(200).send(company);;
+            res.send();;
             sendEmail(mailOptions);
           })
         }
@@ -79,25 +82,31 @@ exports.create = function (req, res, next) {
               res.status(500).send("Server error");
               return false;
             }
-            res.status(200).send(company);;
+            res.send();;
             sendEmail(mailOptions);
           });
         }
         break;
 
       case '1':
+      case '5':
         if(!company){
           res.status(400).send("Company is not found");
           return false;
         }
-        if(company.emailConfirmed === true){ //set to true on last step
+        if(company.emailConfirmed === true){
           res.status(409).send("Company is already confirmed");
           return false;
         }
+        if (
+          company.codeSentDate &&
+          +company.codeSentDate + 1000 * 60 * 10 < Date.now() //+ 10 mins
+        ){
+          res.status(409).send("The code expired");
+          return false;
+        }
         if(company.codeTries > 2){
-          res.status(403).send("You entered an incorrect code 3 times and now" +
-            " your current code is deactivated. Click here to get a new " +
-            "confirmation code.");
+          res.status(403).send("You entered an incorrect code 3 times");
           return false;
         }
         if(company.confirmationCode !== code){
@@ -112,13 +121,9 @@ exports.create = function (req, res, next) {
           });
           return false;
         }
-        res.status(200).send(company);
-        break;
-
-      case '4':
-        if(!company){
-          res.status(400).send("Company is not found");
-          return false;
+        if(step === '1'){
+          res.send();
+          break;
         }
         if(typeof companyName !== 'string'){
           res.status(400).send("Bad request");
@@ -132,15 +137,53 @@ exports.create = function (req, res, next) {
           res.status(406).send("Company Name must be 50 characters or less");
           return false;
         }
-        company.name = companyName;
-        company.save((err) => {
+
+        User.findOne({email}, (err, dbUser) => {
           if(err){
             console.log(err);
-            res.status(500).send("Server error");
+            res.status(500).send('Server error');
             return false;
           }
-          res.status(200).send(company);
+          if (dbUser) {
+            const logMsq = `User (email: ${email}) is already in DB`;
+            res.status(400).send(logMsq);
+            return false;
+          }
+          const newUserData = {
+            email,
+            firstName,
+            lastName,
+            password,
+            joinedon: Date(),
+            emailConfirmed: true,
+            companies: [company._id]
+          };
+          const user = new User(newUserData);
+          user.save((err, user) => {
+            if(err){
+              console.log(err);
+              res.status(500).send('Server error');
+              return false;
+            }
+            const newTeam = new Team({members: [user._id]});
+            newTeam.save((err, team) => {
+              if(err){
+                console.log(err);
+                res.status(500).send('Server error');
+                return false;
+              }
+              res.send({teamId: team._id, companyId: company._id});
+
+              company.teams.push(team._id);
+              company.emailConfirmed = true;
+              company.name = companyName;
+              company.save();
+              user.teams.push(team._id);
+              user.save();
+            })
+          });
         });
+        
         break;
 
       default:

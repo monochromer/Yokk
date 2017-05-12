@@ -51,16 +51,29 @@ exports.create = function (req, res, next) {
 
 };
 
-exports.addTeamMembers = function (req, res, next) {
+exports.addTeamMembers = function (req, res) {
   const { unconfirmedUser, Team, User } = req.app.db.models
   const { teamId, companyId, membersEmails, userName, companyName } = req.body
   // const { teamId, companyId, changeInProd } = req.body
   // const membersEmails = [changeInProd]
 
+  if(
+    !teamId ||
+    !membersEmails
+  ){
+    res.status(400).send('Bad request');
+    return false;
+  }
+
   let usersExist = []
   let usersToSave = []
 
   User.find( {teams: teamId}, (err,users) => {
+    if(err){
+      console.log(err);
+      res.status(500).send('Server error');
+      return false;
+    }
     const userEmails = users.map(o => o.email)
 
     checkIfEmailInArray(userEmails)

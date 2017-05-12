@@ -34,7 +34,7 @@ class Step4 extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
     if(this.checkForm()){
-      this.props.step4(this.state.companyName, this.props.email);
+      this.props.step4(this.state.companyName);
     }
   }
 
