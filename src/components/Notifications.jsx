@@ -3,8 +3,8 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import Pagination from './Pagination';
-import LinesPerPage from './LinesPerPage';
+import Pagination from './Pagination.jsx';
+import LinesPerPage from './LinesPerPage.jsx';
 
 class Notifications extends React.Component {
 
