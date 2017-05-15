@@ -8,11 +8,29 @@ import { checkConfirmationCode, checkCompanyEmail } from '../../actions/registra
 
 class Step1 extends React.Component {
 
-  state = {
-    code: getParameter('code') || '',
-    error: '',
-    startTime: Date.now(),
-    secondsPassed: 0
+  constructor(props){
+    super(props);
+
+    this.state = {
+      code: getParameter('code') || props.code,
+      error: '',
+      timerStart: props.timerStart,
+      secondsPassed: 0
+    }
+  }
+
+  componentWillMount(){
+    if(!this.props.email){
+      this.props.router.push('/registration');
+      return false;
+    }
+  }
+
+  componentWillReceiveProps(newProps){
+    this.setState({
+      code: newProps.code,
+      timerStart: newProps.timerStart
+    });
   }
 
   componentDidMount(){
@@ -33,9 +51,7 @@ class Step1 extends React.Component {
   requestNewCode = () => {
     this.props.checkCompanyEmail(this.props.email, (err) => {
       this.setState({
-        error: err || "",
-        code: "",
-        startTime: Date.now()
+        error: err || ""
       });
     });
   }
@@ -65,9 +81,9 @@ class Step1 extends React.Component {
 
   render() {
     const { handleSubmit, handleChange } = this;
-    const { code, error, startTime } = this.state; 
+    const { code, error, timerStart } = this.state; 
     const tenMins = 1000 * 60 * 10;
-    const timeLeft = startTime + tenMins - Date.now();
+    const timeLeft = timerStart + tenMins - Date.now();
     const timeLeftFormat = moment(timeLeft > 0 ? timeLeft : 0).format("mm:ss");
     let errorText;
     switch(error){
@@ -153,7 +169,9 @@ Step1.contextTypes = {
 
 function getProps(state) {
   return {
-    email: state.registration.email || getParameter('email')
+    email: state.registration.email || getParameter('email'),
+    code: state.registration.code,
+    timerStart: state.registration.timerStart
   }
 }
 

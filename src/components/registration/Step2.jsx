@@ -7,10 +7,28 @@ import { isEmpty } from 'lodash';
 
 class Step2 extends React.Component {
 
-  state = {
-    firstName: "",
-    lastName: "",
-    errors: {}
+  constructor(props){
+    super(props);
+
+    this.state = {
+      firstName: props.registration.firstName,
+      lastName: props.registration.lastName,
+      errors: {}
+    }
+  }
+
+  componentWillMount(){
+    const {
+      email,
+      code
+    } = this.props.registration;
+    if(
+      !email ||
+      !code
+    ){
+      this.props.router.push('/registration');
+      return false;
+    }
   }
 
   handleChange = (event) => {
@@ -55,7 +73,7 @@ class Step2 extends React.Component {
   }
 
   render(){
-    const { errors } = this.state;
+    const { errors, firstName, lastName } = this.state;
     return (
       <form onSubmit={ this.handleSubmit }>
         <div className="container">
@@ -77,6 +95,7 @@ class Step2 extends React.Component {
                 name="firstName"
                 label="First name"
                 error={errors.firstName}
+                defaultValue={firstName}
               />
               <Input
                 handleChange={ this.handleChange }
@@ -84,6 +103,7 @@ class Step2 extends React.Component {
                 name="lastName"
                 label="Last name"
                 error={errors.lastName}
+                defaultValue={lastName}
               />
             </div>
           </div>
@@ -104,11 +124,18 @@ class Step2 extends React.Component {
 }
 
 Step2.propTypes = {
+  registration: PropTypes.object.isRequired,
   step2: PropTypes.func.isRequired
 }
 
 Step2.contextTypes = {
 	router: PropTypes.object.isRequired
+}
+
+function getProps(state) {
+  return {
+    registration: state.registration
+  }
 }
 
 export default connect(getProps, { step2 })(Step2)

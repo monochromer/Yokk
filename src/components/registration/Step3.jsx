@@ -5,9 +5,32 @@ import { step3 } from '../../actions/registration'
 import { Input, PasswordStrengthIndicator } from '../UI.jsx'
 
 class Step3 extends React.Component {
-  state = {
-    password: "",
-    error: ""
+
+  constructor(props){
+    super(props);
+
+    this.state = {
+      password: props.registration.password,
+      error: ""
+    }
+  }
+
+  componentWillMount(){
+    const {
+      email,
+      code,
+      firstName,
+      lastName
+    } = this.props.registration;
+    if(
+      !email ||
+      !code ||
+      !firstName ||
+      !lastName
+    ){
+      this.props.router.push('/registration');
+      return false;
+    }
   }
 
   handleChange = (event) => {
@@ -55,6 +78,7 @@ class Step3 extends React.Component {
   }
 
   render() {
+    const { password } = this.state;
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="container">
@@ -79,6 +103,7 @@ class Step3 extends React.Component {
                 name="password"
                 label="Password"
                 error={this.state.error}
+                defaultValue={password}
               />
             </div>
           </div>
@@ -105,11 +130,18 @@ class Step3 extends React.Component {
 }
 
 Step3.propTypes = {
+  registration: PropTypes.object.isRequired,
   step3: PropTypes.func.isRequired
 }
 
 Step3.contextTypes = {
 	router: PropTypes.object.isRequired
+}
+
+function getProps(state) {
+  return {
+    registration: state.registration
+  }
 }
 
 export default connect(getProps, { step3 })(Step3)

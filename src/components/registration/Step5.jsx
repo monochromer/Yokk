@@ -13,6 +13,28 @@ class Step5 extends React.Component {
     error: ""
   }
 
+  componentWillMount(){
+    const {
+      email,
+      code,
+      firstName,
+      lastName,
+      password,
+      companyName
+    } = this.props.regData;
+    if(
+      !email ||
+      !code ||
+      !firstName ||
+      !lastName ||
+      !password ||
+      !companyName
+    ){
+      this.props.router.push('/registration');
+      return false;
+    }
+  }
+
   addInvitation = () => {
     this.setState({
       invitations: [

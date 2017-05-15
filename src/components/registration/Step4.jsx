@@ -6,8 +6,33 @@ import { Input } from '../UI.jsx'
 
 class Step4 extends React.Component {
 
-  state = {
-    companyName: ""
+  constructor(props){
+    super(props);
+
+    this.state = {
+      companyName: this.props.registration.companyName,
+      error: ""
+    }
+  }
+
+  componentWillMount(){
+    const {
+      email,
+      code,
+      firstName,
+      lastName,
+      password
+    } = this.props.registration;
+    if(
+      !email ||
+      !code ||
+      !firstName ||
+      !lastName ||
+      !password
+    ){
+      this.props.router.push('/registration');
+      return false;
+    }
   }
 
   handleChange = (event) => {
@@ -41,6 +66,7 @@ class Step4 extends React.Component {
   }
 
   render() {
+    const { companyName } = this.state;
     return (
       <form onSubmit={ this.handleSubmit }>
         <div className="container">
@@ -61,6 +87,8 @@ class Step4 extends React.Component {
                   type="text"
                   handleChange={ this.handleChange }
                   name="name"
+                  error={this.state.error}
+                  defaultValue={companyName}
                   label="Company name"/>
             </div>
           </div>
@@ -80,6 +108,7 @@ class Step4 extends React.Component {
 }
 
 Step4.propTypes = {
+  registration: PropTypes.object.isRequired,
   step4: PropTypes.func.isRequired
 }
 
@@ -89,7 +118,7 @@ Step4.contextTypes = {
 
 function getProps(state) {
   return {
-    email: state.registration.email
+    registration: state.registration
   }
 }
 
