@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { step4 } from '../../actions/registration'
 import { connect } from 'react-redux'
 import { Input } from '../UI.jsx'
+import { isValidName } from '../../helpers';
 
 class Step4 extends React.Component {
 
@@ -46,6 +47,9 @@ class Step4 extends React.Component {
     let error = "";
     if(!companyName.length){
       error = "Please enter Company Name";
+    }
+    if(!isValidName(companyName)){
+      error = "Invalid Company Name";
     }
     if(companyName.length > 50){
       error = "Company Name must be 50 characters or less";

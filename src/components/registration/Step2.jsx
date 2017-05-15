@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { step2 } from '../../actions/registration'
 import { Input } from '../UI.jsx'
 import { isEmpty } from 'lodash';
+import { isValidName } from '../../helpers';
 
 class Step2 extends React.Component {
 
@@ -47,8 +48,14 @@ class Step2 extends React.Component {
     if(!firstName.length){
       errors.firstName = "Please enter First Name";
     }
+    if(!isValidName(firstName)){
+      errors.firstName = "Invalid First Name";
+    }
     if(!lastName.length){
       errors.lastName = "Please enter Last Name";
+    }
+    if(!isValidName(lastName)){
+      errors.lastName = "Invalid Last Name";
     }
     if(firstName.length > 50){
       errors.firstName = "First Name must be 50 characters or less";
