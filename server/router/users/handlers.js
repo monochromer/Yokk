@@ -328,6 +328,10 @@ exports.deleteUserAvatar = function (req, res) {
 exports.getLoggedInUser = function (req, res) {
   // as of now, returned fields can be adjusted in userpassport.js
   const { User, Company, Team } = req.app.db.models
+  if(!req.user){
+    res.status(401).send('Unauthorized');
+    return false;
+  }
   User.findOne({_id: req.user._id}, (err, user) => {
     if(err){
       console.log(err);
