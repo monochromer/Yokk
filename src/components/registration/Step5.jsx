@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { addTeamMembers } from '../../actions/teams';
 import { finishRegistration } from '../../actions/registration';
 import { Input } from '../UI.jsx';
-import { browserHistory } from 'react-router';
 
 class Step5 extends React.Component {
   
@@ -57,13 +56,15 @@ class Step5 extends React.Component {
       ...regData,
       step: '5'
     };
-    this.props.finishRegistration(data).then((res) => {
+    this.props.finishRegistration(data, (err, res) => {
+      if(err){
+        this.setState({error: "" + err.response.data});
+        return false;
+      }
       const { firstName, lastName, companyName } = regData;
       const { teamId, companyId } = res.data;
       addTeamMembers(teamId, this.state.invitations, companyId, (firstName + " " + lastName), companyName);
-      browserHistory.push('/login');
-    }, (err) => {
-      this.setState({error: "" + err.response.data});
+      this.props.router.push('/login');
     });
   }
 
@@ -73,10 +74,12 @@ class Step5 extends React.Component {
       ...this.props.regData,
       step: '5'
     };
-    this.props.finishRegistration(data).then(() => {
-      browserHistory.push('/login');
-    }, (err) => {
-      this.setState({error: "" + err.response.data});
+    this.props.finishRegistration(data, (err, res) => {
+      if(err){
+        this.setState({error: "" + err.response.data});
+        return false;
+      }
+      this.props.router.push('/login');
     });
   }
 

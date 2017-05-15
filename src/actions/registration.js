@@ -54,10 +54,14 @@ export function step4(companyName) {
   }
 }
 
-export function finishRegistration(data) {
+export function finishRegistration(data, callback) {
   return function(dispatch) {
-    dispatch({type: "STEP_5"});
-    return axios.post(COMPANY_CRUD, data);
+    axios.post(COMPANY_CRUD, data).then((res) => {
+      callback(null, res);
+      dispatch({type: "STEP_5"});
+    }, (err) => {
+      callback(err);
+    });
   }
 }
 
