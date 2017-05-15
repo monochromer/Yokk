@@ -23,8 +23,9 @@ export function checkConfirmationCode(code, email, callback){
       step: '1'
     }).then(() => {
       dispatch({type: "STEP_1", code, email});
+      callback();
     }, (err) => {
-      dispatch({type: "STEP_1_FAILED"});
+      dispatch({type: "STEP_1_FAILED"}); // to check what is this
       callback(err.response.data);
     });
   }
@@ -55,6 +56,7 @@ export function step4(companyName) {
 
 export function finishRegistration(data) {
   return function(dispatch) {
+    dispatch({type: "STEP_5"});
     return axios.post(COMPANY_CRUD, data);
   }
 }
