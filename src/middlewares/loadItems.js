@@ -13,5 +13,13 @@ export default (store) => (next) => (action) => {
     }
     action.payload = response.data;
     return next(action);
+  }, (err) => {
+    if(
+      action.type === "FETCH_CURRENT_USER" &&
+      err.response.status === 401
+    ){
+      localStorage.removeItem('jwtToken');
+      window.location = "/";
+    }
   });
 }
