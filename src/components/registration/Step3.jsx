@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import { step3 } from '../../actions/registration'
 import { Input, PasswordStrengthIndicator } from '../UI.jsx'
@@ -22,20 +23,21 @@ class Step3 extends React.Component {
     const passwordContainsLowercaseLatinLetter = new RegExp( /[a-z]/ ).test( password );
     const passwordContainsUppercaseLatinLetter = new RegExp( /[A-Z]/ ).test( password );
     let error = "";
+    const weakPassMsg = "The password is too weak. It must be at least 8 symbols long, include lowercase, capital letters and digits.";
     if(password.length < 8){
-      error = "The password is too weak. It must be at least 8 symbols long, include lowercase, capital letters and digits.";
+      error = weakPassMsg;
     }
     if(password.length > 100){
       error = "Password must be 100 characters or less";
     }
     if(!passwordContainsDigits){
-      error = "The password is too weak. It must be at least 8 symbols long, include lowercase, capital letters and digits.";
+      error = weakPassMsg;
     }
     if(!passwordContainsLowercaseLatinLetter){
-      error = "The password is too weak. It must be at least 8 symbols long, include lowercase, capital letters and digits.";
+      error = weakPassMsg;
     }
     if(!passwordContainsUppercaseLatinLetter){
-      error = "The password is too weak. It must be at least 8 symbols long, include lowercase, capital letters and digits.";
+      error = weakPassMsg;
     }
     if(error){
       this.setState({error});
@@ -48,6 +50,7 @@ class Step3 extends React.Component {
     event.preventDefault();
     if(this.checkForm()){
       this.props.step3(this.state.password);
+      this.props.router.push('/registration/step4');
     }
   }
 
@@ -101,4 +104,12 @@ class Step3 extends React.Component {
   }
 }
 
-export default connect(null, { step3 })(Step3)
+Step3.propTypes = {
+  step3: PropTypes.func.isRequired
+}
+
+Step3.contextTypes = {
+	router: PropTypes.object.isRequired
+}
+
+export default connect(getProps, { step3 })(Step3)

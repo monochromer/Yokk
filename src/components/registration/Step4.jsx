@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 import { step4 } from '../../actions/registration'
 import { connect } from 'react-redux'
 import { Input } from '../UI.jsx'
@@ -35,6 +36,7 @@ class Step4 extends React.Component {
     event.preventDefault();
     if(this.checkForm()){
       this.props.step4(this.state.companyName);
+      this.props.router.push('/registration/step5');
     }
   }
 
@@ -75,6 +77,14 @@ class Step4 extends React.Component {
       </form>
     )
   }
+}
+
+Step4.propTypes = {
+  step4: PropTypes.func.isRequired
+}
+
+Step4.contextTypes = {
+	router: PropTypes.object.isRequired
 }
 
 function getProps(state) {

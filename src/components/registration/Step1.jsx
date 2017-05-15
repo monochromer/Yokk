@@ -53,9 +53,13 @@ class Step1 extends React.Component {
 
   checkCode = () => {
     this.props.checkConfirmationCode(this.state.code, this.props.email, (err) => {
-      this.setState({
-        error: err || ''
-      });
+      if(err){
+        this.setState({error: err});
+      }
+      else{
+        this.setState({error: ""});
+        this.props.router.push('/registration/step2');
+      }
     });
   }
 
@@ -141,6 +145,10 @@ Step1.propTypes = {
   email: PropTypes.string.isRequired,
   checkConfirmationCode: PropTypes.func.isRequired,
   checkCompanyEmail: PropTypes.func.isRequired
+}
+
+Step1.contextTypes = {
+	router: PropTypes.object.isRequired
 }
 
 function getProps(state) {

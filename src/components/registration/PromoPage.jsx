@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 import validator from 'validator'
 import classNames from 'classnames'
 import { checkCompanyEmail } from '../../actions/registration'
@@ -22,7 +23,13 @@ class PromoPage extends React.Component {
     event.preventDefault();
     if (validator.isEmail(this.state.email)) {
       this.props.checkCompanyEmail(this.state.email, (err) => {
-        this.setState({error: err || ""});
+        if(err){
+          this.setState({error: err});
+        }
+        else{
+          this.setState({error: ""});
+          this.props.router.push('/registration/step1');
+        }
       });
     }
     else{
@@ -159,6 +166,14 @@ class PromoPage extends React.Component {
       </div>
     )
   }
+}
+
+PromoPage.propTypes = {
+  checkCompanyEmail: PropTypes.func.isRequired
+}
+
+PromoPage.contextTypes = {
+	router: PropTypes.object.isRequired
 }
 
 export default connect(null, { checkCompanyEmail })(PromoPage)

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addTeamMembers } from '../../actions/teams';
 import { finishRegistration } from '../../actions/registration';
@@ -121,6 +122,16 @@ class Step5 extends React.Component {
       </form>
     )
   }
+}
+
+Step5.propTypes = {
+  regData: PropTypes.object.isRequired,
+  addTeamMembers: PropTypes.func.isRequired,
+  finishRegistration: PropTypes.func.isRequired
+}
+
+Step5.contextTypes = {
+	router: PropTypes.object.isRequired
 }
 
 function getProps(state) {

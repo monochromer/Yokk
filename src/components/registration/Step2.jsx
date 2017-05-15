@@ -1,5 +1,6 @@
 import React from 'react'
-import store from '../../store'
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux'
 import { step2 } from '../../actions/registration'
 import { Input } from '../UI.jsx'
 import { isEmpty } from 'lodash';
@@ -48,7 +49,8 @@ class Step2 extends React.Component {
     event.preventDefault();
     if(this.checkForm()){
       const { firstName, lastName } = this.state;
-      store.dispatch(step2(firstName, lastName));
+      this.props.step2(firstName, lastName);
+      this.props.router.push('/registration/step3');
     }
   }
 
@@ -101,4 +103,12 @@ class Step2 extends React.Component {
   }
 }
 
-export default Step2
+Step2.propTypes = {
+  step2: PropTypes.func.isRequired
+}
+
+Step2.contextTypes = {
+	router: PropTypes.object.isRequired
+}
+
+export default connect(getProps, { step2 })(Step2)
