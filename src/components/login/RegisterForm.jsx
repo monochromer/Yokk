@@ -7,6 +7,7 @@ import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import { isEmpty } from 'lodash';
 import { register, setCurrentUser } from '../../actions/currentUser';
+import { isValidName } from '../../helpers';
 
 class RegisterForm extends React.Component {
   
@@ -34,8 +35,15 @@ class RegisterForm extends React.Component {
   checkForm = () => {
     const { firstName, lastName, password, passwordRepeat } = this.state;
     let errors = {};
+    const passwordContainsDigits = new RegExp( /\d/ ).test( password );
+    const passwordContainsLowercaseLatinLetter = new RegExp( /[a-z]/ ).test( password );
+    const passwordContainsUppercaseLatinLetter = new RegExp( /[A-Z]/ ).test( password );
+    const weakPassMsg = "The password is too weak. It must be at least 8 symbols long, include lowercase, capital letters and digits.";
     if(!firstName.length){
       errors.firstName = "Please enter First Name";
+    }
+    if(!isValidName(firstName)){
+      errors.firstName = "Invalid First Name";
     }
     if(firstName.length > 50){
       errors.firstName = "First Name must be 50 characters or less";
@@ -43,11 +51,23 @@ class RegisterForm extends React.Component {
     if(!lastName.length){
       errors.lastName = "Please enter Last Name";
     }
+    if(!isValidName(lastName)){
+      errors.lastName = "Invalid Last Name";
+    }
     if(lastName.length > 50){
       errors.lastName = "Last Name must be 50 characters or less";
     }
     if(password.length < 8){
-      errors.password = "Password must be at least 8 characters long";
+      errors.password = weakPassMsg;
+    }
+    if(!passwordContainsDigits){
+      errors.password = weakPassMsg;
+    }
+    if(!passwordContainsLowercaseLatinLetter){
+      errors.password = weakPassMsg;
+    }
+    if(!passwordContainsUppercaseLatinLetter){
+      errors.password = weakPassMsg;
     }
     if(password.length > 100){
       errors.password = "Password must be 100 characters or less";
