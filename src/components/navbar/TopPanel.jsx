@@ -67,15 +67,8 @@ class TopPanel extends React.Component {
       <div className="new-notifications-circle"></div>
       : [];
 
-    const photo = user.profileImg ? 
-      <img
-        src={user.profileImg.small}
-        className="img-circle"
-        width="40px"
-        height="40px"
-        alt="profile"
-      />
-      : [];
+    const photoSrc = (!user.profileImg || !user.profileImg.small) ?
+      '/img/dummy/960-720.png' : user.profileImg.small;
 
     return (
       <div className="top-panel">
@@ -92,7 +85,13 @@ class TopPanel extends React.Component {
             className="top-panel_user-icon"
              onClick={this.showUserMenu}
           >
-            {photo}
+            <img
+              src={photoSrc}
+              className="img-circle"
+              width="40px"
+              height="40px"
+              alt="profile"
+            />
             {userMenu}
           </div>
         </div>
