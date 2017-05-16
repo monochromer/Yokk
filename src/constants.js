@@ -7,6 +7,11 @@ export const USER_CRUD = '/api/user/';
 
 export const USER_TEAM = '/api/user/get/team';
 
+export const NOTIFICATIONS_CRUD = '/api/notification/';
+export const FETCH_NOTIFICATIONS = 'FETCH_NOTIFICATIONS';
+export const MARK_NOTIFICATION = 'MARK_NOTIFICATION';
+export const MARK_ALL_NOTIFICATIONS = 'MARK_ALL_NOTIFICATIONS';
+
 export const TIME_ENTRY_CRUD = '/api/timeEntry/';
 
 export const FETCH_REDMINE_TIME_ENTRIES_URI = '/api/sync/redmine';
