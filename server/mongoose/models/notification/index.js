@@ -11,7 +11,8 @@ module.exports = function(app, mongoose) {
     date: {
       type: Number,
       default: Date.now
-    }
+    },
+    userId: mongoose.Schema.Types.ObjectId
   });
 
   app.db.model('Notification', notificationSchema);
