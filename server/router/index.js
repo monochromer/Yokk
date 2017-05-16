@@ -10,6 +10,7 @@ import reports from './reports';
 import sync from './sync';
 import teams from './teams';
 import company from './company';
+import notification from './notification';
 
 export default function(app) {
 
@@ -22,7 +23,8 @@ export default function(app) {
   app.use('/api/sync', authenticate, sync);
   app.use('/api/teams', identify, teams);
   app.use('/api/company', identify, company);
-  
+  app.use('/api/notification', authenticate, notification);
+
   app.get('/*', (req, res, next) => res.sendFile(path.join(__dirname,'/../../build/index.html')));
 
 }
