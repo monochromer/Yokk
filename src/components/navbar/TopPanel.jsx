@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { changeCurrentCompany, logout } from '../../actions/currentUser'
 import UserMenu from './UserMenu.jsx'
 import NotificationsDropdown from './NotificationsDropdown.jsx'
+import { markAllNotifications } from '../../actions/notifications';
 // import NewCompanyModal from './NewCompanyModal.jsx'
 
 class TopPanel extends React.Component {
@@ -48,19 +49,20 @@ class TopPanel extends React.Component {
   }
 
   render() {
-    const { user, logout, notifications } = this.props;
+    const { user, logout, notifications, markAllNotifications } = this.props;
     const { showUserMenu, showNotifications } = this.state;
 
-    const userMenu = showUserMenu ? 
+    const userMenu = showUserMenu ?
       <UserMenu
         logout={logout}
         user={user}
       />
       : [];
 
-    const notificationsDropdown = showNotifications ? 
+    const notificationsDropdown = showNotifications ?
       <NotificationsDropdown
         notifications={notifications}
+        markAllNotifications={markAllNotifications}
       />
       : [];
     const newNotifications = notifications.find(el => el.new) ?
@@ -133,7 +135,11 @@ class TopPanel extends React.Component {
 }
 
 TopPanel.PropTypes = {
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  notifications: PropTypes.array.isRequired,
+  markAllNotifications: PropTypes.func.isRequired,
+  changeCurrentCompany: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
 }
 
 const getProps = function(store) {
@@ -144,4 +150,8 @@ const getProps = function(store) {
 };
 
 
-export default connect(getProps, { changeCurrentCompany, logout })(TopPanel)
+export default connect(getProps, {
+  changeCurrentCompany,
+  logout,
+  markAllNotifications
+})(TopPanel)
