@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import { step3 } from '../../actions/registration'
 import { Input, PasswordStrengthIndicator } from '../UI.jsx'
+import { isEmpty } from 'lodash';
 
 class Step3 extends React.Component {
 
@@ -11,7 +12,8 @@ class Step3 extends React.Component {
 
     this.state = {
       password: props.registration.password,
-      error: ""
+      passwordRepeat: props.registration.password,
+      errors: {}
     }
   }
 
@@ -35,35 +37,41 @@ class Step3 extends React.Component {
 
   handleChange = (event) => {
     this.setState({
-      password: event.target.value,
-      error: ""
+      [event.target.name]: event.target.value,
+      errors: {
+        ...this.state.errors,
+        [event.target.name]: ""
+      }
     })
   }
 
   checkForm = () => {
-    const { password } = this.state;
+    const { password, passwordRepeat } = this.state;
     const passwordContainsDigits = new RegExp( /\d/ ).test( password );
     const passwordContainsLowercaseLatinLetter = new RegExp( /[a-z]/ ).test( password );
     const passwordContainsUppercaseLatinLetter = new RegExp( /[A-Z]/ ).test( password );
-    let error = "";
+    let errors = {};
     const weakPassMsg = "The password is too weak. It must be at least 8 symbols long, include lowercase, capital letters and digits.";
     if(password.length < 8){
-      error = weakPassMsg;
+      errors.password = weakPassMsg;
     }
     if(password.length > 100){
-      error = "Password must be 100 characters or less";
+      errors.password = "Password must be 100 characters or less";
     }
     if(!passwordContainsDigits){
-      error = weakPassMsg;
+      errors.password = weakPassMsg;
     }
     if(!passwordContainsLowercaseLatinLetter){
-      error = weakPassMsg;
+      errors.password = weakPassMsg;
     }
     if(!passwordContainsUppercaseLatinLetter){
-      error = weakPassMsg;
+      errors.password = weakPassMsg;
     }
-    if(error){
-      this.setState({error});
+    if(password !== passwordRepeat){
+      errors.passwordRepeat = "Passwords do not match!";
+    }
+    if(!isEmpty(errors)){
+      this.setState({errors});
       return false;
     }
     return true;
@@ -78,7 +86,7 @@ class Step3 extends React.Component {
   }
 
   render() {
-    const { password } = this.state;
+    const { password, passwordRepeat, errors } = this.state;
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="container">
@@ -101,9 +109,18 @@ class Step3 extends React.Component {
                 className="input-group input-group__grey"
                 type="password"
                 name="password"
-                label="Password"
-                error={this.state.error}
+                label="Password *"
+                error={errors.password}
                 defaultValue={password}
+              />
+              <Input
+                handleChange={this.handleChange}
+                className="input-group input-group__grey"
+                label="Repeat password *"
+                type="password"
+                name="passwordRepeat"
+                error={errors.passwordRepeat}
+                defaultValue={passwordRepeat}
               />
             </div>
           </div>
