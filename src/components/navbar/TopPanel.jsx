@@ -59,14 +59,13 @@ class TopPanel extends React.Component {
       />
       : [];
 
+    const newNotifications = notifications.find(el => el.new) ? true : false;
     const notificationsDropdown = showNotifications ?
       <NotificationsDropdown
         notifications={notifications}
+        newNotifications={newNotifications}
         markAllNotifications={markAllNotifications}
       />
-      : [];
-    const newNotifications = notifications.find(el => el.new) ?
-      <div className="new-notifications-circle"></div>
       : [];
 
     const photoSrc = (!user.profileImg || !user.profileImg.small) ?
@@ -80,7 +79,7 @@ class TopPanel extends React.Component {
              onClick={this.showNotifications}
           >
             <span className="glyphicon glyphicon-bell"></span>
-            {newNotifications}
+            {newNotifications && <div className="new-notifications-circle"></div>}
             {notificationsDropdown}
           </div>
           <div
