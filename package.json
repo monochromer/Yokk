@@ -41,7 +41,8 @@
     "path": "^0.12.7",
     "upwork-api": "^1.2.2",
     "valid-email": "0.0.2",
-    "validator": "^7.0.0"
+    "validator": "^7.0.0",
+    "ws": "^2.3.1"
   },
   "scripts": {
     "start": "react-scripts start",
