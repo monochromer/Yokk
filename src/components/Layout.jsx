@@ -17,6 +17,24 @@ class Layout extends React.Component {
       this.props.fetchCurrentUser();
       this.props.fetchNotifications();
     }
+    const socket = new WebSocket("ws://localhost:9001");
+    socket.onopen = function() {
+      console.log("Connection established");
+    };
+    socket.onclose = function(event) {
+      if (event.wasClean) {
+        console.log('Connection closed clean');
+      } else {
+        console.log('Lost connection');
+      }
+      console.log('Code: ' + event.code + ' reason: ' + event.reason);
+    };
+    socket.onmessage = function(event) {
+      console.log("Received data " + event.data);
+    };
+    socket.onerror = function(error) {
+      console.log("Error " + error.message);
+    };
   }
 
   componentWillReceiveProps(newProps){
