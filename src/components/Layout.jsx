@@ -5,41 +5,36 @@ import PropTypes from 'prop-types';
 import TopPanel from './navbar/TopPanel.jsx'
 import Footer from './footer/Footer.jsx'
 import LinkService from './linkService/LinkService.jsx'
-import store from '../store.js'
 import { fetchTeamUsers } from '../actions/users.js'
 import { fetchCurrentUser } from '../actions/currentUser.js'
+import { fetchNotifications } from '../actions/notifications'
 
 class Layout extends React.Component {
 
   componentWillMount() {
     if(this.props.authenticated){
-      store.dispatch(fetchTeamUsers());
-      store.dispatch(fetchCurrentUser());
-    }
-  }
-  
-  componentWillReceiveProps(newProps){
-    if(!this.props.authenticated && newProps.authenticated){
-      store.dispatch(fetchTeamUsers());
-      store.dispatch(fetchCurrentUser());
+      this.props.fetchTeamUsers();
+      this.props.fetchCurrentUser();
+      this.props.fetchNotifications();
     }
   }
 
-  onCreateNewCompany = () => {
-    store.dispatch({ type: 'MODAL_NEW_COMPANY_OPEN' });
+  componentWillReceiveProps(newProps){
+    if(!this.props.authenticated && newProps.authenticated){
+      this.props.fetchTeamUsers();
+      this.props.fetchCurrentUser();
+      this.props.fetchNotifications();
+    }
   }
-    
+
   render(){
-    const { location, children, authenticated } = this.props;
+    const { children, authenticated } = this.props;
     const topPanel = authenticated ?
-      <TopPanel
-        location={location.pathname}
-        onCreateNewCompany={this.onCreateNewCompany}
-       />
+      <TopPanel />
       : [];
     const footer = authenticated ? <Footer /> : [];
     const linkService = authenticated ? <LinkService /> : [];
-    
+
     return (
       <div className={classnames({'index-container': authenticated})}>
         {topPanel}
@@ -52,13 +47,20 @@ class Layout extends React.Component {
 }
 
 Layout.propTypes = {
-	authenticated: PropTypes.bool.isRequired
+  authenticated: PropTypes.bool.isRequired,
+  fetchTeamUsers: PropTypes.func.isRequired,
+  fetchCurrentUser: PropTypes.func.isRequired,
+  fetchNotifications: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {
-	return {
-		authenticated: state.currentUser.authenticated
-	};
+  return {
+    authenticated: state.currentUser.authenticated
+  };
 }
 
-export default connect(mapStateToProps)(Layout);
+export default connect(mapStateToProps, {
+  fetchTeamUsers,
+  fetchCurrentUser,
+  fetchNotifications,
+})(Layout);
