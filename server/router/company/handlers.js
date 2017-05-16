@@ -59,7 +59,7 @@ exports.create = function (req, res) {
           const newCompany = new Company({
             originatorEmail: email,
             confirmationCode: confCode,
-            codeSentDate: Date(),
+            codeSentDate: Date.now(),
             codeTries: 0
           });
           newCompany.save((err, company) => {
@@ -74,7 +74,7 @@ exports.create = function (req, res) {
         }
         else{
           company.confirmationCode = confCode;
-          company.codeSentDate = Date();
+          company.codeSentDate = Date.now();
           company.codeTries = 0;
           company.save((err, company) => {
             if(err){
@@ -154,7 +154,7 @@ exports.create = function (req, res) {
             firstName,
             lastName,
             password,
-            joinedon: Date(),
+            joinedon: Date.now(),
             emailConfirmed: true,
             companies: [company._id]
           };
@@ -183,7 +183,7 @@ exports.create = function (req, res) {
             })
           });
         });
-        
+
         break;
 
       default:

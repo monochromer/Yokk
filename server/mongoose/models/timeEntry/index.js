@@ -11,12 +11,12 @@ module.exports = function(app, mongoose) {
       required: true
     },
     date: {
-      type: Date,
-      default: Date()
+      type: Number,
+      default: Date.now
     },
     dateCreated: {
-      type: Date,
-      default: Date()
+      type: Number,
+      default: Date.now
     },
     description: {
       type: String,

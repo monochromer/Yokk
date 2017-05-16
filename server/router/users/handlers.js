@@ -68,7 +68,7 @@ exports.getTeamUsers = function (req, res) {
 exports.saveUserToDb = function (req, res) {
   const { User, Company, Team } = req.app.db.models
   const user = new User(req.body)
-  user.joinedon = Date()
+  user.joinedon = Date.now()
   user.emailConfirmed = true
 
   const companyName = req.body.teamName
@@ -358,7 +358,7 @@ exports.getLoggedInUser = function (req, res) {
         userToReturn.companies = companies
         userToReturn.teams = teams
         if(
-          !userToReturn.companyId || 
+          !userToReturn.companyId ||
           userToReturn.companies.indexOf(userToReturn.companyId) === -1
         ){
           userToReturn.companyId = userToReturn.companies[0]._id;

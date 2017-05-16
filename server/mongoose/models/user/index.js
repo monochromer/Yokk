@@ -50,8 +50,8 @@ module.exports = function (app, mongoose) {
       }
     },
     joinedon: {
-      type: Date,
-      default: null
+      type: Number,
+      default: Date.now
     },
     role: {
       type: String,

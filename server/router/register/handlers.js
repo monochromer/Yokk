@@ -13,7 +13,7 @@ export const register = (req, res) => {
         password,
         email,
         teams: [teamId],
-        joinedon: Date(),
+        joinedon: Date.now(),
         companies: [companyId]
       })
       return createNewUser(User, newUser)

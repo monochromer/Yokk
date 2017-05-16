@@ -59,7 +59,7 @@ module.exports = function(req, res, next) {
                                 entry.redmineTimeEntryId = element.id;
                                 entry.number = element.issue.id;
                                 entry.executor = _id;
-                                entry.date = entry.dateCreated = moment(element.created_on).toDate();
+                                entry.date = entry.dateCreated = moment(element.created_on).valueOf();
                                 if (!element.comments) {
                                     entry.description = 'no comments';
                                 } else {

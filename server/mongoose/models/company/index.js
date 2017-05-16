@@ -21,11 +21,11 @@ module.exports = function(app, mongoose) {
     },
     companyLogoURL: String,
     created: {
-      type: Date,
-      default: Date()
+      type: Number,
+      default: Date.now
     },
     teams: Array,
-    codeSentDate: Date,
+    codeSentDate: Number,
     codeTries: Number
   });
 

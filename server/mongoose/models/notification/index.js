@@ -10,7 +10,7 @@ module.exports = function(app, mongoose) {
     },
     date: {
       type: Number,
-      default: Date.now()
+      default: Date.now
     }
   });
 

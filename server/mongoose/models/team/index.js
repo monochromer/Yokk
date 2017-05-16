@@ -9,8 +9,8 @@ module.exports = function(app, mongoose) {
     teamOriginator: mongoose.Schema.Types.ObjectId,
     teamLogoURL: String,
     created: {
-      type: Date,
-      default: Date()
+      type: Number,
+      default: Date.now
     },
     members: Array
   });

@@ -90,7 +90,7 @@ class NewTimeEntryForm extends Component {
     }
 
     const timeEntry = {
-      date: date.value,
+      date: moment(date.value, 'DD.MM.YYYY').valueOf(),
       dateCreated: Date.now(),
       description: description.value,
       duration: duration.value,

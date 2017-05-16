@@ -18,7 +18,7 @@ exports.create = function (req, res, next) {
   const teamInitData = {
     name: teamName,
     teamOriginator: originatorId,
-    created: Date()
+    created: Date.now()
   }
 
   const newTeam = new Team(teamInitData)

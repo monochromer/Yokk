@@ -83,11 +83,11 @@ exports.saveTimeEntry = function(req, res, next) {
   const timeEntry = new TimeEntryModel(timeEntryInitData);
 
   if (req.body.date) {
-    timeEntry.date = moment(req.body.date, 'DD.MM.YYYY').toDate();
+    timeEntry.date = req.body.date;
   }
 
   if (req.body.startDate) {
-    timeEntry.startDate = moment(req.body.startDate, 'DD.MM.YYYY').toDate();
+    timeEntry.startDate = req.body.startDate;
   }
 
   timeEntry.duration = stringToMinutes(req.body.duration);
