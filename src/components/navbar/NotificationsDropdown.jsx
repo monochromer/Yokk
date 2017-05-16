@@ -2,7 +2,13 @@ import React from 'react'
 import { Link } from 'react-router'
 import PropTypes from 'prop-types';
 
-class UserMenu extends React.Component {
+class NotificationsDropdown extends React.Component {
+
+  componentWillUnmount(){
+    if(this.props.newNotifications){
+      this.props.markAllNotifications();
+    }
+  }
 
   render() {
     const { notifications } = this.props;
@@ -29,8 +35,10 @@ class UserMenu extends React.Component {
   }
 }
 
-UserMenu.PropTypes = {
-  notifications: PropTypes.array.isRequired
+NotificationsDropdown.PropTypes = {
+  notifications: PropTypes.array.isRequired,
+  newNotifications: PropTypes.bool.isRequired,
+  markAllNotifications: PropTypes.func.isRequired
 }
 
-export default UserMenu;
+export default NotificationsDropdown;
