@@ -22,6 +22,17 @@ body {
     width: 1120px;
 }
 
+.system-alert-notification{
+  position: fixed;
+  top: 0;
+  right: 0;
+  border: 1px solid red;
+  background-color: pink;
+  color: red;
+  padding: 5px;
+  z-index: 9999;
+}
+
 /* .container-fluid { */
     /* width: 100%; */
 /* } */
