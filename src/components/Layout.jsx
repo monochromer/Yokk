@@ -31,18 +31,33 @@ class Layout extends React.Component {
   }
 
   startWebSocket = () => {
-    const socket = new WebSocket("ws://localhost:9001");
+    const hostname = window.location.hostname;
+    const socket = new WebSocket(`ws://${hostname}:9001`);
     socket.onopen = function() {
       console.log("Connection established");
-      this.props.setSystemAlert('');
+      socket.send('Bearer ' + localStorage.jwtToken);
+      if(this.props.sysAlert !== ''){
+        this.props.setSystemAlert('');
+      }
     }.bind(this);
     socket.onclose = function(event) {
-      this.props.setSystemAlert('Lost connection');
+      if(this.props.sysAlert !== 'Lost connection'){
+        this.props.setSystemAlert('Lost connection');
+      }
       setTimeout(this.startWebSocket, 3000);
     }.bind(this);
     socket.onmessage = function(event) {
-      console.log("Received data ", event.data);
-    };
+      switch(event.data){
+        case 'fetch_user':
+          this.props.fetchCurrentUser();
+          break;
+        case 'fetch_notifications':
+          this.props.fetchNotifications();
+          break;
+        default:
+          console.log('Received message',event.data);
+      }
+    }.bind(this);
     socket.onerror = function(error) {
       console.log("Error ", error);
     };
