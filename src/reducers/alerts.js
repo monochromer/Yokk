@@ -1,16 +1,16 @@
+import { SET_SYSTEM_ALERT } from '../constants';
+
 const defaultState = {
-  visible: false,
-  class: "",
-  text: ""
+  system: ""
 }
 
 export default function( state = defaultState, action ) {
   switch ( action.type ) {
-    case "ALERT_SHOW":
-      return { visible: true, text: action.text, class: action.class }
-
-    case "ALERT_CLOSE":
-      return { visible: false }
+    case SET_SYSTEM_ALERT:
+      return {
+        ...state,
+        system: action.payload
+      }
 
     default:
       return state;
