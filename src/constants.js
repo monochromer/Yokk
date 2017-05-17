@@ -11,6 +11,7 @@ export const NOTIFICATIONS_CRUD = '/api/notification/';
 export const FETCH_NOTIFICATIONS = 'FETCH_NOTIFICATIONS';
 export const MARK_NOTIFICATION = 'MARK_NOTIFICATION';
 export const MARK_ALL_NOTIFICATIONS = 'MARK_ALL_NOTIFICATIONS';
+export const SET_SYSTEM_ALERT = 'SET_SYSTEM_ALERT';
 
 export const TIME_ENTRY_CRUD = '/api/timeEntry/';
 
