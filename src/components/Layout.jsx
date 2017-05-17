@@ -8,6 +8,7 @@ import LinkService from './linkService/LinkService.jsx'
 import { fetchTeamUsers } from '../actions/users.js'
 import { fetchCurrentUser } from '../actions/currentUser.js'
 import { fetchNotifications } from '../actions/notifications'
+import { setSystemAlert } from '../actions/alerts'
 import SystemAlertNotification from './SystemAlertNotification.jsx'
 
 class Layout extends React.Component {
@@ -71,6 +72,7 @@ Layout.propTypes = {
   fetchTeamUsers: PropTypes.func.isRequired,
   fetchCurrentUser: PropTypes.func.isRequired,
   fetchNotifications: PropTypes.func.isRequired,
+  setSystemAlert: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {
@@ -84,4 +86,5 @@ export default connect(mapStateToProps, {
   fetchTeamUsers,
   fetchCurrentUser,
   fetchNotifications,
+  setSystemAlert,
 })(Layout);
