@@ -8,6 +8,7 @@ import LinkService from './linkService/LinkService.jsx'
 import { fetchTeamUsers } from '../actions/users.js'
 import { fetchCurrentUser } from '../actions/currentUser.js'
 import { fetchNotifications } from '../actions/notifications'
+import SystemAlertNotification from './SystemAlertNotification.jsx'
 
 class Layout extends React.Component {
 
@@ -46,7 +47,7 @@ class Layout extends React.Component {
   }
 
   render(){
-    const { children, authenticated } = this.props;
+    const { children, authenticated, sysAlert } = this.props;
     const topPanel = authenticated ?
       <TopPanel />
       : [];
@@ -55,6 +56,7 @@ class Layout extends React.Component {
 
     return (
       <div className={classnames({'index-container': authenticated})}>
+        <SystemAlertNotification text={sysAlert} />
         {topPanel}
         { children }
         {footer}
@@ -73,7 +75,8 @@ Layout.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    authenticated: state.currentUser.authenticated
+    authenticated: state.currentUser.authenticated,
+    sysAlert: state.alerts.system
   };
 }
 
