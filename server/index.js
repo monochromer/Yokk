@@ -4,32 +4,13 @@ import bodyParser from 'body-parser';
 import path from 'path';
 import router from './router';
 import runMongoose from './mongoose';
-import WebSocketServer from 'ws';
-
-var clients = {};
-var webSocketServer = new WebSocketServer.Server({
-  port: 9001
-});
-webSocketServer.on('connection', function(ws) {
-  var id = Math.random();
-  clients[id] = ws;
-  console.log("New connection " + id);
-  ws.on('message', function(message) {
-    console.log('Received message ' + message);
-    for (var key in clients) {
-      clients[key].send(message);
-    }
-  });
-  ws.on('close', function() {
-    console.log('Connection closed ' + id);
-    delete clients[id];
-  });
-});
+import webSocketClients from './webSocketClients';
 
 dotenv.config();
 
 const app = express();
 
+app.wsClients = webSocketClients;
 runMongoose(app);
 
 //middleware
