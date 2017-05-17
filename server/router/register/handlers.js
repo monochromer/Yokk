@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 export const register = (req, res) => {
-  const { User, Team, unconfirmedUser } = req.app.db.models
+  const { User, Team, unconfirmedUser, Notification } = req.app.db.models
 
   const { firstName, lastName, password, email, teamId, companyId } = req.body
 
@@ -29,6 +29,34 @@ export const register = (req, res) => {
         _id: userId
       }, process.env.JWT_SECRET);
       res.json({jwtToken});
+
+      User.find( {companies: companyId, _id: {$ne: userId}}, (err, users) => {
+        if(err){
+          console.log(err);
+          return false;
+        }
+        const userIds = [];
+        const newNotifications = users.map((el) => {
+          userIds.push(el._id);
+          return {
+            userId: el._id,
+            text: "New user " + firstName + " " + lastName,
+            link: "/user/" + userId
+          };
+        });
+        Notification.insertMany(newNotifications, (err) => {
+          if(err){
+            console.log(err);
+            return false;
+          }
+          for(let ws in req.app.wsClients){
+            if(userIds.indexOf(req.app.wsClients[ws].userId) !== -1){
+              req.app.wsClients[ws].send('fetch_notifications');
+            }
+          }
+        });
+      });
+
     })
     .catch(reason => {
       console.log(reason);
