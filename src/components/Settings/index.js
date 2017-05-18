@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchTEams } from '../../actions/teams.js';
 import SettingsLeftMenu from './SettingsLeftMenu.jsx';
+import SettingsAddNewCompany from './SettingsAddNewCompany.jsx';
+import SettingsCompanyProfile from './SettingsCompanyProfile.jsx';
 
 /**
  * Component for user and companies settings
@@ -17,7 +19,8 @@ class Settings extends Component {
     super(props);
 
     this.state = {
-      settingsActiveSection: 'user-profile'
+      settingsActiveSection: 'user-profile',
+      settingsActiveCompanyId: null
     };
 
     this.onSettingsSectionChange = this.onSettingsSectionChange.bind(this);
@@ -47,6 +50,10 @@ class Settings extends Component {
     if (companyId.length) {
       this.props.fetchTEams(companyId);
     }
+
+    this.setState({
+      settingsActiveCompanyId: companyId
+    });
   }
 
   /**
@@ -57,6 +64,28 @@ class Settings extends Component {
     this.setState({
       settingsActiveSection: e.target.getAttribute("data-settings-section")
     });
+
+    this.getSettingsSection = this.getSettingsSection.bind(this);
+  }
+
+  /**
+   * Get settings section according to the active left menu item
+   * @return {XML|boolean}
+   */
+  getSettingsSection() {
+    const {user} = this.props;
+    switch ( this.state.settingsActiveSection ) {
+      case 'add-new-company':
+        return <SettingsAddNewCompany />;
+      case 'company-profile':
+        return (
+          <SettingsCompanyProfile
+            user={user}
+          />
+        );
+      default:
+        return false;
+    }
   }
 
   /**
@@ -78,7 +107,7 @@ class Settings extends Component {
           </div>
           <div className="col-xs-12 col-sm-8 col-md-9">
             <div className="settings__content">
-              {this.state.settingsActiveSection}
+              { this.getSettingsSection() }
             </div>
           </div>
         </div>

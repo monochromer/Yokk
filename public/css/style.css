@@ -516,8 +516,51 @@ body {
     color: #4A77DA;
 }
 
-.settings__content {
-    margin-top: 34px;
+.settings-add-new-company .form-group {
+    margin-bottom: 15px;
+}
+
+.settings-add-new-company__form {
+    width: 500px;
+}
+
+.settings-add-new-company .form-group label,
+.settings-add-new-company .form-group input {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.settings-add-new-company .form-group label {
+    margin-right: 30px;
+    margin-bottom: 10px;
+    width: 170px;
+}
+
+.settings-add-new-company .form-group input {
+    width: 300px;
+    box-sizing: border-box;
+    padding: 8px;
+}
+
+
+.settings-add-new-company__company-name {
+
+}
+
+.settings-add-new-company__company-address {
+
+}
+
+.settings-add-new-company .settings-add-new-company__company-billing-information label {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.settings-add-new-company .settings-add-new-company__company-billing-information textarea {
+    box-sizing: border-box;
+    padding: 8px;
+    display: block;
+    width: 100%;
 }
 
 /*---------------------------------------- /settings --------------------------------------*/
