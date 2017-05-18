@@ -95,7 +95,7 @@ class Team extends Component {
         <div className="row users-list_heading">
           <div className="col-md-3 user-list_title">Full name</div>
           <div className="col-md-3 user-list_title">Email</div>
-          <div className="col-md-2 user-list_title">Position</div>
+          <div className="col-md-2 user-list_title">Position</div>       
           <div className="col-md-1 user-list_title">Sources</div>
           <div className="col-md-2 user-list_title">Activity</div>
           <div className="col-md-1 user-list_title">Actions</div>

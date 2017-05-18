@@ -517,3 +517,94 @@ body {
 }
 
 /*---------------------------------------- /reports --------------------------------------*/
+
+
+
+/*---------------------------------------- settings --------------------------------------*/
+
+.settings-left-menu ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.settings-left-menu .settings-left-menu__item {
+    cursor: pointer;
+    display: block;
+    padding: 4px 0;
+    transition: all 0.2s ease-in;
+}
+
+.settings-left-menu .settings-left-menu__item:hover {
+    color: #4A77DA;
+}
+
+.settings-left-menu .settings-left-menu__item_active {
+    color: #4A77DA;
+}
+
+.settings-left-menu .settings-left-menu__item-add-new-company {
+    display: inline-block;
+    color: #fff;
+    background: #4A77DA;
+    line-height: 40px;
+    height: 40px;
+    font-weight: 400;
+    border-radius: 20px;
+    padding: 0 20px;
+    margin: 6px 0;
+    border: 1px solid #4A77DA;
+}
+
+.settings-left-menu .settings-left-menu__item-add-new-company:hover {
+    background: transparent;
+    color: #4A77DA;
+}
+
+.settings-add-new-company .form-group {
+    margin-bottom: 15px;
+}
+
+.settings-add-new-company__form {
+    width: 500px;
+}
+
+.settings-add-new-company .form-group label,
+.settings-add-new-company .form-group input {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.settings-add-new-company .form-group label {
+    margin-right: 30px;
+    margin-bottom: 10px;
+    width: 170px;
+}
+
+.settings-add-new-company .form-group input {
+    width: 300px;
+    box-sizing: border-box;
+    padding: 8px;
+}
+
+
+.settings-add-new-company__company-name {
+
+}
+
+.settings-add-new-company__company-address {
+
+}
+
+.settings-add-new-company .settings-add-new-company__company-billing-information label {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.settings-add-new-company .settings-add-new-company__company-billing-information textarea {
+    box-sizing: border-box;
+    padding: 8px;
+    display: block;
+    width: 100%;
+}
+
+/*---------------------------------------- /settings --------------------------------------*/
