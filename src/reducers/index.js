@@ -5,7 +5,6 @@ import currentUser from './currentUser'
 import timeEntries from './timeEntries'
 import reportRequest from './reportRequest'
 import usersActivities from './usersActivities'
-import registration from './registration'
 import currentUserTeams from './currentUserTeams'
 import notifications from './notifications'
 
@@ -19,7 +18,6 @@ export default combineReducers({
   timeEntries,
   reportRequest,
   usersActivities,
-  registration,
   currentUserTeams,
   notifications
 })

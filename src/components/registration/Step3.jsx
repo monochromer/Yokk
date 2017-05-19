@@ -1,37 +1,25 @@
 import React from 'react'
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux'
 import { step3 } from '../../actions/registration'
 import { Input, PasswordStrengthIndicator } from '../UI.jsx'
 import { isEmpty } from 'lodash';
 
 class Step3 extends React.Component {
 
-  constructor(props){
-    super(props);
-
-    this.state = {
-      password: props.registration.password,
-      passwordRepeat: props.registration.password,
-      errors: {}
-    }
+  state = {
+    password: localStorage.reg_password || '',
+    passwordRepeat: localStorage.reg_password || '',
+    errors: {}
   }
 
   componentWillMount(){
-    const {
-      email,
-      code,
-      firstName,
-      lastName
-    } = this.props.registration;
     if(
-      !email ||
-      !code ||
-      !firstName ||
-      !lastName
+      !localStorage.reg_email ||
+      !localStorage.reg_code ||
+      !localStorage.reg_firstName ||
+      !localStorage.reg_lastName
     ){
       this.props.router.push('/registration');
-      return false;
     }
   }
 
@@ -80,7 +68,7 @@ class Step3 extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
     if(this.checkForm()){
-      this.props.step3(this.state.password);
+      step3(this.state.password);
       this.props.router.push('/registration/step4');
     }
   }
@@ -146,19 +134,8 @@ class Step3 extends React.Component {
   }
 }
 
-Step3.propTypes = {
-  registration: PropTypes.object.isRequired,
-  step3: PropTypes.func.isRequired
-}
-
 Step3.contextTypes = {
 	router: PropTypes.object.isRequired
 }
 
-function getProps(state) {
-  return {
-    registration: state.registration
-  }
-}
-
-export default connect(getProps, { step3 })(Step3)
+export default Step3;

@@ -1,36 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { addTeamMembers } from '../../actions/teams';
-import { finishRegistration } from '../../actions/registration';
+import { finishRegistration, inviteMembers } from '../../actions/registration';
 import { Input } from '../UI.jsx';
 
 class Step5 extends React.Component {
-  
+
   state = {
     invitations: [""],
     error: ""
   }
 
   componentWillMount(){
-    const {
-      email,
-      code,
-      firstName,
-      lastName,
-      password,
-      companyName
-    } = this.props.regData;
     if(
-      !email ||
-      !code ||
-      !firstName ||
-      !lastName ||
-      !password ||
-      !companyName
+      !localStorage.reg_email ||
+      !localStorage.reg_code ||
+      !localStorage.reg_firstName ||
+      !localStorage.reg_lastName ||
+      !localStorage.reg_password ||
+      !localStorage.reg_companyName
     ){
       this.props.router.push('/registration');
-      return false;
     }
   }
 
@@ -51,19 +40,26 @@ class Step5 extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { addTeamMembers, regData } = this.props;
     const data = {
-      ...regData,
+      email: localStorage.reg_email,
+      code: localStorage.reg_code,
+      firstName: localStorage.reg_firstName,
+      lastName: localStorage.reg_lastName,
+      password: localStorage.reg_password,
+      companyName: localStorage.reg_companyName,
       step: '5'
     };
-    this.props.finishRegistration(data, (err, res) => {
+    finishRegistration(data, (err, res) => {
       if(err){
         this.setState({error: "" + err.response.data});
         return false;
       }
-      const { firstName, lastName, companyName } = regData;
+      const firstName = localStorage.reg_firstName;
+      const lastName = localStorage.reg_lastName;
+      const companyName = localStorage.reg_companyName;
       const { teamId, companyId } = res.data;
-      addTeamMembers(teamId, this.state.invitations, companyId, (firstName + " " + lastName), companyName);
+      inviteMembers(teamId, this.state.invitations, companyId,
+        (firstName + " " + lastName), companyName);
       this.props.router.push('/login');
     });
   }
@@ -71,10 +67,15 @@ class Step5 extends React.Component {
   handleSkip = (e) => {
     e.preventDefault();
     const data = {
-      ...this.props.regData,
+      email: localStorage.reg_email,
+      code: localStorage.reg_code,
+      firstName: localStorage.reg_firstName,
+      lastName: localStorage.reg_lastName,
+      password: localStorage.reg_password,
+      companyName: localStorage.reg_companyName,
       step: '5'
     };
-    this.props.finishRegistration(data, (err, res) => {
+    finishRegistration(data, (err, res) => {
       if(err){
         this.setState({error: "" + err.response.data});
         return false;
@@ -122,8 +123,11 @@ class Step5 extends React.Component {
 
           <div className="row center-xs">
             <div className="col-md-3 col-sm-3 col-xs-6">
-              <div className="btn btn_link btn_white" onClick={ this.addInvitation.bind(this) }>+ Add
-                another invitations
+              <div
+                className="btn btn_link btn_white"
+                onClick={ this.addInvitation.bind(this) }
+              >
+                + Add another invitations
               </div>
             </div>
           </div>
@@ -149,20 +153,8 @@ class Step5 extends React.Component {
   }
 }
 
-Step5.propTypes = {
-  regData: PropTypes.object.isRequired,
-  addTeamMembers: PropTypes.func.isRequired,
-  finishRegistration: PropTypes.func.isRequired
-}
-
 Step5.contextTypes = {
 	router: PropTypes.object.isRequired
 }
 
-function getProps(state) {
-  return {
-    regData: state.registration
-  }
-}
-
-export default connect(getProps, { addTeamMembers, finishRegistration })(Step5)
+export default Step5;

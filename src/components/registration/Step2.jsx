@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux'
 import { step2 } from '../../actions/registration'
 import { Input } from '../UI.jsx'
 import { isEmpty } from 'lodash';
@@ -8,27 +7,18 @@ import { isValidName } from '../../helpers';
 
 class Step2 extends React.Component {
 
-  constructor(props){
-    super(props);
-
-    this.state = {
-      firstName: props.registration.firstName,
-      lastName: props.registration.lastName,
-      errors: {}
-    }
+  state = {
+    firstName: localStorage.reg_firstName || '',
+    lastName: localStorage.reg_lastName || '',
+    errors: {}
   }
 
   componentWillMount(){
-    const {
-      email,
-      code
-    } = this.props.registration;
     if(
-      !email ||
-      !code
+      !localStorage.reg_email ||
+      !localStorage.reg_code
     ){
       this.props.router.push('/registration');
-      return false;
     }
   }
 
@@ -74,7 +64,7 @@ class Step2 extends React.Component {
     event.preventDefault();
     if(this.checkForm()){
       const { firstName, lastName } = this.state;
-      this.props.step2(firstName, lastName);
+      step2(firstName, lastName);
       this.props.router.push('/registration/step3');
     }
   }
@@ -130,19 +120,8 @@ class Step2 extends React.Component {
   }
 }
 
-Step2.propTypes = {
-  registration: PropTypes.object.isRequired,
-  step2: PropTypes.func.isRequired
-}
-
 Step2.contextTypes = {
 	router: PropTypes.object.isRequired
 }
 
-function getProps(state) {
-  return {
-    registration: state.registration
-  }
-}
-
-export default connect(getProps, { step2 })(Step2)
+export default Step2;

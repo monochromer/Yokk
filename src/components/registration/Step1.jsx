@@ -3,34 +3,20 @@ import PropTypes from 'prop-types';
 import getParameter from 'get-parameter';
 import _ from 'lodash'
 import moment from 'moment'
-import { connect } from 'react-redux'
 import { checkConfirmationCode, checkCompanyEmail } from '../../actions/registration'
 
 class Step1 extends React.Component {
 
-  constructor(props){
-    super(props);
-
-    this.state = {
-      code: getParameter('code') || props.code,
-      error: '',
-      timerStart: props.timerStart,
-      secondsPassed: 0
-    }
+  state = {
+    code: getParameter('code') || localStorage.reg_code,
+    error: '',
+    secondsPassed: 0
   }
 
   componentWillMount(){
-    if(!this.props.email){
+    if(!localStorage.reg_email){
       this.props.router.push('/registration');
-      return false;
     }
-  }
-
-  componentWillReceiveProps(newProps){
-    this.setState({
-      code: newProps.code,
-      timerStart: newProps.timerStart
-    });
   }
 
   componentDidMount(){
@@ -49,7 +35,7 @@ class Step1 extends React.Component {
   }
 
   requestNewCode = () => {
-    this.props.checkCompanyEmail(this.props.email, (err) => {
+    checkCompanyEmail(localStorage.reg_email, (err) => {
       this.setState({
         error: err || ""
       });
@@ -68,7 +54,7 @@ class Step1 extends React.Component {
   }
 
   checkCode = () => {
-    this.props.checkConfirmationCode(this.state.code, this.props.email, (err) => {
+    checkConfirmationCode(this.state.code, localStorage.reg_email, (err) => {
       if(err){
         this.setState({error: err});
       }
@@ -81,9 +67,10 @@ class Step1 extends React.Component {
 
   render() {
     const { handleSubmit, handleChange } = this;
-    const { code, error, timerStart } = this.state; 
+    const { code, error } = this.state;
+    const timerStart = localStorage.reg_timerStart || 0;
     const tenMins = 1000 * 60 * 10;
-    const timeLeft = timerStart + tenMins - Date.now();
+    const timeLeft = +timerStart + tenMins - Date.now();
     const timeLeftFormat = moment(timeLeft > 0 ? timeLeft : 0).format("mm:ss");
     let errorText;
     switch(error){
@@ -118,7 +105,7 @@ class Step1 extends React.Component {
           <div className="row center-xs step__message">
             <div className="col-md-6 col-sm-8 col-xs-10">
               <p>
-                We’ve sent a six-digits confirmation code to&nbsp;<b>{this.props.email}</b>. Enter it to verify your e-mail address.
+                We’ve sent a six-digits confirmation code to&nbsp;<b>{localStorage.reg_email}</b>. Enter it to verify your e-mail address.
               </p>
             </div>
           </div>
@@ -157,22 +144,8 @@ class Step1 extends React.Component {
   }
 }
 
-Step1.propTypes = {
-  email: PropTypes.string.isRequired,
-  checkConfirmationCode: PropTypes.func.isRequired,
-  checkCompanyEmail: PropTypes.func.isRequired
-}
-
 Step1.contextTypes = {
 	router: PropTypes.object.isRequired
 }
 
-function getProps(state) {
-  return {
-    email: state.registration.email || getParameter('email'),
-    code: state.registration.code,
-    timerStart: state.registration.timerStart
-  }
-}
-
-export default connect(getProps, { checkConfirmationCode, checkCompanyEmail })(Step1)
+export default Step1;

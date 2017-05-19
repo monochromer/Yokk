@@ -1,38 +1,25 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 import { step4 } from '../../actions/registration'
-import { connect } from 'react-redux'
 import { Input } from '../UI.jsx'
 import { isValidName } from '../../helpers';
 
 class Step4 extends React.Component {
 
-  constructor(props){
-    super(props);
-
-    this.state = {
-      companyName: this.props.registration.companyName,
-      error: ""
-    }
+  state = {
+    companyName: localStorage.reg_companyName || '',
+    error: ""
   }
 
   componentWillMount(){
-    const {
-      email,
-      code,
-      firstName,
-      lastName,
-      password
-    } = this.props.registration;
     if(
-      !email ||
-      !code ||
-      !firstName ||
-      !lastName ||
-      !password
+      !localStorage.reg_email ||
+      !localStorage.reg_code ||
+      !localStorage.reg_firstName ||
+      !localStorage.reg_lastName ||
+      !localStorage.reg_password
     ){
       this.props.router.push('/registration');
-      return false;
     }
   }
 
@@ -64,7 +51,7 @@ class Step4 extends React.Component {
   handleSubmit = (event) => {
     event.preventDefault();
     if(this.checkForm()){
-      this.props.step4(this.state.companyName);
+      step4(this.state.companyName);
       this.props.router.push('/registration/step5');
     }
   }
@@ -111,19 +98,8 @@ class Step4 extends React.Component {
   }
 }
 
-Step4.propTypes = {
-  registration: PropTypes.object.isRequired,
-  step4: PropTypes.func.isRequired
-}
-
 Step4.contextTypes = {
 	router: PropTypes.object.isRequired
 }
 
-function getProps(state) {
-  return {
-    registration: state.registration
-  }
-}
-
-export default connect(getProps, { step4 })(Step4)
+export default Step4;

@@ -3,26 +3,22 @@ import PropTypes from 'prop-types';
 import validator from 'validator'
 import classNames from 'classnames'
 import { checkCompanyEmail } from '../../actions/registration'
-import { connect } from 'react-redux'
 import { Input } from '../UI.jsx'
 import { Link } from 'react-router'
 
 
 class PromoPage extends React.Component {
 
-  constructor() {
-    super();
-    this.state = {
-      email: "",
-      rightPanelOpened: false,
-      error: ""
-    };
+  state = {
+    email: "",
+    rightPanelOpened: false,
+    error: ""
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
     if (validator.isEmail(this.state.email)) {
-      this.props.checkCompanyEmail(this.state.email, (err) => {
+      checkCompanyEmail(this.state.email, (err) => {
         if(err){
           this.setState({error: err});
         }
@@ -168,12 +164,8 @@ class PromoPage extends React.Component {
   }
 }
 
-PromoPage.propTypes = {
-  checkCompanyEmail: PropTypes.func.isRequired
-}
-
 PromoPage.contextTypes = {
 	router: PropTypes.object.isRequired
 }
 
-export default connect(null, { checkCompanyEmail })(PromoPage)
+export default PromoPage;
