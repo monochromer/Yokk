@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { Schema } from 'mongoose';
 
 export const register = (req, res) => {
   const { User, Team, unconfirmedUser, Notification } = req.app.db.models
@@ -7,32 +8,44 @@ export const register = (req, res) => {
 
   findUserByEmail(email)
     .then(() => {
-      const newUser = new User({
-        firstName,
-        lastName,
+      return checkInvite(email, teamId)
+    })
+    .then((role) => {
+      const newUserData = {
         password,
         email,
-        teams: [teamId],
         joinedon: Date.now(),
-        companies: [companyId]
-      })
-      return createNewUser(User, newUser)
+        emailConfirmed: true,
+        companies: [{
+          companyId,
+          role,
+          firstName,
+          lastName
+        }],
+        currentCompany: companyId
+      };
+      return createNewUser(User, newUserData)
     })
     .then(user => {
       return saveUserToTeamMembers(teamId, user._id, Team)
     })
     .then((userId) => {
-      return deleteUserEmailFromUnconfirmedEmails(email, unconfirmedUser, userId)
+      return confirmInvite(email, teamId, unconfirmedUser, userId)
     })
     .then(userId => {
       const jwtToken = jwt.sign({
         _id: userId
       }, process.env.JWT_SECRET);
       res.json({jwtToken});
-
-      User.find( {companies: companyId, _id: {$ne: userId}}, (err, users) => {
+      User.find({
+        companies: {$elemMatch: {companyId: companyId}},
+        _id: {$ne: userId}
+      }, (err, users) => {
         if(err){
           console.log(err);
+          return false;
+        }
+        if(!users){
           return false;
         }
         const userIds = [];
@@ -69,7 +82,7 @@ export const register = (req, res) => {
       teamModel.findOne({ _id: teamId }, (err, team) => {
         if (err) return reject('Something went wrong while finding corresponding team')
         if (!team) return reject('The team should exist')
-        team.members.push(userId)
+        team.members.push({userId})
         team.save((err, team) => {
           if (err) return reject('Something went wrong while saving user to team')
           resolve(userId)
@@ -78,10 +91,10 @@ export const register = (req, res) => {
     })
   }
 
-  function deleteUserEmailFromUnconfirmedEmails(email, unconfirmedUserModel, userId) {
+  function confirmInvite(email, teamId, unconfirmedUserModel, userId) {
     return new Promise((resolve, reject) => {
-      unconfirmedUserModel.find({ email: email }).remove((err, result) => {
-        if (err) return reject(err)
+      unconfirmedUserModel.find({ email, teamId }).remove((err, result) => {
+        if (err) return reject('Something went wrong while confirming invite')
         resolve(userId)
       })
     })
@@ -93,6 +106,16 @@ export const register = (req, res) => {
         if (err) return reject('Some error occured while searching for user by email')
         if (user) return reject('User already in the system. If it\'s you, login and accept invite')
         resolve()
+      })
+    })
+  }
+
+  function checkInvite(email, teamId) {
+    return new Promise((resolve, reject) => {
+      unconfirmedUser.findOne({teamId, email}, (err, invite) => {
+        if (err) return reject('Some error occured while searching for the team')
+        if (!invite) return reject('Invite is not found')
+        resolve(invite.role)
       })
     })
   }

@@ -151,12 +151,16 @@ exports.create = function (req, res) {
           }
           const newUserData = {
             email,
-            firstName,
-            lastName,
             password,
             joinedon: Date.now(),
             emailConfirmed: true,
-            companies: [company._id]
+            companies: [{
+              companyId: company._id,
+              role: 'owner',
+              firstName,
+              lastName
+            }],
+            currentCompany: company._id
           };
           const user = new User(newUserData);
           user.save((err, user) => {
@@ -165,7 +169,15 @@ exports.create = function (req, res) {
               res.status(500).send('Server error');
               return false;
             }
-            const newTeam = new Team({members: [user._id]});
+            const newTeamData = {
+              name: process.env.DEFAULT_TEAM_NAME,
+              members: [{
+                userId: user._id,
+                manager: true
+              }],
+              companyId: company._id
+            };
+            const newTeam = new Team(newTeamData);
             newTeam.save((err, team) => {
               if(err){
                 console.log(err);
@@ -174,12 +186,9 @@ exports.create = function (req, res) {
               }
               res.send({teamId: team._id, companyId: company._id});
 
-              company.teams.push(team._id);
               company.emailConfirmed = true;
               company.name = companyName;
               company.save();
-              user.teams.push(team._id);
-              user.save();
             })
           });
         });

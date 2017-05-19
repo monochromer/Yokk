@@ -17,8 +17,9 @@ exports.create = function (req, res, next) {
 
   const teamInitData = {
     name: teamName,
-    teamOriginator: originatorId,
-    created: Date.now()
+    created: Date.now(),
+    members: [{_id: originatorId, manager: true}],
+    companyId
   }
 
   const newTeam = new Team(teamInitData)
@@ -31,12 +32,6 @@ exports.create = function (req, res, next) {
         const newTeamsArray = user.teams.concat([team._id])
         user.teams = newTeamsArray
         user.save()
-      })
-      // find company by @companyId
-      Company.findOne({ _id: companyId }, (err, company) => {
-        const newTeamsArray = company.teams.concat([team._id])
-        company.teams = newTeamsArray
-        company.save()
       })
     })
 
@@ -53,22 +48,19 @@ exports.create = function (req, res, next) {
 
 exports.addTeamMembers = function (req, res) {
   const { unconfirmedUser, Team, User } = req.app.db.models
-  const { teamId, companyId, membersEmails, userName, companyName } = req.body
-  // const { teamId, companyId, changeInProd } = req.body
-  // const membersEmails = [changeInProd]
+  const { teamId, companyId, invitedEmails, userName, companyName } = req.body
 
   if(
     !teamId ||
-    !membersEmails
+    !invitedEmails
   ){
     res.status(400).send('Bad request');
     return false;
   }
 
   let usersExist = []
-  let usersToSave = []
 
-  User.find( {teams: teamId}, (err,users) => {
+  User.find( {email: {$in: invitedEmails}}, (err, users) => {
     if(err){
       console.log(err);
       res.status(500).send('Server error');
@@ -77,61 +69,42 @@ exports.addTeamMembers = function (req, res) {
     const userEmails = users.map(o => o.email)
 
     checkIfEmailInArray(userEmails)
-    _.remove(membersEmails, o => usersExist.includes(o))
+    _.remove(invitedEmails, o => usersExist.includes(o))
 
     unconfirmedUser.find( {teamId}, (err, unconfirmedUsers) => {
+      if(err){
+        console.log(err);
+        res.status(500).send('Server error');
+        return false;
+      }
       const unconfirmedUsersEmails = unconfirmedUsers.map(o => o.email)
-
       checkIfEmailInArray(unconfirmedUsersEmails)
-      _.remove(membersEmails, o => usersExist.includes(o))
-      usersToSave = usersToSave.concat(membersEmails)
+      _.remove(invitedEmails, o => usersExist.includes(o))
 
-      saveUsersToDb(usersToSave)
-      //
-      // res.send({saved: usersToSave, exist: usersExist});
+      const newInvites = invitedEmails.map((el) => {
+        return({
+          teamId,
+          email: el,
+          role: 'user'
+        });
+      });
+      unconfirmedUser.insertMany(newInvites, () => {
+        if(err){
+          console.log(err);
+          res.status(500).send('Server error');
+          return false;
+        }
+        invitedEmails.forEach(email => {
+          sendInvitation(userName, companyName, teamId, sendEmail, email, companyId)
+        })
+        res.send();
+      });
     })
   })
 
   function checkIfEmailInArray(arrayToFind) {
-    membersEmails.forEach(email => {
+    invitedEmails.forEach(email => {
       if (arrayToFind.includes(email)) usersExist.push(email)
-    })
-  }
-
-  function saveUsersToDb(emailsList, existentUsers) {
-    const sendBack = {}
-    if (existentUsers && existentUsers.length !== 0) sendBack.exist = existentUsers
-
-    Team.findOne({ _id: teamId }, (err, team) => {
-      const allUsersAreSaved = []
-
-      emailsList.forEach(email => {
-        const unconfirmedUserInitData = {
-          email: email,
-          teamId: teamId
-        }
-
-        let newPromise = new Promise((resolve, reject) => {
-          const newUnconfirmedUser = new unconfirmedUser(unconfirmedUserInitData)
-          newUnconfirmedUser.save((err, user) => {
-            // send token = user._id and when registering check the token
-            // token should expire (DB should be cleaned) at some intervals
-            const {DEFAULT_TEAM_NAME} = process.env
-            const teamName = team.name ? team.name : DEFAULT_TEAM_NAME
-            sendInvitation(userName, companyName, teamId, sendEmail, email, companyId)
-
-            resolve(user)
-          })
-        })
-
-        allUsersAreSaved.push(newPromise)
-
-      })
-
-      Promise.all(allUsersAreSaved).then(savedMembers => {
-        sendBack.saved = savedMembers
-        res.status(200).send(sendBack)
-      })
     })
   }
 

@@ -326,45 +326,36 @@ exports.deleteUserAvatar = function (req, res) {
 }
 
 exports.getLoggedInUser = function (req, res) {
-  // as of now, returned fields can be adjusted in userpassport.js
-  const { User, Company, Team } = req.app.db.models
-  if(!req.user){
+  const { User, Company, Team } = req.app.db.models;
+  const { user } = req;
+  if(!user){
     res.status(401).send('Unauthorized');
     return false;
   }
-  User.findOne({_id: req.user._id}, (err, user) => {
+  const profile = user.companies.find(
+    el => ""+el.companyId === ""+user.currentCompany
+  );
+  if(!profile){
+    res.status(500).send('Server error');
+    return false;
+  }
+  const userToReturn = Object.assign({}, profile.toObject(), {
+    _id: user._id,
+    email: user.email,
+    profileImg: user.profileImg
+  });
+  const companyIds = user.companies.map(el => el.companyId);
+  Company.find({ _id: { $in: companyIds } }, {
+    _id: 1,
+    name: 1,
+    address: 1,
+    billingInfo: 1
+  }, (err, companies) => {
     if(err){
       console.log(err);
       res.status(500).send();
       return false;
     }
-    if(!user){
-      res.json({});
-      return false;
-    }
-    Company.find({ _id: { $in: user.companies } }, (err, companies) => {
-      if(err){
-        console.log(err);
-        res.status(500).send();
-        return false;
-      }
-      Team.find({ _id: { $in: user.teams } }, (err, teams) => {
-        if(err){
-          console.log(err);
-          res.status(500).send();
-          return false;
-        }
-        const userToReturn = JSON.parse(JSON.stringify(user))
-        userToReturn.companies = companies
-        userToReturn.teams = teams
-        if(
-          !userToReturn.companyId ||
-          userToReturn.companies.indexOf(userToReturn.companyId) === -1
-        ){
-          userToReturn.companyId = userToReturn.companies[0]._id;
-        }
-        res.status(200).send(userToReturn)
-      })
-    });
-  })
+    res.json({user: userToReturn, companies})
+  });
 }
