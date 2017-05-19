@@ -14,27 +14,14 @@ module.exports = function (app, mongoose) {
       required: true
     },
     resetPasswordSecret: String,
-    firstName: String,
-    lastName: String,
-    position: String,
     email: {
       type: String,
       unique: true
     },
     emailConfirmed: {
-      type: String,
+      type: Boolean,
       default: false
     },
-    phone: String,
-    skype: String,
-    workours: String,
-    birthday: String,
-    vk: String,
-    twitter: String,
-    facebook: String,
-    linkedin: String,
-    aboutme: String,
-    cv: String,
     profileImg: {
       original: {
         type: String,
@@ -53,14 +40,26 @@ module.exports = function (app, mongoose) {
       type: Number,
       default: Date.now
     },
-    role: {
-      type: String,
-      default: 'user'
-    },
-    companies: [mongoose.Schema.Types.ObjectId],
-    team: mongoose.Schema.Types.ObjectId,
-    teams: [mongoose.Schema.Types.ObjectId],
-    companyId: mongoose.Schema.Types.ObjectId,
+    companies: [{
+      companyId: mongoose.Schema.Types.ObjectId,
+      role: String,
+      firstName: String,
+      lastName: String,
+      workours: String,
+      position: String,
+      badges: [mongoose.Schema.Types.ObjectId],
+      profileEmail: String,
+      gender: String,
+      birthday: Number,
+      cv: String,
+      skills: String,
+      phone: String,
+      skype: String,
+      twitter: String,
+      address: String,
+      facebook: String
+    }],
+    currentCompany: mongoose.Schema.Types.ObjectId,
     redmineHost: String,
     redmineApiKey: String
   });

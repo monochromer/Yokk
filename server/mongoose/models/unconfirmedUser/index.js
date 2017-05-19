@@ -2,16 +2,9 @@
 
 module.exports = function (app, mongoose) {
   const userSchema = new mongoose.Schema({
-    email: {
-      type: String,
-      unique: true,
-      required: true
-    },
-    teamId: {
-      type: String,
-      unique: true,
-      required: true
-    }
+    email: String,
+    teamId: mongoose.Schema.Types.ObjectId,
+    role: String
   })
 
   app.db.model('unconfirmedUser', userSchema)

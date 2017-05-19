@@ -9,7 +9,6 @@ module.exports = function(app, mongoose) {
       type: String,
       uniq: true
     },
-    originator: String,
     originatorEmail: {
       type: String,
       required: true
@@ -19,12 +18,12 @@ module.exports = function(app, mongoose) {
       type: Boolean,
       default: false
     },
-    companyLogoURL: String,
+    address: String,
+    billingInfo: String,
     created: {
       type: Number,
       default: Date.now
     },
-    teams: Array,
     codeSentDate: Number,
     codeTries: Number
   });
