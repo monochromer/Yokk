@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { Schema } from 'mongoose';
+import { NEW_USER_NOTIFICATION } from '../../constants';
 
 export const register = (req, res) => {
   const { User, Team, unconfirmedUser, Notification } = req.app.db.models
@@ -39,7 +40,8 @@ export const register = (req, res) => {
       res.json({jwtToken});
       User.find({
         companies: {$elemMatch: {companyId: companyId}},
-        _id: {$ne: userId}
+        _id: {$ne: userId},
+        notifications: NEW_USER_NOTIFICATION
       }, (err, users) => {
         if(err){
           console.log(err);
@@ -50,11 +52,12 @@ export const register = (req, res) => {
         }
         const userIds = [];
         const newNotifications = users.map((el) => {
-          userIds.push(el._id);
+          userIds.push("" + el._id);
           return {
             userId: el._id,
             text: "New user " + firstName + " " + lastName,
-            link: "/user/" + userId
+            targetType: "user",
+            targetId: userId
           };
         });
         Notification.insertMany(newNotifications, (err) => {
@@ -65,6 +68,7 @@ export const register = (req, res) => {
           for(let ws in req.app.wsClients){
             if(userIds.indexOf(req.app.wsClients[ws].userId) !== -1){
               req.app.wsClients[ws].send('fetch_notifications');
+              req.app.wsClients[ws].send('fetch_user');
             }
           }
         });

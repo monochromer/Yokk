@@ -16,10 +16,11 @@ class NotificationsDropdown extends React.Component {
     let mappedNotifications = [];
     for(let i = 0; i < notifications.length && i < 5; i++){
       const el = notifications[notifications.length - 1 - i];
+      const link = `/${el.targetType}/${el.targetId}`;
       mappedNotifications.push(
         <div key={el._id} className={"dropdown-element " + (el.new ? 'new' : '')}>
           <div className="new-notification-circle"></div>
-          <Link to={el.link}>{el.text}</Link>
+          <Link to={link}>{el.text}</Link>
         </div>
       );
     }

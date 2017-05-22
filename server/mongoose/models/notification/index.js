@@ -3,7 +3,8 @@
 module.exports = function(app, mongoose) {
   var notificationSchema = new mongoose.Schema({
     text: String,
-    link: String,
+    targetType: String,
+    targetId: mongoose.Schema.Types.ObjectId,
     new: {
       type: Boolean,
       default: true

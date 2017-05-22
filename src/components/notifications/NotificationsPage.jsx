@@ -1,12 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import moment from 'moment';
-import Pagination from './Pagination.jsx';
-import LinesPerPage from './LinesPerPage.jsx';
+import Pagination from '../Pagination.jsx';
+import LinesPerPage from '../LinesPerPage.jsx';
+import NotificationsItem from './NotificationsItem.jsx'
 
-class Notifications extends React.Component {
+class NotificationsPage extends React.Component {
 
   state = {
     linesPerPage: 20,
@@ -16,7 +15,7 @@ class Notifications extends React.Component {
   pagesCount(){
     return Math.ceil(this.props.notifications.length / this.state.linesPerPage);
   }
-	
+
 	setPage = (e) => {
 		e.preventDefault();
     const page = parseInt(e.target.getAttribute("value"), 10);
@@ -24,7 +23,7 @@ class Notifications extends React.Component {
 			this.setState({page});
 		}
 	}
-	
+
 	setLinesPerPage = (e) => {
 		e.preventDefault();
 		this.setState({
@@ -32,9 +31,9 @@ class Notifications extends React.Component {
 			page: 1
 		});
 	}
-    
+
   render(){
-    const { notifications } = this.props;
+    const { notifications, users } = this.props;
 		const { linesPerPage, page } = this.state;
     const pagesCount = this.pagesCount();
 		const firstLine = (page - 1) * linesPerPage;
@@ -44,13 +43,10 @@ class Notifications extends React.Component {
     for(let i = firstLine; i < lastLine && i < notifications.length; i++){
       const el = notifications[notifications.length - 1 - i];
       mappedNotifications.push(
-        <Link key={el._id} to={el.link}>
-          <div className={"row notifications-item " + (el.new ? 'new' : '')}>
-            <div className="col-md-1"></div>
-            <div className="col-md-9">{el.text}</div>
-            <div className="col-md-2">{moment(el.date).format('L')}</div>
-          </div>
-        </Link>
+        <NotificationsItem key={el._id}
+          notification={el}
+          users={users}
+        />
       );
     }
 
@@ -76,14 +72,15 @@ class Notifications extends React.Component {
   }
 }
 
-Notifications.propTypes = {
+NotificationsPage.propTypes = {
 	notifications: PropTypes.array.isRequired
 }
 
 function mapStateToProps(state) {
 	return {
-		notifications: state.notifications
+		notifications: state.notifications,
+    users: state.users
 	};
 }
 
-export default connect(mapStateToProps)(Notifications);
+export default connect(mapStateToProps)(NotificationsPage);

@@ -1,4 +1,8 @@
 'use strict'
+import {
+  NEW_USER_NOTIFICATION,
+  NEW_TEAM_NOTIFICATION
+} from '../../../constants';
 
 var methods = require('./methods');
 var statics = require('./statics');
@@ -61,7 +65,14 @@ module.exports = function (app, mongoose) {
     }],
     currentCompany: mongoose.Schema.Types.ObjectId,
     redmineHost: String,
-    redmineApiKey: String
+    redmineApiKey: String,
+    notifications: {
+      type: [String],
+      default: [
+        NEW_USER_NOTIFICATION,
+        NEW_TEAM_NOTIFICATION
+      ]
+    }
   });
 
   methods(userSchema);
