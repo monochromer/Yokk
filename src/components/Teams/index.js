@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { connect } from 'react-redux'
 import {Input} from '../UI.jsx'
 import Team from './Team'
-import { saveTeam, fetchTEams } from '../../actions/teams.js'
+import { saveTeam } from '../../actions/teams.js'
 
 class Teams extends Component {
 
@@ -13,20 +13,6 @@ class Teams extends Component {
     teamMembersVisible: [],
     teamExists: true,
     modalIsOpen: false
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { companyId } = nextProps.user;
-    if (companyId.length && this.props.user.companyId !== companyId){
-      this.props.fetchTEams(companyId);
-    }
-  }
-
-  componentWillMount() {
-    const { companyId } = this.props.user;
-    if (companyId.length) {
-      this.props.fetchTEams(companyId);
-    }
   }
 
   static PropTypes = {
@@ -122,9 +108,9 @@ class Teams extends Component {
 
 function getParams(state) {
   return {
-    user: state.currentUser.data,
-    teams: state.currentUserTeams
+    user: state.users[state.currentUser._id],
+    teams: state.teams
   }
 }
 
-export default connect(getParams, { fetchTEams, saveTeam })(Teams)
+export default connect(getParams, { saveTeam })(Teams)

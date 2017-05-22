@@ -1,21 +1,20 @@
 import React from 'react'
 import { connect } from 'react-redux';
-import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import TopPanel from './navbar/TopPanel.jsx'
 import Footer from './footer/Footer.jsx'
-import LinkService from './linkService/LinkService.jsx'
-import { fetchTeamUsers } from '../actions/users.js'
+import { fetchUsers } from '../actions/users.js'
 import { fetchCurrentUser } from '../actions/currentUser.js'
 import { fetchNotifications } from '../actions/notifications'
 import { setSystemAlert } from '../actions/alerts'
 import SystemAlertNotification from './SystemAlertNotification.jsx'
+import { isEmpty } from 'lodash';
 
 class Layout extends React.Component {
 
   componentWillMount() {
     if(this.props.authenticated){
-      this.props.fetchTeamUsers();
+      this.props.fetchUsers();
       this.props.fetchCurrentUser();
       this.props.fetchNotifications();
     }
@@ -24,15 +23,17 @@ class Layout extends React.Component {
 
   componentWillReceiveProps(newProps){
     if(!this.props.authenticated && newProps.authenticated){
-      this.props.fetchTeamUsers();
+      this.props.fetchUsers();
       this.props.fetchCurrentUser();
       this.props.fetchNotifications();
+      this.webSocket.send('Bearer ' + localStorage.jwtToken);
     }
   }
 
   startWebSocket = () => {
     const hostname = window.location.hostname;
     const socket = new WebSocket(`ws://${hostname}:9001`);
+    this.webSocket = socket;
     socket.onopen = function() {
       console.log("Connection established");
       socket.send('Bearer ' + localStorage.jwtToken);
@@ -64,20 +65,27 @@ class Layout extends React.Component {
   }
 
   render(){
-    const { children, authenticated, sysAlert } = this.props;
-    const topPanel = authenticated ?
-      <TopPanel />
-      : [];
-    const footer = authenticated ? <Footer /> : [];
-    const linkService = authenticated ? <LinkService /> : [];
+    const { children, authenticated, sysAlert, users } = this.props;
+    if(authenticated){
+      if(isEmpty(users)){
+        return(
+          <div>Loading data...</div>
+        );
+      }
+      return(
+        <div className='index-container'>
+          <SystemAlertNotification text={sysAlert} />
+          <TopPanel />
+          { children }
+          <Footer />
+        </div>
+      );
+    }
 
     return (
-      <div className={classnames({'index-container': authenticated})}>
+      <div>
         <SystemAlertNotification text={sysAlert} />
-        {topPanel}
         { children }
-        {footer}
-        {linkService}
       </div>
     );
   }
@@ -85,7 +93,7 @@ class Layout extends React.Component {
 
 Layout.propTypes = {
   authenticated: PropTypes.bool.isRequired,
-  fetchTeamUsers: PropTypes.func.isRequired,
+  fetchUsers: PropTypes.func.isRequired,
   fetchCurrentUser: PropTypes.func.isRequired,
   fetchNotifications: PropTypes.func.isRequired,
   setSystemAlert: PropTypes.func.isRequired,
@@ -94,12 +102,13 @@ Layout.propTypes = {
 function mapStateToProps(state) {
   return {
     authenticated: state.currentUser.authenticated,
-    sysAlert: state.alerts.system
+    sysAlert: state.alerts.system,
+    users: state.users
   };
 }
 
 export default connect(mapStateToProps, {
-  fetchTeamUsers,
+  fetchUsers,
   fetchCurrentUser,
   fetchNotifications,
   setSystemAlert,

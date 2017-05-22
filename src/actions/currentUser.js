@@ -1,6 +1,9 @@
-import { SET_CURRENT_USER } from '../constants';
+import {
+  SET_CURRENT_USER,
+  FETCH_CURRENT_USER,
+  FETCH_CURRENT_USER_URI
+} from '../constants';
 import axios from 'axios';
-import { FETCH_CURRENT_USER_URI } from '../constants'
 
 export function login(userData){
 	return dispatch => {
@@ -28,7 +31,7 @@ export function resetPassword(userData){
 
 export function fetchCurrentUser() {
   return {
-    type: "FETCH_CURRENT_USER",
+    type: FETCH_CURRENT_USER,
     loadItems: FETCH_CURRENT_USER_URI
   }
 }

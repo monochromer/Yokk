@@ -1,34 +1,29 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { findUserByEmail } from '../../helpers.js'
 // import { Link } from 'react-router'
 
 
 class UserPage extends React.Component {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      user: findUserByEmail(this.props.users, this.props.routeParams.email)
-    };
-
-    this.showField = this.showField.bind(this);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      user: findUserByEmail(nextProps.users, this.props.routeParams.email)
-    })
-  }
-
-  showField(field) {
-    return field ? field : "–";
-  }
-
   render() {
-    if (this.state.user) {
-      const { profileImg, login, redmineApiKey, fullname, position, phone, skype, workhours, email, birthday, vk, aboutme } = this.state.user;
+    const user = this.props.users[this.props.routeParams._id];
+    if (!user) {
+      return ( <p> Wait a moment please...</p> );
+    }
+    else {
+      const {
+        profileImg,
+        login,
+        redmineApiKey,
+        fullname,
+        position,
+        phone, skype,
+        workhours,
+        email,
+        birthday,
+        vk,
+        aboutme
+      } = user;
       const photo = profileImg ? profileImg.medium : "";
       const redmine = redmineApiKey ? "/img/redmine-active.svg" : "/img/redmine-bw.svg";
       return (
@@ -59,13 +54,13 @@ class UserPage extends React.Component {
                 <div className="col-md-6">
                   <div className="form-data">
                     <span className="form-data__name">Full Name</span>
-                    <span className="form-data__value"> { this.showField(fullname) }</span>
+                    <span className="form-data__value"> { fullname || '-' }</span>
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-data">
                     <span className="form-data__name">Position</span>
-                    <span className="form-data__value"> { this.showField(position) }</span>
+                    <span className="form-data__value"> { position || '-' }</span>
                   </div>
                 </div>
               </div>
@@ -73,13 +68,13 @@ class UserPage extends React.Component {
                 <div className="col-md-6">
                   <div className="form-data">
                     <span className="form-data__name">Phone</span>
-                    <span className="form-data__value"> { this.showField(phone) }</span>
+                    <span className="form-data__value"> { phone || '-' }</span>
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-data">
                     <span className="form-data__name">Skype</span>
-                    <span className="form-data__value"> { this.showField(skype) }</span>
+                    <span className="form-data__value"> { skype || '-' }</span>
                   </div>
                 </div>
               </div>
@@ -87,13 +82,13 @@ class UserPage extends React.Component {
                 <div className="col-md-6">
                   <div className="form-data">
                     <span className="form-data__name">Work Hours</span>
-                    <span className="form-data__value"> { this.showField(workhours) }</span>
+                    <span className="form-data__value"> { workhours || '-' }</span>
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-data">
                     <span className="form-data__name">E-mail</span>
-                    <span className="form-data__value"> { this.showField(email) }</span>
+                    <span className="form-data__value"> { email || '-' }</span>
                   </div>
                 </div>
               </div>
@@ -106,13 +101,13 @@ class UserPage extends React.Component {
                 <div className="col-md-6">
                   <div className="form-data">
                     <span className="form-data__name">Birthday</span>
-                    <span className="form-data__value"> { this.showField(birthday) }</span>
+                    <span className="form-data__value"> { birthday || '-' }</span>
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-data">
                     <span className="form-data__name">VK Profile</span>
-                    <span className="form-data__value"> { this.showField(vk) }</span>
+                    <span className="form-data__value"> { vk || '-' }</span>
                   </div>
                 </div>
               </div>
@@ -125,7 +120,7 @@ class UserPage extends React.Component {
                 <div className="col-md-12">
                   <div className="form-data">
                     <span className="form-data__name">About</span>
-                    <span className="form-data__value"> { this.showField(aboutme) }</span>
+                    <span className="form-data__value"> { aboutme || '-' }</span>
                   </div>
                 </div>
               </div>
@@ -133,8 +128,6 @@ class UserPage extends React.Component {
           </div>
         </div>
       );
-    } else {
-      return ( <p> Wait a moment please...</p> );
     }
   }
 }
@@ -142,7 +135,7 @@ class UserPage extends React.Component {
 
 function getParams(state) {
   return {
-    users: state.users.list
+    users: state.users
   }
 }
 

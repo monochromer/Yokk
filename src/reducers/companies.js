@@ -1,21 +1,12 @@
-import { browserHistory } from 'react-router'
+import { FETCH_COMPANIES } from '../constants';
 
-var initialState = {
-  companies: []
-};
+const initialState = [];
 
 export default function (state = initialState, action) {
-  const { type, payload } = action;
-
-  switch (type) {
-
-    case "GET_LIST_OF_USER_COMPANIES":
-      console.log(payload);
-      return Object.assign({}, state, { email: action.createItem.data.email });
-      break;
-
+  switch (action.type) {
+    case FETCH_COMPANIES:
+      return action.payload
     default:
       return state;
-      break;
   }
 }

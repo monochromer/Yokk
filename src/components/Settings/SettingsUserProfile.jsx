@@ -3,16 +3,16 @@ import DropPicture from './DropPicture.jsx'
 import store from '../../store.js'
 import { Input } from '../UI.jsx'
 import { REDMINE } from '../../constants'
-import { findUserByEmail } from '../../helpers'
 import { updateUser, linkServiceOpen, fetchUsers } from '../../actions/users'
 // import { browserHistory } from 'react-router'
 import { connect } from 'react-redux'
 
-class UserEdit extends React.Component {
+class SettingsUserProfile extends React.Component {
 
   state = {
-    user: findUserByEmail(this.props.users, this.props.routeParams.email),
-    fields: {}
+    user: this.props.user,
+    fields: {},
+    uploadingPhoto: false
   }
 
   componentWillMount(){
@@ -21,7 +21,7 @@ class UserEdit extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      user: findUserByEmail(nextProps.users, this.props.routeParams.email)
+      user: nextProps.user
     })
   }
 
@@ -106,7 +106,7 @@ class UserEdit extends React.Component {
         <div className="row profile">
 
           <div className="col-md-3 profile_photo">
-            <DropPicture _id={ _id } photo={ photo } uploading={ this.props.uploadingPhoto }/>
+            <DropPicture _id={ _id } photo={ photo } uploading={ this.state.uploadingPhoto }/>
           </div>
 
           <div className="col-md-9 prodile_inputs">
@@ -251,10 +251,8 @@ class UserEdit extends React.Component {
 
 function getProps(state) {
   return {
-    users: state.users.list,
-    status: state.users.status,
-    uploadingPhoto: state.users.uploadingPhoto
+    user: state.users[state.currentUser._id]
   }
 }
 
-export default connect(getProps, { fetchUsers })(UserEdit);
+export default connect(getProps, { fetchUsers })(SettingsUserProfile);

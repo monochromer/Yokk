@@ -49,12 +49,24 @@ class TopPanel extends React.Component {
   }
 
   render() {
-    const { user, logout, notifications, markAllNotifications } = this.props;
+    const {
+      user,
+      logout,
+      notifications,
+      markAllNotifications,
+      companies
+    } = this.props;
+    if(!user){
+      return(
+        <div>Loading data...</div>
+      );
+    }
     const { showUserMenu, showNotifications } = this.state;
 
     const userMenu = showUserMenu ?
       <UserMenu
         logout={logout}
+        companies={companies}
         user={user}
       />
       : [];
@@ -116,15 +128,8 @@ class TopPanel extends React.Component {
               <Link
                 className="top-panel_menu-item"
                 activeClassName="active"
-                to="/statistic"
+                to="/"
               >Statistic</Link>
-            </li>
-            <li>
-              <Link
-                className="top-panel_menu-item"
-                activeClassName="active"
-                to="/settings"
-              >Settings</Link>
             </li>
           </ul>
         </div>
@@ -135,6 +140,7 @@ class TopPanel extends React.Component {
 
 TopPanel.PropTypes = {
   user: PropTypes.object.isRequired,
+  companies: PropTypes.array.isRequired,
   notifications: PropTypes.array.isRequired,
   markAllNotifications: PropTypes.func.isRequired,
   changeCurrentCompany: PropTypes.func.isRequired,
@@ -143,8 +149,9 @@ TopPanel.PropTypes = {
 
 const getProps = function(store) {
   return {
-    user: store.currentUser.data,
-    notifications: store.notifications
+    user: store.users[store.currentUser._id],
+    notifications: store.notifications,
+    companies: store.companies
   }
 };
 

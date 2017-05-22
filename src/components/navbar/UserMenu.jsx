@@ -18,7 +18,7 @@ class UserMenu extends React.Component {
     else{
       console.log(e.target.getAttribute("value"));
     }
-    
+
   }
 
   handleSelectClick = (e) => {
@@ -27,8 +27,7 @@ class UserMenu extends React.Component {
   }
 
   render() {
-    const { user } = this.props;
-    const { companies } = user;
+    const { user, companies } = this.props;
     let mappedCompanies = [];
 
     if(companies.length > 5){
