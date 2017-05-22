@@ -342,7 +342,8 @@ exports.getLoggedInUser = function (req, res) {
   const userToReturn = Object.assign({}, profile.toObject(), {
     _id: user._id,
     email: user.email,
-    profileImg: user.profileImg
+    profileImg: user.profileImg,
+    currentCompany: user.currentCompany
   });
   const companyIds = user.companies.map(el => el.companyId);
   Company.find({ _id: { $in: companyIds } }, {
@@ -356,6 +357,20 @@ exports.getLoggedInUser = function (req, res) {
       res.status(500).send();
       return false;
     }
-    res.json({user: userToReturn, companies})
+    Team.find({
+      companyId: userToReturn.currentCompany,
+      members: {$elemMatch: {userId: userToReturn._id}}
+    }, {
+      _id: 1,
+      name: 1,
+      members: 1
+    }, (err, teams) => {
+      if(err){
+        console.log(err);
+        res.status(500).send();
+        return false;
+      }
+      res.json({user: userToReturn, companies, teams})
+    });
   });
 }
