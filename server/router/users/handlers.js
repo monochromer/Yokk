@@ -9,16 +9,88 @@ const fs = require('fs')
 const path = require('path')
 
 exports.getAllUsers = function (req, res) {
-  const userModel = req.app.db.models.User;
-  const team = req.query.team;
+  const { User, Team } = req.app.db.models;
+  const { user } = req;
+  const { currentCompany } = user;
+  const { role } = user.companies.find(
+    el => "" + el.companyId === "" + currentCompany
+  );
 
-  userModel.allUsers((err, user) => {
+  Team.find({
+    companyId: currentCompany,
+    members: {$elemMatch: {userId: user._id, manager: true}}
+  }, (err, teams) => {
     if(err){
       console.log(err);
-      res.status(500).send();
+      res.status(500).send('Server error');
       return false;
     }
-    res.send(user);
+    if(
+      teams.length ||
+      role === 'owner' ||
+      role === 'admin'
+    ){
+      User.find({
+        companies: {$elemMatch: {companyId: currentCompany}}
+      }, (err, users) => {
+        if(err){
+          console.log(err);
+          res.status(500).send('Server error');
+          return false;
+        }
+        const usersToReturn = users.map((user) => {
+          const profile = user.companies.find(
+            el => ""+el.companyId === ""+currentCompany
+          );
+          if(!profile){
+            return;
+          }
+          return Object.assign({}, profile.toObject(), {
+            _id: user._id,
+            profileImg: user.profileImg
+          });
+        });
+        res.json(usersToReturn);
+      });
+    }
+    else{
+      Team.find({
+        companyId: currentCompany,
+        members: {$elemMatch: {userId: user._id}}
+      }, (err, teams) => {
+        if(err){
+          console.log(err);
+          res.status(500).send('Server error');
+          return false;
+        }
+        const userIds = [];
+        for(let index = 0; index < teams.length; index++){
+          userIds.concat(teams[index].members.map(el => el.userId));
+        }
+        User.find({
+          _id: {$in: userIds}
+        }, (err, users) => {
+          if(err){
+            console.log(err);
+            res.status(500).send('Server error');
+            return false;
+          }
+          const usersToReturn = users.map((user) => {
+            const profile = user.companies.find(
+              el => ""+el.companyId === ""+currentCompany
+            );
+            if(!profile){
+              return;
+            }
+            return Object.assign({}, profile.toObject(), {
+              _id: user._id,
+              profileImg: user.profileImg
+            });
+          });
+          res.json(usersToReturn);
+        });
+      });
+    }
   });
 };
 

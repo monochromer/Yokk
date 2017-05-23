@@ -56,7 +56,8 @@ exports.addTeamMembers = function (req, res) {
   ){
     res.status(400).send('Bad request');
     return false;
-  }
+  }valid
+  _.remove(invitedEmails, el => !valid(el))
 
   let usersExist = []
 
@@ -136,19 +137,51 @@ exports.resendCode = function (req, res, next) {
 }
 
 // GET
-exports.read = function (req, res, next) {
-  const teamModel = req.app.db.models.Team;
-  const teamName = req.params.teamName;
-
-  // change name to _id as searchable field
-  teamModel.read(teamName, (err, teamOrTeamsArray) => {
-    if (err) next(err);
-    if (teamOrTeamsArray) {
-      return res.status(200).send(teamOrTeamsArray);
+exports.read = function (req, res) {
+  const Team = req.app.db.models.Team;
+  const { user } = req;
+  const { role } = user.companies.find(
+    el => "" + el.companyId === "" + user.currentCompany
+  );
+  Team.find({
+    companyId: user.currentCompany,
+    members: {$elemMatch: {userId: user._id, manager: true}}
+  }, (err, teams) => {
+    if(err){
+      console.log(err);
+      res.status(500).send('Server error');
+      return false;
     }
-    // no team found
-    res.status(500).send();
-  })
+    if(
+      teams.length ||
+      role === 'owner' ||
+      role === 'admin'
+    ){
+      Team.find({
+        companyId: user.currentCompany
+      }, (err, teams) => {
+        if(err){
+          console.log(err);
+          res.status(500).send('Server error');
+          return false;
+        }
+        res.json(teams);
+      });
+    }
+    else{
+      Team.find({
+        companyId: user.currentCompany,
+        members: {$elemMatch: {userId: user._id}}
+      }, (err, teams) => {
+        if(err){
+          console.log(err);
+          res.status(500).send('Server error');
+          return false;
+        }
+        res.json(teams);
+      });
+    }
+  });
 
 };
 
