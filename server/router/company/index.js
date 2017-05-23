@@ -2,13 +2,11 @@ import express from 'express';
 const handle = require('./handlers');
 const router = express.Router();
 
-router.route('(/:companyName)?')
+router.route('/')
   .post(handle.create)
-  .get(handle.read)
+  .get(handle.read);
+router.route('/:companyId')
   .put(handle.update)
   .delete(handle.delete);
-
-router.route('/add')
-  .post(handle.add);
 
 export default router;
