@@ -1,9 +1,11 @@
 import React from 'react'
-import { Link } from 'react-router'
+import { Link, IndexLink } from 'react-router'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import { changeCurrentCompany, logout } from '../../actions/currentUser'
 import UserMenu from './UserMenu.jsx'
+import { isManager } from '../../helpers';
+import ManagerMenu from './ManagerMenu.jsx'
 import NotificationsDropdown from './NotificationsDropdown.jsx'
 import { markAllNotifications } from '../../actions/notifications';
 // import NewCompanyModal from './NewCompanyModal.jsx'
@@ -13,7 +15,7 @@ class TopPanel extends React.Component {
   state = {
     showUserMenu: false,
     showNotifications: false,
-    showNewCompanyModal: false
+    showManagerMenu: false
   }
 
   showUserMenu = () => {
@@ -44,6 +46,18 @@ class TopPanel extends React.Component {
     document.addEventListener("click", hideNotifications);
   }
 
+  showManagerMenu = () => {
+    this.setState({
+      showManagerMenu: true
+    });
+  }
+
+  hideManagerMenu = () => {
+    this.setState({
+      showManagerMenu: false
+    });
+  }
+
   onCompanyChange = companyId => e => {
     this.props.changeCurrentCompany(companyId)
   }
@@ -54,14 +68,23 @@ class TopPanel extends React.Component {
       logout,
       notifications,
       markAllNotifications,
-      companies
+      companies,
+      teams
     } = this.props;
     if(!user){
       return(
         <div>Loading data...</div>
       );
     }
-    const { showUserMenu, showNotifications } = this.state;
+    const { showUserMenu, showNotifications, showManagerMenu } = this.state;
+
+    const managerMenuButton = isManager(user, teams) ?
+      <div className="top-panel_manager-menu-icon">
+        <span
+          onClick={this.showManagerMenu}
+        >+</span>
+      </div>
+      : [];
 
     const userMenu = showUserMenu ?
       <UserMenu
@@ -83,6 +106,11 @@ class TopPanel extends React.Component {
     const photoSrc = (!user.profileImg || !user.profileImg.small) ?
       '/img/dummy/960-720.png' : user.profileImg.small;
 
+    if(showManagerMenu){
+      return (
+        <ManagerMenu hideManagerMenu={this.hideManagerMenu} />
+      );
+    }
     return (
       <div className="top-panel">
         <div className="pull-right">
@@ -90,7 +118,7 @@ class TopPanel extends React.Component {
             className="top-panel_notifications-icon"
              onClick={this.showNotifications}
           >
-            <span className="glyphicon glyphicon-bell"></span>
+            <span className="glyphicons glyphicons-bell"></span>
             {newNotifications && <div className="new-notifications-circle"></div>}
             {notificationsDropdown}
           </div>
@@ -111,11 +139,11 @@ class TopPanel extends React.Component {
         <div className="top-panel_menu">
           <ul>
             <li>
-              <Link
+              <IndexLink
                 className="top-panel_menu-item"
                 activeClassName="active"
                 to="/"
-              >Tracker</Link>
+              >Tracker</IndexLink>
             </li>
             <li>
               <Link
@@ -128,10 +156,11 @@ class TopPanel extends React.Component {
               <Link
                 className="top-panel_menu-item"
                 activeClassName="active"
-                to="/"
+                to="/statistic"
               >Statistic</Link>
             </li>
           </ul>
+          {managerMenuButton}
         </div>
       </div>
     )
@@ -151,7 +180,8 @@ const getProps = function(store) {
   return {
     user: store.users[store.currentUser._id],
     notifications: store.notifications,
-    companies: store.companies
+    companies: store.companies,
+    teams: store.teams
   }
 };
 

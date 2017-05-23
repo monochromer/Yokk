@@ -82,3 +82,22 @@ export function isValidName(name){
   }
   return true;
 }
+
+export function isManager(user, teams){
+  const { role } = user;
+  if(role === 'owner' || role === 'admin'){
+    return true;
+  }
+  for(let index = 0; index < teams.length; index++){
+    const isManager = teams[index].members.find((el) => {
+      return (
+        el.manager === true &&
+        el.userId === user._id
+      )
+    });
+    if(isManager){
+      return true;
+    }
+  }
+  return false;
+}

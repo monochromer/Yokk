@@ -68,18 +68,22 @@ body {
     height: 40px;
 }
 
+.top-panel_manager-menu ul,
 .top-panel_menu ul{
     padding: 0;
     margin: 0;
 }
 
+.top-panel_manager-menu li,
 .top-panel_menu li {
     display: inline-block;
     padding: 5px 20px;
 }
 
 .top-panel_user-icon,
-.top-panel_notifications-icon {
+.top-panel_notifications-icon,
+.top-panel_manager-menu-icon,
+.top-panel_manager-menu-close {
     display: inline-block;
     margin: 0 10px;
     cursor: pointer;
@@ -144,6 +148,31 @@ body {
 
 .new .new-notification-circle {
     background: orange;
+}
+
+.top-panel_manager-menu{
+    margin: 5px auto;
+    text-align: center;
+}
+
+.top-panel_manager-menu ul{
+    display: inline-block;
+}
+
+.top-panel_manager-menu-icon{
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    font-size: 35px;
+    color: #4A77DA;
+    border: 2px solid #4A77DA;
+    border-radius: 5px;
+    line-height: 16px;
+    padding: 4px;
+}
+
+.top-panel_manager-menu-close{
+    color: #4A77DA;
 }
 
 /* /top-panel */

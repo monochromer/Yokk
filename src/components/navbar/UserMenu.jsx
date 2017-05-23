@@ -74,7 +74,7 @@ class UserMenu extends React.Component {
         {mappedCompanies}
         <div className="dropdown-element">
           <Link to="/settings">
-            <span className="glyphicon glyphicon-plus-sign"></span>{" "}
+            <span className="glyphicons glyphicons-plus-sign"></span>{" "}
             Add new company
           </Link>
         </div>
