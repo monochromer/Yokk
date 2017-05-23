@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types';
 import store from '../../store.js'
 import {connect} from 'react-redux'
-import AddUsersModal from './AddUsersModal'
 import UserRow from './UserRow'
 import {deleteTeam, changeTeamName} from '../../actions/teams'
 
@@ -95,13 +94,12 @@ class Team extends Component {
         <div className="row users-list_heading">
           <div className="col-md-3 user-list_title">Full name</div>
           <div className="col-md-3 user-list_title">Email</div>
-          <div className="col-md-2 user-list_title">Position</div>       
+          <div className="col-md-2 user-list_title">Position</div>
           <div className="col-md-1 user-list_title">Sources</div>
           <div className="col-md-2 user-list_title">Activity</div>
           <div className="col-md-1 user-list_title">Actions</div>
         </div>
         {teamMembers}
-        <AddUsersModal companyId={companyId} teamId={team._id}/>
       </div>
     )
   }

@@ -23,7 +23,7 @@ export default function (state = initialState, action) {
   switch (type) {
 
     case FETCH_TEAMS:
-      return data
+      return action.payload
 
     case ADD_TEAM:
       const stateAfterTeamAdded = state.slice(0)

@@ -4,30 +4,35 @@ import PropTypes from 'prop-types';
 import TopPanel from './navbar/TopPanel.jsx'
 import Footer from './footer/Footer.jsx'
 import { fetchUsers } from '../actions/users.js'
-import { fetchCurrentUser } from '../actions/currentUser.js'
+import { fetchTeams } from '../actions/teams.js'
+import { fetchCompanies } from '../actions/companies.js'
 import { fetchNotifications } from '../actions/notifications'
 import { setSystemAlert } from '../actions/alerts'
 import SystemAlertNotification from './SystemAlertNotification.jsx'
 import { isEmpty } from 'lodash';
+import ModalRoot from './modals/ModalRoot.jsx';
 
 class Layout extends React.Component {
 
   componentWillMount() {
     if(this.props.authenticated){
-      this.props.fetchUsers();
-      this.props.fetchCurrentUser();
-      this.props.fetchNotifications();
+      this.fetchInitialData();
     }
     this.startWebSocket();
   }
 
   componentWillReceiveProps(newProps){
     if(!this.props.authenticated && newProps.authenticated){
-      this.props.fetchUsers();
-      this.props.fetchCurrentUser();
-      this.props.fetchNotifications();
+      this.fetchInitialData();
       this.webSocket.send('Bearer ' + localStorage.jwtToken);
     }
+  }
+
+  fetchInitialData = () => {
+    this.props.fetchUsers();
+    this.props.fetchTeams();
+    this.props.fetchCompanies();
+    this.props.fetchNotifications();
   }
 
   startWebSocket = () => {
@@ -48,6 +53,7 @@ class Layout extends React.Component {
       setTimeout(this.startWebSocket, 3000);
     }.bind(this);
     socket.onmessage = function(event) {
+      console.log('Received message', event.data);
       switch(event.data){
         case 'fetch_user':
           this.props.fetchCurrentUser();
@@ -56,7 +62,7 @@ class Layout extends React.Component {
           this.props.fetchNotifications();
           break;
         default:
-          console.log('Received message',event.data);
+          console.log('Received message', event.data);
       }
     }.bind(this);
     socket.onerror = function(error) {
@@ -74,6 +80,7 @@ class Layout extends React.Component {
       }
       return(
         <div className='index-container'>
+          <ModalRoot />
           <SystemAlertNotification text={sysAlert} />
           <TopPanel />
           { children }
@@ -94,7 +101,8 @@ class Layout extends React.Component {
 Layout.propTypes = {
   authenticated: PropTypes.bool.isRequired,
   fetchUsers: PropTypes.func.isRequired,
-  fetchCurrentUser: PropTypes.func.isRequired,
+  fetchTeams: PropTypes.func.isRequired,
+  fetchCompanies: PropTypes.func.isRequired,
   fetchNotifications: PropTypes.func.isRequired,
   setSystemAlert: PropTypes.func.isRequired,
 }
@@ -109,7 +117,8 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   fetchUsers,
-  fetchCurrentUser,
+  fetchTeams,
+  fetchCompanies,
   fetchNotifications,
   setSystemAlert,
 })(Layout);
