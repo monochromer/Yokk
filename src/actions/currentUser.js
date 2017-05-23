@@ -1,7 +1,8 @@
 import {
   SET_CURRENT_USER,
   FETCH_CURRENT_USER,
-  FETCH_CURRENT_USER_URI
+  FETCH_CURRENT_USER_URI,
+  REGISTER_USER_URL
 } from '../constants';
 import axios from 'axios';
 
@@ -13,7 +14,7 @@ export function login(userData){
 
 export function register(userData){
 	return dispatch => {
-    return axios.post('/api/register', userData);
+    return axios.post(REGISTER_USER_URL, userData);
 	}
 }
 

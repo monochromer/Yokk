@@ -1,8 +1,8 @@
-import { COMPANY_CRUD } from '../constants';
+import { REGISTER_COMPANY_URL } from '../constants';
 import axios from 'axios';
 
 export function checkCompanyEmail(email, callback){
-  axios.post(COMPANY_CRUD, {
+  axios.post(REGISTER_COMPANY_URL, {
     email,
     step: '0'
   }).then(() => {
@@ -16,7 +16,7 @@ export function checkCompanyEmail(email, callback){
 }
 
 export function checkConfirmationCode(code, email, callback){
-  axios.post(COMPANY_CRUD, {
+  axios.post(REGISTER_COMPANY_URL, {
     code,
     email,
     step: '1'
@@ -44,7 +44,7 @@ export function step4(companyName) {
 }
 
 export function finishRegistration(data, callback) {
-  axios.post(COMPANY_CRUD, data).then((res) => {
+  axios.post(REGISTER_COMPANY_URL, data).then((res) => {
     callback(null, res);
     localStorage.removeItem('reg_email');
     localStorage.removeItem('reg_code');
