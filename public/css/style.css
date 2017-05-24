@@ -321,6 +321,13 @@ body {
     margin: 25px 0 42px 0;
 }
 
+.profile_section .profile_heading .glyphicons {
+    color: #4A77DA;
+    margin: 0 20px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
 .profile_heading {
     font-weight: normal;
     font-size: 25px;
@@ -335,6 +342,12 @@ body {
 
 .profile_inputs-row .col-md-6 {
     max-width: 374px;
+}
+
+.profile_inputs-row .label {
+    font-size: 13px;
+    color: #919191;
+    margin-bottom: 10px;
 }
 /* /user edit */
 
