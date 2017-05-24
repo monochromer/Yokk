@@ -38,7 +38,7 @@ class Team extends Component {
   render() {
     const {showModalUserAdd, deleteTeam, changeTeamName, saveNewName, onNameChange} = this
     const {changingName} = this.state
-    const {team, companyId} = this.props
+    const {team} = this.props
     const teamMembers = getMembersList(team.members, team._id)
 
     const getTeamName = (teamName, changingName, onNameChangeFunc) => {
