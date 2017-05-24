@@ -55,11 +55,20 @@ class Layout extends React.Component {
     socket.onmessage = function(event) {
       console.log('Received message', event.data);
       switch(event.data){
-        case 'fetch_user':
-          this.props.fetchCurrentUser();
+        case 'fetch_users':
+          this.props.fetchUsers();
+          break;
+        case 'fetch_companies':
+          this.props.fetchCompanies();
+          break;
+        case 'fetch_teams':
+          this.props.fetchTeams();
           break;
         case 'fetch_notifications':
           this.props.fetchNotifications();
+          break;
+        case 'fetch_initial_data':
+          this.fetchInitialData();
           break;
         default:
           console.log('Received message', event.data);
