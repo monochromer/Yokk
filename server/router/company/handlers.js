@@ -1,6 +1,8 @@
 'use strict'
 
 const valid = require("valid-email")
+import { isValidName } from '../../helpers';
+import { isEmpty } from 'lodash';
 
 exports.create = function (req, res) {
   const { user } = req;
@@ -12,6 +14,26 @@ exports.create = function (req, res) {
 
   const { Company, User, Team } = req.app.db.models;
   const { name, address, billingInfo } = req.body;
+  const errors = {};
+  if(!name.length){
+    errors.name = "Please enter Company Name";
+  }
+  if(!isValidName(name)){
+    errors.name = "Invalid Name";
+  }
+  if(name.length > 100){
+    errors.name = "Company Name must be 100 characters or less";
+  }
+  if(address.length > 500){
+    errors.address = "Address must be 500 characters or less";
+  }
+  if(billingInfo.length > 1000){
+    errors.billingInfo = "Billing information must be 1000 characters or less";
+  }
+  if(!isEmpty(errors)){
+    res.status(406).send(errors);
+    return false;
+  }
   const originatorEmail = user.email;
   const newCompany = new Company({
     originatorEmail: user.email,
@@ -26,24 +48,39 @@ exports.create = function (req, res) {
       res.status(500).send("Server error");
       return false;
     }
-    User.find({_id: user._id}, (err, user) => {
+    const newProfile = Object.assign({}, user.toObject().companies[0]);
+    newProfile.companyId = company._id;
+    newProfile.role = 'owner';
+    user.companies.push(newProfile);
+    user.currentCompany = company._id;
+    user.save((err, user) => {
       if(err){
         console.log(err);
         res.status(500).send("Server error");
         return false;
       }
-      const newProfile = Object.assign({}, user.companies[0]);
-      newProfile.companyId = company._id;
-      newProfile.role = 'owner';
-      user.companies.push(newProfile);
-      user.save((err, user) => {
+      const newTeamData = {
+        name: process.env.DEFAULT_TEAM_NAME,
+        members: [{
+          userId: user._id,
+          manager: true
+        }],
+        companyId: company._id
+      };
+      const newTeam = new Team(newTeamData);
+      newTeam.save((err, team) => {
         if(err){
           console.log(err);
-          res.status(500).send("Server error");
+          res.status(500).send('Server error');
           return false;
         }
         res.send();
-      });
+        for(let ws in req.app.wsClients){
+          if(req.app.wsClients[ws].userId === "" + user._id){
+            req.app.wsClients[ws].send('fetch_initial_data');
+          }
+        }
+      })
     });
   })
 
