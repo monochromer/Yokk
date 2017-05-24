@@ -79,11 +79,10 @@ class TopPanel extends React.Component {
     const { showUserMenu, showNotifications, showManagerMenu } = this.state;
 
     const managerMenuButton = isManager(user, teams) ?
-      <div className="top-panel_manager-menu-icon">
-        <span
-          onClick={this.showManagerMenu}
-        >+</span>
-      </div>
+      <div
+        className="top-panel_manager-menu-icon"
+        onClick={this.showManagerMenu}
+      >+</div>
       : [];
 
     const userMenu = showUserMenu ?
