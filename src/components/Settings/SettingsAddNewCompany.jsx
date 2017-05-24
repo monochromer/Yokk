@@ -1,39 +1,110 @@
-import React, {Component} from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { createCompany } from '../../actions/companies';
+import { Input } from '../UI.jsx'
 
-/**
- * Component for creating new company
- */
-class SettingsAddNewCompany extends Component {
+class SettingsAddNewCompany extends React.Component {
 
-  /**
-   * Constructor
-   * @param props
-   */
-  constructor(props) {
-    super(props);
+  state = {
+    name: '',
+    address: '',
+    billingInfo: '',
+    errors: {}
   }
 
-  /**
-   * React Render
-   * @return {XML}
-   */
+  initialState = {
+    name: '',
+    address: '',
+    billingInfo: '',
+    errors: {}
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.createCompany(this.state, (err) => {
+      if(err){
+        this.setState({
+          errors: err
+        });
+        return false;
+      }
+      this.setState(this.initialState);
+    });
+  }
+
+  handleCancel = (e) => {
+    e.preventDefault();
+    this.setState(this.initialState);
+  }
+
   render() {
+    const {
+      name,
+      address,
+      billingInfo,
+      errors
+    } = this.state;
     return(
-      <div className="settings-add-new-company">
+      <div>
         <h1>Create New Company</h1>
-        <form className="settings-add-new-company__form">
-          <div className="form-group settings-add-new-company__company-name">
-            <label htmlFor="companyName">Company Name <span className="required-field">*</span></label>
-            <input type="text" id="companyName" name="company-name" />
+        <form
+          className="settings-add-new-company__form"
+          onSubmit={this.handleSubmit}
+        >
+            <Input
+              handleChange={this.handleChange}
+              className="input-group input-group__grey"
+              label="Company Name *"
+              error={errors.name}
+              defaultValue={name}
+              name="name"
+            />
+            <Input
+              handleChange={this.handleChange}
+              className="input-group input-group__grey"
+              label="Company Address"
+              error={errors.address}
+              defaultValue={address}
+              name="address"
+            />
+          <div className="form-group billing-information">
+            <label htmlFor="companyBillingInformation">
+              Company Billing Information
+            </label>
+            <textarea
+              id="companyBillingInformation"
+              name="billingInfo"
+              rows="6"
+              value={billingInfo}
+              onChange={this.handleChange}
+            />
+            {
+              errors.billingInfo &&
+              <div className="form-error">{errors.billingInfo}</div>
+            }
           </div>
-          <div className="form-group settings-add-new-company__company-address">
-            <label htmlFor="companyAddress">Company Address</label>
-            <input type="text" id="companyAddress" name="company-address" />
-          </div>
-          <div className="form-group settings-add-new-company__company-billing-information">
-            <label htmlFor="companyBillingInformation">Company Billing Information</label>
-            <textarea id="companyBillingInformation" name="company-billing-information" rows="6"></textarea>
+          {errors.form && <div className="form-error">{errors.form}</div>}
+          <div className="form-group billing-information">
+            <button
+              className="btn btn__md btn__blue"
+              type="submit"
+            >
+              Create
+            </button>
+            <button
+              className="btn btn__md"
+              type="submit"
+              onClick={this.handleCancel}
+            >
+              Cancel
+          </button>
           </div>
         </form>
       </div>
@@ -42,4 +113,8 @@ class SettingsAddNewCompany extends Component {
 
 }
 
-export default SettingsAddNewCompany;
+SettingsAddNewCompany.PropTypes = {
+  createCompany: PropTypes.func.isRequired
+}
+
+export default connect(null, { createCompany })(SettingsAddNewCompany);

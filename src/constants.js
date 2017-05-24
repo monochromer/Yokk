@@ -15,6 +15,7 @@ export const DELETE_TEAM = 'DELETE_TEAM';
 export const CHANGE_TEAM_NAME = 'CHANGE_TEAM_NAME';
 export const SHOW_MODAL = 'SHOW_MODAL';
 export const HIDE_MODAL = 'HIDE_MODAL';
+export const CREATE_COMPANY = 'CREATE_COMPANY';
 export const TIME_ENTRY_CRUD = '/api/timeEntry/';
 export const FETCH_REDMINE_TIME_ENTRIES_URI = '/api/sync/redmine';
 export const FETCH_UPWORK_TIME_ENTRIES_URI = '/api/sync/upwork';
