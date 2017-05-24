@@ -49,7 +49,7 @@ module.exports = function (app, mongoose) {
       role: String,
       firstName: String,
       lastName: String,
-      workours: String,
+      workHours: String,
       position: String,
       badges: [mongoose.Schema.Types.ObjectId],
       profileEmail: String,
