@@ -13,7 +13,7 @@ const initialState = []
 export default function (state = initialState, action) {
   const {
     type,
-    data,
+    payload,
     teamId,
     userId,
     response,
@@ -23,7 +23,7 @@ export default function (state = initialState, action) {
   switch (type) {
 
     case FETCH_TEAMS:
-      return action.payload
+      return payload
 
     case ADD_TEAM:
       const stateAfterTeamAdded = state.slice(0)
