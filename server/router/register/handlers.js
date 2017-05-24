@@ -133,8 +133,8 @@ export const registerCompany = (req, res) => {
           res.status(406).send("Please enter Company Name");
           return false;
         }
-        if(companyName.length > 50){
-          res.status(406).send("Company Name must be 50 characters or less");
+        if(companyName.length > 100){
+          res.status(406).send("Company Name must be 100 characters or less");
           return false;
         }
 
