@@ -488,7 +488,7 @@ a:hover {
     border: 1px solid red;
     background-color: pink;
     border-radius: 5px;
-    margin-top: 20px;
+    margin: 20px 0;
 }
 
 /*---------------------------------------- /form-data --------------------------------------*/
