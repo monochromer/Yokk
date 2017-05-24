@@ -82,15 +82,16 @@ export function addUser(user, callback) {
   }
 }
 
-export function uploadUserPhoto(files, login) {
+export function uploadUserPhoto(files, userId) {
   return function(dispatch) {
     dispatch({type: "PHOTO_UPLOADING_START"});
     var data = new FormData();
     data.append('pic', files[0]);
-    axios.post(COMBINE_USER_ADDPHOTO_URI(login), data).then((response) => {
+    axios.post(COMBINE_USER_ADDPHOTO_URI(userId), data).then((response) => {
       dispatch({
-        type: "UPDATE_USER",
-        payload: response.data
+        type: "UPDATE_USER_PHOTO",
+        payload: response.data,
+        userId
       })
     });
   }

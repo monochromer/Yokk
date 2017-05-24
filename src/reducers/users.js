@@ -18,6 +18,17 @@ export default function(state = defaultState, action) {
 
       return [...newState, payload];
 
+    case "UPDATE_USER_PHOTO":
+      newState = _.filter(state, (o) => o._id !== userId);
+
+      return {
+        ...state,
+        [userId]: {
+          ...state[userId],
+          ...payload
+        }
+      };
+
     case "DELETE_PROFILE_IMG":
       newState = cloneObject(state)
 
