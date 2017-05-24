@@ -38,17 +38,21 @@ exports.getAllUsers = function (req, res) {
           res.status(500).send('Server error');
           return false;
         }
-        const usersToReturn = users.map((user) => {
-          const profile = user.companies.find(
+        const usersToReturn = users.map((foundUser) => {
+          const profile = foundUser.companies.find(
             el => ""+el.companyId === ""+currentCompany
           );
           if(!profile){
             return;
           }
-          return Object.assign({}, profile.toObject(), {
-            _id: user._id,
-            profileImg: user.profileImg
+          const userToReturn = Object.assign({}, profile.toObject(), {
+            _id: foundUser._id,
+            profileImg: foundUser.profileImg
           });
+          if("" + foundUser._id === "" + user._id){
+            userToReturn.email = user.email;
+          }
+          return userToReturn;
         });
         res.json(usersToReturn);
       });
