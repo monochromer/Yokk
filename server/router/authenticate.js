@@ -19,7 +19,7 @@ export default function authenticate(req, res, next){
       return false;
     }
     const User = req.app.db.models.User;
-    User.findOne({_id: decoded._id}).lean().exec((err, user) => {
+    User.findOne({_id: decoded._id}).exec((err, user) => {
       if(err){
         console.log(err);
         res.status(500).send('Ошибка сервера');
