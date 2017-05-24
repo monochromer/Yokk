@@ -36,7 +36,6 @@ class UserMenu extends React.Component {
           <option
             key={company._id}
             value={company._id}
-            selected={company._id === user.companyId}
           >{company.name}</option>
         );
       });
@@ -45,6 +44,7 @@ class UserMenu extends React.Component {
           className="dropdown-element"
           onChange={this.selectCompany}
           onClick={this.handleSelectClick}
+          defaultValue={user.companyId}
         >
           {options}
         </select>
@@ -73,7 +73,7 @@ class UserMenu extends React.Component {
       <div className="dropdown">
         {mappedCompanies}
         <div className="dropdown-element">
-          <Link to="/settings">
+          <Link to="/settings#add-new-company">
             <span className="glyphicons glyphicons-plus-sign"></span>{" "}
             Add new company
           </Link>
