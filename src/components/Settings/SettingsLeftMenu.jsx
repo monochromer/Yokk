@@ -1,174 +1,99 @@
-import React, {Component} from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { browserHistory } from 'react-router';
 
 /**
  * Component for left menu on page Settings
  */
-class SettingsLeftMenu extends Component {
+class SettingsLeftMenu extends React.Component {
 
-  /**
-   * Constructor
-   * @param props
-   */
-  constructor(props) {
-    super(props);
-
-    this.userSettings = [
-      {
-        section: "user-profile",
-        text: "User Profile",
-        roles: [
-          'user',
-          'manager',
-          'admin',
-          'owner'
-        ]
-      },
-      {
-        section: "notifications",
-        text: "Notifications",
-        roles: [
-          'user',
-          'manager',
-          'admin',
-          'owner'
-        ]
-      }
-    ];
-    this.companySettings = [
-      {
-        section: "add-new-company",
-        text: "+ Add New Company",
-        roles: [
-          'admin',
-          'owner'
-        ]
-      },
-      {
-        section: "company-profile",
-        text: "Company Profile",
-        roles: [
-          'admin',
-          'owner'
-        ]
-      },
-      {
-        section: "company-members",
-        text: "Company Members",
-        roles: [
-          'manager',
-          'admin',
-          'owner'
-        ]
-      },
-      {
-        section: "plugins",
-        text: "Plugins",
-        roles: [
-          'admin',
-          'owner'
-        ]
-      }
-    ];
+  onSectionSelect = (e) => {
+    browserHistory.push('/settings#' + e.target.getAttribute('value'));
   }
 
-  static PropTypes = {
-    settingsActiveSection: PropTypes.string,
-    onSettingsSectionChange: PropTypes.func,
-    user: PropTypes.object
+  selectCompany = () => {
+    
   }
 
-  /**
-   * Filter left menu items according user role permissions
-   * @param settings
-   * @returns {Array} left menu items.
-   */
-  filterSettingsByUserRole(settings) {
-    const currentUserRole = this.props.user.role;
-    return settings.filter((item) => {
-      return ( item.roles.indexOf(currentUserRole) > -1 );
-    });
-  }
-
-  /**
-   * Get markup for companies select.
-   * @return {XML|null}
-   */
-  getCompaniesSelect() {
-    const companies = this.props.user.companies;
-    if (typeof companies !== 'undefined') {
-      return (
-        <select>
-          {companies.map((company, index) => {
-            return (
-              <option value={company._id} key={index}>{company.name}</option>
-            );
-          })}
-        </select>
-      );
-    } else {
-      return null;
-    }
-  }
-
-  /**
-   * React Render
-   * @returns {XML}
-   */
   render() {
-    const onSettingsSectionChange = this.props.onSettingsSectionChange;
-    const userSettings = this.filterSettingsByUserRole(this.userSettings);
-    const companySettings = this.filterSettingsByUserRole(this.companySettings);
-    const companiesSelect = this.getCompaniesSelect();
+    const { user, companies } = this.props;
+    let adminMenuItems = [];
+    if(user.role === 'admin' || user.role === 'owner'){
+      adminMenuItems = <div>
+        <li
+          className="settings-left-menu__item"
+          value="company-profile"
+          onClick={this.onSectionSelect}
+        >
+          Company profile
+        </li>
+        <li
+          className="settings-left-menu__item"
+          value="company-members"
+          onClick={this.onSectionSelect}
+        >
+          Company members
+        </li>
+        <li
+          className="settings-left-menu__item"
+          value="plugins"
+          onClick={this.onSectionSelect}
+        >
+          Plugins
+        </li>
+      </div>;
+    }
+
+    const options = companies.map((company) => {
+      return(
+        <option
+          key={company._id}
+          value={company._id}
+        >{company.name}</option>
+      );
+    });
+    const mappedCompanies = (
+      <select
+        className="dropdown-element"
+        onChange={this.selectCompany}
+        value={user.companyId}
+      >
+        {options}
+      </select>
+    );
 
     return (
       <div className="settings-left-menu">
         <h3>User Settings</h3>
         <ul>
-          {userSettings.map((item, index) => {
-            let className = 'settings-left-menu__item';
-            if ( this.props.settingsActiveSection === item.section ) {
-              className += ' settings-left-menu__item_active';
-            }
-
-            return (
-              <li
-                className={className}
-                data-settings-section={item.section}
-                onClick={onSettingsSectionChange}
-                key={index}
-              >
-                {item.text}
-              </li>
-            );
-          })}
+          <li
+            className="settings-left-menu__item"
+            value="user-profile"
+            onClick={this.onSectionSelect}
+          >
+            User profile
+          </li>
+          <li
+            className="settings-left-menu__item"
+            value="notifications"
+            onClick={this.onSectionSelect}
+          >
+            Notifications
+          </li>
         </ul>
-
-        { ( this.props.user.role !== 'user' ) ? <h3>Company Settings</h3> : "" }
-
-        { companiesSelect }
-
+        <h3>Company Settings</h3>
+        {mappedCompanies}
         <ul>
-          {companySettings.map((item, index) => {
-            let className = 'settings-left-menu__item';
-            if ( item.section === 'add-new-company' ) {
-              className += ' settings-left-menu__item-add-new-company';
-            }
-            if ( this.props.settingsActiveSection === item.section ) {
-              className += ' settings-left-menu__item_active';
-            }
-
-            return (
-              <li
-                className={className}
-                data-settings-section={item.section}
-                onClick={onSettingsSectionChange}
-                key={index}
-              >
-                {item.text}
-              </li>
-            );
-          })}
+          <li
+            className="settings-left-menu__item"
+            value="add-new-company"
+            onClick={this.onSectionSelect}
+          >
+            <span className="glyphicons glyphicons-plus-sign"></span>{" "}
+            Add new company
+          </li>
+          {adminMenuItems}
         </ul>
       </div>
     );
@@ -176,6 +101,16 @@ class SettingsLeftMenu extends Component {
 
 }
 
-export default SettingsLeftMenu;
+SettingsLeftMenu.PropTypes = {
+  companies: PropTypes.array.isRequired,
+  user: PropTypes.object.isRequired
+}
 
+function getParams(state) {
+  return {
+    user: state.users[state.currentUser._id],
+    companies: state.companies
+  }
+}
 
+export default connect(getParams)(SettingsLeftMenu)
