@@ -267,7 +267,7 @@ export const registerUser = (req, res) => {
           for(let ws in req.app.wsClients){
             if(userIds.indexOf(req.app.wsClients[ws].userId) !== -1){
               req.app.wsClients[ws].send('fetch_notifications');
-              req.app.wsClients[ws].send('fetch_user');
+              req.app.wsClients[ws].send('fetch_users');
             }
           }
         });
