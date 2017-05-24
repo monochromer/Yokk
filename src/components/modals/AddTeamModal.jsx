@@ -1,9 +1,7 @@
 import React from 'react'
-import classNames from 'classnames'
 import { connect } from 'react-redux'
 import { hideModal } from '../../actions/modals'
 import { Input } from '../UI.jsx'
-import { createCompany } from '../../actions/registration'
 
 class AddTeamModal extends React.Component {
 
