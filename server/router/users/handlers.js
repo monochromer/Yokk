@@ -345,7 +345,7 @@ exports.uploadUserAvatar = function (req, res) {
             res.status(500).send();
             return false;
           }
-          res.status(200).send(user);
+          res.status(200).send(update);
           callback(null, user);
         });
       }
