@@ -13,10 +13,14 @@ class UserMenu extends React.Component {
   selectCompany = (e) => {
     e.preventDefault();
     if(e.target.value){
-      console.log(e.target.value);
+      this.props.updateUser(this.props.user._id, {
+        currentCompany: e.target.value
+      });
     }
     else{
-      console.log(e.target.getAttribute("value"));
+      this.props.updateUser(this.props.user._id, {
+        currentCompany: e.target.getAttribute("value")
+      });
     }
 
   }

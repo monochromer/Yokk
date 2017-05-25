@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { finishRegistration, inviteMembers } from '../../actions/registration';
+import { finishRegistration } from '../../actions/registration';
 import { Input } from '../UI.jsx';
 
 class Step5 extends React.Component {
@@ -47,19 +47,14 @@ class Step5 extends React.Component {
       lastName: localStorage.reg_lastName,
       password: localStorage.reg_password,
       companyName: localStorage.reg_companyName,
-      step: '5'
+      step: '5',
+      invitations: this.state.invitations
     };
     finishRegistration(data, (err, res) => {
       if(err){
         this.setState({error: "" + err.response.data});
         return false;
       }
-      const firstName = localStorage.reg_firstName;
-      const lastName = localStorage.reg_lastName;
-      const companyName = localStorage.reg_companyName;
-      const { teamId, companyId } = res.data;
-      inviteMembers(teamId, this.state.invitations, companyId,
-        (firstName + " " + lastName), companyName);
       this.props.router.push('/login');
     });
   }

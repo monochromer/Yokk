@@ -21,7 +21,7 @@ class ManagerMenu extends React.Component {
               <Link
                 className="top-panel_menu-item"
                 activeClassName="active"
-                to="/teams"
+                to="/settings#add-new-company"
               >
                 <span className="glyphicons glyphicons-building"></span>{" "}
                 Create new company

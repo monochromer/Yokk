@@ -4,7 +4,11 @@ import { Input } from '../UI.jsx';
 
 class SettingsUserProfileAccount extends React.Component {
 
-  state = {
+  componentWillMount(){
+    this.setState(this.initialState);
+  }
+
+  initialState = {
     errors: {},
     editing: false
   }
@@ -22,19 +26,27 @@ class SettingsUserProfileAccount extends React.Component {
   }
 
   cancelEditing = () => {
-    this.setState({
-      editing: false
-    });
+    this.setState(this.initialState);
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log(this.state);
+    this.props.updateUser(this.props.user._id, this.state, (err) => {
+      if(err){
+        this.setState({errors: err});
+        return;
+      }
+      this.setState(this.initialState);
+    });
+  }
+
+  handleChangePass = (e) => {
+    e.preventDefault();
   }
 
   render() {
     const { email } = this.props.user;
-    const { editing } = this.state;
+    const { editing, errors } = this.state;
     return editing ? (
       <div>
         <div className="row profile_section">
@@ -61,16 +73,19 @@ class SettingsUserProfileAccount extends React.Component {
                 name="email"
                 label="E-mail"
                 defaultValue={ email }
+                error={errors.email}
               />
             </div>
             <div className="col-md-6">
-              <Input
-                className="input-group input-group__grey"
-                label="Password"
-                type="password"
-                defaultValue="12345678"
-                disabled
-              />
+              <div className="label">Password</div>
+              <div>&#9899;&#9899;&#9899;&#9899;&#9899;&#9899;&#9899;&#9899;</div>
+              <button
+                className="btn btn__md btn__blue"
+                type="submit"
+                onClick={this.handleChangePass}
+              >
+                Изменить
+              </button>
             </div>
           </div>
         </form>

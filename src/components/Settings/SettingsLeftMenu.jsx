@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { browserHistory } from 'react-router';
+import { updateUser } from '../../actions/users';
 
 /**
  * Component for left menu on page Settings
@@ -12,8 +13,10 @@ class SettingsLeftMenu extends React.Component {
     browserHistory.push('/settings#' + e.target.getAttribute('value'));
   }
 
-  selectCompany = () => {
-    
+  selectCompany = (e) => {
+    this.props.updateUser(this.props.user._id, {
+      currentCompany: e.target.value
+    });
   }
 
   render() {
@@ -103,7 +106,8 @@ class SettingsLeftMenu extends React.Component {
 
 SettingsLeftMenu.PropTypes = {
   companies: PropTypes.array.isRequired,
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  updateUser: PropTypes.func.isRequired
 }
 
 function getParams(state) {
@@ -113,4 +117,4 @@ function getParams(state) {
   }
 }
 
-export default connect(getParams)(SettingsLeftMenu)
+export default connect(getParams, { updateUser })(SettingsLeftMenu)

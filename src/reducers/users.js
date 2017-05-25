@@ -14,10 +14,13 @@ export default function(state = defaultState, action) {
       return [...state, _.filter(state, (o) => o._id !== payload._id)];
 
     case "UPDATE_USER":
-      newState = _.filter(state, (o) => o._id !== payload._id);
-
-      return [...newState, payload];
-
+      return {
+        ...state,
+        [payload.userId]: {
+          ...state[payload.userId],
+          ...payload.fields
+        }
+      };
     case "UPDATE_USER_PHOTO":
       newState = _.filter(state, (o) => o._id !== userId);
 

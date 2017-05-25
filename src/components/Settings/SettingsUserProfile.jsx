@@ -5,6 +5,8 @@ import { Link } from 'react-router';
 import { updateUser } from '../../actions/users'
 import SettingsUserProfileAccount from './SettingsUserProfileAccount.jsx'
 import SettingsUserProfileGeneral from './SettingsUserProfileGeneral.jsx'
+import SettingsUserProfilePersonal from './SettingsUserProfilePersonal.jsx'
+import SettingsUserProfileContacts from './SettingsUserProfileContacts.jsx'
 import { connect } from 'react-redux'
 
 class SettingsUserProfile extends React.Component {
@@ -15,7 +17,7 @@ class SettingsUserProfile extends React.Component {
 
 
   render() {
-    const { user, company } = this.props;
+    const { user, company, updateUser } = this.props;
       if (!user || !company) {
         return ( <p> Wait a moment please... </p>);
       }
@@ -42,9 +44,19 @@ class SettingsUserProfile extends React.Component {
           </div>
           <SettingsUserProfileAccount
             user={user}
+            updateUser={updateUser}
           />
           <SettingsUserProfileGeneral
             user={user}
+            updateUser={updateUser}
+          />
+          <SettingsUserProfilePersonal
+            user={user}
+            updateUser={updateUser}
+          />
+          <SettingsUserProfileContacts
+            user={user}
+            updateUser={updateUser}
           />
         </div>
       </div>

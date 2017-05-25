@@ -3,6 +3,7 @@ import { Link, IndexLink } from 'react-router'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import { changeCurrentCompany, logout } from '../../actions/currentUser'
+import { updateUser } from '../../actions/users';
 import UserMenu from './UserMenu.jsx'
 import { isManager } from '../../helpers';
 import ManagerMenu from './ManagerMenu.jsx'
@@ -69,7 +70,8 @@ class TopPanel extends React.Component {
       notifications,
       markAllNotifications,
       companies,
-      teams
+      teams,
+      updateUser
     } = this.props;
     if(!user){
       return(
@@ -90,6 +92,7 @@ class TopPanel extends React.Component {
         logout={logout}
         companies={companies}
         user={user}
+        updateUser={updateUser}
       />
       : [];
 
@@ -173,6 +176,7 @@ TopPanel.PropTypes = {
   markAllNotifications: PropTypes.func.isRequired,
   changeCurrentCompany: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
+  updateUser: PropTypes.func.isRequired,
 }
 
 const getProps = function(store) {
@@ -188,5 +192,6 @@ const getProps = function(store) {
 export default connect(getProps, {
   changeCurrentCompany,
   logout,
-  markAllNotifications
+  markAllNotifications,
+  updateUser
 })(TopPanel)

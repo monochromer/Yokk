@@ -34,13 +34,24 @@ export function deleteUser(login) {
   }
 }
 
-export function updateUser(id, fields) {
-  return {
-    type: "UPDATE_USER",
-    updateItem: {
-      url: USER_CRUD + id,
-      data: fields
-    }
+export function updateUser(userId, fields, callback) {
+  return (dispatch) => {
+    axios.put(USER_CRUD + userId, fields).then((res) => {
+      dispatch({
+        type: "UPDATE_USER",
+        payload: {
+          fields,
+          userId
+        }
+      });
+      if(callback){
+        callback();
+      }
+    }, (err) => {
+      if(callback){
+        callback(err.response.data);
+      }
+    });
   };
 }
 

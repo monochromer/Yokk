@@ -1,8 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Input } from '../UI.jsx';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
 
-class SettingsUserProfileGeneral extends React.Component {
+import 'react-datepicker/dist/react-datepicker.css';
+
+class SettingsUserProfilePersonal extends React.Component {
 
   componentWillMount(){
     this.setState(this.initialState);
@@ -10,12 +14,19 @@ class SettingsUserProfileGeneral extends React.Component {
 
   initialState = {
     errors: {},
-    editing: false
+    editing: false,
+    birthday: null
   }
 
   handleChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value
+    });
+  }
+
+  handleDateChange = (e) => {
+    this.setState({
+      birthday: e.valueOf()
     });
   }
 
@@ -26,10 +37,7 @@ class SettingsUserProfileGeneral extends React.Component {
   }
 
   cancelEditing = () => {
-    this.setState({
-      editing: false,
-      errors: {}
-    });
+    this.setState(this.initialState);
   }
 
   handleSubmit = (e) => {
@@ -45,19 +53,19 @@ class SettingsUserProfileGeneral extends React.Component {
 
   render() {
     const {
-      firstName,
-      lastName,
-      workHours,
-      position,
-      profileEmail
+      gender,
+      birthday,
+      cv,
+      skills
     } = this.props.user;
+    const changedBirthday = this.state.birthday || birthday;
     const { editing, errors } = this.state;
     return editing ? (
       <div>
         <div className="row profile_section">
           <div className="col-md-12">
             <h3 className="profile_heading">
-              General
+              Personal
               <span
                 className="glyphicons glyphicons-ok"
                 onClick={this.handleSubmit}
@@ -75,21 +83,19 @@ class SettingsUserProfileGeneral extends React.Component {
               <Input
                 className="input-group input-group__grey"
                 handleChange={ this.handleChange }
-                name="firstName"
-                label="First name"
-                defaultValue={ firstName }
-                error={errors.firstName}
+                name="gender"
+                label="Gender"
+                defaultValue={ gender }
+                error={errors.gender}
               />
             </div>
             <div className="col-md-6">
-              <Input
-                className="input-group input-group__grey"
-                handleChange={ this.handleChange }
-                name="lastName"
-                label="Last name"
-                defaultValue={ lastName }
-                error={errors.lastName}
-              />
+              <div className="label">Date of birth</div>
+    					<DatePicker
+    						selected={moment(changedBirthday)}
+    						onChange={this.handleDateChange}
+    						title="Date of birth"
+    					/>
             </div>
           </div>
           <div className="row profile_inputs-row">
@@ -97,32 +103,20 @@ class SettingsUserProfileGeneral extends React.Component {
               <Input
                 className="input-group input-group__grey"
                 handleChange={ this.handleChange }
-                name="workHours"
-                label="Work hours"
-                defaultValue={ workHours }
-                error={errors.workHours}
+                name="cv"
+                label="CV"
+                defaultValue={ cv }
+                error={errors.cv}
               />
             </div>
             <div className="col-md-6">
               <Input
                 className="input-group input-group__grey"
                 handleChange={ this.handleChange }
-                name="position"
-                label="Position"
-                defaultValue={ position }
-                error={errors.position}
-              />
-            </div>
-          </div>
-          <div className="row profile_inputs-row">
-            <div className="col-md-6">
-              <Input
-                className="input-group input-group__grey"
-                handleChange={ this.handleChange }
-                name="profileEmail"
-                label="E-mail"
-                defaultValue={ profileEmail }
-                error={errors.profileEmail}
+                name="skills"
+                label="Skills"
+                defaultValue={ skills }
+                error={errors.skills}
               />
             </div>
           </div>
@@ -133,7 +127,7 @@ class SettingsUserProfileGeneral extends React.Component {
         <div className="row profile_section">
           <div className="col-md-12">
             <h3 className="profile_heading">
-              General
+              Personal
               <span
                 className="glyphicons glyphicons-pencil"
                 onClick={this.startEditing}
@@ -144,31 +138,22 @@ class SettingsUserProfileGeneral extends React.Component {
         <form onSubmit={ this.handleSubmit }>
           <div className="row profile_inputs-row">
             <div className="col-md-6">
-              <div className="label">First name</div>
-              <div>{ firstName }</div>
+              <div className="label">Gender</div>
+              <div>{ gender }</div>
             </div>
             <div className="col-md-6">
-              <div className="label">Last name</div>
-              <div>{ lastName }</div>
-            </div>
-          </div>
-          <div className="row profile_inputs-row">
-            <div className="col-md-6">
-              <div className="label">Work hours</div>
-              <div>{ workHours }</div>
-            </div>
-            <div className="col-md-6">
-              <div className="label">Position</div>
-              <div>{ position }</div>
+              <div className="label">Date of birth</div>
+              <div>{ moment(birthday).format('L') }</div>
             </div>
           </div>
           <div className="row profile_inputs-row">
             <div className="col-md-6">
-              <div className="label">E-mail</div>
-              <div>{ profileEmail }</div>
+              <div className="label">CV</div>
+              <div>{ cv }</div>
             </div>
             <div className="col-md-6">
-              <div className="label">Badges</div>
+              <div className="label">Skills</div>
+              <div>{ skills }</div>
             </div>
           </div>
         </form>
@@ -177,8 +162,8 @@ class SettingsUserProfileGeneral extends React.Component {
   }
 }
 
-SettingsUserProfileGeneral.PropTypes = {
+SettingsUserProfilePersonal.PropTypes = {
   user: PropTypes.object.isRequired
 }
 
-export default SettingsUserProfileGeneral;
+export default SettingsUserProfilePersonal;
