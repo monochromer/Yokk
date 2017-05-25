@@ -1,11 +1,21 @@
 import jwt from 'jsonwebtoken';
 import { NEW_USER_NOTIFICATION } from '../../constants';
+import { sendInvites } from '../teams/handlers';
 const sendEmail = require('../helpers/sendEmail')
 const valid = require("valid-email")
 
 export const registerCompany = (req, res) => {
-  const { User, Company, Team } = req.app.db.models
-  const { email, step, code, firstName, lastName, password, companyName } = req.body;
+  const { User, Company, Team, unconfirmedUser } = req.app.db.models
+  const {
+    email,
+    step,
+    code,
+    firstName,
+    lastName,
+    password,
+    companyName,
+    invitations
+  } = req.body;
 
   if (!email || !valid(email)) {
     res.status(400).send("Invalid e-mail");
@@ -184,7 +194,16 @@ export const registerCompany = (req, res) => {
                 res.status(500).send('Server error');
                 return false;
               }
-              res.send({teamId: team._id, companyId: company._id});
+              res.send();
+              sendInvites(
+                invitations,
+                team._id,
+                company._id,
+                User,
+                unconfirmedUser,
+                firstName + " " + lastName,
+                companyName
+              );
 
               company.emailConfirmed = true;
               company.name = companyName;

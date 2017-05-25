@@ -47,7 +47,7 @@ exports.create = function (req, res, next) {
 };
 
 exports.addTeamMembers = function (req, res) {
-  const { unconfirmedUser, Team, User } = req.app.db.models
+  const { unconfirmedUser, User } = req.app.db.models
   const { teamId, companyId, invitedEmails, userName, companyName } = req.body
 
   if(
@@ -56,59 +56,84 @@ exports.addTeamMembers = function (req, res) {
   ){
     res.status(400).send('Bad request');
     return false;
-  }valid
-  _.remove(invitedEmails, el => !valid(el))
-
-  let usersExist = []
-
-  User.find( {email: {$in: invitedEmails}}, (err, users) => {
-    if(err){
-      console.log(err);
-      res.status(500).send('Server error');
-      return false;
-    }
-    const userEmails = users.map(o => o.email)
-
-    checkIfEmailInArray(userEmails)
-    _.remove(invitedEmails, o => usersExist.includes(o))
-
-    unconfirmedUser.find( {teamId}, (err, unconfirmedUsers) => {
-      if(err){
-        console.log(err);
-        res.status(500).send('Server error');
-        return false;
-      }
-      const unconfirmedUsersEmails = unconfirmedUsers.map(o => o.email)
-      checkIfEmailInArray(unconfirmedUsersEmails)
-      _.remove(invitedEmails, o => usersExist.includes(o))
-
-      const newInvites = invitedEmails.map((el) => {
-        return({
-          teamId,
-          email: el,
-          role: 'user'
-        });
-      });
-      unconfirmedUser.insertMany(newInvites, () => {
-        if(err){
-          console.log(err);
-          res.status(500).send('Server error');
-          return false;
-        }
-        invitedEmails.forEach(email => {
-          sendInvitation(userName, companyName, teamId, sendEmail, email, companyId)
-        })
-        res.send();
-      });
-    })
-  })
-
-  function checkIfEmailInArray(arrayToFind) {
-    invitedEmails.forEach(email => {
-      if (arrayToFind.includes(email)) usersExist.push(email)
-    })
   }
 
+  sendInvites(
+    invitedEmails,
+    teamId,
+    companyId,
+    User,
+    unconfirmedUser,
+    userName,
+    companyName
+  ).then(() => {
+    res.send();
+  }, (err) => {
+    console.log(err);
+    res.status(500).send('Server error');
+  });
+
+}
+
+export function sendInvites(
+  invitedEmails,
+  teamId,
+  companyId,
+  User,
+  unconfirmedUser,
+  userName,
+  companyName
+) {
+  return new Promise((resolve, reject) => {
+    _.remove(invitedEmails, el => !valid(el))
+
+    let usersExist = []
+
+    User.find( {email: {$in: invitedEmails}}, (err, users) => {
+      if(err){
+        reject(err);
+        return false;
+      }
+      const userEmails = users.map(o => o.email)
+
+      checkIfEmailInArray(userEmails)
+      _.remove(invitedEmails, o => usersExist.includes(o))
+
+      unconfirmedUser.find( {teamId}, (err, unconfirmedUsers) => {
+        if(err){
+          reject(err);
+          return false;
+        }
+        const unconfirmedUsersEmails = unconfirmedUsers.map(o => o.email)
+        checkIfEmailInArray(unconfirmedUsersEmails)
+        _.remove(invitedEmails, o => usersExist.includes(o))
+
+        const newInvites = invitedEmails.map((el) => {
+          return({
+            teamId,
+            email: el,
+            role: 'user'
+          });
+        });
+        unconfirmedUser.insertMany(newInvites, () => {
+          if(err){
+            reject(err);
+            return false;
+          }
+          invitedEmails.forEach(email => {
+            sendInvitation(userName, companyName, teamId, email, companyId)
+          })
+          resolve();
+        });
+      })
+    })
+
+    function checkIfEmailInArray(arrayToFind) {
+      invitedEmails.forEach(email => {
+        if (arrayToFind.includes(email)) usersExist.push(email)
+      })
+    }
+  });
 }
 
 exports.resendCode = function (req, res, next) {
@@ -307,7 +332,7 @@ exports.update = function (req, res, next) {
 
       const {DEFAULT_TEAM_NAME} = process.env
       const teamName = team.name ? team.name : DEFAULT_TEAM_NAME
-      sendInvitations(emails.toInvite, team.name, teamId, sendEmail);
+      sendInvitations(emails.toInvite, team.name, teamId);
 
       team.members = _.unionBy(team.members, emailsToConfirm, obj => obj.email);
 
@@ -342,7 +367,7 @@ exports.update = function (req, res, next) {
     })
   }
 
-  function sendInvitations(emails, teamName, teamId, sendEmailFunc) {
+  function sendInvitations(emails, teamName, teamId) {
     const { NODE_ENV, LINK_BASE_DEV, LINK_BASE_PROD } = process.env
     const linkBase = (NODE_ENV === 'development' ? LINK_BASE_DEV : LINK_BASE_PROD)
     emails.forEach(email => {
@@ -359,7 +384,7 @@ exports.update = function (req, res, next) {
         html: htmlToSend
       };
 
-      sendEmailFunc(mailOptions);
+      sendEmail(mailOptions);
     })
   }
 
@@ -424,7 +449,7 @@ exports.deleteMeberFromTeam = function (req, res, next) {
   })
 }
 
-function sendInvitation(userName, companyName, teamId, sendEmailFunc, email, companyId) {
+function sendInvitation(userName, companyName, teamId, email, companyId) {
   const { NODE_ENV, LINK_BASE_DEV, LINK_BASE_PROD } = process.env
   const linkBase = (NODE_ENV === 'development' ? LINK_BASE_DEV : LINK_BASE_PROD)
 
@@ -444,5 +469,5 @@ function sendInvitation(userName, companyName, teamId, sendEmailFunc, email, com
     html: htmlToSend
   };
 
-  sendEmailFunc(mailOptions);
+  sendEmail(mailOptions);
 }
