@@ -7,10 +7,18 @@ const async = require('async');
 const moment = require('moment');
 const fs = require('fs')
 const path = require('path')
+import { validatePassword, isValidName } from '../../helpers';
+import validator from 'validator';
+import _, { isEpmty } from 'lodash';
+import { ObjectId } from 'mongodb';
 
 exports.getAllUsers = function (req, res) {
   const { User, Team } = req.app.db.models;
   const { user } = req;
+  if(!user){
+    res.status(401).send();
+    return false;
+  }
   const { currentCompany } = user;
   const { role } = user.companies.find(
     el => "" + el.companyId === "" + currentCompany
@@ -67,9 +75,9 @@ exports.getAllUsers = function (req, res) {
           res.status(500).send('Server error');
           return false;
         }
-        const userIds = [];
+        let userIds = [];
         for(let index = 0; index < teams.length; index++){
-          userIds.concat(teams[index].members.map(el => el.userId));
+          userIds = userIds.concat(teams[index].members.map(el => el.userId));
         }
         User.find({
           _id: {$in: userIds}
@@ -217,37 +225,135 @@ exports.showUser = function (req, res) {
 };
 
 exports.updateUser = function (req, res) {
-  const userModel = req.app.db.models.User;
+  const { User } = req.app.db.models;
   const { _id } = req.params;
-  const update = req.body;
+  const { body, user } = req;
+  const currentUserProfile = user.companies.find(
+    el => "" + el.companyId === "" + user.currentCompany
+  );
+  const {
+    email,
+    passwordOld,
+    passwordNew,
+    passwordRepeat,
+    role,
+    currentCompany
+  } = body;
 
-  if (req.body.password !== undefined) {
-    userModel.findById(_id, (err, user) => {
+  if (passwordNew) {
+    if(!user.checkPassword(passwordOld)){
+      res.status(403).send({passwordOld: 'Wrong old password'});
+      return;
+    }
+    const passwordErrors = validatePassword(passwordNew, passwordRepeat);
+    if(passwordErrors){
+      res.status(406).send(passwordErrors);
+      return;
+    }
+    user.updatePassword(passwordNew);
+    user.save((err) => {
       if(err){
         console.log(err);
-        res.status(500).send("Server error");
+        res.status(500).send({form: "Server error"});
         return false;
       }
-      user.updatePassword(req.body.password);
-      user.save((err, user) => {
+      res.send();
+    });
+  }
+  else if (email) {
+    if(!validator.isEmail(email)){
+      res.status(400).send({email: 'Invalid E-mail'});
+      return;
+    }
+    user.email = email;
+    user.save((err) => {
+      if(err){
+        console.log(err);
+        res.status(500).send({form: "Server error"});
+        return;
+      }
+      res.send();
+    });
+  }
+  else if (currentCompany) {
+    if(!ObjectId.isValid(currentCompany)){
+      res.status(400).send({form: 'Invalid company _id'});
+      return;
+    }
+    user.currentCompany = currentCompany;
+    user.save((err) => {
+      if(err){
+        console.log(err);
+        res.status(500).send({form: "Server error"});
+        return;
+      }
+      res.send();
+      for(let ws in req.app.wsClients){
+        if(req.app.wsClients[ws].userId === "" + user._id){
+          req.app.wsClients[ws].send('fetch_initial_data');
+        }
+      }
+    });
+  }
+  else if (role) {
+    const currentUserRole = currentUserProfile.role;
+    if(currentUserRole !== 'admin' & currentUserRole !== 'owner'){
+      res.status(403).send({form: 'Not enough rights'});
+      return;
+    }
+    User.find({_id}, (err, foundUser) => {
+      const foundUserProfile = foundUser.companies.find(
+        el => el.companyId === user.currentCompany
+      );
+      if(!foundUserProfile){
+        res.status(400).send({form: 'Profile is not found'});
+        return;
+      }
+      if(foundUserProfile.role === 'owner'){
+        res.status(403).send({form: 'You can\'t change owner\'s role'});
+        return;
+      }
+      foundUser.role = role;
+      foundUser.save((err) => {
         if(err){
           console.log(err);
-          res.status(500).send("Server error");
-          return false;
+          res.status(500).send({form: "Server error"});
+          return;
         }
-        res.status(200).send();
+        res.send();
       });
-
     });
-  } else {
-    userModel.editUser(_id, update, (err, user) => {
-      if(err){
-        console.log(err);
-        res.status(500).send("Server error");
-        return false;
+  }
+  else{
+    const validProps = [
+      'firstName',
+      'lastName',
+      'workHours',
+      'position',
+      'profileEmail',
+      'gender',
+      'birthday',
+      'skills',
+      'phone',
+      'skype',
+      'twitter',
+      'address',
+      'facebook'
+    ];
+    for(let prop in body){
+      if(
+        (prop === 'firstName' || prop === 'lastName') &&
+        !isValidName(body[prop])
+      ){
+        res.status(400).send({[prop]: 'Invalid name'});
+        return;
       }
-      res.status(200).send();
-    });
+      if(validProps.indexOf(prop) > -1){
+        currentUserProfile[prop] = body[prop];
+      }
+    }
+    user.save();
+    res.send();
   }
 }
 
