@@ -107,18 +107,57 @@ exports.read = function (req, res) {
 };
 
 // PUT
-exports.update = function (req, res, next) {
-  const { Company } = req.app.db.models
-  const { companyId } = req.body //it should probably be gotten by params
-  const { name, originatorEmail, teams } = req.body
+exports.update = function (req, res) {
+  const { Company } = req.app.db.models;
+  const { companyId } = req.params;
+  const { name, address, billingInfo } = req.body;
+  const { user } = req;
+
+  const errors = {};
+  if(name !== undefined && !name.length){
+    errors.name = "Please enter Company Name";
+  }
+  if(name !== undefined && !isValidName(name)){
+    errors.name = "Invalid Name";
+  }
+  if(name !== undefined && name.length > 100){
+    errors.name = "Company Name must be 100 characters or less";
+  }
+  if(address !== undefined && address.length > 500){
+    errors.address = "Address must be 500 characters or less";
+  }
+  if(billingInfo !== undefined && billingInfo.length > 1000){
+    errors.billingInfo = "Billing information must be 1000 characters or less";
+  }
+  if(!isEmpty(errors)){
+    res.status(406).send(errors);
+    return false;
+  }
 
   const update = {}
+  if (name !== undefined) update.name = name;
+  if (address !== undefined) update.address = address;
+  if (billingInfo !== undefined) update.billingInfo = billingInfo;
 
-  if (name) update.name = name
-  if (originatorEmail) update.originatorEmail = originatorEmail
-  if (teams) getUpdatedTeamsArray(update)
-
-  Company.update(companyId, { $set: update })
+  const currentUserProfile = user.companies.find(
+    el => "" + el.companyId === "" + user.currentCompany
+  );
+  if(
+    ("" + user.currentCompany !== companyId) ||
+    (currentUserProfile.role !== 'owner' && currentUserProfile.role !== 'admin')
+  ){
+    res.status(403).send({form: "Not enough rights"});
+  }
+  else{
+    Company.update({_id: companyId}, { $set: update }, (err, result) => {
+      if(err){
+        console.log(err);
+        res.status(500).send();
+        return;
+      }
+      res.send();
+    });
+  }
 
 }
 
