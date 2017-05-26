@@ -16,29 +16,29 @@ export function isValidName(name){
   return true;
 }
 
-export function validatePassword(password, passwordRepeat){
+export function validatePassword(passwordNew, passwordRepeat){
   const errors = {}
-  const passwordContainsDigits = new RegExp( /\d/ ).test( password );
-  const passwordContainsLowercaseLatinLetter = new RegExp( /[a-z]/ ).test( password );
-  const passwordContainsUppercaseLatinLetter = new RegExp( /[A-Z]/ ).test( password );
+  const passwordContainsDigits = new RegExp( /\d/ ).test( passwordNew );
+  const passwordContainsLowercaseLatinLetter = new RegExp( /[a-z]/ ).test( passwordNew );
+  const passwordContainsUppercaseLatinLetter = new RegExp( /[A-Z]/ ).test( passwordNew );
   const weakPassMsg = "The password is too weak. It must be at least 8 symbols \
     long, include lowercase, capital letters and digits.";
-  if(password.length < 8){
-    errors.password = weakPassMsg;
+  if(passwordNew.length < 8){
+    errors.passwordNew = weakPassMsg;
   }
-  if(password.length > 100){
-    errors.password = "Password must be 100 characters or less";
+  if(passwordNew.length > 100){
+    errors.passwordNew = "Password must be 100 characters or less";
   }
   if(!passwordContainsDigits){
-    errors.password = weakPassMsg;
+    errors.passwordNew = weakPassMsg;
   }
   if(!passwordContainsLowercaseLatinLetter){
-    errors.password = weakPassMsg;
+    errors.passwordNew = weakPassMsg;
   }
   if(!passwordContainsUppercaseLatinLetter){
-    errors.password = weakPassMsg;
+    errors.passwordNew = weakPassMsg;
   }
-  if(password !== passwordRepeat){
+  if(passwordNew !== passwordRepeat){
     errors.passwordRepeat = "Passwords do not match!";
   }
   return isEmpty(errors) ? null : errors;
