@@ -80,9 +80,12 @@ class Layout extends React.Component {
   }
 
   render(){
-    const { children, authenticated, sysAlert, users } = this.props;
+    const { children, authenticated, sysAlert, users, companies } = this.props;
     if(authenticated){
-      if(isEmpty(users)){
+      if(
+        isEmpty(users) ||
+        isEmpty(companies)
+      ){
         return(
           <div>Loading data...</div>
         );
@@ -120,7 +123,8 @@ function mapStateToProps(state) {
   return {
     authenticated: state.currentUser.authenticated,
     sysAlert: state.alerts.system,
-    users: state.users
+    users: state.users,
+    companies: state.companies
   };
 }
 
