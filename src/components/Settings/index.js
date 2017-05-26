@@ -3,6 +3,8 @@ import SettingsLeftMenu from './SettingsLeftMenu.jsx';
 import SettingsAddNewCompany from './SettingsAddNewCompany.jsx';
 import SettingsCompanyProfile from './SettingsCompanyProfile.jsx';
 import SettingsUserProfile from './SettingsUserProfile.jsx';
+import SettingsNotifications from './SettingsNotifications.jsx';
+import SettingsCompanyMembers from './SettingsCompanyMembers.jsx';
 
 class Settings extends React.Component {
 
@@ -12,6 +14,10 @@ class Settings extends React.Component {
         return <SettingsAddNewCompany />;
       case '#company-profile':
         return <SettingsCompanyProfile />;
+      case '#company-members':
+        return <SettingsCompanyMembers />;
+      case '#notifications':
+        return <SettingsNotifications />;
       default:
         return <SettingsUserProfile />;
     }
