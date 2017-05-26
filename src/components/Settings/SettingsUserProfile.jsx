@@ -3,6 +3,7 @@ import DropPicture from './DropPicture.jsx'
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { updateUser } from '../../actions/users'
+import { showModal } from '../../actions/modals'
 import SettingsUserProfileAccount from './SettingsUserProfileAccount.jsx'
 import SettingsUserProfileGeneral from './SettingsUserProfileGeneral.jsx'
 import SettingsUserProfilePersonal from './SettingsUserProfilePersonal.jsx'
@@ -17,7 +18,7 @@ class SettingsUserProfile extends React.Component {
 
 
   render() {
-    const { user, company, updateUser } = this.props;
+    const { user, company, updateUser, showModal } = this.props;
       if (!user || !company) {
         return ( <p> Wait a moment please... </p>);
       }
@@ -45,6 +46,7 @@ class SettingsUserProfile extends React.Component {
           <SettingsUserProfileAccount
             user={user}
             updateUser={updateUser}
+            showModal={showModal}
           />
           <SettingsUserProfileGeneral
             user={user}
@@ -66,7 +68,9 @@ class SettingsUserProfile extends React.Component {
 
 SettingsUserProfile.PropsTypes = {
   user: PropTypes.object.isRequired,
-  company: PropTypes.object.isRequired
+  company: PropTypes.object.isRequired,
+  updateUser: PropTypes.func.isRequired,
+  showModal: PropTypes.func.isRequired
 }
 
 function getProps(state) {
@@ -78,4 +82,4 @@ function getProps(state) {
   }
 }
 
-export default connect(getProps, { updateUser })(SettingsUserProfile);
+export default connect(getProps, { updateUser, showModal })(SettingsUserProfile);
