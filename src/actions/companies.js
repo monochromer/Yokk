@@ -1,7 +1,8 @@
 import {
   COMPANY_CRUD,
   FETCH_COMPANIES,
-  CREATE_COMPANY
+  CREATE_COMPANY,
+  UPDATE_COMPANY,
 } from '../constants';
 import axios from 'axios';
 
@@ -18,6 +19,21 @@ export function createCompany(data, callback) {
       dispatch({
         type: CREATE_COMPANY,
         payload: res.data
+      });
+      callback();
+    }, (err) => {
+      callback(err.response.data);
+    });
+	}
+}
+
+export function updateCompany(companyId, data, callback) {
+	return dispatch => {
+    axios.put(COMPANY_CRUD + companyId, data).then((res) => {
+      dispatch({
+        type: UPDATE_COMPANY,
+        payload: data,
+        companyId
       });
       callback();
     }, (err) => {
