@@ -55,7 +55,8 @@ exports.getAllUsers = function (req, res) {
           }
           const userToReturn = Object.assign({}, profile.toObject(), {
             _id: foundUser._id,
-            profileImg: foundUser.profileImg
+            profileImg: foundUser.profileImg,
+            notifications: foundUser.notifications
           });
           if("" + foundUser._id === "" + user._id){
             userToReturn.email = user.email;
@@ -96,7 +97,8 @@ exports.getAllUsers = function (req, res) {
             }
             return Object.assign({}, profile.toObject(), {
               _id: user._id,
-              profileImg: user.profileImg
+              profileImg: user.profileImg,
+              notifications: user.notifications
             });
           });
           res.json(usersToReturn);
@@ -237,10 +239,11 @@ exports.updateUser = function (req, res) {
     passwordNew,
     passwordRepeat,
     role,
-    currentCompany
+    currentCompany,
+    notifications
   } = body;
 
-  if (passwordNew) {
+  if (passwordNew !== undefined) {
     if(!user.checkPassword(passwordOld)){
       res.status(403).send({passwordOld: 'Wrong old password'});
       return;
@@ -266,6 +269,21 @@ exports.updateUser = function (req, res) {
       return;
     }
     user.email = email;
+    user.save((err) => {
+      if(err){
+        console.log(err);
+        res.status(500).send({form: "Server error"});
+        return;
+      }
+      res.send();
+    });
+  }
+  else if (notifications !== undefined) {
+    if(notifications.constructor !== Array){
+      res.status(400).send({notifications: 'Incorrect type'});
+      return;
+    }
+    user.notifications = notifications;
     user.save((err) => {
       if(err){
         console.log(err);
@@ -313,7 +331,7 @@ exports.updateUser = function (req, res) {
         res.status(403).send({form: 'You can\'t change owner\'s role'});
         return;
       }
-      foundUser.role = role;
+      foundUser.role = role; //role is not a users prop, to fix
       foundUser.save((err) => {
         if(err){
           console.log(err);
