@@ -20,6 +20,7 @@ export const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
 export const NEW_USER_NOTIFICATION = 'NEW_USER_NOTIFICATION';
 export const NEW_TEAM_NOTIFICATION = 'NEW_TEAM_NOTIFICATION';
 export const UPDATE_COMPANY = 'UPDATE_COMPANY';
+export const INVITE_MEMBER = 'INVITE_MEMBER';
 export const TIME_ENTRY_CRUD = '/api/timeEntry/';
 export const FETCH_REDMINE_TIME_ENTRIES_URI = '/api/sync/redmine';
 export const FETCH_UPWORK_TIME_ENTRIES_URI = '/api/sync/upwork';
