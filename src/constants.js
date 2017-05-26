@@ -16,6 +16,7 @@ export const CHANGE_TEAM_NAME = 'CHANGE_TEAM_NAME';
 export const SHOW_MODAL = 'SHOW_MODAL';
 export const HIDE_MODAL = 'HIDE_MODAL';
 export const CREATE_COMPANY = 'CREATE_COMPANY';
+export const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
 export const NEW_USER_NOTIFICATION = 'NEW_USER_NOTIFICATION';
 export const NEW_TEAM_NOTIFICATION = 'NEW_TEAM_NOTIFICATION';
 export const TIME_ENTRY_CRUD = '/api/timeEntry/';
