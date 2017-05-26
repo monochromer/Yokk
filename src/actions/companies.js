@@ -3,6 +3,7 @@ import {
   FETCH_COMPANIES,
   CREATE_COMPANY,
   UPDATE_COMPANY,
+  INVITE_MEMBER
 } from '../constants';
 import axios from 'axios';
 
@@ -40,4 +41,20 @@ export function updateCompany(companyId, data, callback) {
       callback(err.response.data);
     });
 	}
+}
+
+export function inviteMember(data, callback) {
+  return (dispatch) => {
+    axios.post('/api/teams/addTeamMembers', {
+      invites: [data]
+    }).then((res) => {
+      dispatch({
+        type: INVITE_MEMBER,
+        ...data
+      });
+      callback();
+    }, (err) => {
+      callback(err.responce.data);
+    });
+  }
 }
