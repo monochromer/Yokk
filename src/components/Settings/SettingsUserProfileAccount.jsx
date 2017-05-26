@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Input } from '../UI.jsx';
+import { CHANGE_PASSWORD } from '../../constants';
 
 class SettingsUserProfileAccount extends React.Component {
 
@@ -42,6 +43,10 @@ class SettingsUserProfileAccount extends React.Component {
 
   handleChangePass = (e) => {
     e.preventDefault();
+    this.props.showModal(CHANGE_PASSWORD, {
+      updateUser: this.props.updateUser,
+      user: this.props.user
+    });
   }
 
   render() {
@@ -78,14 +83,16 @@ class SettingsUserProfileAccount extends React.Component {
             </div>
             <div className="col-md-6">
               <div className="label">Password</div>
-              <div>&#9899;&#9899;&#9899;&#9899;&#9899;&#9899;&#9899;&#9899;</div>
-              <button
-                className="btn btn__md btn__blue"
-                type="submit"
-                onClick={this.handleChangePass}
-              >
-                Изменить
-              </button>
+              <div>
+                <span>&#9899;&#9899;&#9899;&#9899;&#9899;&#9899;&#9899;&#9899;</span>
+                <button
+                  className="btn btn__sm btn__blue"
+                  type="submit"
+                  onClick={this.handleChangePass}
+                >
+                  Изменить
+                </button>
+              </div>
             </div>
           </div>
         </form>
@@ -122,7 +129,8 @@ class SettingsUserProfileAccount extends React.Component {
 
 SettingsUserProfileAccount.PropTypes = {
   user: PropTypes.object.isRequired,
-  company: PropTypes.object.isRequired
+  company: PropTypes.object.isRequired,
+  updateUser: PropTypes.func.isRequired
 }
 
 export default SettingsUserProfileAccount;
