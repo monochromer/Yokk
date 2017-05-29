@@ -76,7 +76,7 @@ exports.addTeamMembers = function (req, res) {
 }
 
 export function sendInvites(
-  invitedEmails,
+  invites,
   teamId,
   companyId,
   User,
@@ -87,54 +87,65 @@ export function sendInvites(
   companyName
 ) {
   return new Promise((resolve, reject) => {
-    _.remove(invitedEmails, el => !valid(el))
-
-    let usersExist = []
+    _.remove(invites, el => !valid(el.email))
+    const invitedEmails = invites.map(el => el.email);
 
     User.find( {email: {$in: invitedEmails}}, (err, users) => {
       if(err){
         reject(err);
         return false;
       }
-      const userEmails = users.map(o => o.email)
-
-      checkIfEmailInArray(userEmails)
-      _.remove(invitedEmails, o => usersExist.includes(o))
-
-      unconfirmedUser.find( {teamId}, (err, unconfirmedUsers) => {
+      users.forEach((user) => {
+        const { role, manager } = invites.find(el => el.email === user.email);
+        _.remove(invites, el => el.email === user.email);
+        if(!user.companies.find(el => "" + el.companyId === "" + companyId)){
+          const newProfile = Object.assign({}, user.toObject().companies[0]);
+          newProfile.companyId = companyId;
+          newProfile.role = role;
+          user.companies.push(newProfile);
+          user.save();
+        }
+        if(!teamId) return;
+        Team.findOne({_id: teamId}, (err, team) => {
+          if(!team.members.find(el => "" + el.userId === "" + user._id)){
+            team.members.push({userId: user._id, manager});
+            team.save();
+            Notification.insert({
+              userId: user._id,
+              text: "Invitation to team " + team.name,
+              targetType: "team",
+              targetId: team._id
+            }, (err) => {
+              if(err) console.log(err);
+              for(let ws in req.app.wsClients){
+                if(req.app.wsClients[ws].userId === "" + user._id){
+                  req.app.wsClients[ws].send('fetch_notifications');
+                  req.app.wsClients[ws].send('fetch_teams');
+                }
+              }
+            });
+          }
+        });
+      });
+      const newInvites = invites.map((el) => {
+        return({
+          teamId,
+          companyId,
+          email: el.email,
+          role: el.role
+        });
+      });
+      UnconfirmedUser.insertMany(newInvites, (err) => {
         if(err){
           reject(err);
           return false;
         }
-        const unconfirmedUsersEmails = unconfirmedUsers.map(o => o.email)
-        checkIfEmailInArray(unconfirmedUsersEmails)
-        _.remove(invitedEmails, o => usersExist.includes(o))
-
-        const newInvites = invitedEmails.map((el) => {
-          return({
-            teamId,
-            email: el,
-            role: 'user'
-          });
-        });
-        unconfirmedUser.insertMany(newInvites, () => {
-          if(err){
-            reject(err);
-            return false;
-          }
-          invitedEmails.forEach(email => {
-            sendInvitation(userName, companyName, teamId, email, companyId)
-          })
-          resolve();
-        });
-      })
+        invites.forEach(el => {
+          sendInvitation(userName, companyName, teamId, el.email, companyId)
+        })
+        resolve();
+      });
     })
-
-    function checkIfEmailInArray(arrayToFind) {
-      invitedEmails.forEach(email => {
-        if (arrayToFind.includes(email)) usersExist.push(email)
-      })
-    }
   });
 }
 
