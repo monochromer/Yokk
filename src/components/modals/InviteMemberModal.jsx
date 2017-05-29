@@ -70,15 +70,18 @@ class InviteMemberModal extends React.Component {
                       label="Email *"
                       type="email"
                     />
-                    <Input
-                      handleChange={ this.handleChange }
-                      defaultValue={ role }
-                      error={ errors.role }
-                      className="input-group input-group__grey-white"
-                      name="role"
-                      label="Role *"
-                      type="role"
-                    />
+                    <div className="input-group">
+                      <div className="label">
+                        Role *
+                      </div>
+                      <select
+                        onChange={ this.handleChange }
+                        name="role"
+                      >
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
                 {errors.form && <div className="form-error">{errors.form}</div>}
