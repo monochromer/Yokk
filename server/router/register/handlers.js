@@ -229,7 +229,7 @@ export const registerUser = (req, res) => {
 
   findUserByEmail(email)
     .then(() => {
-      return checkInvite(email, teamId)
+      return checkInvite(email, companyId)
     })
     .then((role) => {
       const newUserData = {
@@ -248,10 +248,10 @@ export const registerUser = (req, res) => {
       return createNewUser(User, newUserData)
     })
     .then(user => {
-      return saveUserToTeamMembers(teamId, user._id, Team)
+      return teamId ? saveUserToTeamMembers(teamId, user._id, Team) : user._id
     })
     .then((userId) => {
-      return confirmInvite(email, teamId, unconfirmedUser, userId)
+      return confirmInvite(email, companyId, UnconfirmedUser, userId)
     })
     .then(userId => {
       const jwtToken = jwt.sign({
@@ -315,9 +315,9 @@ export const registerUser = (req, res) => {
     })
   }
 
-  function confirmInvite(email, teamId, unconfirmedUserModel, userId) {
+  function confirmInvite(email, companyId, UnconfirmedUserModel, userId) {
     return new Promise((resolve, reject) => {
-      unconfirmedUserModel.find({ email, teamId }).remove((err, result) => {
+      UnconfirmedUserModel.find({ email, companyId }).remove((err, result) => {
         if (err) return reject('Something went wrong while confirming invite')
         resolve(userId)
       })
@@ -334,10 +334,10 @@ export const registerUser = (req, res) => {
     })
   }
 
-  function checkInvite(email, teamId) {
+  function checkInvite(email, companyId) {
     return new Promise((resolve, reject) => {
-      unconfirmedUser.findOne({teamId, email}, (err, invite) => {
-        if (err) return reject('Some error occured while searching for the team')
+      UnconfirmedUser.findOne({companyId, email}, (err, invite) => {
+        if (err) return reject('Some error occured while searching for the invite')
         if (!invite) return reject('Invite is not found')
         resolve(invite.role)
       })
