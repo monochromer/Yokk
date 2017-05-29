@@ -376,13 +376,13 @@ exports.updateUser = function (req, res) {
 }
 
 exports.deleteUser = function (req, res) {
-  const { User, unconfirmedUser, Team } = req.app.db.models
+  const { User, UnconfirmedUser, Team } = req.app.db.models
   const { _id } = req.params
   const ObjectId = require('mongodb').ObjectID
 
   User.findOne({ _id }, (err, user) => {
     if (!user) {
-      unconfirmedUser.findOne({ _id }, (err, user) => {
+      UnconfirmedUser.findOne({ _id }, (err, user) => {
         user.remove()
       })
     } else {

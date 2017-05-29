@@ -80,7 +80,7 @@ export function sendInvites(
   teamId,
   companyId,
   User,
-  unconfirmedUser,
+  UnconfirmedUser,
   userName,
   companyName
 ) {
@@ -211,7 +211,7 @@ exports.read = function (req, res) {
 };
 
 exports.getTeamsForCompany = function(req, res, next) {
-  const { Team, Company, User, unconfirmedUser } = req.app.db.models
+  const { Team, Company, User, UnconfirmedUser } = req.app.db.models
   const {companyId} = req.params
   // console.log('in getTeamsForCompany');
   // console.log(companyId);
@@ -284,7 +284,7 @@ exports.getTeamsForCompany = function(req, res, next) {
 
   function getUnconfirmedUsers(teams) {
     return new Promise((resolve, reject) => {
-      unconfirmedUser.find({}, (err, users) => {
+      UnconfirmedUser.find({}, (err, users) => {
         teams.map(team => {
           team.members = team.members.concat(users.filter(user => `${user.teamId}` === `${team._id}`))
         })

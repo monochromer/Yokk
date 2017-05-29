@@ -200,7 +200,7 @@ export const registerCompany = (req, res) => {
                 team._id,
                 company._id,
                 User,
-                unconfirmedUser,
+                UnconfirmedUser,
                 firstName + " " + lastName,
                 companyName
               );
@@ -221,7 +221,7 @@ export const registerCompany = (req, res) => {
 };
 
 export const registerUser = (req, res) => {
-  const { User, Team, unconfirmedUser, Notification } = req.app.db.models
+  const { User, Team, UnconfirmedUser, Notification } = req.app.db.models
 
   const { firstName, lastName, password, email, teamId, companyId } = req.body
 

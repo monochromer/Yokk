@@ -7,5 +7,5 @@ module.exports = function (app, mongoose) {
     role: String
   })
 
-  app.db.model('unconfirmedUser', userSchema)
+  app.db.model('UnconfirmedUser', userSchema)
 }
