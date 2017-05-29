@@ -108,20 +108,41 @@ exports.getAllUsers = function (req, res) {
             res.status(500).send('Server error');
             return false;
           }
-          const usersToReturn = users.map((user) => {
-            const profile = user.companies.find(
-              el => ""+el.companyId === ""+currentCompany
-            );
-            if(!profile){
-              return;
-            }
-            return Object.assign({}, profile.toObject(), {
-              _id: user._id,
-              profileImg: user.profileImg,
-              notifications: user.notifications
+          if(users.length){
+            const usersToReturn = users.map((foundUser) => {
+              const profile = foundUser.companies.find(
+                el => ""+el.companyId === ""+currentCompany
+              );
+              if(!profile){
+                return;
+              }
+              const userToReturn = Object.assign({}, profile.toObject(), {
+                _id: foundUser._id,
+                profileImg: foundUser.profileImg,
+                notifications: foundUser.notifications
+              });
+              if(
+                "" + foundUser._id === "" + user._id ||
+                role === 'owner' ||
+                role === 'admin'
+              ){
+                userToReturn.email = foundUser.email;
+              }
+              return userToReturn;
             });
+            res.json(usersToReturn);
+            return;
+          }
+          const profile = user.companies.find(
+            el => ""+el.companyId === ""+currentCompany
+          );
+          const currentUser = Object.assign({}, profile.toObject(), {
+            _id: user._id,
+            profileImg: user.profileImg,
+            notifications: user.notifications,
+            email: user.email
           });
-          res.json(usersToReturn);
+          res.send([currentUser]);
         });
       });
     }
