@@ -13,7 +13,7 @@ import _, { isEpmty } from 'lodash';
 import { ObjectId } from 'mongodb';
 
 exports.getAllUsers = function (req, res) {
-  const { User, Team } = req.app.db.models;
+  const { User, Team, UnconfirmedUser } = req.app.db.models;
   const { user } = req;
   if(!user){
     res.status(401).send();
@@ -67,7 +67,23 @@ exports.getAllUsers = function (req, res) {
           }
           return userToReturn;
         });
-        res.json(usersToReturn);
+        UnconfirmedUser.find({companyId: currentCompany}, (err, users) => {
+          if(err){
+            console.log(err);
+            res.status(500).send('Server error');
+            return false;
+          }
+          users.forEach((el) => {
+            usersToReturn.push({
+              firstName: 'Pending',
+              lastName: 'invite',
+              email: el.email,
+              role: el.role,
+              _id: el._id
+            });
+          });
+          res.json(usersToReturn);
+        });
       });
     }
     else{
