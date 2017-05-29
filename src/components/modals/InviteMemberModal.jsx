@@ -18,6 +18,23 @@ class InviteMemberModal extends React.Component {
     this.props.hideModal();
   }
 
+  checkForm(){
+    const { email, role } = this.state;
+    const errors = {};
+    if(!isEmail(email)){
+      errors.email = 'Invalid email addres';
+    }
+    if(!role.length){
+      errors.role = 'Nothing to save!';
+    }
+    if(isEmpty(errors)){
+      this.setState({errors: {}});
+      return true;
+    }
+    this.setState({errors});
+    return false;
+  }
+
   handleChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value
