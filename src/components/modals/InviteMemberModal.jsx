@@ -44,11 +44,7 @@ class InviteMemberModal extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    if(!validator.isEmail(this.state.email)){
-      this.setState({errors: {email: 'Invalid E-mail'}});
-      return;
-    }
-    this.setState({errors: {}});
+    if(!this.checkForm()) return;
     this.props.inviteMember(this.state, (err) => {
       if(err){
         this.setState({errors: err});
