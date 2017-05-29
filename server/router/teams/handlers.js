@@ -47,32 +47,38 @@ exports.create = function (req, res, next) {
 };
 
 exports.addTeamMembers = function (req, res) {
-  const { unconfirmedUser, User } = req.app.db.models
-  const { teamId, companyId, invitedEmails, userName, companyName } = req.body
+  const { UnconfirmedUser, User, Team, Notification, Company } = req.app.db.models
+  const { invites, teamId } = req.body
 
   if(
-    !teamId ||
-    !invitedEmails
+    !invites
   ){
     res.status(400).send('Bad request');
     return false;
   }
-
-  sendInvites(
-    invitedEmails,
-    teamId,
-    companyId,
-    User,
-    unconfirmedUser,
-    userName,
-    companyName
-  ).then(() => {
-    res.send();
-  }, (err) => {
-    console.log(err);
-    res.status(500).send('Server error');
+  const companyId = "" + req.user.currentCompany;
+  const profile = req.user.companies.find(
+    el => "" + el.companyId === companyId
+  );
+  const userName = profile.firestName + " " + profile.lastName;
+  Company.findOne({_id: companyId}, (err, company) => {
+    sendInvites(
+      invites,
+      teamId,
+      companyId,
+      User,
+      UnconfirmedUser,
+      Team,
+      Notification,
+      userName,
+      company.name
+    ).then(() => {
+      res.send();
+    }, (err) => {
+      console.log(err);
+      res.status(500).send('Server error');
+    });
   });
-
 }
 
 export function sendInvites(
