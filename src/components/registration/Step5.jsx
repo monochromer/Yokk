@@ -40,6 +40,9 @@ class Step5 extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+    const invitations = this.state.invitations.map(el => {
+      return {email: el, role: 'user'};
+    });
     const data = {
       email: localStorage.reg_email,
       code: localStorage.reg_code,
@@ -48,7 +51,7 @@ class Step5 extends React.Component {
       password: localStorage.reg_password,
       companyName: localStorage.reg_companyName,
       step: '5',
-      invitations: this.state.invitations
+      invitations
     };
     finishRegistration(data, (err, res) => {
       if(err){
