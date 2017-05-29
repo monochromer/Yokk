@@ -5,7 +5,7 @@ const sendEmail = require('../helpers/sendEmail')
 const valid = require("valid-email")
 
 export const registerCompany = (req, res) => {
-  const { User, Company, Team, unconfirmedUser } = req.app.db.models
+  const { User, Company, Team, UnconfirmedUser, Notification } = req.app.db.models
   const {
     email,
     step,
@@ -201,6 +201,8 @@ export const registerCompany = (req, res) => {
                 company._id,
                 User,
                 UnconfirmedUser,
+                Team,
+                Notification,
                 firstName + " " + lastName,
                 companyName
               );

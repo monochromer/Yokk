@@ -81,6 +81,8 @@ export function sendInvites(
   companyId,
   User,
   UnconfirmedUser,
+  Team,
+  Notification,
   userName,
   companyName
 ) {
