@@ -344,7 +344,8 @@ body {
     max-width: 374px;
 }
 
-.profile_inputs-row .label {
+.profile_inputs-row .label,
+.input-group .label {
     font-size: 13px;
     color: #919191;
     margin-bottom: 10px;
