@@ -466,7 +466,8 @@ function sendInvitation(userName, companyName, teamId, email, companyId) {
   const { NODE_ENV, LINK_BASE_DEV, LINK_BASE_PROD } = process.env
   const linkBase = (NODE_ENV === 'development' ? LINK_BASE_DEV : LINK_BASE_PROD)
 
-  const confirmationLink = `${linkBase}register?teamId=${teamId}&email=${email}&companyId=${companyId}`
+  const confirmationLink = `${linkBase}register?email=${email}&companyId=${companyId}` +
+  (teamId ? `&teamId=${teamId}` : '');
 
   const htmlToSend = `<div>You were invited by ${userName} to join ${companyName} on Yokk!.<br>
                         To register, use this link:<br>
