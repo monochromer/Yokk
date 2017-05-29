@@ -58,8 +58,12 @@ exports.getAllUsers = function (req, res) {
             profileImg: foundUser.profileImg,
             notifications: foundUser.notifications
           });
-          if("" + foundUser._id === "" + user._id){
-            userToReturn.email = user.email;
+          if(
+            "" + foundUser._id === "" + user._id ||
+            role === 'owner' ||
+            role === 'admin'
+          ){
+            userToReturn.email = foundUser.email;
           }
           return userToReturn;
         });
