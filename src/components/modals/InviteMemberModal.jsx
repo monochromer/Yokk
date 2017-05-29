@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Input } from '../UI.jsx';
-import validator from 'validator';
+import { isEmail } from 'validator';
+import { isEmpty } from 'lodash';
 
 class InviteMemberModal extends React.Component {
 
   state = {
     email: '',
-    role: '',
+    role: 'user',
     errors: {}
   }
 
@@ -60,7 +61,6 @@ class InviteMemberModal extends React.Component {
   render() {
     const {
       email,
-      role,
       errors
     } = this.state;
 
