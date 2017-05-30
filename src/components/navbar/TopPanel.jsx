@@ -9,7 +9,7 @@ import { isManager } from '../../helpers';
 import ManagerMenu from './ManagerMenu.jsx'
 import NotificationsDropdown from './NotificationsDropdown.jsx'
 import { markAllNotifications } from '../../actions/notifications';
-// import NewCompanyModal from './NewCompanyModal.jsx'
+import { showModal } from '../../actions/modals';
 
 class TopPanel extends React.Component {
 
@@ -71,7 +71,8 @@ class TopPanel extends React.Component {
       markAllNotifications,
       companies,
       teams,
-      updateUser
+      updateUser,
+      showModal
     } = this.props;
     if(!user){
       return(
@@ -110,7 +111,10 @@ class TopPanel extends React.Component {
 
     if(showManagerMenu){
       return (
-        <ManagerMenu hideManagerMenu={this.hideManagerMenu} />
+        <ManagerMenu
+          hideManagerMenu={this.hideManagerMenu}
+          showModal={showModal}
+        />
       );
     }
     return (
@@ -177,6 +181,7 @@ TopPanel.PropTypes = {
   changeCurrentCompany: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
   updateUser: PropTypes.func.isRequired,
+  showModal: PropTypes.func.isRequired,
 }
 
 const getProps = function(store) {
@@ -193,5 +198,6 @@ export default connect(getProps, {
   changeCurrentCompany,
   logout,
   markAllNotifications,
-  updateUser
+  updateUser,
+  showModal
 })(TopPanel)
