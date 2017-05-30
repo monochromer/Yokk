@@ -1,8 +1,19 @@
 import React from 'react'
 import { Link } from 'react-router'
 import PropTypes from 'prop-types';
+import { CREATE_TEAM, INVITE_MEMBER } from '../../constants';
 
 class ManagerMenu extends React.Component {
+
+  showCreateNewTeam = (e) => {
+    e.preventDefault();
+    this.props.showModal(CREATE_TEAM);
+  }
+
+  showInviteNewMember = (e) => {
+    e.preventDefault();
+    this.props.showModal(INVITE_MEMBER);
+  }
 
   render() {
     return (
@@ -20,7 +31,6 @@ class ManagerMenu extends React.Component {
             <li>
               <Link
                 className="top-panel_menu-item"
-                activeClassName="active"
                 to="/settings#add-new-company"
               >
                 <span className="glyphicons glyphicons-building"></span>{" "}
@@ -28,33 +38,32 @@ class ManagerMenu extends React.Component {
               </Link>
             </li>
             <li>
-              <Link
+              <a
                 className="top-panel_menu-item"
-                activeClassName="active"
-                to="/teams"
+                href="#"
+                onClick={this.showCreateNewTeam}
               >
                 <span className="glyphicons glyphicons-group"></span>{" "}
                 Create new team
-              </Link>
+              </a>
             </li>
             <li>
-              <Link
+              <a
                 className="top-panel_menu-item"
-                activeClassName="active"
-                to="/teams"
+                href="#"
+                onClick={this.showInviteNewMember}
               >
                 <span className="glyphicons glyphicons-user"></span>{" "}
                 Invite new member
-              </Link>
+              </a>
             </li>
             <li>
               <Link
                 className="top-panel_menu-item"
-                activeClassName="active"
-                to="/teams"
+                to="/settings#plugins"
               >
-                <span className="glyphicons glyphicons-electrical-plug"></span>{" "}
-                Add plugin
+                <span className="glyphicons glyphicons-electrical-plug"></span>
+                {" "}Add plugin
               </Link>
             </li>
           </ul>
@@ -65,8 +74,8 @@ class ManagerMenu extends React.Component {
 }
 
 ManagerMenu.PropTypes = {
-  user: PropTypes.object.isRequired,
-  logout: PropTypes.func.isRequired
+  hideManagerMenu: PropTypes.func.isRequired,
+  showModal: PropTypes.func.isRequired
 }
 
 export default ManagerMenu;
