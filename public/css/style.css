@@ -321,7 +321,8 @@ body {
     margin: 25px 0 42px 0;
 }
 
-.profile_section .profile_heading .glyphicons {
+.profile_section .profile_heading .glyphicons,
+.settings-company-members .list-item .glyphicons{
     color: #4A77DA;
     margin: 0 20px;
     cursor: pointer;
@@ -653,6 +654,14 @@ body {
     display: block;
     width: 100%;
     margin-bottom: 30px;
+}
+
+.settings-company-members .list-item{
+  padding: 5px 10px;
+}
+
+.settings-company-members .list-item.pending{
+  color: #bfbfbf;
 }
 
 /*---------------------------------------- /settings --------------------------------------*/
