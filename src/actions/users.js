@@ -2,7 +2,10 @@ import axios from 'axios';
 import {
   USER_CRUD,
   COMBINE_USER_ADDPHOTO_URI,
-  USER_TEAM
+  USER_TEAM,
+  UPDATE_USER,
+  DELETE_USER,
+  FETCH_USERS
 } from '../constants'
 
 import {
@@ -13,7 +16,7 @@ import {
 
 export function fetchUsers() {
   return {
-    type: "FETCH_USERS",
+    type: FETCH_USERS,
     loadItems: USER_CRUD
   }
 }
@@ -25,20 +28,30 @@ export function fetchTeamUsers() {
   }
 }
 
-export function deleteUser(login) {
-  return {
-    type: "DELETE_USER",
-    deleteItem: {
-      url: USER_CRUD + login
-    }
-  }
+export function deleteUser(user, callback) {
+  return (dispatch) => {
+    const data = user.companyId ? {companyId: user.companyId} : {};
+    axios.delete(USER_CRUD + user._id, {data}).then((res) => {
+      dispatch({
+        type: DELETE_USER,
+        payload: user
+      });
+      if(callback){
+        callback();
+      }
+    }, (err) => {
+      if(callback){
+        callback(err.response.data);
+      }
+    });
+  };
 }
 
 export function updateUser(userId, fields, callback) {
   return (dispatch) => {
     axios.put(USER_CRUD + userId, fields).then((res) => {
       dispatch({
-        type: "UPDATE_USER",
+        type: UPDATE_USER,
         payload: {
           fields,
           userId
