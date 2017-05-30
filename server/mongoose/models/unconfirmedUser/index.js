@@ -8,5 +8,7 @@ module.exports = function (app, mongoose) {
     role: String
   })
 
+  userSchema.index({ email: 1, companyId: 1}, { unique: true });
+
   app.db.model('UnconfirmedUser', userSchema)
 }
