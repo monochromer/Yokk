@@ -1,4 +1,9 @@
-import { dummy } from '../constants';
+import {
+  dummy,
+  DELETE_USER,
+  INVITE_MEMBER,
+  UPDATE_USER
+} from '../constants';
 import _ from 'lodash'
 
 const defaultState = {};
@@ -21,9 +26,23 @@ export default function(state = defaultState, action) {
           ...payload.fields
         }
       };
+    case INVITE_MEMBER:
+      newState = {};
+      payload.forEach((user) => {
+        newState[user._id] = {
+          _id: user._id,
+          firstName: 'Pending',
+          lastName: 'invite',
+          pending: true,
+          email: user.email,
+          role: user.role
+        };
+      });
+      return {
+        ...state,
+        ...newState
+      };
     case "UPDATE_USER_PHOTO":
-      newState = _.filter(state, (o) => o._id !== userId);
-
       return {
         ...state,
         [userId]: {
