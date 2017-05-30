@@ -77,6 +77,7 @@ exports.getAllUsers = function (req, res) {
             usersToReturn.push({
               firstName: 'Pending',
               lastName: 'invite',
+              pending: true,
               email: el.email,
               role: el.role,
               _id: el._id
