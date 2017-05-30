@@ -1,36 +1,72 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { updateUser, deleteUser } from '../../actions/users';
 import { showModal } from '../../actions/modals';
+import { updateUser } from '../../actions/users';
 import { inviteMember } from '../../actions/companies';
 import { INVITE_MEMBER } from '../../constants';
+import SettingsMembersListItem from './SettingsMembersListItem.jsx';
+import Pagination from '../Pagination.jsx';
+import LinesPerPage from '../LinesPerPage.jsx';
 
 class SettingsCompanyMembers extends React.Component {
 
+  state = {
+    linesPerPage: 20,
+    page: 1
+  }
+
+  pagesCount(){
+    return Math.ceil(Object.keys(this.props.users).length / this.state.linesPerPage);
+  }
+
+	setPage = (e) => {
+		e.preventDefault();
+    const page = parseInt(e.target.getAttribute("value"), 10);
+		if(page > 0 && page <= this.pagesCount()){
+			this.setState({page});
+		}
+	}
+
+	setLinesPerPage = (e) => {
+		e.preventDefault();
+		this.setState({
+			linesPerPage: parseInt(e.target.value, 10),
+			page: 1
+		});
+	}
+
   handleInviteUsers = (e) => {
     e.preventDefault();
-    this.props.showModal(INVITE_MEMBER, {
-      inviteMember: this.props.inviteMember
-    });
+    this.props.showModal(INVITE_MEMBER);
   }
 
   render() {
-    const { users } = this.props;
+    const { users, updateUser, inviteMember, showModal } = this.props;
+		const { linesPerPage, page } = this.state;
+    const pagesCount = this.pagesCount();
+		const firstLine = (page - 1) * linesPerPage;
+		const lastLine = firstLine + linesPerPage;
     const mappedUsers = [];
+    const usersArray = [];
     for(let _id in users){
-      const el = users[_id];
+      usersArray.push(users[_id]);
+    }
+    for(let i = firstLine; i < lastLine && i < usersArray.length; i++){
+      const el = usersArray[usersArray.length - 1 - i];
       mappedUsers.push(
-        <div className="row" key={_id}>
-          <div className="col-sm-4">{el.firstName + " " + el.lastName}</div>
-          <div className="col-sm-4">{el.role}</div>
-          <div className="col-sm-4">{el.email || ''}</div>
-        </div>
+        <SettingsMembersListItem
+          key={el._id}
+          user={el}
+          updateUser={updateUser}
+          inviteMember={inviteMember}
+          showModal={showModal}
+        />
       );
     }
 
     return (
-      <div>
+      <div className="settings-company-members">
         <h1>Company members</h1>
         <div className="text-right settings-left-menu">
           <div
@@ -42,12 +78,23 @@ class SettingsCompanyMembers extends React.Component {
           </div>
         </div>
         <div>
-          <div className="row">
+          <div className="list-item row">
             <div className="col-sm-4">Name</div>
-            <div className="col-sm-4">Role</div>
+            <div className="col-sm-2">Role</div>
             <div className="col-sm-4">E-mail</div>
           </div>
           {mappedUsers}
+          <div className="text-right">
+            <LinesPerPage
+              setLinesPerPage={this.setLinesPerPage}
+              linesPerPage={linesPerPage}
+            />
+            <Pagination
+              page={page}
+              pagesCount={pagesCount}
+              setPage={this.setPage}
+            />
+          </div>
         </div>
       </div>
     );
@@ -57,23 +104,19 @@ class SettingsCompanyMembers extends React.Component {
 
 SettingsCompanyMembers.PropTypes = {
   users: PropTypes.array.isRequired,
-  user: PropTypes.object.isRequired,
-  updateUser: PropTypes.func.isRequired,
-  deleteUser: PropTypes.func.isRequired,
+  showModal: PropTypes.func.isRequired,
   inviteMember: PropTypes.func.isRequired,
-  showModal: PropTypes.func.isRequired
+  updateUser: PropTypes.func.isRequired
 }
 
 function getParams(state) {
   return {
-    users: state.users,
-    user: state.users[state.currentUser._id]
+    users: state.users
   }
 }
 
 export default connect(getParams, {
+  showModal,
   updateUser,
-  deleteUser,
-  inviteMember,
-  showModal
+  inviteMember
 })(SettingsCompanyMembers);
