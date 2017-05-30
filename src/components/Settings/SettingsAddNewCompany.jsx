@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 import PropTypes from 'prop-types';
 import { createCompany } from '../../actions/companies';
 import { Input } from '../UI.jsx'
@@ -35,7 +36,7 @@ class SettingsAddNewCompany extends React.Component {
         });
         return false;
       }
-      this.setState(this.initialState);
+      browserHistory.push('/settings#company-members');
     });
   }
 
