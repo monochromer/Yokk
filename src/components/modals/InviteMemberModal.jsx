@@ -1,8 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Input } from '../UI.jsx';
 import { isEmail } from 'validator';
 import { isEmpty } from 'lodash';
+import { inviteMember } from '../../actions/companies';
 
 class InviteMemberModal extends React.Component {
 
@@ -124,4 +126,4 @@ InviteMemberModal.PropTypes = {
   inviteMember: PropTypes.func.isRequired
 }
 
-export default InviteMemberModal;
+export default connect(null, { inviteMember })(InviteMemberModal);
