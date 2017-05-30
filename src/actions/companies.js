@@ -50,7 +50,7 @@ export function inviteMember(data, callback) {
     }).then((res) => {
       dispatch({
         type: INVITE_MEMBER,
-        ...data
+        payload: res.data || []
       });
       callback();
     }, (err) => {

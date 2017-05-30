@@ -72,8 +72,8 @@ exports.addTeamMembers = function (req, res) {
       Notification,
       userName,
       company.name
-    ).then(() => {
-      res.send();
+    ).then((invites) => {
+      res.send(invites);
     }, (err) => {
       console.log(err);
       res.status(500).send('Server error');
@@ -141,15 +141,17 @@ export function sendInvites(
           role: el.role
         });
       });
-      UnconfirmedUser.insertMany(newInvites, (err) => {
-        if(err){
+      UnconfirmedUser.insertMany(newInvites, {
+        continueOnError: true, safe: true
+      }, (err, results) => {
+        if(err && err.code != "11000"){
           reject(err);
           return false;
         }
         invites.forEach(el => {
           sendInvitation(userName, companyName, teamId, el.email, companyId)
         })
-        resolve();
+        resolve(results);
       });
     })
   });
