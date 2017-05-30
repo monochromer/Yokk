@@ -361,9 +361,17 @@ exports.updateUser = function (req, res) {
       res.status(403).send({form: 'Not enough rights'});
       return;
     }
-    User.find({_id}, (err, foundUser) => {
+    User.findOne({_id}, (err, foundUser) => {
+      if(!foundUser){
+        res.status(400).send({form: 'User is not found'});
+        return;
+      }
+      if(!foundUser.companies){
+        res.status(400).send({form: 'User doesn\'t belong to any company'});
+        return;
+      }
       const foundUserProfile = foundUser.companies.find(
-        el => el.companyId === user.currentCompany
+        el => "" + el.companyId === "" + user.currentCompany
       );
       if(!foundUserProfile){
         res.status(400).send({form: 'Profile is not found'});
@@ -373,7 +381,7 @@ exports.updateUser = function (req, res) {
         res.status(403).send({form: 'You can\'t change owner\'s role'});
         return;
       }
-      foundUser.role = role; //role is not a users prop, to fix
+      foundUserProfile.role = role;
       foundUser.save((err) => {
         if(err){
           console.log(err);
