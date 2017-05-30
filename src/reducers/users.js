@@ -12,13 +12,16 @@ export default function(state = defaultState, action) {
   const { type, payload, userId } = action;
   var newState = "";
   switch (type) {
-    case "ADD_USER":
-      return [...state, payload];
+    case DELETE_USER:
+      newState = {};
+      for(let id in state){
+        if(id !== payload._id){
+          newState[id] = {...state[id]};
+        }
+      }
+      return newState;
 
-    case "DELETE_USER":
-      return [...state, _.filter(state, (o) => o._id !== payload._id)];
-
-    case "UPDATE_USER":
+    case UPDATE_USER:
       return {
         ...state,
         [payload.userId]: {
