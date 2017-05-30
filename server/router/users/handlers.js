@@ -426,32 +426,54 @@ exports.updateUser = function (req, res) {
 }
 
 exports.deleteUser = function (req, res) {
-  const { User, UnconfirmedUser, Team } = req.app.db.models
-  const { _id } = req.params
-  const ObjectId = require('mongodb').ObjectID
+  const { User, UnconfirmedUser, Team, Notification } = req.app.db.models;
+  const { _id } = req.params;
+  const { companyId } = req.body;
 
+  if (!companyId) {
+    UnconfirmedUser.remove({_id}, (err) => {});
+    res.send();
+    return;
+  }
   User.findOne({ _id }, (err, user) => {
-    if (!user) {
-      UnconfirmedUser.findOne({ _id }, (err, user) => {
-        user.remove()
-      })
-    } else {
-      user.remove()
-      Team.find({members: ObjectId(_id)}, (err, teams) => {
-        teams.forEach(team => {
-          team.members = team.members.filter(member => `${member}` !== _id )
-          team.save()
-        })
-      })
-    }
+    user.companies = user.companies.filter(
+      el => "" + el.companyId !== companyId
+    );
+    user.save((err, user) => {
+      if(err){
+        console.log(err);
+        res.status(500).send('Server error');
+        return;
+      }
+      if(!user.companies.length){
+        Notification.remove({targetId: user._id}, (err) => {});
+        user.remove();
+        Team.find({members: {$elemMatch: {userId: user._id}}}, (err, teams) => {
+          teams.forEach((team) => {
+            team.members = team.members.filter(
+              el => "" + el.userId !== "" + user._id
+            );
+            team.save();
+          });
+          res.send();
+        });
+      }
+      else{
+        Team.find({
+          members: {$elemMatch: {userId: user._id}},
+          companyId
+        }, (err, teams) => {
+          teams.forEach((team) => {
+            team.members = team.members.filter(
+              el => "" + el.userId !== "" + user._id
+            );
+            team.save();
+          });
+          res.send();
+        });
+      }
+    });
   })
-
-  // User.deleteUser(req.params.id, (err, result) => {
-  //   if (err) next(err);
-  //   console.log(result);
-  //   res.status(200).send(req.params.id);
-  // });
-
 }
 
 exports.uploadUserAvatar = function (req, res) {
