@@ -132,7 +132,7 @@ exports.deleteTimeEntry = function(req, res) {
   });
 };
 
-exports.updateTimeEntry = function(req, res, next) {
+exports.updateTimeEntry = function(req, res) {
   const TimeEntryModel = req.app.db.models.timeEntry;
   const timeEntryId = req.params.timeEntryId;
   const update = req.body;
@@ -140,10 +140,29 @@ exports.updateTimeEntry = function(req, res, next) {
     update.duration = moment.duration(update.duration).asMinutes();
   }
 
-  TimeEntryModel.findByIdAndUpdate(timeEntryId, update, {
-    new: true
-  }, (err, timeEntry) => {
-    if (err) next(err);
-    res.status(200).send(timeEntry);
+  TimeEntryModel.findOne({_id: timeEntryId}, (err, timeEntry) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send('Server error');
+      return;
+    }
+    if(!timeEntry){
+      res.status(400).send('Time entry is not found');
+      return;
+    }
+    if("" + timeEntry.executor !== "" + req.user._id){
+      res.status(403).send('Not enough rights');
+      return;
+    }
+    timeEntry.description = update.description;
+    timeEntry.duration = update.duration;
+    timeEntry.save((err, timeEntry) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send('Server error');
+        return;
+      }
+      res.send(timeEntry);
+    });
   });
 };
