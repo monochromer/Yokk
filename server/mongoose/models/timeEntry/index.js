@@ -10,6 +10,10 @@ module.exports = function(app, mongoose) {
       type: mongoose.Schema.Types.ObjectId,
       required: true
     },
+    companyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true
+    },
     date: {
       type: Number,
       default: Date.now
