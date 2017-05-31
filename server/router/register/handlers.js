@@ -275,6 +275,7 @@ export const registerUser = (req, res) => {
           userIds.push("" + el._id);
           return {
             userId: el._id,
+            companyId,
             text: "New user " + firstName + " " + lastName,
             targetType: "user",
             targetId: userId

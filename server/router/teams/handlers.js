@@ -118,6 +118,7 @@ export function sendInvites(
             team.save();
             Notification.insert({
               userId: user._id,
+              companyId,
               text: "Invitation to team " + team.name,
               targetType: "team",
               targetId: team._id

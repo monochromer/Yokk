@@ -3,9 +3,10 @@
 exports.fetchNotifications = function(req, res) {
   const NotificationModel = req.app.db.models.Notification;
   const userId = req.user._id;
+  const companyId = req.user.currentCompany;
   const numberOfNotifications = 200;
 
-  NotificationModel.find({userId}).sort({ _id: 1 })
+  NotificationModel.find({userId, companyId}).sort({ _id: 1 })
     .limit(numberOfNotifications).exec((err, notifications) => {
       if(err){
         console.log(err);
@@ -38,9 +39,10 @@ exports.markNotification = function(req, res) {
 exports.markAllNotifications = function(req, res) {
   const NotificationModel = req.app.db.models.Notification;
   const userId = req.user._id;
+  const companyId = req.user.currentCompany;
 
   NotificationModel.update(
-    {userId, new: true},
+    {userId, companyId, new: true},
     {$set: {new: false}},
     {"multi": true},
     (err) => {

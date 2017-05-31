@@ -13,7 +13,8 @@ module.exports = function(app, mongoose) {
       type: Number,
       default: Date.now
     },
-    userId: mongoose.Schema.Types.ObjectId
+    userId: mongoose.Schema.Types.ObjectId,
+    companyId: mongoose.Schema.Types.ObjectId
   });
 
   app.db.model('Notification', notificationSchema);
