@@ -2,12 +2,19 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { hideModal } from '../../actions/modals'
 import { Input } from '../UI.jsx'
+import { addTeam } from '../../actions/teams';
 
 class AddTeamModal extends React.Component {
 
   state = {
     name: '',
-    error: ''
+    errors: {},
+    invites: [
+      {
+        userId: 0,
+        role: 'user'
+      }
+    ]
   }
 
   handleClose = () => {
@@ -26,34 +33,91 @@ class AddTeamModal extends React.Component {
   }
 
   render() {
-    const { name, error } = this.state;
+    const { name, errors, invites } = this.state;
+    const { users } = this.props;
+    const userOptions = [];
+    for(let userId in users){
+      const user = users[userId];
+      userOptions.push(
+        <option key={user._id} value={user._id}>
+          {user.firstName + " " + user.lastName}
+        </option>
+      );
+    }
 
+    const invitationRows = invites.map((invite, index) => {
+      return(
+        <div className="row marginTop" key={index}>
+          <div className="col-md-6 input-group">
+            <select
+              value={invite.userId}
+              onChange={this.handleChangeUser}
+            >
+              {userOptions}
+            </select>
+          </div>
+          <div className="col-md-6 input-group">
+            <select
+              value={invite.role}
+              onChange={this.handleChangeRole}
+            >
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+        </div>
+      );
+    });
     return (
       <div className="modal">
         <div className="modal_close" onClick={ this.handleClose }></div>
         <div className="container">
           <div className="row center-md vertical-center modal_row">
             <div className="col-md-6">
-              <div className="row text-center">
-                <div className="col-md-12 text-center">
-                  <h2 className="heading heading__white">New team</h2>
-                </div>
-              </div>
+              <h2 className="heading heading__white">
+                Add new team
+              </h2>
               <form onSubmit={ this.handleSubmit }>
                 <div className="row marginTop">
                   <div className="col-md-12">
                     <Input
                       handleChange={ this.handleChange }
                       defaultValue={ name }
-                      error={ error }
+                      error={ errors.name }
                       className="input-group input-group__grey-white"
                       name="name"
-                      label="Name"/>
+                      label="Team name *"/>
                   </div>
                 </div>
+                <div className="row  marginTop">
+                  <div className="col-md-6 input-group">
+                    <div>
+                      Add member
+                    </div>
+                  </div>
+                  <div className="col-md-6 input-group">
+                    <div>
+                      Role
+                    </div>
+                  </div>
+                </div>
+                {invitationRows}
                 <div className="row marginTop">
-                  <div className="col-md-12">
-                    <button type="submit" className="btn btn__blue btn__lg linkService_btn">Create</button>
+                  <div className="col-md-6">
+                    <button
+                      type="submit"
+                      className="btn btn__blue btn__lg"
+                    >
+                      Create and invite
+                    </button>
+                  </div>
+                  <div className="col-md-6">
+                    <button
+                      type="submit"
+                      className="btn btn__white btn__lg"
+                    >
+                      Cancel
+                    </button>
                   </div>
                 </div>
               </form>
@@ -65,4 +129,10 @@ class AddTeamModal extends React.Component {
   }
 }
 
-export default connect(null, { hideModal })(AddTeamModal)
+function mapStateToProps(state) {
+  return{
+    users: state.users
+  }
+}
+
+export default connect(mapStateToProps, { hideModal })(AddTeamModal)
