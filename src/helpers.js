@@ -16,7 +16,7 @@ export function refsToObject(refs) {
 }
 
 export function dayBeatify(date, format) {
-	return moment(date, format).format("ddd, D MMM")
+	return moment(date, format).format("MMM D, Y (ddd)")
 }
 
 export function durationBeatify(minutes, type) {
