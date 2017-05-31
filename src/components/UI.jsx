@@ -66,6 +66,7 @@ export class Input extends React.Component {
              onChange={ this.handleChange }
              defaultValue={ this.props.defaultValue }
              mask={ this.props.mask }
+             value={this.props.value}
              maskChar={ maskChar }/>
         { error }
       </div>
