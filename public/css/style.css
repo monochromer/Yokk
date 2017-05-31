@@ -377,7 +377,6 @@ body {
 
 .tracking-form {
     background-color: #4A77DA;
-    padding: 60px 0;
 }
 
 .tracking-form_heading {
@@ -448,7 +447,7 @@ body {
 .entry-row {
     padding: 5px 20px;
     font-weight: 300;
-    min-height: 70px;
+    min-height: 50px;
 }
 
 .entry-row:nth-child(2n + 1) {
@@ -457,6 +456,19 @@ body {
 
 .loadmore {
     margin-bottom: 120px;
+}
+
+.tracking-form .react-datepicker__input-container input{
+  width: 108px;
+  top: -24px;
+}
+
+.react-datepicker__input-container{
+  top: 30px;
+}
+
+.border-wrap{
+  border: 1px solid gray;
 }
 
 /*---------------------------------------- /tracking-form --------------------------------------*/
