@@ -5,19 +5,26 @@ import {
   ADD_TEAM_MEMBERS,
   DELETE_TEAM_MEMBERS,
   DELETE_TEAM,
-  CHANGE_TEAM_NAME
+  CHANGE_TEAM_NAME,
+  INVITE_MEMBER
 } from '../constants'
+import axios from 'axios';
 
-export function saveTeam(teamName, companyId) {
-  return {
-    type: ADD_TEAM,
-    teamName: teamName,
-    companyId: companyId,
-    callAPI: `/api/teams/${teamName}`,
-    reqType: 'post',
-    body: {
-      companyId: companyId
-    }
+export function addTeam(data, callback) {
+  return (dispatch) => {
+    axios.post(TEAM_CRUD, data).then((res) => {
+      dispatch({
+        type: ADD_TEAM,
+        payload: res.data.team
+      });
+      dispatch({
+        type: INVITE_MEMBER,
+        payload: res.data.members
+      });
+      callback();
+    }, (err) => {
+      callback(err.response.data);
+    });
   }
 }
 
