@@ -41,19 +41,23 @@ export function groupTimeEntriesByDay(timeEntries) {
   for(let entryIdx = 0; entryIdx < sorted.length; entryIdx++){
 		let day = dayBeatify(sorted[entryIdx].date);
 		if(!days[day]) {
-			days[day] = {
+			days[day] = {};
+		}
+    const { entrySource } = sorted[entryIdx];
+    if(!days[day][entrySource]) {
+			days[day][entrySource] = {
 				list: [sorted[entryIdx]],
 				totalDuration: sorted[entryIdx].duration
 			}
 		} else {
-			days[day].list.push(sorted[entryIdx]);
-			days[day].totalDuration += sorted[entryIdx].duration;
+			days[day][entrySource].list.push(sorted[entryIdx]);
+			days[day][entrySource].totalDuration += sorted[entryIdx].duration;
 		}
 	}
 
-	for(let day in days) {
-		days[day].list = _.orderBy(days[day].list, ['date'], ['desc']);
-	}
+	// for(let day in days) {
+	// 	days[day][entrySource].list = _.orderBy(days[day].list, ['date'], ['desc']);
+	// }
 
 	return days;
 }
