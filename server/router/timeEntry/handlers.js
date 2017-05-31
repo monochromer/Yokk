@@ -71,18 +71,19 @@ exports.timeEntryBatch = function(req, res) {
 
 };
 
-exports.saveTimeEntry = function(req, res, next) {
+exports.saveTimeEntry = function(req, res) {
   const TimeEntryModel = req.app.db.models.timeEntry
 
   const {description, duration, dateCreated, entrySource} = req.body
-  const {_id} = req.user
+  const {_id, currentCompany} = req.user
 
   const timeEntryInitData = {
     description,
     duration,
     dateCreated,
     entrySource,
-    executor: _id
+    executor: _id,
+    companyId: currentCompany
   }
 
   const timeEntry = new TimeEntryModel(timeEntryInitData);
@@ -98,8 +99,12 @@ exports.saveTimeEntry = function(req, res, next) {
   timeEntry.duration = stringToMinutes(req.body.duration);
 
   timeEntry.save((err, timeEntry) => {
-    if (err) next(err);
-    return res.status(200).send(timeEntry);
+    if (err) {
+      console.log(err);
+      res.status(500).send('Server error');
+      return;
+    }
+    res.send(timeEntry);
   });
 
 };
