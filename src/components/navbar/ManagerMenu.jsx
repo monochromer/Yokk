@@ -1,13 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router'
 import PropTypes from 'prop-types';
-import { CREATE_TEAM, INVITE_MEMBER } from '../../constants';
+import { ADD_TEAM, INVITE_MEMBER } from '../../constants';
 
 class ManagerMenu extends React.Component {
 
   showCreateNewTeam = (e) => {
     e.preventDefault();
-    this.props.showModal(CREATE_TEAM);
+    this.props.showModal(ADD_TEAM);
   }
 
   showInviteNewMember = (e) => {
