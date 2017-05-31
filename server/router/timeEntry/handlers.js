@@ -4,7 +4,7 @@ const moment = require('moment');
 const stringToMinutes = require('../../helpers/issues').stringToMinutes;
 const queryFiller = require('../helpers/queryFiller');
 
-exports.timeEntryBatch = function(req, res, next) {
+exports.timeEntryBatch = function(req, res) {
   const {from, to} = req.query;
 
   if (req.query.from === 'undefined') {
@@ -38,6 +38,11 @@ exports.timeEntryBatch = function(req, res, next) {
     query.executor = req.query.user;
   } else if (typeof req.user._id !== 'undefined') {
     query.executor = req.user._id;
+  }
+  if (typeof req.query.company !== 'undefined') {
+    query.companyId = req.query.company;
+  } else if (typeof req.user.currentCompany !== 'undefined') {
+    query.companyId = req.user.currentCompany;
   }
 
   getTimeEntries(query);
