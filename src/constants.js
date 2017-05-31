@@ -37,6 +37,10 @@ export const USER_TEAM = '/api/user/get/team';
 export const NOTIFICATIONS_CRUD = '/api/notification/';
 export const REGISTER_COMPANY_URL = '/api/register/';
 export const REGISTER_USER_URL = '/api/register/user';
+export const ENTRY_SOURCES = {
+  eop: 'Yokk! Tracker',
+  redmine: 'Redmine'
+};
 
 export function COMBINE_USER_ADDPHOTO_URI(login) {
   return '/api/user/' + login + '/upload_profile_picture';
