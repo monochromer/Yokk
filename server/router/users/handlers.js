@@ -131,7 +131,23 @@ exports.getAllUsers = function (req, res) {
               }
               return userToReturn;
             });
-            res.json(usersToReturn);
+            UnconfirmedUser.find({teamId: {$in: teams}}, (err, users) => {
+              if(err){
+                console.log(err);
+                res.status(500).send('Server error');
+                return false;
+              }
+              users.forEach((el) => {
+                usersToReturn.push({
+                  firstName: 'Pending',
+                  lastName: 'invite',
+                  pending: true,
+                  role: el.role,
+                  _id: el._id
+                });
+              });
+              res.json(usersToReturn);
+            });
             return;
           }
           const profile = user.companies.find(
