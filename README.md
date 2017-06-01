@@ -1,4 +1,4 @@
-#Open Source Team Management toll. Yokk! beta.
+# Open Source Team Management toll. Yokk! beta.
  
 Yokk! is a service which helps you manage your team. In general, the first version is an aggregator of time-tracking systems. Eye of providence can fetch time-entries form services e.g. Redmine or Upwork and shows all data in one place. Service is very helpful for managers or teamleaders.
 
