@@ -5,8 +5,7 @@ import {
   ADD_TEAM_MEMBERS,
   DELETE_TEAM_MEMBERS,
   DELETE_TEAM,
-  CHANGE_TEAM_NAME,
-  INVITE_MEMBER
+  CHANGE_TEAM_NAME
 } from '../constants'
 import axios from 'axios';
 
@@ -15,11 +14,7 @@ export function addTeam(data, callback) {
     axios.post(TEAM_CRUD, data).then((res) => {
       dispatch({
         type: ADD_TEAM,
-        payload: res.data.team
-      });
-      dispatch({
-        type: INVITE_MEMBER,
-        payload: res.data.members
+        payload: res.data
       });
       callback();
     }, (err) => {
