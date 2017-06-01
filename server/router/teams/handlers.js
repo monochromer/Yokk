@@ -4,46 +4,49 @@ const _ = require('lodash');
 const sendEmail = require('../helpers/sendEmail');
 const path = require('path');
 const valid = require("valid-email");
+import { ObjectId } from 'mongodb';
 
 // CRUD API for teams
 
 // POST
-exports.create = function (req, res, next) {
-  const { Team, User, Company } = req.app.db.models
-  const { teamName } = req.params
-  const { companyId } = req.body
-  const { _id: originatorId } = req.user;
+exports.create = function (req, res) {
+  const { Team, User } = req.app.db.models;
+  const { name, invites } = req.body;
 
-
+  const errors = {};
+  if(!name.length){
+    errors.name = 'Nothing to save!';
+  }
+  if(name.length > 100){
+    errors.name = 'Name must be 100 characters or less';
+  }
+  if(!_.isEmpty(errors)){
+    res.status(400).json(errors);
+    return;
+  }
+  const members = invites.filter((invite) => {
+    return ObjectId.isValid("" + invite.userId);
+  }).map((invite) => {
+    return {
+      userId: invite.userId,
+      manager: invite.role === 'manager'
+    };
+  });
   const teamInitData = {
-    name: teamName,
+    name,
     created: Date.now(),
-    members: [{_id: originatorId, manager: true}],
-    companyId
-  }
-
-  const newTeam = new Team(teamInitData)
-
-  createTeam(newTeam)
-    .then(team => {
-      res.status(200).send(team)
-      // find user from request
-      User.findOne({ _id: originatorId }, (err, user) => {
-        const newTeamsArray = user.teams.concat([team._id])
-        user.teams = newTeamsArray
-        user.save()
-      })
-    })
-
-  function createTeam(newTeam) {
-    return new Promise((resolve, reject) => {
-      newTeam.save((err, team) => {
-        if (err) next(err)
-        resolve(team)
-      })
-    })
-  }
-
+    members,
+    companyId: req.user.currentCompany
+  };
+  const newTeam = new Team(teamInitData);
+  newTeam.save((err, team) => {
+    if (err) {
+      console.log(err);
+      res.status(500).json('Server error');
+      return;
+    }
+    res.send(team);
+  })
 };
 
 exports.addTeamMembers = function (req, res) {
