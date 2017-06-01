@@ -26,9 +26,10 @@ export default function (state = initialState, action) {
       return payload
 
     case ADD_TEAM:
-      const stateAfterTeamAdded = state.slice(0)
-      stateAfterTeamAdded.push(response.data)
-      return stateAfterTeamAdded
+      return [
+        ...state,
+        payload
+      ]
 
     case ADD_TEAM_MEMBERS:
       // exist
