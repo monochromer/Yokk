@@ -1,4 +1,5 @@
-EoP is a service which helps you manage your team. In general, the first version is an aggregator of time-tracking systems. Eye of providence can fetch time-entries form services e.g. Redmine or Upwork and shows all data in one place. Service is very helpful for managers or teamleaders.
+Open Source Team Management toll. Yokk! beta 
+Yokk! is a service which helps you manage your team. In general, the first version is an aggregator of time-tracking systems. Eye of providence can fetch time-entries form services e.g. Redmine or Upwork and shows all data in one place. Service is very helpful for managers or teamleaders.
 
 ### Installation
 First of all you should clone files from the git, then create .env file in root folder. Here is sample configuration:
