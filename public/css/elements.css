@@ -444,6 +444,7 @@ a:hover {
     min-height: 100%;
     z-index: 999999;
     background-color: rgba(0, 0, 0, 0.9);
+    color: white;
 }
 
 .modal_close {
