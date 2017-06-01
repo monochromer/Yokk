@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { getRandomInt } from './helpers';
 
 export const SET_CURRENT_USER = 'SET_CURRENT_USER';
 export const FETCH_NOTIFICATIONS = 'FETCH_NOTIFICATIONS';
@@ -41,6 +42,15 @@ export const ENTRY_SOURCES = {
   eop: 'Yokk! Tracker',
   redmine: 'Redmine'
 };
+export const DEFAULT_TEAM_NAMES = [
+  'Red Squadron',
+  'Blue Squadron',
+  'Gold Squadron'
+];
+
+export function RANDOM_TEAM_NAME(){
+  return DEFAULT_TEAM_NAMES[getRandomInt(0, 2)];
+}
 
 export function COMBINE_USER_ADDPHOTO_URI(login) {
   return '/api/user/' + login + '/upload_profile_picture';
