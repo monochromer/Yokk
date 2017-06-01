@@ -3,11 +3,12 @@ import { connect } from 'react-redux'
 import { Input } from '../UI.jsx'
 import { addTeam } from '../../actions/teams';
 import { isEmpty } from 'lodash';
+import { RANDOM_TEAM_NAME } from '../../constants';
 
 class AddTeamModal extends React.Component {
 
   state = {
-    name: '',
+    name: RANDOM_TEAM_NAME(),
     errors: {},
     invites: [
       {
@@ -29,6 +30,9 @@ class AddTeamModal extends React.Component {
     const errors = {};
     if(!name.length){
       errors.name = 'Nothing to save!';
+    }
+    if(name.length > 100){
+      errors.name = 'Name must be 100 characters or less';
     }
     this.setState({errors});
     if(isEmpty(errors)){
