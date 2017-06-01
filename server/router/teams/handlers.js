@@ -188,7 +188,7 @@ exports.resendCode = function (req, res, next) {
 
 // GET
 exports.read = function (req, res) {
-  const Team = req.app.db.models.Team;
+  const { Team, UnconfirmedUser } = req.app.db.models;
   const { user } = req;
   const { role } = user.companies.find(
     el => "" + el.companyId === "" + user.currentCompany
@@ -215,7 +215,9 @@ exports.read = function (req, res) {
           res.status(500).send('Server error');
           return false;
         }
-        res.json(teams);
+        addPendingUsersToTeams(teams).then((teams) => {
+          res.json(teams);
+        });
       });
     }
     else{
@@ -228,10 +230,27 @@ exports.read = function (req, res) {
           res.status(500).send('Server error');
           return false;
         }
-        res.json(teams);
+        addPendingUsersToTeams(teams).then((teams) => {
+          res.json(teams);
+        });
       });
     }
   });
+
+  function addPendingUsersToTeams(teams){
+    return new Promise((resolve, reject) => {
+      UnconfirmedUser.find({teamId: {$in: teams}}, (err, foundUsers) => {
+        foundUsers.forEach((foundUser) => {
+          teams.forEach((team) => {
+            if("" + foundUser.teamId === "" + team._id){
+              team.members.push({userId: foundUser._id, manager: false});
+            }
+          });
+        });
+        resolve(teams);
+      });
+    });
+  }
 
 };
 
